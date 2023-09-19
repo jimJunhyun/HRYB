@@ -8,9 +8,17 @@ public class GameManager : MonoBehaviour
 
     public GameObject player;
 
+	public bool lockMouse;
+
 	private void Awake()
 	{
 		instance = this;
+
+		if (lockMouse)
+		{
+			Cursor.lockState = CursorLockMode.Locked;
+			//Cursor.visible = false;
+		}
 
 		player = GameObject.Find("Player");
 	}

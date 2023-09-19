@@ -9,14 +9,16 @@ public class PlayerInter : MonoBehaviour
 	public float checkRange = 5f;
 	List<IInterable> checkeds = new List<IInterable>();
 
+	Ray r;
+	RaycastHit[] hits;
+
 	public void Check()
 	{
-		List<Collider> founds;
-		if ((founds = new List<Collider>(Physics.OverlapSphere(transform.position, checkRange, 1 << 8))).Count > 0)
+		r = new Ray(transform.position, transform.forward);
+		if ((hits = Physics.SphereCastAll(r, 1.0f,checkRange, (1 << 8))).Length > 0)
 		{
-			checkeds = founds.OrderBy(col => (col.transform.position - transform.position).sqrMagnitude).Select(c => c.GetComponent<IInterable>()).ToList();
-			checkeds.RemoveAll(inter => !inter.IsInterable);
-			checkeds.RemoveAll(inter => !inter.IsInRange());
+			checkeds = hits.OrderByDescending(item => (transform.position - item.point).sqrMagnitude).Select(item => item.collider.GetComponent<IInterable>()).ToList();
+			//상호작용 가능 목록 데이터화.
 		}
 	}
 

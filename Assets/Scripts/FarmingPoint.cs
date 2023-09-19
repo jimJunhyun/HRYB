@@ -4,43 +4,16 @@ using UnityEngine;
 
 public class FarmingPoint : MonoBehaviour, IInterable
 {
-	public float interRange = 1f;
+	public float interTime = 1.0f;
 	public bool isInterable = true;
 	public bool isDestroyed = true;
 
-	Transform player;
-	Collider col;
-	RaycastHit hit;
-
 	public bool IsInterable { get => isInterable; set => isInterable = value; }
+	public float InterTime { get => interTime; set => interTime = value; }
 
-	private void Awake()
+	public void GlowOn()
 	{
-		col = GetComponent<Collider>();
-	}
-
-	public bool IsInRange()
-	{
-		if(player == null)
-		{
-			player = GameManager.instance.player.transform;
-		}
-		Vector3 dir = (player.position - transform.position).normalized;
-		if(Physics.Raycast(transform.position, dir, out hit, interRange))
-		{
-			if(hit.collider.transform == player)
-			{
-				if((col.ClosestPoint(hit.point) - hit.point).magnitude <= interRange)
-				{
-					Debug.Log("CLOSEENOUGH");
-					return true;
-				}
-				Debug.Log("TOOFAR");
-			}
-			Debug.Log("NOTPLAYER");
-		}
-		Debug.Log("NOTHING");
-		return false;
+		
 	}
 
 	public void InteractWith()
@@ -50,10 +23,5 @@ public class FarmingPoint : MonoBehaviour, IInterable
 		{
 			Destroy(gameObject); //임시. 이후 풀링으로 변경.
 		}
-	}
-
-	private void OnDrawGizmos()
-	{
-		Gizmos.DrawWireSphere(transform.position, interRange);
 	}
 }

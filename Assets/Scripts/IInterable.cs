@@ -4,7 +4,8 @@ using UnityEngine;
 
 public interface IInterable
 {
-	public bool IsInterable { get;set; }
+	public bool IsInterable { get; set; }
+	public float InterTime { get; set;}
 	public void InteractWith();
-	public bool IsInRange();
+	public void GlowOn();
 }
