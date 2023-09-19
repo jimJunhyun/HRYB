@@ -8,4 +8,5 @@ public interface IInterable
 	public float InterTime { get; set;}
 	public void InteractWith();
 	public void GlowOn();
+	public void GlowOff();
 }
