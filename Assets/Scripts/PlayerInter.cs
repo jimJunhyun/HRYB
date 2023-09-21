@@ -48,7 +48,7 @@ public class PlayerInter : MonoBehaviour
 	{
 		if (context.performed)
 		{
-			if (checkeds.Count > 0)
+			if (checkeds != null && checkeds.Count > 0)
 			{
 				checkeds[curSel].GlowOff();
 				Vector2 scr = context.ReadValue<Vector2>();

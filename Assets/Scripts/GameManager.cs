@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject player;
 	public PlayerInput pinp;
+	public ItemManager itemManager;
 
 	public bool lockMouse;
 
@@ -24,5 +25,6 @@ public class GameManager : MonoBehaviour
 
 		player = GameObject.Find("Player");
 		pinp = player.GetComponent<PlayerInput>();
+		itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
 	}
 }
