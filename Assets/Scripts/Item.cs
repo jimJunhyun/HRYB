@@ -51,30 +51,12 @@ public class Item
 
 	public static bool operator ==(Item left, Item right)
 	{
-		bool res = left?.Id == right?.Id;
-		if(left?.Id == null && right?.Id == null)
-		{
-			return true;
-		}
-		else if(left?.Id == null || right?.Id == null)
-		{
-			return false;
-		}
-		return res;
+		return !(left != right);
 	}
 
     public static bool operator !=(Item left, Item right)
     {
-		bool res = left?.Id != right?.Id;
-		if (left?.Id == null && right?.Id == null)
-		{
-			return false;
-		}
-		else if (left?.Id == null || right?.Id == null)
-		{
-			return true;
-		}
-		return res;
+		return left?.myName != right?.myName;
     }
 
     public override bool Equals(object obj)

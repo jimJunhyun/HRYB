@@ -32,7 +32,17 @@ public class Inventory
 	List<InventoryItem> data;
 
 
-	public InventoryItem this[int idx] { get => data[idx]; set => data[idx] = value;}
+	public InventoryItem this[int idx]
+	{ 
+		get 
+		{ 
+			return data[idx];
+		} 
+		set	
+		{
+			data[idx] = value; 
+		}
+	}
 
 	public int Count { get; private set;}
 
@@ -61,6 +71,7 @@ public class Inventory
 			{
 				data[i] = item;
 				++Count;
+				return;
 			}
 		}
 	}
@@ -87,33 +98,9 @@ public class PlayerInven : MonoBehaviour
     public Inventory inven;
     public int cap = 20;
 
-	private void Start()
+	private void Awake()
 	{
 		inven = new Inventory(cap);
-
-		AddItem(GameManager.instance.itemManager.items[1]);
-		AddItem(GameManager.instance.itemManager.items[1]);
-		AddItem(GameManager.instance.itemManager.items[1]);
-		AddItem(GameManager.instance.itemManager.items[1]);
-		AddItem(GameManager.instance.itemManager.items[1]);
-		AddItem(GameManager.instance.itemManager.items[1]);
-		Move(0, 4, 2);
-		Move(0, 4, 2);
-		Move(0, 4, 2);
-		AddItem(GameManager.instance.itemManager.items[2]);
-		AddItem(GameManager.instance.itemManager.items[2]);
-		AddItem(GameManager.instance.itemManager.items[2]);
-		AddItem(GameManager.instance.itemManager.items[2]);
-		AddItem(GameManager.instance.itemManager.items[2]);
-		Move(0, 4, 5);
-		RemoveItem(GameManager.instance.itemManager.items[1]);
-		RemoveItem(GameManager.instance.itemManager.items[2]);
-		RemoveItem(GameManager.instance.itemManager.items[2]);
-		RemoveItem(GameManager.instance.itemManager.items[1]);
-		RemoveItem(GameManager.instance.itemManager.items[1]);
-		RemoveItem(GameManager.instance.itemManager.items[1]);
-		RemoveItem(GameManager.instance.itemManager.items[1]);
-		RemoveItem(GameManager.instance.itemManager.items[1]);
 	}
 
 	public bool AddItem(Item data, int num = 1)
@@ -172,7 +159,7 @@ public class PlayerInven : MonoBehaviour
 		if ((idx = inven.Contains(data)) != -1)
 		{
 			InventoryItem slotItem = inven[idx];
-			if (slotItem.number - num <= 0)
+			if (slotItem.number - num >= 0)
 			{
 				slotItem.number -= num;
 				if(slotItem.number == 0)
@@ -202,7 +189,7 @@ public class PlayerInven : MonoBehaviour
 
 			if(slotItem.number == 0)
 			{
-				RemoveItem(from);
+				inven.Remove(from);
 			}
 			else
 			{
@@ -225,18 +212,18 @@ public class PlayerInven : MonoBehaviour
 		}
 		else
 		{
-			if (!inven[from].isEmpty() && inven[to].isEmpty())
+			if ((!inven[from].isEmpty() && inven[to].isEmpty()) || (inven[from].info == inven[to].info))
 			{
-				Debug.Log($"{inven[from].info.myName}, {inven[from].number}개, {inven[to].info.myName}, {inven[to].number}개에서, ");
+				Debug.Log($"{inven[from].info.myName}, {inven[from].number}개, {(inven[to].isEmpty() ? 0 : inven[to].info.myName)}, {(inven[to].isEmpty() ? 0 : inven[to].number)}개에서, ");
 				if (AddItem(inven[from].info, to, num))
 				{
 					RemoveItem(from, num);
-					Debug.Log($"{inven[from].info.myName}, {inven[from].number}개, {inven[to].info.myName}, {inven[to].number}개로 변경.");
+					Debug.Log($"{(inven[from].isEmpty() ? 0 : inven[from].info.myName)}, {(inven[from].isEmpty() ? 0 : inven[from].number)}개, {inven[to].info.myName}, {inven[to].number}개로 변경.");
 					return true;
 				}
 				Debug.Log("목적지 꽉 참.");
 			}
-			Debug.Log($"목적지 주인 있음. {inven[to].isEmpty()}"); //?????????????????????????????????
+			Debug.Log($"목적지 주인 있음. {inven[to].info.myName}");
 			return false;
 		}
 	}

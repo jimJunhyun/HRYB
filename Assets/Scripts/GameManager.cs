@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class GameManager : MonoBehaviour
     public GameObject player;
 	public PlayerInput pinp;
 	public ItemManager itemManager;
+	public PlayerInven pinven;
+	public CinemachineFreeLook pCam;
 
 	public bool lockMouse;
 
@@ -25,6 +28,8 @@ public class GameManager : MonoBehaviour
 
 		player = GameObject.Find("Player");
 		pinp = player.GetComponent<PlayerInput>();
+		pinven = player.GetComponent<PlayerInven>();
+		pCam = GameObject.Find("PCam").GetComponent<CinemachineFreeLook>();
 		itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
 	}
 }
