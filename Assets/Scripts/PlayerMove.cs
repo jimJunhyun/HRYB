@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Linq;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -23,9 +24,15 @@ public class PlayerMove : MonoBehaviour
 	Vector3 moveDir = Vector3.zero;
 	Vector3 turnDir = Vector3.zero;
 
+	Quaternion to;
+	Camera mainCam;
+
+	Transform target;
+
 	private void Awake()
 	{
 		ctrl = GetComponent<CharacterController>();
+		mainCam = Camera.main;
 	}
 
 	private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -74,9 +81,30 @@ public class PlayerMove : MonoBehaviour
 				gravityAccel = 0;
 			}
 		}
-		moveDir.y = -gravityAccel;
-		ctrl.Move((accSlipDir + (transform.rotation * moveDir * speed)) * Time.deltaTime);
-		transform.Rotate(turnDir * spinSpd * Time.deltaTime);
+		
+		if (target == null)
+		{
+			Vector3 rot = mainCam.transform.eulerAngles;
+			rot.x = 0;
+			Vector3 v = Quaternion.Euler(rot) * moveDir;
+			to = Quaternion.LookRotation(v, Vector3.up);
+			if (to != Quaternion.identity)
+			{
+				transform.rotation = Quaternion.RotateTowards(transform.rotation, to, spinSpd);
+			}
+			ctrl.Move((accSlipDir + (v * speed) - (Vector3.up * gravityAccel * speed)) * Time.deltaTime);
+		}
+		else
+		{
+			Vector3 v = target.position - transform.position;
+			v.y = 0;
+			to = Quaternion.LookRotation(v, Vector3.up);
+			if (to != Quaternion.identity)
+			{
+				transform.rotation = Quaternion.RotateTowards(transform.rotation, to, spinSpd);
+			}
+			ctrl.Move((accSlipDir + (transform.rotation * moveDir * speed) - (Vector3.up * gravityAccel * speed)) * Time.deltaTime);
+		}
 	}
 
 	public void Move(InputAction.CallbackContext context)
@@ -85,17 +113,37 @@ public class PlayerMove : MonoBehaviour
 		moveDir = new Vector3(inp.x, moveDir.y, inp.y);
 	}
 
-	public void Turn(InputAction.CallbackContext context)
-	{
-		Vector2 inp = context.ReadValue<Vector2>();
-		turnDir = new Vector3(0, inp.x, 0);
-	}
-
 	public void Jump(InputAction.CallbackContext context)
 	{
 		if (ctrl.isGrounded)
 		{
 			gravityAccel = -jumpPwer;
 		}
+	}
+
+	public void Lock(InputAction.CallbackContext context)
+	{
+		if (context.canceled)
+		{
+			if (target == null)
+			{
+				Collider[] c = Physics.OverlapSphere(transform.position, 5f, ~(1 << 7 | 1 << 11));
+				if (c.Length > 0)
+				{
+					target = c.Select(item => item.transform).OrderBy(item => (item.position - transform.position).sqrMagnitude).ToArray()[0];
+					GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
+					GameManager.instance.pCam.m_XAxis.m_Wrap = false;
+				}
+				
+			}
+			else
+			{
+				target = null;
+				GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.WorldSpace;
+				GameManager.instance.pCam.m_XAxis.m_Wrap = true;
+			}
+		}
+		
+		
 	}
 }
