@@ -56,7 +56,7 @@ public class FarmingPoint : MonoBehaviour, IInterable
 		bool success = false;
 		if (Item.nameHashT.ContainsKey(resItem.GetHashCode()))
 		{
-			success = GameManager.instance.pinven.AddItem((Item.nameHashT[resItem.GetHashCode()] as Item), amount);
+			success = (GameManager.instance.pinven.AddItem((Item.nameHashT[resItem.GetHashCode()] as Item), amount)) == 0;
 		}
 		if (success)
 		{

@@ -12,6 +12,32 @@ public struct InventoryItem
 		number = num;
 	}
 
+	public bool isFull()
+	{
+		return number >= info.maxStack;
+	}
+
+	public int AddAmt(int amt)
+	{
+		number += amt;
+		number %= info.maxStack;
+		if(number == 0)
+			number = info.maxStack;
+		return amt - number;
+	}
+
+	public int SubtAmt(int amt)
+	{
+		number -= amt;
+		if(number <= 0)
+		{
+			amt = -number;
+			number = 0;
+			return amt;
+		}
+		return 0;
+	}
+
 	public bool isEmpty()
 	{
 		return number == 0;
@@ -46,16 +72,17 @@ public class Inventory
 
 	public int Count { get; private set;}
 
-	public int Contains(Item info)
+	public List<int> Contains(Item info)
 	{
+		List<int> res = new List<int>();
 		for (int i = 0; i < data.Count; i++)
 		{
 			if(!this[i].isEmpty() && this[i].info == info)
 			{
-				return i;
+				res.Add(i);
 			}
 		}
-		return -1;
+		return res;
 	}
 
 	public void AddCapacity(int amt)
@@ -63,7 +90,7 @@ public class Inventory
 		data.Capacity += amt;
 	}
 
-	public void Add(InventoryItem item)
+	public int Add(InventoryItem item)
 	{
 		for (int i = 0; i < data.Count; i++)
 		{
@@ -71,9 +98,10 @@ public class Inventory
 			{
 				data[i] = item;
 				++Count;
-				return;
+				return i;
 			}
 		}
+		return -1;
 	}
 
 	public bool Add(InventoryItem item, int to)
@@ -103,80 +131,111 @@ public class PlayerInven : MonoBehaviour
 		inven = new Inventory(cap);
 	}
 
-	public bool AddItem(Item data, int num = 1)
+	public int AddItem(Item data, int num = 1)
 	{
-		int idx;
-		if ((idx = inven.Contains(data)) != -1)
+		List<int> idxes;
+		if ((idxes = inven.Contains(data)).Count > 0)
 		{
-			InventoryItem slotItem = inven[idx];
-			if(slotItem.number + num <= slotItem.info.maxStack)
+			for (int i = 0; i < idxes.Count; i++)
 			{
-				slotItem.number += num;
-				inven[idx] = slotItem;
-				Debug.Log($"{slotItem.info.myName}, {slotItem.number}개, 위치 : {idx}");
-				return true;
+				int amt = inven[idxes[i]].AddAmt(num);
+				if(amt != num)
+				{
+					Debug.Log($"{inven[idxes[i]].info.myName}, {inven[idxes[i]].number}개로 변경, 위치 {i}");
+				}
+				num = amt;
+				if (num == 0)
+				{
+					return 0;
+				}
+			}
+			int rep = num / data.maxStack + 1;
+
+			for(int i = 0; i < rep; ++i)
+			{
+				int cnt = num - data.maxStack > 0 ? num - data.maxStack : num;
+				num -= cnt;
+				if(inven.Count < cap)
+				{
+					InventoryItem item = new InventoryItem(data, cnt);
+					int idx = inven.Add(item);
+
+					Debug.Log($"{item.info.myName}, {item.number}개, 새로 추가됨, 위치 : {idx}");
+				}
+				else
+				{
+					return num;
+				}
 			}
 		}
 		else
 		{
-			InventoryItem slotItem = new InventoryItem(data, num);
-			if(inven.Count < cap)
+			int sets = num / data.maxStack + 1;
+			for (int i = 0; i < sets; ++i)
 			{
-				inven.Add(slotItem);
-				Debug.Log($"{slotItem.info.myName}, {slotItem.number}개, 새로 추가됨");
-				return true;
+				int cnt = num - data.maxStack > 0 ? num - data.maxStack : num;
+				num -= cnt;
+				if (inven.Count < cap)
+				{
+					InventoryItem item = new InventoryItem(data, cnt);
+					int idx = inven.Add(item);
+					Debug.Log($"{item.info.myName}, {item.number}개, 새로 추가됨, 위치 : {idx}");
+				}
+				else
+				{
+					return num;
+				}
 			}
 		}
-		Debug.Log("추가 실패");
-		return false;
+		Debug.Log($"{data.myName}, {num} 만큼은 더이상 추가할 수 없음.");
+		return num;
 	}
 
-	public bool AddItem(Item data, int to, int num)
+	public int AddItem(Item data, int to, int num)
 	{
 		if(inven[to].isEmpty())
 		{
 			inven.Add(new InventoryItem(data, num), to);
-			return true;
+			return 0;
 		}
 		else if(inven[to].info == data)
 		{
-			InventoryItem slotItem = inven[to];
-			if(slotItem.number + num <= slotItem.info.maxStack)
-			{
-				slotItem.number += num;
-				inven[to] = slotItem;
-				//????????
-				return true;
-			}
-
+			return inven[to].AddAmt(num);
 		}
-		return false;
+		return -1;
 	}
 
 	public bool RemoveItem(Item data, int num = 1)
 	{
-		int idx;
-		if ((idx = inven.Contains(data)) != -1)
+		List<int> idxes;
+		if ((idxes = inven.Contains(data)).Count > 0)
 		{
-			InventoryItem slotItem = inven[idx];
-			if (slotItem.number - num >= 0)
+			int sum = 0;
+			for (int i = 0; i < idxes.Count; i++)
 			{
-				slotItem.number -= num;
-				if(slotItem.number == 0)
-				{
-					RemoveItem(idx);
-					Debug.Log($"{slotItem.info.myName}, {slotItem.number}개, 위치 : {idx}, 제거됨.");
-				}
-				else
-				{
-					inven[idx] = slotItem;
-					Debug.Log($"{slotItem.info.myName}, {slotItem.number}개, 위치 : {idx}");
-				}
+				sum += inven[idxes[i]].number;
+			}
 
+			if(sum >= num)
+			{
+				for (int i = 0; i < idxes.Count; i++)
+				{
+					num = inven[idxes[i]].SubtAmt(num);
+					if(inven[idxes[i]].number == 0)
+					{
+						inven.Remove(idxes[i]);
+					}
+					if(num == 0)
+					{
+						break;
+					}
+				}
 				return true;
 			}
+			Debug.Log("아이템 숫자 부족.");
+			return false;
 		}
-		Debug.Log("제거 실패. 사유 : 아이템 없음");
+		Debug.Log("아이템 없음.");
 		return false;
 	}
 
@@ -215,9 +274,10 @@ public class PlayerInven : MonoBehaviour
 			if ((!inven[from].isEmpty() && inven[to].isEmpty()) || (inven[from].info == inven[to].info))
 			{
 				Debug.Log($"{inven[from].info.myName}, {inven[from].number}개, {(inven[to].isEmpty() ? 0 : inven[to].info.myName)}, {(inven[to].isEmpty() ? 0 : inven[to].number)}개에서, ");
-				if (AddItem(inven[from].info, to, num))
+				int leftover;
+				if ((leftover = AddItem(inven[from].info, to, num)) >= 0)
 				{
-					RemoveItem(from, num);
+					RemoveItem(from, num - leftover);
 					Debug.Log($"{(inven[from].isEmpty() ? 0 : inven[from].info.myName)}, {(inven[from].isEmpty() ? 0 : inven[from].number)}개, {inven[to].info.myName}, {inven[to].number}개로 변경.");
 					return true;
 				}

@@ -71,7 +71,7 @@ public class PlayerInter : MonoBehaviour
 
     public void Interact(InputAction.CallbackContext context)
 	{
-		if(checkeds.Count > 0 && context.performed)
+		if(checkeds != null && checkeds.Count > 0 && context.performed)
 		{
 			checkeds[curSel].InteractWith();
 			Check();
