@@ -153,14 +153,14 @@ public class PlayerInven : MonoBehaviour
 
 			for(int i = 0; i < rep; ++i)
 			{
-				int cnt = num - data.maxStack > 0 ? num - data.maxStack : num;
+				int cnt = num - data.maxStack > 0 ? data.maxStack : num;
 				num -= cnt;
 				if(inven.Count < cap)
 				{
 					InventoryItem item = new InventoryItem(data, cnt);
 					int idx = inven.Add(item);
 
-					Debug.Log($"{item.info.myName}, {item.number}개, 새로 추가됨, 위치 : {idx}");
+					Debug.Log($"{item.info.myName}, {item.number}개, 새로 추가됨, 위치 : {idx}"); //갯수가 음수로 나오는 문제 발견,
 				}
 				else
 				{

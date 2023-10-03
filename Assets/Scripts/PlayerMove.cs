@@ -14,6 +14,8 @@ public class PlayerMove : MonoBehaviour
 	public float slipThreshold = 45f;
 	public float slipPower = 4f;
 
+	public float checkThreshold = 4f;
+
 	float gravityAccel = 0;
 	float angle = 0;
 	bool slip = false;
@@ -27,12 +29,25 @@ public class PlayerMove : MonoBehaviour
 	Quaternion to;
 	Camera mainCam;
 
+	Transform[] targets;
+	int targetIdx = -1;
 	Transform target;
+
+	Vector3 checkedPos;
+	bool isNew = true;
 
 	private void Awake()
 	{
 		ctrl = GetComponent<CharacterController>();
 		mainCam = Camera.main;
+
+		Collider[] c = Physics.OverlapSphere(transform.position, 30f, ~(1 << 7 | 1 << 11));
+		if (c.Length > 0)
+		{
+			targets = c.Select(item => item.transform).OrderBy(item => (item.position - transform.position).sqrMagnitude).ToArray();
+		}
+		checkedPos = transform.position;
+		Debug.Log("UPD");
 	}
 
 	private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -81,17 +96,24 @@ public class PlayerMove : MonoBehaviour
 				gravityAccel = 0;
 			}
 		}
+
+		if(target == null)
+		{
+			GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.WorldSpace;
+			GameManager.instance.pCam.m_XAxis.m_Wrap = true;
+			targetIdx = -1;
+		}
 		
-		if (target == null)
+		if (targetIdx == -1)
 		{
 			Vector3 rot = mainCam.transform.eulerAngles;
 			rot.x = 0;
 			Vector3 v = Quaternion.Euler(rot) * moveDir;
-			to = Quaternion.LookRotation(v, Vector3.up);
-			if (to != Quaternion.identity)
+			if(moveDir.sqrMagnitude != 0)
 			{
-				transform.rotation = Quaternion.RotateTowards(transform.rotation, to, spinSpd);
+				to = Quaternion.LookRotation(v, Vector3.up);
 			}
+			transform.rotation = Quaternion.RotateTowards(transform.rotation, to, spinSpd);
 			ctrl.Move((accSlipDir + (v * speed) - (Vector3.up * gravityAccel * speed)) * Time.deltaTime);
 		}
 		else
@@ -105,12 +127,29 @@ public class PlayerMove : MonoBehaviour
 			}
 			ctrl.Move((accSlipDir + (transform.rotation * moveDir * speed) - (Vector3.up * gravityAccel * speed)) * Time.deltaTime);
 		}
+
+
+		if((checkedPos - transform.position).sqrMagnitude > checkThreshold * checkThreshold)
+		{
+			Collider[] c = Physics.OverlapSphere(transform.position, 30f, ~(1 << 7 | 1 << 11));
+			if (c.Length > 0)
+			{
+				targets = c.Select(item => item.transform).OrderBy(item => (item.position - transform.position).sqrMagnitude).ToArray();
+			}
+			checkedPos = transform.position;
+			isNew = true;
+			Debug.Log("UPD");
+		}
+
+		
 	}
 
 	public void Move(InputAction.CallbackContext context)
 	{
 		Vector2 inp = context.ReadValue<Vector2>();
 		moveDir = new Vector3(inp.x, moveDir.y, inp.y);
+
+			
 	}
 
 	public void Jump(InputAction.CallbackContext context)
@@ -123,27 +162,50 @@ public class PlayerMove : MonoBehaviour
 
 	public void Lock(InputAction.CallbackContext context)
 	{
-		if (context.canceled)
+		if (targets != null && targets.Length > 0 && context.canceled)
 		{
-			if (target == null)
+			if (isNew)
 			{
-				Collider[] c = Physics.OverlapSphere(transform.position, 5f, ~(1 << 7 | 1 << 11));
-				if (c.Length > 0)
+				if(target == targets[0])
 				{
-					target = c.Select(item => item.transform).OrderBy(item => (item.position - transform.position).sqrMagnitude).ToArray()[0];
-					GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
-					GameManager.instance.pCam.m_XAxis.m_Wrap = false;
+					if(targets.Length == 1)
+					{
+						targetIdx = -1;
+						target = null;
+						return;
+					}
+					else
+					{
+						targetIdx = 1;
+					}
 				}
-				
+				else
+				{
+					targetIdx = 0;
+				}
+				isNew = false;
+				target = targets[targetIdx];
+				GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
+				GameManager.instance.pCam.m_XAxis.m_Wrap = false;
 			}
 			else
 			{
-				target = null;
-				GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.WorldSpace;
-				GameManager.instance.pCam.m_XAxis.m_Wrap = true;
+				if (++targetIdx != 0 && targetIdx % targets.Length == 0)
+				{
+					Debug.Log("LOCK TO NONE");
+					GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.WorldSpace;
+					GameManager.instance.pCam.m_XAxis.m_Wrap = true;
+					targetIdx = -1;
+					target = null;
+				}
+				else
+				{
+					target = targets[targetIdx];
+					Debug.Log($"LOCK TO : {target.name}");
+					GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
+					GameManager.instance.pCam.m_XAxis.m_Wrap = false;
+				}
 			}
 		}
-		
-		
 	}
 }
