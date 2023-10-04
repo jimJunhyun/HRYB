@@ -53,26 +53,25 @@ public class FarmingPoint : MonoBehaviour, IInterable
 
 	void Inter()
 	{
-		bool success = false;
+		int leftovers = 0;
 		if (Item.nameHashT.ContainsKey(resItem.GetHashCode()))
 		{
-			success = (GameManager.instance.pinven.AddItem((Item.nameHashT[resItem.GetHashCode()] as Item), amount)) == 0;
+			leftovers = (GameManager.instance.pinven.AddItem((Item.nameHashT[resItem.GetHashCode()] as Item), amount));
 		}
-		if (success)
+		if(leftovers > 0)
+		{ 
+		Debug.Log("아이템 떨구겠다.");
+		}
+		Debug.Log(transform.name);
+		if (isDestroyed)
 		{
-			Debug.Log(transform.name);
-			if (isDestroyed)
-			{
-				Destroy(gameObject); //임시. 이후 풀링으로 변경.
-			}
+			Destroy(gameObject); //임시. 이후 풀링으로 변경.
 		}
-		
 	}
 
 	IEnumerator DelInter()
 	{
 		GameManager.instance.pinp.DeactivateInput();
-		GameManager.instance.pCam.m_XAxis.m_Wrap = true;
 		float t = 0;
 		while(t < InterTime)
 		{
@@ -80,16 +79,7 @@ public class FarmingPoint : MonoBehaviour, IInterable
 			yield return null;
 		}
 		Inter();
-		t = 0;
-		float fromVal = GameManager.instance.pCam.m_XAxis.Value;
-		while (t < RECENTERINGTIME)
-		{
-			t += Time.deltaTime;
-			yield return null;
-			GameManager.instance.pCam.m_XAxis.Value = Mathf.Lerp(fromVal, 0, t / RECENTERINGTIME);
-		}
 		GameManager.instance.pinp.ActivateInput();
-		GameManager.instance.pCam.m_XAxis.m_Wrap = false;
 		
 		ongoing = null;
 	}

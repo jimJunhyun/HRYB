@@ -20,10 +20,19 @@ public struct InventoryItem
 	public int AddAmt(int amt)
 	{
 		number += amt;
-		number %= info.maxStack;
-		if(number == 0)
+		
+		if(number > info.maxStack)
+		{
+			int overs = number - info.maxStack;
 			number = info.maxStack;
-		return amt - number;
+			return overs;
+		}
+		else
+		{
+			Debug.Log(number);
+			return 0;
+		}
+		
 	}
 
 	public int SubtAmt(int amt)
@@ -138,7 +147,9 @@ public class PlayerInven : MonoBehaviour
 		{
 			for (int i = 0; i < idxes.Count; i++)
 			{
-				int amt = inven[idxes[i]].AddAmt(num);
+				InventoryItem item = inven[idxes[i]];
+				int amt = item.AddAmt(num);
+				inven[idxes[i]] = item;
 				if(amt != num)
 				{
 					Debug.Log($"{inven[idxes[i]].info.myName}, {inven[idxes[i]].number}개로 변경, 위치 {i}");
@@ -149,7 +160,7 @@ public class PlayerInven : MonoBehaviour
 					return 0;
 				}
 			}
-			int rep = num / data.maxStack + 1;
+			int rep = num / data.maxStack + ((num % data.maxStack) == 0 ? 0 : 1);
 
 			for(int i = 0; i < rep; ++i)
 			{
@@ -160,20 +171,21 @@ public class PlayerInven : MonoBehaviour
 					InventoryItem item = new InventoryItem(data, cnt);
 					int idx = inven.Add(item);
 
-					Debug.Log($"{item.info.myName}, {item.number}개, 새로 추가됨, 위치 : {idx}"); //갯수가 음수로 나오는 문제 발견,
+					Debug.Log($"{item.info.myName}, {item.number}개, 새로 추가됨, 위치 : {idx}");
 				}
 				else
 				{
+					Debug.Log($"{data.myName}, {num} 만큼은 더이상 추가할 수 없음.");
 					return num;
 				}
 			}
 		}
 		else
 		{
-			int sets = num / data.maxStack + 1;
+			int sets = num / data.maxStack + ((num % data.maxStack) == 0 ? 0 : 1);
 			for (int i = 0; i < sets; ++i)
 			{
-				int cnt = num - data.maxStack > 0 ? num - data.maxStack : num;
+				int cnt = num - data.maxStack > 0 ? data.maxStack : num;
 				num -= cnt;
 				if (inven.Count < cap)
 				{
@@ -183,6 +195,7 @@ public class PlayerInven : MonoBehaviour
 				}
 				else
 				{
+					Debug.Log($"{data.myName}, {num} 만큼은 더이상 추가할 수 없음.");
 					return num;
 				}
 			}
@@ -200,7 +213,10 @@ public class PlayerInven : MonoBehaviour
 		}
 		else if(inven[to].info == data)
 		{
-			return inven[to].AddAmt(num);
+			InventoryItem item = inven[to];
+			int leftover = item.AddAmt(num);
+			inven[to] = item;
+			return leftover;
 		}
 		return -1;
 	}
@@ -220,7 +236,9 @@ public class PlayerInven : MonoBehaviour
 			{
 				for (int i = 0; i < idxes.Count; i++)
 				{
-					num = inven[idxes[i]].SubtAmt(num);
+					InventoryItem item = inven[idxes[i]];
+					num = item.SubtAmt(num);
+					inven[idxes[i]] = item;
 					if(inven[idxes[i]].number == 0)
 					{
 						inven.Remove(idxes[i]);

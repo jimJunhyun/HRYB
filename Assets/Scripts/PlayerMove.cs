@@ -24,7 +24,6 @@ public class PlayerMove : MonoBehaviour
 	Vector3 accSlipDir = Vector3.zero;
 
 	Vector3 moveDir = Vector3.zero;
-	Vector3 turnDir = Vector3.zero;
 
 	Quaternion to;
 	Camera mainCam;
@@ -33,20 +32,12 @@ public class PlayerMove : MonoBehaviour
 	int targetIdx = -1;
 	Transform target;
 
-	Vector3 checkedPos;
-	bool isNew = true;
-
 	private void Awake()
 	{
 		ctrl = GetComponent<CharacterController>();
 		mainCam = Camera.main;
 
-		Collider[] c = Physics.OverlapSphere(transform.position, 30f, ~(1 << 7 | 1 << 11));
-		if (c.Length > 0)
-		{
-			targets = c.Select(item => item.transform).OrderBy(item => (item.position - transform.position).sqrMagnitude).ToArray();
-		}
-		checkedPos = transform.position;
+		
 		Debug.Log("UPD");
 	}
 
@@ -128,19 +119,6 @@ public class PlayerMove : MonoBehaviour
 			ctrl.Move((accSlipDir + (transform.rotation * moveDir * speed) - (Vector3.up * gravityAccel * speed)) * Time.deltaTime);
 		}
 
-
-		if((checkedPos - transform.position).sqrMagnitude > checkThreshold * checkThreshold)
-		{
-			Collider[] c = Physics.OverlapSphere(transform.position, 30f, ~(1 << 7 | 1 << 11));
-			if (c.Length > 0)
-			{
-				targets = c.Select(item => item.transform).OrderBy(item => (item.position - transform.position).sqrMagnitude).ToArray();
-			}
-			checkedPos = transform.position;
-			isNew = true;
-			Debug.Log("UPD");
-		}
-
 		
 	}
 
@@ -154,7 +132,7 @@ public class PlayerMove : MonoBehaviour
 
 	public void Jump(InputAction.CallbackContext context)
 	{
-		if (ctrl.isGrounded)
+		if (ctrl.isGrounded && !slip)
 		{
 			gravityAccel = -jumpPwer;
 		}
@@ -162,50 +140,66 @@ public class PlayerMove : MonoBehaviour
 
 	public void Lock(InputAction.CallbackContext context)
 	{
-		if (targets != null && targets.Length > 0 && context.canceled)
+		if (context.started)
 		{
-			if (isNew)
+			Vector3 pos;
+			if(target == null)
 			{
-				if(target == targets[0])
-				{
-					if(targets.Length == 1)
-					{
-						targetIdx = -1;
-						target = null;
-						return;
-					}
-					else
-					{
-						targetIdx = 1;
-					}
-				}
-				else
-				{
-					targetIdx = 0;
-				}
-				isNew = false;
-				target = targets[targetIdx];
-				GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
-				GameManager.instance.pCam.m_XAxis.m_Wrap = false;
+				pos = transform.position;
 			}
 			else
 			{
-				if (++targetIdx != 0 && targetIdx % targets.Length == 0)
-				{
-					Debug.Log("LOCK TO NONE");
-					GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.WorldSpace;
-					GameManager.instance.pCam.m_XAxis.m_Wrap = true;
-					targetIdx = -1;
-					target = null;
-				}
-				else
-				{
-					target = targets[targetIdx];
-					Debug.Log($"LOCK TO : {target.name}");
-					GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
-					GameManager.instance.pCam.m_XAxis.m_Wrap = false;
-				}
+				pos = target.position;
+			}
+
+			Collider[] c = Physics.OverlapSphere(pos, 30f, ~(1 << 7 | 1 << 11));
+			if (c.Length > 0)
+			{
+				targets = c.Select(item => item.transform).OrderBy(item => (item.position - transform.position).sqrMagnitude).ToArray();
+			}
+
+			if(targets != null)
+			{
+				target = targets[0];
+			}
+			
+			if(target == null)
+			{
+				GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.WorldSpace;
+				GameManager.instance.pCam.m_XAxis.m_Wrap = true;
+			}
+			else
+			{
+				GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
+				GameManager.instance.pCam.m_XAxis.m_Wrap = false;
 			}
 		}
+		//if (context.canceled)
+		//{
+		//	if (targets != null && targets.Length > 0)
+		//	{
+		//		++targetIdx;
+		//		if (targetIdx == targets.Length)
+		//		{
+		//			targetIdx = -1;
+		//			target = null;
+		//			
+		//			
+		//		}
+		//		else
+		//		{
+		//			target = targets[targetIdx];
+		//			
+		//			
+		//		}
+		//	}
+		//	else
+		//	{
+		//		target = null;
+		//		targetIdx = -1;
+		//		GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.WorldSpace;
+		//		GameManager.instance.pCam.m_XAxis.m_Wrap = true;
+		//	}
+		//}
 	}
 }

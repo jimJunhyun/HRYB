@@ -282,7 +282,7 @@ MonoBehaviour:
   isInterable: 1
   isDestroyed: 1
   resItem: "\uB098\uBB47\uAC00\uC9C0"
-  amount: 2
+  amount: 40
 --- !u!135 &182118890
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -405,7 +405,7 @@ MonoBehaviour:
   isInterable: 1
   isDestroyed: 1
   resItem: "\uB098\uBB47\uAC00\uC9C0"
-  amount: 2
+  amount: 50
 --- !u!135 &186023208
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -847,7 +847,7 @@ MonoBehaviour:
   isInterable: 1
   isDestroyed: 1
   resItem: "\uB098\uBB47\uAC00\uC9C0"
-  amount: 1
+  amount: 30
 --- !u!1 &330237014
 GameObject:
   m_ObjectHideFlags: 0
@@ -934,7 +934,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330237014}
-  m_LocalRotation: {x: 0.33100694, y: 0.000000016236429, z: -0.0000000056954317, w: 0.9436283}
+  m_LocalRotation: {x: 0.33100694, y: -0.000000016236429, z: 0.0000000056954317, w: 0.9436283}
   m_LocalPosition: {x: 0, y: 5, z: -8.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1144,6 +1144,7 @@ GameObject:
   - component: {fileID: 531192230}
   - component: {fileID: 531192231}
   - component: {fileID: 531192232}
+  - component: {fileID: 531192233}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -1261,7 +1262,7 @@ CharacterController:
   serializedVersion: 3
   m_Height: 2
   m_Radius: 0.5
-  m_SlopeLimit: 45
+  m_SlopeLimit: 60
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
@@ -1441,6 +1442,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: e4376469-c7cf-4087-895f-e44e29b1af59
     m_ActionName: Player/LockOn[/Keyboard/y]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 531192233}
+        m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
+        m_MethodName: OnAim
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d007026b-073b-413b-8c0d-d7930fb3ed12
+    m_ActionName: Player/Aim[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 531192233}
+        m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: cf34afd1-45ca-4b07-9ab5-04326ab35cf8
+    m_ActionName: Player/Shoot[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: MnK
   m_DefaultActionMap: Player
@@ -1472,6 +1505,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cap: 20
+--- !u!114 &531192233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531192223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 127c54838b7090c4385f3b8baf009f91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &574064422
 GameObject:
   m_ObjectHideFlags: 3
@@ -1542,7 +1587,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 574064422}
-  m_LocalRotation: {x: 0.33100694, y: 0.000000016236429, z: -0.0000000056954317, w: 0.9436283}
+  m_LocalRotation: {x: 0.33100694, y: -0.000000016236429, z: 0.0000000056954317, w: 0.9436283}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1666,7 +1711,7 @@ MonoBehaviour:
   isInterable: 1
   isDestroyed: 1
   resItem: "\uB098\uBB47\uAC00\uC9C0"
-  amount: 2
+  amount: 50
 --- !u!135 &772901059
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2586,7 +2631,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1918096139}
-  m_LocalRotation: {x: 0.33100694, y: 0.000000016236429, z: -0.0000000056954317, w: 0.9436283}
+  m_LocalRotation: {x: 0.33100694, y: -0.000000016236429, z: 0.0000000056954317, w: 0.9436283}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2631,7 +2676,7 @@ MonoBehaviour:
   isInterable: 1
   isDestroyed: 1
   resItem: "\uB098\uBB47\uAC00\uC9C0"
-  amount: 2
+  amount: 50
 --- !u!135 &1935253828
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2922,7 +2967,7 @@ MonoBehaviour:
   isInterable: 1
   isDestroyed: 1
   resItem: "\uB098\uBB47\uAC00\uC9C0"
-  amount: 2
+  amount: 50
 --- !u!135 &2015908933
 SphereCollider:
   m_ObjectHideFlags: 0
