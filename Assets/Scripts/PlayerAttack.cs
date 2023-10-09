@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerAttack : MonoBehaviour
 {
+	public float chargeSpeed;
+	public float maxCharge;
+
     public void OnAim(InputAction.CallbackContext context)
 	{
 		if (context.started)

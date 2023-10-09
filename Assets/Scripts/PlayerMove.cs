@@ -14,7 +14,7 @@ public class PlayerMove : MonoBehaviour
 	public float slipThreshold = 45f;
 	public float slipPower = 4f;
 
-	public float checkThreshold = 4f;
+	public float lockOnDist = 15f;
 
 	float gravityAccel = 0;
 	float angle = 0;
@@ -28,17 +28,19 @@ public class PlayerMove : MonoBehaviour
 	Quaternion to;
 	Camera mainCam;
 
+	HashSet<Transform> already = new HashSet<Transform>();
+
 	Transform[] targets;
-	int targetIdx = -1;
+	Transform[] prevTargets;
+
+
 	Transform target;
+	bool isLocked = false;
 
 	private void Awake()
 	{
 		ctrl = GetComponent<CharacterController>();
 		mainCam = Camera.main;
-
-		
-		Debug.Log("UPD");
 	}
 
 	private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -87,15 +89,13 @@ public class PlayerMove : MonoBehaviour
 				gravityAccel = 0;
 			}
 		}
-
-		if(target == null)
-		{
-			GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.WorldSpace;
-			GameManager.instance.pCam.m_XAxis.m_Wrap = true;
-			targetIdx = -1;
-		}
 		
-		if (targetIdx == -1)
+		if(isLocked && target == null)
+		{
+			ResetTargets();
+		}
+
+		if (!isLocked)
 		{
 			Vector3 rot = mainCam.transform.eulerAngles;
 			rot.x = 0;
@@ -127,7 +127,10 @@ public class PlayerMove : MonoBehaviour
 		Vector2 inp = context.ReadValue<Vector2>();
 		moveDir = new Vector3(inp.x, moveDir.y, inp.y);
 
-			
+		if(target != null && (target.position - transform.position).sqrMagnitude >= lockOnDist * lockOnDist)
+		{
+			ResetTargets();
+		}
 	}
 
 	public void Jump(InputAction.CallbackContext context)
@@ -142,64 +145,67 @@ public class PlayerMove : MonoBehaviour
 	{
 		if (context.started)
 		{
-			Vector3 pos;
-			if(target == null)
-			{
-				pos = transform.position;
-			}
-			else
-			{
-				pos = target.position;
-			}
-
-			Collider[] c = Physics.OverlapSphere(pos, 30f, ~(1 << 7 | 1 << 11));
+			Collider[] c = Physics.OverlapSphere(transform.position, lockOnDist, ~(1 << 7 | 1 << 11));
 			if (c.Length > 0)
 			{
+				prevTargets = targets;
 				targets = c.Select(item => item.transform).OrderBy(item => (item.position - transform.position).sqrMagnitude).ToArray();
+				
+				if(prevTargets != null && targets != null)
+				{
+					IEnumerable<Transform> t = prevTargets.Except(targets);
+					if (t.Any())
+					{
+						Transform[] removes = t.ToArray();
+						for (int i = 0; i < removes.Length; i++)
+						{
+							already.Remove(removes[i]);
+						}
+					}
+				}
 			}
 
 			if(targets != null)
 			{
-				target = targets[0];
-			}
-			
-			if(target == null)
-			{
-				GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.WorldSpace;
-				GameManager.instance.pCam.m_XAxis.m_Wrap = true;
+				bool found = false;
+				if (target != null)
+				{
+					already.Add(target);
+				}
+
+				for (int i = 0; i < targets.Length; i++)
+				{
+					if (!already.Contains(targets[i]))
+					{
+						target = targets[i];
+
+						GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
+						GameManager.instance.pCam.m_XAxis.m_Wrap = false;
+						isLocked = true;
+						found = true;
+						break;
+					}
+				}
+				if (!found)
+				{
+					ResetTargets();
+				}
 			}
 			else
 			{
-				GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
-				GameManager.instance.pCam.m_XAxis.m_Wrap = false;
+				ResetTargets();
 			}
 		}
-		//if (context.canceled)
-		//{
-		//	if (targets != null && targets.Length > 0)
-		//	{
-		//		++targetIdx;
-		//		if (targetIdx == targets.Length)
-		//		{
-		//			targetIdx = -1;
-		//			target = null;
-		//			
-		//			
-		//		}
-		//		else
-		//		{
-		//			target = targets[targetIdx];
-		//			
-		//			
-		//		}
-		//	}
-		//	else
-		//	{
-		//		target = null;
-		//		targetIdx = -1;
-		//		GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.WorldSpace;
-		//		GameManager.instance.pCam.m_XAxis.m_Wrap = true;
-		//	}
-		//}
+	}
+
+	void ResetTargets()
+	{
+		target = null;
+		already.Clear();
+
+		GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.WorldSpace;
+		GameManager.instance.pCam.m_XAxis.m_Wrap = true;
+
+		isLocked = false;
 	}
 }
