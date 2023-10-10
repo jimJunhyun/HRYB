@@ -4,6 +4,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Linq;
 
+public enum PlayerStates
+{
+	Normal,
+	Sit,
+	Crawl,
+}
+
 public class PlayerMove : MonoBehaviour
 {
 	CharacterController ctrl;
@@ -15,6 +22,15 @@ public class PlayerMove : MonoBehaviour
 	public float slipPower = 4f;
 
 	public float lockOnDist = 15f;
+
+	Animator anim;
+
+	private readonly int stateHash = Animator.StringToHash("State");
+	private readonly int runHash = Animator.StringToHash("Run");
+
+	private readonly int camStatHash = Animator.StringToHash("CamStat");
+
+	
 
 	float gravityAccel = 0;
 	float angle = 0;
@@ -41,6 +57,8 @@ public class PlayerMove : MonoBehaviour
 	{
 		ctrl = GetComponent<CharacterController>();
 		mainCam = Camera.main;
+
+		anim = GetComponentInChildren<Animator>();
 	}
 
 	private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -100,12 +118,13 @@ public class PlayerMove : MonoBehaviour
 			Vector3 rot = mainCam.transform.eulerAngles;
 			rot.x = 0;
 			Vector3 v = Quaternion.Euler(rot) * moveDir;
+
 			if(moveDir.sqrMagnitude != 0)
 			{
 				to = Quaternion.LookRotation(v, Vector3.up);
 			}
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, to, spinSpd);
-			ctrl.Move((accSlipDir + (v * speed) - (Vector3.up * gravityAccel * speed)) * Time.deltaTime);
+			ctrl.Move((accSlipDir + (v * speed) - (Vector3.up * 9.8f) - (Vector3.up * gravityAccel)) * Time.deltaTime);
 		}
 		else
 		{
@@ -179,8 +198,8 @@ public class PlayerMove : MonoBehaviour
 					{
 						target = targets[i];
 
-						GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
-						GameManager.instance.pCam.m_XAxis.m_Wrap = false;
+						GameManager.instance.SwitchTo(CamStatus.Locked);
+						
 						isLocked = true;
 						found = true;
 						break;
@@ -203,8 +222,7 @@ public class PlayerMove : MonoBehaviour
 		target = null;
 		already.Clear();
 
-		GameManager.instance.pCam.m_BindingMode = Cinemachine.CinemachineTransposer.BindingMode.WorldSpace;
-		GameManager.instance.pCam.m_XAxis.m_Wrap = true;
+		GameManager.instance.SwitchTo(CamStatus.Freelook);
 
 		isLocked = false;
 	}
