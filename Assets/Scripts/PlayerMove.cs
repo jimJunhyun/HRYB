@@ -23,14 +23,15 @@ public class PlayerMove : MonoBehaviour
 
 	public float lockOnDist = 15f;
 
+	public float angleXMin;
+	public float angleXMax;
+
 	Animator anim;
 
 	private readonly int stateHash = Animator.StringToHash("State");
 	private readonly int runHash = Animator.StringToHash("Run");
 
 	private readonly int camStatHash = Animator.StringToHash("CamStat");
-
-	
 
 	float gravityAccel = 0;
 	float angle = 0;
@@ -112,8 +113,15 @@ public class PlayerMove : MonoBehaviour
 		{
 			ResetTargets();
 		}
+		if(GameManager.instance.curCamStat == CamStatus.Aim)
+		{
+			Vector3 rot = mainCam.transform.eulerAngles;
+			rot.x = 0;
+			Vector3 v = Quaternion.Euler(rot) * moveDir;
 
-		if (!isLocked)
+			ctrl.Move((accSlipDir + (v * speed) - (Vector3.up * 9.8f) - (Vector3.up * gravityAccel)) * Time.deltaTime);
+		}
+		else if (GameManager.instance.curCamStat == CamStatus.Freelook)
 		{
 			Vector3 rot = mainCam.transform.eulerAngles;
 			rot.x = 0;
@@ -135,7 +143,7 @@ public class PlayerMove : MonoBehaviour
 			{
 				transform.rotation = Quaternion.RotateTowards(transform.rotation, to, spinSpd);
 			}
-			ctrl.Move((accSlipDir + (transform.rotation * moveDir * speed) - (Vector3.up * gravityAccel * speed)) * Time.deltaTime);
+			ctrl.Move((accSlipDir + (transform.rotation * moveDir * speed) - (Vector3.up * 9.8f) - (Vector3.up * gravityAccel * speed)) * Time.deltaTime);
 		}
 
 		
@@ -157,6 +165,17 @@ public class PlayerMove : MonoBehaviour
 		if (ctrl.isGrounded && !slip)
 		{
 			gravityAccel = -jumpPwer;
+		}
+	}
+
+	public void Turn(InputAction.CallbackContext context)
+	{
+		if(GameManager.instance.curCamStat == CamStatus.Aim)
+		{
+			Vector2 inp = context.ReadValue<Vector2>();
+			transform.Rotate(Vector3.up * inp.x * spinSpd * Time.deltaTime);
+			GameManager.instance.aimCam.transform.Rotate(Vector3.left * inp.y * spinSpd * Time.deltaTime);
+			GameManager.instance.aimCam.transform.eulerAngles = new Vector3(GameManager.ClampAngle(GameManager.instance.aimCam.transform.eulerAngles.x, angleXMin, angleXMax), GameManager.instance.aimCam.transform.eulerAngles.y, GameManager.instance.aimCam.transform.eulerAngles.z);
 		}
 	}
 
@@ -226,4 +245,7 @@ public class PlayerMove : MonoBehaviour
 
 		isLocked = false;
 	}
+
+
+	
 }

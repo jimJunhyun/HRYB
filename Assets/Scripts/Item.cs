@@ -22,7 +22,7 @@ public enum ItemType
 [System.Serializable]
 public class Item
 {
-    public static Hashtable nameHashT = new Hashtable();
+    public static Hashtable nameDataHashT = new Hashtable(); //같은 이름의 아이템을 같은 물건으로 취급하기 위해 사용.
     public int Id {get => myName.GetHashCode();}
     public string myName;
 
@@ -35,9 +35,9 @@ public class Item
     public Item(string n, ItemType iType, StackType sType, int max)
 	{
         myName = n;
-		if (!nameHashT.ContainsKey(Id))
+		if (!nameDataHashT.ContainsKey(Id))
 		{
-			nameHashT.Add(Id, this);
+			nameDataHashT.Add(Id, this);
 		}
 		itemType = iType;
 		stackType = sType;

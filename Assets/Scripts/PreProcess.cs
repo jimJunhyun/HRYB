@@ -46,13 +46,13 @@ public class PreProcess
 				}
 				break;
 			case ProcessType.Pickle:
-				prefix = $"{(Item.nameHashT[additionalInfo] as YinyangItem).nameAsChar}Δ§";
+				prefix = $"{(Item.nameDataHashT[additionalInfo] as YinyangItem).nameAsChar}Δ§";
 				break;
 			case ProcessType.Age:
 				prefix = "Όχ";
 				break;
 			case ProcessType.Steam:
-				prefix = $"{(Item.nameHashT[additionalInfo] as YinyangItem).nameAsChar}Αυ";
+				prefix = $"{(Item.nameDataHashT[additionalInfo] as YinyangItem).nameAsChar}Αυ";
 				break;
 		}
 	}

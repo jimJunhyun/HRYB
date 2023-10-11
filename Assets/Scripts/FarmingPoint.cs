@@ -54,9 +54,9 @@ public class FarmingPoint : MonoBehaviour, IInterable
 	void Inter()
 	{
 		int leftovers = 0;
-		if (Item.nameHashT.ContainsKey(resItem.GetHashCode()))
+		if (Item.nameDataHashT.ContainsKey(resItem.GetHashCode()))
 		{
-			leftovers = (GameManager.instance.pinven.AddItem((Item.nameHashT[resItem.GetHashCode()] as Item), amount));
+			leftovers = (GameManager.instance.pinven.AddItem((Item.nameDataHashT[resItem.GetHashCode()] as Item), amount));
 		}
 		if(leftovers > 0)
 		{ 

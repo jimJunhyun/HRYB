@@ -935,7 +935,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330237014}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.401, y: 1.728, z: -4.287}
+  m_LocalPosition: {x: 0.71, y: 1.728, z: -5.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1234,6 +1234,8 @@ MonoBehaviour:
   slipThreshold: 35
   slipPower: 4
   lockOnDist: 30
+  angleXMin: -20
+  angleXMax: 20
 --- !u!114 &531192230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1345,6 +1347,18 @@ MonoBehaviour:
     m_ActionName: Player/Interact[/Keyboard/e]
   - m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 531192229}
+        m_TargetAssemblyTypeName: PlayerMove, Assembly-CSharp
+        m_MethodName: Turn
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 531192231}
         m_TargetAssemblyTypeName: PlayerInter, Assembly-CSharp
         m_MethodName: Check
@@ -1466,8 +1480,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127c54838b7090c4385f3b8baf009f91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chargePerSec: 3.4
-  maxChargeAmt: 10
+  chargePerSec: 18
+  maxChargeAmt: 50
   shakeFrom: 5
   maxChargeTime: 7
   shootGap: 1
@@ -2233,7 +2247,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1466256077}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.401, y: 1.728, z: -0.587}
+  m_LocalPosition: {x: 0.71, y: 1.728, z: -1.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2732,7 +2746,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1918096139}
-  m_LocalRotation: {x: 0.44721362, y: 0.000000015389853, z: -0.000000007694928, w: 0.8944272}
+  m_LocalRotation: {x: 0.44721362, y: -0.000000015389855, z: 0.000000007694929, w: 0.8944272}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2916,9 +2930,11 @@ MonoBehaviour:
   pAtk: {fileID: 0}
   pCam: {fileID: 0}
   aimCam: {fileID: 0}
+  arrow: {fileID: 7739963975991083137, guid: a57f6d3e34dbc8543966c3a288547853, type: 3}
   ampGain: 0.7
   frqGain: 1
   lockMouse: 1
+  curCamStat: 0
 --- !u!1 &2014424104
 GameObject:
   m_ObjectHideFlags: 0
