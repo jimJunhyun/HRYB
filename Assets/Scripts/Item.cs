@@ -22,7 +22,13 @@ public enum ItemType
 [System.Serializable]
 public class Item
 {
-    public static Hashtable nameDataHashT = new Hashtable(); //같은 이름의 아이템을 같은 물건으로 취급하기 위해 사용.
+    public static Hashtable nameDataHashT = new Hashtable()
+	{
+		{"나뭇가지".GetHashCode(), new Item("나뭇가지", ItemType.Solid, StackType.numScale, 10, false) },
+		{"인삼".GetHashCode(), new YinyangItem("인삼", ItemType.Solid, StackType.numScale, 5, false, '삼') },
+		{"물".GetHashCode(), new YinyangItem("물", ItemType.Solid, StackType.numScale, 10, false, '수')},
+		{"밧줄".GetHashCode(), new Item("밧줄", ItemType.Solid, StackType.numScale, 10, false) },
+	}; //같은 이름의 아이템을 같은 물건으로 취급하기 위해 사용.
     public int Id {get => myName.GetHashCode();}
     public string myName;
 
@@ -32,13 +38,17 @@ public class Item
 
     public int maxStack;
 
-    public Item(string n, ItemType iType, StackType sType, int max)
+    public Item(string n, ItemType iType, StackType sType, int max, bool isLateInit)
 	{
         myName = n;
-		if (!nameDataHashT.ContainsKey(Id))
+		if (isLateInit)
 		{
-			nameDataHashT.Add(Id, this);
+			if (!nameDataHashT.ContainsKey(Id))
+			{
+				nameDataHashT.Add(Id, this);
+			}
 		}
+		
 		itemType = iType;
 		stackType = sType;
 		maxStack = max;
@@ -51,11 +61,13 @@ public class Item
 
 	public static bool operator ==(Item left, Item right)
 	{
-		return !(left != right);
+		Debug.Log($"{left?.myName} == {right?.myName} ? {left?.myName == right?.myName}");
+		return left?.myName == right?.myName;
 	}
 
     public static bool operator !=(Item left, Item right)
     {
+		Debug.Log($"{left?.myName} != {right?.myName} ? {left?.myName != right?.myName}");
 		return left?.myName != right?.myName;
     }
 

@@ -2,10 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Arrow : MonoBehaviour
+public class Arrow : DamageObject
 {
+
     Rigidbody rig;
-	private void Awake()
+
+	public override void OnTriggerEnter(Collider other)
+	{
+		base.OnTriggerEnter(other);
+		Destroy(gameObject);
+	}
+	private void OnEnable()
 	{
 		rig = GetComponent<Rigidbody>();
 	}

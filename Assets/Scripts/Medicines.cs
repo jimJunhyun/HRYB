@@ -20,8 +20,8 @@ public class Medicines : YinyangItem
 	public List<YinyangItem> recipe;
 	float intakeMod { get; } //식 필요
 
-    public Medicines(string name, ItemType iType, StackType sType, int max)
-		:base(name, iType, sType, max, '약')
+    public Medicines(string name, ItemType iType, StackType sType, int max, bool isLateInit)
+		:base(name, iType, sType, max, isLateInit, '약')
 	{
 
 	}

@@ -10,7 +10,7 @@ public class YinyangItem : Item
 	public List<PreProcess> processes;
 	public char nameAsChar;
 
-    public YinyangItem(string name, ItemType iType, StackType sType, int max, char ch = ' ') : base(name, iType, sType, max)
+    public YinyangItem(string name, ItemType iType, StackType sType, int max, bool isLateInit, char ch = ' ') : base(name, iType, sType, max, isLateInit)
 	{
 		if(ch == ' ')
 		{

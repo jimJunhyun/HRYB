@@ -13,6 +13,8 @@ public enum PlayerStates
 
 public class PlayerMove : MonoBehaviour
 {
+	public const float GRAVITY = 9.8f;
+
 	CharacterController ctrl;
 	public float speed = 4f;
 	public float spinSpd = 300f;
@@ -54,17 +56,19 @@ public class PlayerMove : MonoBehaviour
 	Transform target;
 	bool isLocked = false;
 
+	Transform middle;
+
 	private void Awake()
 	{
 		ctrl = GetComponent<CharacterController>();
 		mainCam = Camera.main;
-
+		middle = transform.Find("Middle");
 		anim = GetComponentInChildren<Animator>();
 	}
 
 	private void OnControllerColliderHit(ControllerColliderHit hit)
 	{
-		if(hit.point.y <= transform.position.y)
+		if(hit.point.y <= middle.position.y)
 		{
 			angle = Mathf.Acos(Vector3.Dot(hit.normal, transform.up) / (hit.normal.magnitude * transform.up.magnitude)) * Mathf.Rad2Deg;
 			if (angle >= slipThreshold)
@@ -99,7 +103,7 @@ public class PlayerMove : MonoBehaviour
 		}
 		if (!ctrl.isGrounded)
 		{
-			gravityAccel += 9.8f * Time.deltaTime;
+			gravityAccel += GRAVITY * Time.deltaTime;
 		}
 		else
 		{
@@ -119,7 +123,7 @@ public class PlayerMove : MonoBehaviour
 			rot.x = 0;
 			Vector3 v = Quaternion.Euler(rot) * moveDir;
 
-			ctrl.Move((accSlipDir + (v * speed) - (Vector3.up * 9.8f) - (Vector3.up * gravityAccel)) * Time.deltaTime);
+			ctrl.Move((accSlipDir + (v * speed) - (Vector3.up * GRAVITY) - (Vector3.up * gravityAccel)) * Time.deltaTime);
 		}
 		else if (GameManager.instance.curCamStat == CamStatus.Freelook)
 		{
@@ -132,7 +136,7 @@ public class PlayerMove : MonoBehaviour
 				to = Quaternion.LookRotation(v, Vector3.up);
 			}
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, to, spinSpd);
-			ctrl.Move((accSlipDir + (v * speed) - (Vector3.up * 9.8f) - (Vector3.up * gravityAccel)) * Time.deltaTime);
+			ctrl.Move((accSlipDir + (v * speed) - (Vector3.up * GRAVITY) - (Vector3.up * gravityAccel)) * Time.deltaTime);
 		}
 		else
 		{
@@ -143,7 +147,7 @@ public class PlayerMove : MonoBehaviour
 			{
 				transform.rotation = Quaternion.RotateTowards(transform.rotation, to, spinSpd);
 			}
-			ctrl.Move((accSlipDir + (transform.rotation * moveDir * speed) - (Vector3.up * 9.8f) - (Vector3.up * gravityAccel * speed)) * Time.deltaTime);
+			ctrl.Move((accSlipDir + (transform.rotation * moveDir * speed) - (Vector3.up * GRAVITY) - (Vector3.up * gravityAccel)) * Time.deltaTime);
 		}
 
 		

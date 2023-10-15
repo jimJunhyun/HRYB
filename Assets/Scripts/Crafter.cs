@@ -7,17 +7,29 @@ public struct ItemAmountPair
     public Item info;
     public int num;
 
-    public ItemAmountPair(string name, int cnt)
+    public ItemAmountPair(string name, int cnt = 1)
 	{
         info = Item.nameDataHashT[name] as Item;
+		Debug.Log(info); // @@@@@@@@@@@@@@@@@@
         num = cnt;
 	}
 }
 
 
-public class Crafter : MonoBehaviour
+public class Crafter
 {
-    public static Hashtable itemAmtRecipeHash;
+    public static Hashtable itemAmtRecipeHash = new Hashtable()
+	{
+		{ new ItemAmountPair("¹åÁÙ"), new List<ItemAmountPair>{ new ItemAmountPair("³ª¹µ°¡Áö", 2) } },
+	};
+
+	public static void AddRecipe(ItemAmountPair resItem, List<ItemAmountPair> recipe)
+	{
+		if(resItem.num > 0 && recipe.Count > 0)
+		{
+			itemAmtRecipeHash.Add(resItem, recipe);
+		}
+	}
 
     public bool Craft(ItemAmountPair data)
 	{

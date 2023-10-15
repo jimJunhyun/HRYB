@@ -16,7 +16,7 @@ public enum YYInfo
     Yin,
     Yang
 }
-
+[System.Serializable]
 public class YinYang
 {
     public float yinAmt;
@@ -52,6 +52,7 @@ public class YinYang
 	}
 }
 
+[System.Serializable]
 public class WuXing
 {
     public float woodAmt;
@@ -106,6 +107,7 @@ public class WuXing
 	}
 }
 
+[System.Serializable]
 public struct YinyangWuXing
 {
     public YinYang yy;
