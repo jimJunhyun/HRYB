@@ -21,7 +21,7 @@ public class Medicines : YinyangItem
 	float intakeMod { get; } //식 필요
 
     public Medicines(string name, ItemType iType, StackType sType, int max, bool isLateInit)
-		:base(name, iType, sType, max, isLateInit, '약')
+		:base(name, iType, sType, ItemRarity.Medicine, max, isLateInit, '약')
 	{
 
 	}

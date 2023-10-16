@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
 	public PlayerAttack pAtk;
 	public CinemachineFreeLook pCam;
 	public CinemachineVirtualCamera aimCam;
+	public CraftManager craftManager;
 
 	public Arrow arrow;
 
@@ -58,6 +59,7 @@ public class GameManager : MonoBehaviour
 		itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
 		aimCam = GameObject.Find("AimCam").GetComponent<CinemachineVirtualCamera>();
 		aimCamShaker = aimCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+		craftManager = GameObject.Find("CraftManager").GetComponent<CraftManager>();
 
 		SwitchTo(CamStatus.Freelook);
 	}

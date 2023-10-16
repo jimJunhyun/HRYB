@@ -20,7 +20,6 @@ public class FarmingPoint : MonoBehaviour, IInterable
 	Renderer r;
 	Material mat;
 
-	private static readonly int GlowPowerHash = Shader.PropertyToID("_GlowPower");
 	Coroutine ongoing;
 
 	private void Awake()
@@ -34,13 +33,13 @@ public class FarmingPoint : MonoBehaviour, IInterable
 
 	public void GlowOn()
 	{
-		mat.SetFloat(GlowPowerHash, 0.5f);
+		mat.SetFloat(IInterable.GlowPowerHash, 0.5f);
 		
 	}
 
 	public void GlowOff()
 	{
-		mat.SetFloat(GlowPowerHash, 0f);
+		mat.SetFloat(IInterable.GlowPowerHash, 0f);
 	}
 
 	public void InteractWith()
@@ -60,7 +59,7 @@ public class FarmingPoint : MonoBehaviour, IInterable
 		}
 		if(leftovers > 0)
 		{ 
-		Debug.Log("아이템 떨구겠다.");
+			Debug.Log("아이템 떨구겠다.");
 		}
 		Debug.Log(transform.name);
 		if (isDestroyed)
@@ -69,7 +68,7 @@ public class FarmingPoint : MonoBehaviour, IInterable
 		}
 	}
 
-	IEnumerator DelInter()
+	public IEnumerator DelInter()
 	{
 		GameManager.instance.pinp.DeactivateInput();
 		float t = 0;
