@@ -23,10 +23,10 @@ public struct ItemAmountPair
 
 public struct Recipe
 {
-	public List<ItemAmountPair> recipe;
-	public CraftMethod requirement;
+	public HashSet<ItemAmountPair> recipe;
+	public HashSet<CraftMethod> requirement;
 
-	public Recipe(List<ItemAmountPair> rcp, CraftMethod req)
+	public Recipe(HashSet<ItemAmountPair> rcp, HashSet<CraftMethod> req)
 	{
 		recipe = rcp;
 		requirement = req;
@@ -37,12 +37,12 @@ public struct Recipe
 public class Crafter
 {
 
-	CraftMethod bestMethod;
-	public CraftMethod BestMethod { get => bestMethod; set => bestMethod = value;}
+	CraftMethod curMethod;
+	public CraftMethod CurMethod { get => curMethod; set => curMethod = value;}
 
     public static Hashtable itemAmtRecipeHash = new Hashtable()
 	{
-		{ new ItemAmountPair("¹åÁÙ"), new Recipe(new List<ItemAmountPair>{ new ItemAmountPair("³ª¹µ°¡Áö", 2) }, CraftMethod.Base )},
+		{ new ItemAmountPair("¹åÁÙ"), new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("³ª¹µ°¡Áö", 2) }, new HashSet<CraftMethod>{ CraftMethod.None, CraftMethod.Base} )},
 	};
 
 	public static void AddRecipe(ItemAmountPair resItem, Recipe recipe)
@@ -52,14 +52,15 @@ public class Crafter
 
     public bool Craft(ItemAmountPair data)
 	{
+		Debug.Log(curMethod);
 		if (itemAmtRecipeHash.ContainsKey(data))
 		{
 			Recipe recipe = (Recipe)itemAmtRecipeHash[data];
-			if(((int)recipe.requirement) <= ((int)bestMethod))
+			if(recipe.requirement.Contains(curMethod))
 			{
-				for (int i = 0; i < recipe.recipe.Count; i++)
+				foreach (ItemAmountPair items in recipe.recipe)
 				{
-					if (!GameManager.instance.pinven.RemoveItem(recipe.recipe[i].info, recipe.recipe[i].num))
+					if (!GameManager.instance.pinven.RemoveItem(items.info, items.num))
 					{
 						Debug.Log("¾ÆÀÌÅÛ ºÎÁ·");
 						return false;

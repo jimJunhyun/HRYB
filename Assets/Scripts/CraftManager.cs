@@ -31,9 +31,11 @@ public class CraftManager : MonoBehaviour
 		}
 	}
 
-	public void SetBestMethod(int mtd)
+	public void SetCurMethod(int mtd)
 	{
-		crafter.BestMethod = (CraftMethod)mtd;
+		crafter.CurMethod = (CraftMethod)mtd;
 	}
+
+
 
 }
