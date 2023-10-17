@@ -93,7 +93,7 @@ public class PlayerAttack : MonoBehaviour
 	void Fire()
 	{
 		Debug.Log($"{curCharge} 파워로 발사.");
-		Arrow r = Instantiate(GameManager.instance.arrow, shootPos.position, Quaternion.LookRotation(shootPos.forward, Vector3.up));
+		Arrow r = PoolManager.GetObject("ArrowTemp", shootPos.position, shootPos.forward).GetComponent<Arrow>();
 		r.Shoot(curCharge);
 		curCharge = 0;
 		prevShot = Time.time;

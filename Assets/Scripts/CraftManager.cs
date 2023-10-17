@@ -11,14 +11,6 @@ public class CraftManager : MonoBehaviour
 		crafter = new Crafter();
 	}
 
-	private void Update()
-	{
-		if (Input.GetMouseButtonDown(1))
-		{
-			CraftWithName("นๅมู");
-		}
-	}
-
 	public void CraftWithName(string name)
 	{
 		if (crafter.Craft(new ItemAmountPair(name)))
