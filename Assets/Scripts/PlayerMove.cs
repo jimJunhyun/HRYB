@@ -11,12 +11,12 @@ public enum PlayerStates
 	Crawl,
 }
 
-public class PlayerMove : MonoBehaviour
+public class PlayerMove : MoveModule
 {
 	public const float GRAVITY = 9.8f;
 
 	CharacterController ctrl;
-	public float speed = 4f;
+	
 	public float spinSpd = 300f;
 	public float jumpPwer = 20f;
 
@@ -42,7 +42,7 @@ public class PlayerMove : MonoBehaviour
 	Vector3 slipDir = Vector3.zero;
 	Vector3 accSlipDir = Vector3.zero;
 
-	Vector3 moveDir = Vector3.zero;
+	
 
 	Quaternion to;
 	Camera mainCam;
@@ -90,13 +90,18 @@ public class PlayerMove : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		Move();
+	}
+
+	public override void Move()
+	{
 		if (slip)
 		{
 			accSlipDir += slipDir * Time.deltaTime;
 		}
 		else
 		{
-			if(accSlipDir.sqrMagnitude > 0)
+			if (accSlipDir.sqrMagnitude > 0)
 			{
 				accSlipDir = Vector3.zero;
 			}
@@ -112,12 +117,12 @@ public class PlayerMove : MonoBehaviour
 				gravityAccel = 0;
 			}
 		}
-		
-		if(isLocked && target == null)
+
+		if (isLocked && target == null)
 		{
 			ResetTargets();
 		}
-		if(GameManager.instance.curCamStat == CamStatus.Aim)
+		if (GameManager.instance.curCamStat == CamStatus.Aim)
 		{
 			Vector3 rot = mainCam.transform.eulerAngles;
 			rot.x = 0;
@@ -131,7 +136,7 @@ public class PlayerMove : MonoBehaviour
 			rot.x = 0;
 			Vector3 v = Quaternion.Euler(rot) * moveDir;
 
-			if(moveDir.sqrMagnitude != 0)
+			if (moveDir.sqrMagnitude != 0)
 			{
 				to = Quaternion.LookRotation(v, Vector3.up);
 			}
@@ -149,8 +154,6 @@ public class PlayerMove : MonoBehaviour
 			}
 			ctrl.Move((accSlipDir + (transform.rotation * moveDir * speed) - (Vector3.up * GRAVITY) - (Vector3.up * gravityAccel)) * Time.deltaTime);
 		}
-
-		
 	}
 
 	public void Move(InputAction.CallbackContext context)
@@ -249,7 +252,5 @@ public class PlayerMove : MonoBehaviour
 
 		isLocked = false;
 	}
-
-
 	
 }

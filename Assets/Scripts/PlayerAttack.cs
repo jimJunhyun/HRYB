@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerAttack : MonoBehaviour
+public class PlayerAttack : AttackModule
 {
+	
+
 	public float chargePerSec;
 	public float maxChargeAmt;
 
 	public float shakeFrom;
 	public float maxChargeTime;
-
-	public float shootGap;
 
 	Transform shootPos;
 
@@ -26,6 +26,8 @@ public class PlayerAttack : MonoBehaviour
 
 	float aimStart = 0;
 	float prevShot = 0;
+
+	bool loaded = false;
 
 	private readonly int bowOnHash = Animator.StringToHash("BowOn");
 	private readonly int aimHash = Animator.StringToHash("Aim");
@@ -48,7 +50,7 @@ public class PlayerAttack : MonoBehaviour
 
 			if (AimTime >= maxChargeTime)
 			{
-				Fire();
+				Attack();
 			}
 
 			if (AimTime >= shakeFrom && !shaking)
@@ -71,8 +73,11 @@ public class PlayerAttack : MonoBehaviour
 		if (context.performed && !isAimed)
 		{
 			GameManager.instance.SwitchTo(CamStatus.Aim);
-			isAimed = true;
-			aimStart = Time.time;
+			isAimed = true; // 로드 상태에서만 충전이 쌓이도록?
+			if (loaded)
+			{
+				aimStart = Time.time;
+			}
 		}
 		if (context.canceled)
 		{
@@ -84,19 +89,27 @@ public class PlayerAttack : MonoBehaviour
 
 	public void OnAttack(InputAction.CallbackContext context)
 	{
-		if (context.started && shootGap <= CurGap && isAimed)	
+		if (context.started && loaded && isAimed)	
 		{
-			Fire();
+			Attack();
 		}
 	}
 
-	void Fire()
+	public override void Attack()
 	{
 		Debug.Log($"{curCharge} 파워로 발사.");
 		Arrow r = PoolManager.GetObject("ArrowTemp", shootPos.position, shootPos.forward).GetComponent<Arrow>();
+		r.SetInfo(damage, effTime, isDirect);
 		r.Shoot(curCharge);
 		curCharge = 0;
+		StartCoroutine(DelayReShoot(atkGap));
+	}
+
+	IEnumerator DelayReShoot(float gap)
+	{
+		yield return new WaitForSeconds(gap);
 		prevShot = Time.time;
 		aimStart = Time.time;
+		loaded = true;
 	}
 }
