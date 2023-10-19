@@ -27,7 +27,7 @@ public class StatusEffects
     public Hashtable idStatEffPairs;
     int id = 0;
 
-	private StatusEffects()
+	public StatusEffects()
 	{
 		idStatEffPairs.Add(id++, new StatusEffect("목 과다", "목이 상한치를 넘어섰습니다!", OnWoodDebuffActivated, OnWoodDebuffUpdated, OnWoodDebuffEnded));
 		idStatEffPairs.Add(id++, new StatusEffect("화 과다", "화가 상한치를 넘어섰습니다!", OnFireDebuffActivated, OnFireDebuffUpdated, OnFireDebuffEnded));
@@ -38,7 +38,7 @@ public class StatusEffects
 
     void OnWoodDebuffActivated(Actor self, Actor inflicter)
 	{
-
+        
 	}
 
     void OnWoodDebuffUpdated(Actor self)
@@ -53,7 +53,7 @@ public class StatusEffects
 
     void OnFireDebuffActivated(Actor self, Actor inflicter)
     {
-        
+        self.atk.effTime *= 2;
     }
 
     void OnFireDebuffUpdated(Actor self)
@@ -63,12 +63,12 @@ public class StatusEffects
 
     void OnFireDebuffEnded(Actor self)
     {
-        
+        self.atk.effTime *= 0.5f;
     }
 
     void OnEarthDebuffActivated(Actor self, Actor inflicter)
     {
-
+        
     }
 
     void OnEarthDebuffUpdated(Actor self)
@@ -83,7 +83,8 @@ public class StatusEffects
 
     void OnMetalDebuffActivated(Actor self, Actor inflicter)
     {
-
+        self.sight.sightRange *= 0.5f;
+        GameManager.instance.CalcCamVFov(-20);
     }
 
     void OnMetalDebuffUpdated(Actor self)
@@ -93,13 +94,14 @@ public class StatusEffects
 
     void OnMetalDebuffEnded(Actor self)
     {
-
+        self.sight.sightRange *= 2f;
+        GameManager.instance.CalcCamVFov(20);
     }
 
     void OnWaterDebuffActivated(Actor self, Actor inflicter)
     {
         self.move.speed *= 0.5f;
-        //self.atk.
+        self.atk.atkGap *= 2;
     }
 
     void OnWaterDebuffUpdated(Actor self)
@@ -109,6 +111,7 @@ public class StatusEffects
 
     void OnWaterDebuffEnded(Actor self)
     {
-
+        self.move.speed *= 2f;
+        self.atk.atkGap *= 0.5f;
     }
 }

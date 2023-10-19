@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class LifeModule : MonoBehaviour
 {
+	Actor self;
+
 	public YinyangWuXing yywx;
 
 	public WuXing limitation;
@@ -12,12 +15,16 @@ public class LifeModule : MonoBehaviour
 
 	public float maxSoul;
 
-	HashSet<WXInfo> appliedDebuff = new HashSet<WXInfo>();
-
+	HashSet<StatusEffect> appliedDebuff = new HashSet<StatusEffect>();
 
 	public virtual bool isDead
 	{
 		get => yywx.yy.yinAmt * 2 <= yywx.yy.yangAmt || yywx.yy.yangAmt * 2 <= yywx.yy.yinAmt || yywx.yy.yangAmt + yywx.yy.yinAmt > maxSoul;
+	}
+
+	private void Awake()
+	{
+		self = GetComponent<Actor>();
 	}
 
 	public void AddYY(float amt, YYInfo to)
@@ -32,9 +39,18 @@ public class LifeModule : MonoBehaviour
 	public void AddWX(float amt, WXInfo to)
 	{
 		yywx.wx[((int)to)] += amt * adequity.wx[((int)to)];
+		StatusEffect eff = ((StatusEffect)GameManager.instance.statEff.idStatEffPairs[(int)to]);
 		if (yywx.wx[((int)to)] > limitation[((int)to)])
 		{
-			appliedDebuff.Add(to);
+			appliedDebuff.Add(eff);
+			eff.onApplied.Invoke(self, self);
+			self.updateActs += eff.onUpdated;
+		}
+		else if(appliedDebuff.Contains(eff))
+		{
+			appliedDebuff.Remove(eff);
+			eff.onEnded.Invoke(self);
+			self.updateActs -= eff.onUpdated;
 		}
 	}
 

@@ -10,12 +10,15 @@ public class FarmingPoint : MonoBehaviour, IInterable
 	public float interTime = 1.0f;
 	public bool isInterable = true;
 	public bool isDestroyed = true;
+	bool altInterable  =false;
 
 	public string resItem;
 	public int amount;
 
 	public bool IsInterable { get => isInterable; set => isInterable = value; }
 	public float InterTime { get => interTime; set => interTime = value; }
+
+	public bool AltInterable => altInterable;
 
 	Renderer r;
 	Material mat;
@@ -81,5 +84,15 @@ public class FarmingPoint : MonoBehaviour, IInterable
 		GameManager.instance.pinp.ActivateInput();
 		
 		ongoing = null;
+	}
+
+	public void AltInterWith()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public IEnumerator DelAltInter()
+	{
+		throw new System.NotImplementedException();
 	}
 }

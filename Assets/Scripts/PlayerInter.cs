@@ -4,9 +4,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInter : MonoBehaviour
+public class PlayerInter : SightModule
 {
-	public float checkRange = 5f;
 	List<IInterable> checkeds = null;
 
 	Ray r;
@@ -24,7 +23,7 @@ public class PlayerInter : MonoBehaviour
 				checkeds[i].GlowOff();
 			}
 		}
-		if ((hits = Physics.SphereCastAll(r, 1.0f, checkRange, (1 << 8))).Length > 0)
+		if ((hits = Physics.SphereCastAll(r, 1.0f, sightRange, (1 << 8))).Length > 0)
 		{
 			checkeds = hits.OrderByDescending(item => (transform.position - item.point).sqrMagnitude).Select(item => item.collider.GetComponent<IInterable>()).ToList();
 			curSel %= checkeds.Count;

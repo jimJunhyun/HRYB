@@ -73,15 +73,16 @@ public class PlayerAttack : AttackModule
 		if (context.performed && !isAimed)
 		{
 			GameManager.instance.SwitchTo(CamStatus.Aim);
-			isAimed = true; // 로드 상태에서만 충전이 쌓이도록?
 			if (loaded)
 			{
+				isAimed = true; // 로드 상태에서만 충전이 쌓이도록?
 				aimStart = Time.time;
 			}
 		}
 		if (context.canceled)
 		{
 			GameManager.instance.SwitchTo(CamStatus.Freelook);
+			loaded = false;
 			isAimed = false;
 			curCharge = 0;
 		}

@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
 	public float ampGain = 0.5f;
 	public float frqGain = 1f;
 
+	public StatusEffects statEff;
+
 	CinemachineBasicMultiChannelPerlin aimCamShaker;
 
 	public bool lockMouse;
@@ -62,7 +64,7 @@ public class GameManager : MonoBehaviour
 		aimCam = GameObject.Find("AimCam").GetComponent<CinemachineVirtualCamera>();
 		aimCamShaker = aimCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 		craftManager = GameObject.Find("CraftManager").GetComponent<CraftManager>();
-
+		statEff = new StatusEffects();
 		SwitchTo(CamStatus.Freelook);
 	}
 
@@ -98,6 +100,11 @@ public class GameManager : MonoBehaviour
 			default:
 				break;
 		}
+	}
+
+	public void CalcCamVFov(float differ)
+	{
+		pCam.m_Lens.FieldOfView += differ;
 	}
 
 	public void SwitchTo(CamStatus stat)

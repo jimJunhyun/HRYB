@@ -1137,36 +1137,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 435347418}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7af2e14feedd2c14b94ea026a3503189, type: 3}
+  m_Script: {fileID: 11500000, guid: 6cd1cfdc8b01b404f8b56a0e6ede7766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   yywx:
     yy:
-      yinAmt: 50
-      yangAmt: 50
-    wx:
-      woodAmt: 4
-      fireAmt: 6
-      earthAmt: 3
-      metalAmt: 5
-      waterAmt: 5
-  limitation:
-    woodAmt: 10
-    fireAmt: 10
-    earthAmt: 10
-    metalAmt: 10
-    waterAmt: 10
-  adequity:
-    yy:
-      yinAmt: 1.2
-      yangAmt: 0.3
+      yinAmt: 25
+      yangAmt: 25
     wx:
       woodAmt: 1
       fireAmt: 1
-      earthAmt: 2
-      metalAmt: 0.5
+      earthAmt: 1
+      metalAmt: 1
+      waterAmt: 1
+  limitation:
+    woodAmt: 4
+    fireAmt: 4
+    earthAmt: 4
+    metalAmt: 4
+    waterAmt: 4
+  adequity:
+    yy:
+      yinAmt: 1
+      yangAmt: 0.6
+    wx:
+      woodAmt: 1.5
+      fireAmt: 2
+      earthAmt: 1
+      metalAmt: 0.4
       waterAmt: 0.5
-  maxSoul: 200
+  maxSoul: 100
 --- !u!1 &531192223
 GameObject:
   m_ObjectHideFlags: 0
@@ -1247,6 +1247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 7
+  moveDir: {x: 0, y: 0, z: 0}
   spinSpd: 10
   jumpPwer: 13
   slipThreshold: 45
@@ -1472,7 +1473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cfa38d0aac433b49a3951792ad250bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkRange: 3
+  sightRange: 5
 --- !u!114 &531192232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1498,11 +1499,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127c54838b7090c4385f3b8baf009f91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage:
+    yy:
+      yinAmt: 0
+      yangAmt: 0
+    wx:
+      woodAmt: 0
+      fireAmt: 0
+      earthAmt: 0
+      metalAmt: 0
+      waterAmt: 0
+  effTime: 0
+  isDirect: 0
+  atkGap: 0
   chargePerSec: 20
   maxChargeAmt: 60
   shakeFrom: 5
   maxChargeTime: 7
-  shootGap: 1
 --- !u!136 &531192234
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1596,7 +1609,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 574064422}
-  m_LocalRotation: {x: 0.3826835, y: 0.000000022481224, z: -0.000000009312028, w: 0.92387956}
+  m_LocalRotation: {x: 0.3826835, y: -0.000000022481213, z: 0.000000009312024, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2997,7 +3010,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1918096139}
-  m_LocalRotation: {x: 0.3826835, y: 0.000000022481224, z: -0.000000009312028, w: 0.92387956}
+  m_LocalRotation: {x: 0.3826835, y: -0.000000022481213, z: 0.000000009312024, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3223,6 +3236,7 @@ MonoBehaviour:
   pinven: {fileID: 0}
   pMove: {fileID: 0}
   pAtk: {fileID: 0}
+  pLife: {fileID: 0}
   pCam: {fileID: 0}
   aimCam: {fileID: 0}
   craftManager: {fileID: 0}

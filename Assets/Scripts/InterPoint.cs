@@ -7,11 +7,15 @@ public class InterPoint : MonoBehaviour, IInterable
 {
 	public bool isInterable = true;
 	public float interTime = 0.3f;
+	public bool altInterable = false;
 
 	public UnityEvent onInter;
+	public UnityEvent onAltInter;
 
 	public bool IsInterable { get => isInterable; set => isInterable = value; }
 	public float InterTime { get => interTime; set => interTime = value; }
+
+	public bool AltInterable => altInterable;
 
 	Renderer r;
 	Material mat;
@@ -55,6 +59,30 @@ public class InterPoint : MonoBehaviour, IInterable
 		}
 		
 		onInter.Invoke();
+
+		GameManager.instance.pinp.ActivateInput();
+		ongoing = null;
+	}
+
+	public void AltInterWith()
+	{
+		if (ongoing == null)
+		{
+			ongoing = StartCoroutine(DelAltInter());
+		}
+	}
+
+	public IEnumerator DelAltInter()
+	{
+		GameManager.instance.pinp.DeactivateInput();
+		float t = 0;
+		while (t < InterTime)
+		{
+			t += Time.deltaTime;
+			yield return null;
+		}
+
+		onAltInter.Invoke();
 
 		GameManager.instance.pinp.ActivateInput();
 		ongoing = null;

@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum HandStat
+{
+	None,
+	Bow,
+	Item,
+
+}
+
 public struct InventoryItem
 {
 	public Item info;
@@ -65,7 +73,7 @@ public class Inventory
 	}
 
 	List<InventoryItem> data;
-
+	public int quickTill = 5;
 
 	public InventoryItem this[int idx]
 	{ 
@@ -134,6 +142,9 @@ public class PlayerInven : MonoBehaviour
 {
     public Inventory inven;
     public int cap = 20;
+
+	HandStat stat = HandStat.Item;
+	public int curHolding = 0;
 
 	private void Awake()
 	{
@@ -304,6 +315,30 @@ public class PlayerInven : MonoBehaviour
 			Debug.Log($"목적지 주인 있음. {inven[to].info.myName}");
 			return false;
 		}
+	}
+
+	public void Hold(HandStat stat, int idx)
+	{
+		switch (stat)
+		{
+			case HandStat.None:
+				curHolding = -1;
+				break;
+			case HandStat.Bow:
+				curHolding = -1;
+				break;
+			case HandStat.Item:
+				if(this.stat == stat)
+				{
+					curHolding = idx;
+				}
+				else
+				{
+					curHolding = 0;
+				}
+				break;
+		}
+		this.stat = stat;
 	}
 
 	void Swap(int a, int b)

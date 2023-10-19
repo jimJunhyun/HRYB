@@ -11,6 +11,14 @@ public class CraftManager : MonoBehaviour
 		crafter = new Crafter();
 	}
 
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.L))
+		{
+			CraftWithName("นๅมู");
+		}
+	}
+
 	public void CraftWithName(string name)
 	{
 		if (crafter.Craft(new ItemAmountPair(name)))
