@@ -6,25 +6,36 @@ public class CraftManager : MonoBehaviour
 {
     public Crafter crafter;
 
-	private void Start()
+	private void Awake()
 	{
 		crafter = new Crafter();
 	}
 
-	public void Update()
+	private void Update()
 	{
-		if (Input.GetMouseButtonDown(1))
+		if (Input.GetKeyDown(KeyCode.L))
 		{
-			if(crafter.Craft(new ItemAmountPair("πÂ¡Ÿ")))
-			{
-				Debug.Log("¿ﬂ∏∏µÎ");
-			}
-			else
-			{
-				Debug.Log("Ω«∆–");
-			}
-
+			CraftWithName("πÂ¡Ÿ");
 		}
 	}
+
+	public void CraftWithName(string name)
+	{
+		if (crafter.Craft(new ItemAmountPair(name)))
+		{
+			Debug.Log("¿ﬂ∏∏µÎ");
+		}
+		else
+		{
+			Debug.Log("Ω«∆–");
+		}
+	}
+
+	public void SetCurMethod(int mtd)
+	{
+		crafter.CurMethod = (CraftMethod)mtd;
+	}
+
+
 
 }

@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CraftMethod
+{
+	None,
+	Base,
+
+}
+
 public struct ItemAmountPair
 {
     public Item info;
@@ -9,53 +16,70 @@ public struct ItemAmountPair
 
     public ItemAmountPair(string name, int cnt = 1)
 	{
-        info = Item.nameDataHashT[name] as Item;
-		Debug.Log(info); // @@@@@@@@@@@@@@@@@@
+        info = Item.nameDataHashT[name.GetHashCode()] as Item;
         num = cnt;
+	}
+}
+
+public struct Recipe
+{
+	public HashSet<ItemAmountPair> recipe;
+	public HashSet<CraftMethod> requirement;
+
+	public Recipe(HashSet<ItemAmountPair> rcp, HashSet<CraftMethod> req)
+	{
+		recipe = rcp;
+		requirement = req;
 	}
 }
 
 
 public class Crafter
 {
+
+	CraftMethod curMethod;
+	public CraftMethod CurMethod { get => curMethod; set => curMethod = value;}
+
     public static Hashtable itemAmtRecipeHash = new Hashtable()
 	{
-		{ new ItemAmountPair("밧줄"), new List<ItemAmountPair>{ new ItemAmountPair("나뭇가지", 2) } },
+		{ new ItemAmountPair("밧줄"), new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("나뭇가지", 2) }, new HashSet<CraftMethod>{ CraftMethod.None, CraftMethod.Base} )},
 	};
 
-	public static void AddRecipe(ItemAmountPair resItem, List<ItemAmountPair> recipe)
+	public static void AddRecipe(ItemAmountPair resItem, Recipe recipe)
 	{
-		if(resItem.num > 0 && recipe.Count > 0)
-		{
-			itemAmtRecipeHash.Add(resItem, recipe);
-		}
+		itemAmtRecipeHash.Add(resItem, recipe);
 	}
 
     public bool Craft(ItemAmountPair data)
 	{
+		Debug.Log(curMethod);
 		if (itemAmtRecipeHash.ContainsKey(data))
 		{
-			List<ItemAmountPair> recipe = itemAmtRecipeHash[data] as List<ItemAmountPair>;
-
-			for (int i = 0; i < recipe.Count; i++)
+			Recipe recipe = (Recipe)itemAmtRecipeHash[data];
+			if(recipe.requirement.Contains(curMethod))
 			{
-				if(!GameManager.instance.pinven.RemoveItem(recipe[i].info, recipe[i].num))
+				foreach (ItemAmountPair items in recipe.recipe)
 				{
-					return false;
+					if (!GameManager.instance.pinven.RemoveItem(items.info, items.num))
+					{
+						Debug.Log("아이템 부족");
+						return false;
+					}
+				}
+				if (GameManager.instance.pinven.AddItem(data.info, data.num) > 0)
+				{
+					Debug.Log("일부 획득 실패");
+					return true;
+				}
+				else
+				{
+					return true;
 				}
 			}
-			ItemAmountPair res = ((ItemAmountPair)Item.nameDataHashT[data]);
-			if (GameManager.instance.pinven.AddItem(res.info, res.num) > 0)
-			{
-				Debug.Log("일부 획득 실패");
-				return true;
-			}
-			else
-			{
-				return true;
-			}
+			Debug.Log("제작 요구 사항 부족");
+			return false;
 		}
-
+		Debug.Log("레시피 없음.");
 		return false;
 	}
 }

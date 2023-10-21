@@ -4,9 +4,17 @@ using UnityEngine;
 
 public interface IInterable
 {
+	public static readonly int GlowPowerHash = Shader.PropertyToID("_GlowPower");
+
 	public bool IsInterable { get; set; }
+	public bool AltInterable { get;}
 	public float InterTime { get; set;}
+
 	public void InteractWith();
+	public void AltInterWith();
 	public void GlowOn();
 	public void GlowOff();
+
+	public IEnumerator DelInter();
+	public IEnumerator DelAltInter();
 }

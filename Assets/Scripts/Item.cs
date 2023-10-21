@@ -19,15 +19,26 @@ public enum ItemType
 	Jelly,
 }
 
+public enum ItemRarity
+{
+	Common,
+	Uncommon,
+	Rare,
+	Epic,
+	Legendary,
+
+	Medicine,
+}
+
 [System.Serializable]
 public class Item
 {
     public static Hashtable nameDataHashT = new Hashtable()
 	{
-		{"³ª¹µ°¡Áö".GetHashCode(), new Item("³ª¹µ°¡Áö", ItemType.Solid, StackType.numScale, 10, false) },
-		{"ÀÎ»ï".GetHashCode(), new YinyangItem("ÀÎ»ï", ItemType.Solid, StackType.numScale, 5, false, '»ï') },
-		{"¹°".GetHashCode(), new YinyangItem("¹°", ItemType.Solid, StackType.numScale, 10, false, '¼ö')},
-		{"¹åÁÙ".GetHashCode(), new Item("¹åÁÙ", ItemType.Solid, StackType.numScale, 10, false) },
+		{"³ª¹µ°¡Áö".GetHashCode(), new Item("³ª¹µ°¡Áö", ItemType.Solid, StackType.numScale, ItemRarity.Common, 10, false) },
+		{"ÀÎ»ï".GetHashCode(), new YinyangItem("ÀÎ»ï", ItemType.Solid, StackType.numScale, ItemRarity.Uncommon, 5, false, '»ï') },
+		{"¹°".GetHashCode(), new YinyangItem("¹°", ItemType.Solid, StackType.numScale, ItemRarity.Common, 10, false, '¼ö')},
+		{"¹åÁÙ".GetHashCode(), new Item("¹åÁÙ", ItemType.Solid, StackType.numScale, ItemRarity.Uncommon, 10, false) },
 	}; //°°Àº ÀÌ¸§ÀÇ ¾ÆÀÌÅÛÀ» °°Àº ¹°°ÇÀ¸·Î Ãë±ÞÇÏ±â À§ÇØ »ç¿ë.
     public int Id {get => myName.GetHashCode();}
     public string myName;
@@ -38,7 +49,9 @@ public class Item
 
     public int maxStack;
 
-    public Item(string n, ItemType iType, StackType sType, int max, bool isLateInit)
+	public ItemRarity rarity;
+
+    public Item(string n, ItemType iType, StackType sType, ItemRarity grade, int max, bool isLateInit)
 	{
         myName = n;
 		if (isLateInit)
@@ -48,7 +61,7 @@ public class Item
 				nameDataHashT.Add(Id, this);
 			}
 		}
-		
+		rarity = grade;
 		itemType = iType;
 		stackType = sType;
 		maxStack = max;
@@ -61,13 +74,11 @@ public class Item
 
 	public static bool operator ==(Item left, Item right)
 	{
-		Debug.Log($"{left?.myName} == {right?.myName} ? {left?.myName == right?.myName}");
 		return left?.myName == right?.myName;
 	}
 
     public static bool operator !=(Item left, Item right)
     {
-		Debug.Log($"{left?.myName} != {right?.myName} ? {left?.myName != right?.myName}");
 		return left?.myName != right?.myName;
     }
 
