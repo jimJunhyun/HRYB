@@ -35,11 +35,11 @@ public class Item
 {
     public static Hashtable nameDataHashT = new Hashtable()
 	{
-		{"³ª¹µ°¡Áö".GetHashCode(), new Item("³ª¹µ°¡Áö", ItemType.Solid, StackType.numScale, ItemRarity.Common, 10, false) },
-		{"ÀÎ»ï".GetHashCode(), new YinyangItem("ÀÎ»ï", ItemType.Solid, StackType.numScale, ItemRarity.Uncommon, 5, false, '»ï') },
-		{"¹°".GetHashCode(), new YinyangItem("¹°", ItemType.Solid, StackType.numScale, ItemRarity.Common, 10, false, '¼ö')},
-		{"¹åÁÙ".GetHashCode(), new Item("¹åÁÙ", ItemType.Solid, StackType.numScale, ItemRarity.Uncommon, 10, false) },
-	}; //°°Àº ÀÌ¸§ÀÇ ¾ÆÀÌÅÛÀ» °°Àº ¹°°ÇÀ¸·Î Ãë±ÞÇÏ±â À§ÇØ »ç¿ë.
+		{"ë‚˜ë­‡ê°€ì§€".GetHashCode(), new Item("ë‚˜ë­‡ê°€ì§€", ItemType.Solid, StackType.numScale, ItemRarity.Common, 10, false) },
+		{"ì¸ì‚¼".GetHashCode(), new YinyangItem("ì¸ì‚¼", ItemType.Solid, StackType.numScale, ItemRarity.Uncommon, 5, false, 'ì‚¼') },
+		{"ë¬¼".GetHashCode(), new YinyangItem("ë¬¼", ItemType.Solid, StackType.numScale, ItemRarity.Common, 10, false, 'ìˆ˜')},
+		{"ë°§ì¤„".GetHashCode(), new Item("ë°§ì¤„", ItemType.Solid, StackType.numScale, ItemRarity.Uncommon, 10, false) },
+	}; //ê°™ì€ ì´ë¦„ì˜ ì•„ì´í…œì„ ê°™ì€ ë¬¼ê±´ìœ¼ë¡œ ì·¨ê¸‰í•˜ê¸° ìœ„í•´ ì‚¬ìš©.
     public int Id {get => myName.GetHashCode();}
     public string myName;
 
@@ -50,7 +50,7 @@ public class Item
     public int maxStack;
 
 	public ItemRarity rarity;
-
+        
     public Item(string n, ItemType iType, StackType sType, ItemRarity grade, int max, bool isLateInit)
 	{
         myName = n;

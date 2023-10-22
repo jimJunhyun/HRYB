@@ -163,7 +163,7 @@ public class PlayerInven : MonoBehaviour
 				inven[idxes[i]] = item;
 				if(amt != num)
 				{
-					Debug.Log($"{inven[idxes[i]].info.myName}, {inven[idxes[i]].number}°³·Î º¯°æ, À§Ä¡ {i}");
+					Debug.Log($"{inven[idxes[i]].info.myName}, {inven[idxes[i]].number}ê°œë¡œ ë³€ê²½, ìœ„ì¹˜ {i}");
 				}
 				num = amt;
 				if (num == 0)
@@ -182,11 +182,11 @@ public class PlayerInven : MonoBehaviour
 					InventoryItem item = new InventoryItem(data, cnt);
 					int idx = inven.Add(item);
 
-					Debug.Log($"{item.info.myName}, {item.number}°³, »õ·Î Ãß°¡µÊ, À§Ä¡ : {idx}");
+					Debug.Log($"{item.info.myName}, {item.number}ê°œ, ìƒˆë¡œ ì¶”ê°€ë¨, ìœ„ì¹˜ : {idx}");
 				}
 				else
 				{
-					Debug.Log($"{data.myName}, {num} ¸¸Å­Àº ´õÀÌ»ó Ãß°¡ÇÒ ¼ö ¾øÀ½.");
+					Debug.Log($"{data.myName}, {num} ë§Œí¼ì€ ë”ì´ìƒ ì¶”ê°€í•  ìˆ˜ ì—†ìŒ.");
 					return num;
 				}
 			}
@@ -202,16 +202,16 @@ public class PlayerInven : MonoBehaviour
 				{
 					InventoryItem item = new InventoryItem(data, cnt);
 					int idx = inven.Add(item);
-					Debug.Log($"{item.info.myName}, {item.number}°³, »õ·Î Ãß°¡µÊ, À§Ä¡ : {idx}");
+					Debug.Log($"{item.info.myName}, {item.number}ê°œ, ìƒˆë¡œ ì¶”ê°€ë¨, ìœ„ì¹˜ : {idx}");
 				}
 				else
 				{
-					Debug.Log($"{data.myName}, {num} ¸¸Å­Àº ´õÀÌ»ó Ãß°¡ÇÒ ¼ö ¾øÀ½.");
+					Debug.Log($"{data.myName}, {num} ë§Œí¼ì€ ë”ì´ìƒ ì¶”ê°€í•  ìˆ˜ ì—†ìŒ.");
 					return num;
 				}
 			}
 		}
-		Debug.Log($"{data.myName}, {num} ¸¸Å­Àº ´õÀÌ»ó Ãß°¡ÇÒ ¼ö ¾øÀ½.");
+		Debug.Log($"{data.myName}, {num} ë§Œí¼ì€ ë”ì´ìƒ ì¶”ê°€í•  ìˆ˜ ì—†ìŒ.");
 		return num;
 	}
 
@@ -261,10 +261,10 @@ public class PlayerInven : MonoBehaviour
 				}
 				return true;
 			}
-			Debug.Log("¾ÆÀÌÅÛ ¼ıÀÚ ºÎÁ·.");
+			Debug.Log("ì•„ì´í…œ ìˆ«ì ë¶€ì¡±.");
 			return false;
 		}
-		Debug.Log("¾ÆÀÌÅÛ ¾øÀ½.");
+		Debug.Log("ì•„ì´í…œ ì—†ìŒ.");
 		return false;
 	}
 
@@ -293,26 +293,26 @@ public class PlayerInven : MonoBehaviour
 	{
 		if(!inven[from].isEmpty() && !inven[to].isEmpty() && inven[from].info != inven[to].info && num == inven[from].number)
 		{
-			Debug.Log($"{inven[from].info.myName}, {inven[from].number}°³, {inven[to].info.myName}, {inven[to].number}°³¿¡¼­, ");
+			Debug.Log($"{inven[from].info.myName}, {inven[from].number}ê°œ, {inven[to].info.myName}, {inven[to].number}ê°œì—ì„œ, ");
 			Swap(from, to);
-			Debug.Log($"{inven[from].info.myName}, {inven[from].number}°³, {inven[to].info.myName}, {inven[to].number}°³·Î º¯°æ.");
+			Debug.Log($"{inven[from].info.myName}, {inven[from].number}ê°œ, {inven[to].info.myName}, {inven[to].number}ê°œë¡œ ë³€ê²½.");
 			return true;
 		}
 		else
 		{
 			if ((!inven[from].isEmpty() && inven[to].isEmpty()) || (inven[from].info == inven[to].info))
 			{
-				Debug.Log($"{inven[from].info.myName}, {inven[from].number}°³, {(inven[to].isEmpty() ? 0 : inven[to].info.myName)}, {(inven[to].isEmpty() ? 0 : inven[to].number)}°³¿¡¼­, ");
+				Debug.Log($"{inven[from].info.myName}, {inven[from].number}ê°œ, {(inven[to].isEmpty() ? 0 : inven[to].info.myName)}, {(inven[to].isEmpty() ? 0 : inven[to].number)}ê°œì—ì„œ, ");
 				int leftover;
 				if ((leftover = AddItem(inven[from].info, to, num)) >= 0)
 				{
 					RemoveItem(from, num - leftover);
-					Debug.Log($"{(inven[from].isEmpty() ? 0 : inven[from].info.myName)}, {(inven[from].isEmpty() ? 0 : inven[from].number)}°³, {inven[to].info.myName}, {inven[to].number}°³·Î º¯°æ.");
+					Debug.Log($"{(inven[from].isEmpty() ? 0 : inven[from].info.myName)}, {(inven[from].isEmpty() ? 0 : inven[from].number)}ê°œ, {inven[to].info.myName}, {inven[to].number}ê°œë¡œ ë³€ê²½.");
 					return true;
 				}
-				Debug.Log("¸ñÀûÁö ²Ë Âü.");
+				Debug.Log("ëª©ì ì§€ ê½‰ ì°¸.");
 			}
-			Debug.Log($"¸ñÀûÁö ÁÖÀÎ ÀÖÀ½. {inven[to].info.myName}");
+			Debug.Log($"ëª©ì ì§€ ì£¼ì¸ ìˆìŒ. {inven[to].info.myName}");
 			return false;
 		}
 	}

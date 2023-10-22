@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1140,33 +1140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7af2e14feedd2c14b94ea026a3503189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yywx:
-    yy:
-      yinAmt: 50
-      yangAmt: 50
-    wx:
-      woodAmt: 4
-      fireAmt: 6
-      earthAmt: 3
-      metalAmt: 5
-      waterAmt: 5
-  limitation:
-    woodAmt: 10
-    fireAmt: 10
-    earthAmt: 10
-    metalAmt: 10
-    waterAmt: 10
-  adequity:
-    yy:
-      yinAmt: 1.2
-      yangAmt: 0.3
-    wx:
-      woodAmt: 1
-      fireAmt: 1
-      earthAmt: 2
-      metalAmt: 0.5
-      waterAmt: 0.5
-  maxSoul: 200
 --- !u!1 &531192223
 GameObject:
   m_ObjectHideFlags: 0
@@ -1247,6 +1220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 7
+  moveDir: {x: 0, y: 0, z: 0}
   spinSpd: 10
   jumpPwer: 13
   slipThreshold: 45
@@ -1472,7 +1446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cfa38d0aac433b49a3951792ad250bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkRange: 3
+  sightRange: 0
 --- !u!114 &531192232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1486,6 +1460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cap: 20
+  curHolding: 0
 --- !u!114 &531192233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1498,11 +1473,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127c54838b7090c4385f3b8baf009f91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage:
+    yy:
+      yinAmt: 0
+      yangAmt: 0
+    wx:
+      woodAmt: 0
+      fireAmt: 0
+      earthAmt: 0
+      metalAmt: 0
+      waterAmt: 0
+  effTime: 0
+  isDirect: 0
+  atkGap: 0
   chargePerSec: 18
   maxChargeAmt: 50
   shakeFrom: 5
   maxChargeTime: 7
-  shootGap: 1
 --- !u!136 &531192234
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2862,7 +2849,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1918096139}
-  m_LocalRotation: {x: 0.3826835, y: 0.000000022481224, z: -0.000000009312028, w: 0.92387956}
+  m_LocalRotation: {x: 0.3826835, y: -0.000000022481213, z: 0.000000009312024, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3044,8 +3031,10 @@ MonoBehaviour:
   pinven: {fileID: 0}
   pMove: {fileID: 0}
   pAtk: {fileID: 0}
+  pLife: {fileID: 0}
   pCam: {fileID: 0}
   aimCam: {fileID: 0}
+  craftManager: {fileID: 0}
   arrow: {fileID: 7739963975991083137, guid: a57f6d3e34dbc8543966c3a288547853, type: 3}
   ampGain: 0.7
   frqGain: 1
@@ -3303,6 +3292,7 @@ GameObject:
   - component: {fileID: 2122829285}
   - component: {fileID: 2122829284}
   - component: {fileID: 2122829286}
+  - component: {fileID: 2122829287}
   m_Layer: 5
   m_Name: UserInterface
   m_TagString: Untagged
@@ -3351,6 +3341,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c00d4452c805c794aa72733c2eb45ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2122829287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122829283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 179eef33d8f1c0a4790f7fcaca1c255d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &543450651853595597 stripped
