@@ -15,6 +15,12 @@ public class LifeModule : MonoBehaviour
 
 	public float maxSoul;
 
+	public float regenSpeed = 1f;
+	public float regenThreshold = 10f;
+
+	public float applySpeed = 1f;
+
+
 	HashSet<StatusEffect> appliedDebuff = new HashSet<StatusEffect>();
 
 	public virtual bool isDead
@@ -22,9 +28,34 @@ public class LifeModule : MonoBehaviour
 		get => yywx.yy.yinAmt * 2 <= yywx.yy.yangAmt || yywx.yy.yangAmt * 2 <= yywx.yy.yinAmt || yywx.yy.yangAmt + yywx.yy.yinAmt > maxSoul;
 	}
 
+	bool regenOn = false;
+	float diff;
+
 	private void Awake()
 	{
 		self = GetComponent<Actor>();
+	}
+
+	private void Update()
+	{
+		if(Mathf.Abs((diff = yywx.yy.yinAmt - yywx.yy.yangAmt)) > regenThreshold)
+		{
+			regenOn = true;
+			if(diff > 0)
+			{
+				yywx.yy.yinAmt -= regenSpeed * Time.deltaTime;
+				yywx.yy.yangAmt += regenSpeed * Time.deltaTime;
+			}
+			else
+			{
+				yywx.yy.yinAmt += regenSpeed * Time.deltaTime;
+				yywx.yy.yangAmt -= regenSpeed * Time.deltaTime;
+			}
+		}
+		else if (regenOn)
+		{
+			regenOn = false;
+		}
 	}
 
 	public void AddYY(float amt, YYInfo to)
@@ -66,13 +97,13 @@ public class LifeModule : MonoBehaviour
 		AddWX(data.wx.waterAmt, WXInfo.Water);
 	}
 
-	public void AddYYWX(YinyangWuXing data, float time)
+	public void AddYYWX(YinyangWuXing data, float spd)
 	{
-		StartCoroutine(DelAddYYWX(data, time));
+		StartCoroutine(DelAddYYWX(data, (spd * applySpeed)));
 	}
 
 
-	IEnumerator DelAddYYWX(YinyangWuXing data, float t)
+	IEnumerator DelAddYYWX(YinyangWuXing data, float t) //#####################
 	{
 		float curT = 0;
 		YinyangWuXing incPerSec = new YinyangWuXing();

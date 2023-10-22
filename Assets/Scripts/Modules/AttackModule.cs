@@ -5,7 +5,7 @@ using UnityEngine;
 public class AttackModule : MonoBehaviour
 {
 	public YinyangWuXing damage;
-	public float effTime;
+	public float effSpeed;
 	public bool isDirect;
 
 	public float atkGap;

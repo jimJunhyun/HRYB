@@ -47,11 +47,7 @@ public class GameManager : MonoBehaviour
 	{
 		instance = this;
 
-		if (lockMouse)
-		{
-			Cursor.lockState = CursorLockMode.Locked;
-			//Cursor.visible = false;
-		}
+		LockCursor();
 
 		player = GameObject.Find("Player");
 		pinp = player.GetComponent<PlayerInput>();
@@ -66,6 +62,32 @@ public class GameManager : MonoBehaviour
 		craftManager = GameObject.Find("CraftManager").GetComponent<CraftManager>();
 		statEff = new StatusEffects();
 		SwitchTo(CamStatus.Freelook);
+	}
+
+	public void LockCursor()
+	{
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+	}
+
+	public void UnLockCursor()
+	{
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+	}
+
+	public void LockUnlockCursor()
+	{
+		if (lockMouse)
+		{
+			lockMouse = false;
+			UnLockCursor();
+		}
+		else
+		{
+			lockMouse = true;
+			LockCursor();
+		}
 	}
 
 	public void ShakeCam()

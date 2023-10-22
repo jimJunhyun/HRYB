@@ -42,7 +42,7 @@ public class Crafter
 
     public static Hashtable itemAmtRecipeHash = new Hashtable()
 	{
-		{ new ItemAmountPair("¹åÁÙ"), new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("³ª¹µ°¡Áö", 2) }, new HashSet<CraftMethod>{ CraftMethod.None, CraftMethod.Base} )},
+		{ new ItemAmountPair("ë°§ì¤„"), new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("ë‚˜ë­‡ê°€ì§€", 2) }, new HashSet<CraftMethod>{  CraftMethod.Base} )},
 	};
 
 	public static void AddRecipe(ItemAmountPair resItem, Recipe recipe)
@@ -62,13 +62,13 @@ public class Crafter
 				{
 					if (!GameManager.instance.pinven.RemoveItem(items.info, items.num))
 					{
-						Debug.Log("¾ÆÀÌÅÛ ºÎÁ·");
+						Debug.Log("ì•„ì´í…œ ë¶€ì¡±");
 						return false;
 					}
 				}
 				if (GameManager.instance.pinven.AddItem(data.info, data.num) > 0)
 				{
-					Debug.Log("ÀÏºÎ È¹µæ ½ÇÆĞ");
+					Debug.Log("ì¼ë¶€ íšë“ ì‹¤íŒ¨");
 					return true;
 				}
 				else
@@ -76,10 +76,10 @@ public class Crafter
 					return true;
 				}
 			}
-			Debug.Log("Á¦ÀÛ ¿ä±¸ »çÇ× ºÎÁ·");
+			Debug.Log("ì œì‘ ìš”êµ¬ ì‚¬í•­ ë¶€ì¡±");
 			return false;
 		}
-		Debug.Log("·¹½ÃÇÇ ¾øÀ½.");
+		Debug.Log("ë ˆì‹œí”¼ ì—†ìŒ.");
 		return false;
 	}
 }

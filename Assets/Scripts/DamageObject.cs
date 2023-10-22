@@ -5,7 +5,7 @@ using UnityEngine;
 public class DamageObject : MonoBehaviour
 {
     public YinyangWuXing yywx {private get; set;}
-    public float effT {private get; set;}
+    public float effS {private get; set;}
 	public bool isDirect { private get; set;}
 
 	public virtual void OnTriggerEnter(Collider other)
@@ -20,7 +20,7 @@ public class DamageObject : MonoBehaviour
 	public virtual void SetInfo(YinyangWuXing y, float time, bool isDrt)
 	{
 		yywx = y;
-		effT = time;
+		effS = time;
 		isDirect = isDrt;
 	}
 
@@ -32,7 +32,7 @@ public class DamageObject : MonoBehaviour
 		}
 		else
 		{
-			to.AddYYWX(yywx, effT);
+			to.AddYYWX(yywx, effS);
 		}
 	}
 }

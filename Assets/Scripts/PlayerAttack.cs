@@ -75,7 +75,7 @@ public class PlayerAttack : AttackModule
 			GameManager.instance.SwitchTo(CamStatus.Aim);
 			if (loaded)
 			{
-				isAimed = true; // ·Îµå »óÅÂ¿¡¼­¸¸ ÃæÀüÀÌ ½×ÀÌµµ·Ï?
+				isAimed = true; // ë¡œë“œ ìƒíƒœì—ì„œë§Œ ì¶©ì „ì´ ìŒ“ì´ë„ë¡?
 				aimStart = Time.time;
 			}
 		}
@@ -98,9 +98,9 @@ public class PlayerAttack : AttackModule
 
 	public override void Attack()
 	{
-		Debug.Log($"{curCharge} ÆÄ¿ö·Î ¹ß»ç.");
+		Debug.Log($"{curCharge} íŒŒì›Œë¡œ ë°œì‚¬.");
 		Arrow r = PoolManager.GetObject("ArrowTemp", shootPos.position, shootPos.forward).GetComponent<Arrow>();
-		r.SetInfo(damage, effTime, isDirect);
+		r.SetInfo(damage, effSpeed, isDirect);
 		r.Shoot(curCharge);
 		curCharge = 0;
 		StartCoroutine(DelayReShoot(atkGap));
