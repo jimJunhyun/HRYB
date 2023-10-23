@@ -5,7 +5,7 @@ using UnityEngine;
 public enum HandStat
 {
 	None,
-	Bow,
+	Weapon,
 	Item,
 
 }
@@ -73,7 +73,7 @@ public class Inventory
 	}
 
 	List<InventoryItem> data;
-	public int quickTill = 5;
+	float quickSize = 5;
 
 	public InventoryItem this[int idx]
 	{ 
@@ -141,10 +141,23 @@ public class Inventory
 public class PlayerInven : MonoBehaviour
 {
     public Inventory inven;
-    public int cap = 20;
+    public int cap = 25;
 
 	HandStat stat = HandStat.Item;
 	public int curHolding = 0;
+	public ItemAmountPair CurHoldingItem 
+	{ 
+		get 
+		{
+			if(curHolding == -1)
+				return ItemAmountPair.Empty;
+			return new ItemAmountPair(inven[curHolding].info, inven[curHolding].number);
+		}
+		set
+		{
+			inven[curHolding] = new InventoryItem(value.info, value.num);
+		}
+	}
 
 	private void Awake()
 	{
@@ -324,7 +337,7 @@ public class PlayerInven : MonoBehaviour
 			case HandStat.None:
 				curHolding = -1;
 				break;
-			case HandStat.Bow:
+			case HandStat.Weapon:
 				curHolding = -1;
 				break;
 			case HandStat.Item:
@@ -339,6 +352,14 @@ public class PlayerInven : MonoBehaviour
 				break;
 		}
 		this.stat = stat;
+	}
+
+	public void UseHolding()
+	{
+		if (!inven[curHolding].isEmpty())
+		{
+			inven[curHolding].info.onUse.Invoke();
+		}
 	}
 
 	void Swap(int a, int b)

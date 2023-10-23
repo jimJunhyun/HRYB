@@ -8,6 +8,8 @@ public class AttackModule : MonoBehaviour
 	public float effSpeed;
 	public bool isDirect;
 
+	public float prepMod = 1f;
+
 	public float atkGap;
 
 	public virtual void Attack()

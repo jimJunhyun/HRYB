@@ -10,7 +10,9 @@ public class YinyangItem : Item
 	public List<PreProcess> processes;
 	public char nameAsChar;
 
-    public YinyangItem(string name, ItemType iType, StackType sType, ItemRarity grade, int max, bool isLateInit, char ch = ' ') : base(name, iType, sType, grade, max, isLateInit)
+	public float applySpeed = 1f;
+
+    public YinyangItem(string name, ItemType iType, StackType sType, ItemRarity grade, int max, System.Action used, bool isLateInit, char ch = ' ') : base(name, iType, sType, grade, max, used, isLateInit)
 	{
 		if(ch == ' ')
 		{
@@ -23,5 +25,9 @@ public class YinyangItem : Item
 		
 		
 	}
-    
+	public override void Use()
+	{
+		GameManager.instance.pLife.AddYYWX(yywx, applySpeed);
+		base.Use();
+	}
 }

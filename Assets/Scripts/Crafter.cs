@@ -6,6 +6,7 @@ public enum CraftMethod
 {
 	None,
 	Base,
+	Medicine,
 
 }
 
@@ -18,6 +19,27 @@ public struct ItemAmountPair
 	{
         info = Item.nameDataHashT[name.GetHashCode()] as Item;
         num = cnt;
+	}
+
+	public ItemAmountPair(Item item, int cnt = 1)
+	{
+		info = item;
+		num = cnt;
+	}
+
+	public static bool operator==(ItemAmountPair lft, ItemAmountPair rht)
+	{
+		return lft.info == rht.info && lft.num == rht.num;	
+	}
+
+	public static bool operator !=(ItemAmountPair lft, ItemAmountPair rht)
+	{
+		return lft.info != rht.info || lft.num != rht.num;
+	}
+
+	public static ItemAmountPair Empty
+	{
+		get => new ItemAmountPair(null as Item, 0);
 	}
 }
 

@@ -10,11 +10,13 @@ public class PlayerAttack : AttackModule
 	public float chargePerSec;
 	public float maxChargeAmt;
 
+	public float ChargePerSec { get => chargePerSec * prepMod;}
+
 	public float shakeFrom;
 	public float maxChargeTime;
 
 	Transform shootPos;
-
+	public Transform ShootPos { get; protected set;}
 	float curCharge;
 	bool isAimed = false;
 
@@ -32,6 +34,8 @@ public class PlayerAttack : AttackModule
 	private readonly int bowOnHash = Animator.StringToHash("BowOn");
 	private readonly int aimHash = Animator.StringToHash("Aim");
 
+	private readonly int knifeOnHash = Animator.StringToHash("KnifeOn");
+
 	Animator anim;
 
 	private void Awake()
@@ -45,7 +49,7 @@ public class PlayerAttack : AttackModule
 	{
 		if (isAimed)
 		{
-			curCharge += chargePerSec * Time.deltaTime;
+			curCharge += chargePerSec * prepMod * Time.deltaTime;
 			curCharge = Mathf.Clamp(curCharge, 0, maxChargeAmt);
 
 			if (AimTime >= maxChargeTime)
@@ -75,7 +79,7 @@ public class PlayerAttack : AttackModule
 			GameManager.instance.SwitchTo(CamStatus.Aim);
 			if (loaded)
 			{
-				isAimed = true; // 로드 상태에서만 충전이 쌓이도록?
+				isAimed = true; 
 				aimStart = Time.time;
 			}
 		}
@@ -102,7 +106,7 @@ public class PlayerAttack : AttackModule
 		Arrow r = PoolManager.GetObject("ArrowTemp", shootPos.position, shootPos.forward).GetComponent<Arrow>();
 		r.SetInfo(damage, effSpeed, isDirect);
 		r.Shoot(curCharge);
-		curCharge = 0;
+		GameManager.instance.pAtk.curCharge = 0;
 		StartCoroutine(DelayReShoot(atkGap));
 	}
 

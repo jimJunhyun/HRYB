@@ -15,10 +15,16 @@ public class LifeModule : MonoBehaviour
 
 	public float maxSoul;
 
-	public float regenSpeed = 1f;
+	public float regenMod = 1f;
+	float baseRegen = 1f;
+	public float TotalRegenSpeed { get => regenMod * baseRegen;}
+
 	public float regenThreshold = 10f;
 
-	public float applySpeed = 1f;
+	public float applyMod = 1f;
+	float baseApplySpeed = 1f;
+
+	public float TotalApplySpeed { get => baseApplySpeed * applyMod;}
 
 
 	HashSet<StatusEffect> appliedDebuff = new HashSet<StatusEffect>();
@@ -43,13 +49,13 @@ public class LifeModule : MonoBehaviour
 			regenOn = true;
 			if(diff > 0)
 			{
-				yywx.yy.yinAmt -= regenSpeed * Time.deltaTime;
-				yywx.yy.yangAmt += regenSpeed * Time.deltaTime;
+				yywx.yy.yinAmt -= TotalRegenSpeed * Time.deltaTime;
+				yywx.yy.yangAmt += TotalRegenSpeed * Time.deltaTime;
 			}
 			else
 			{
-				yywx.yy.yinAmt += regenSpeed * Time.deltaTime;
-				yywx.yy.yangAmt -= regenSpeed * Time.deltaTime;
+				yywx.yy.yinAmt += TotalRegenSpeed * Time.deltaTime;
+				yywx.yy.yangAmt -= TotalRegenSpeed * Time.deltaTime;
 			}
 		}
 		else if (regenOn)
@@ -99,22 +105,22 @@ public class LifeModule : MonoBehaviour
 
 	public void AddYYWX(YinyangWuXing data, float spd)
 	{
-		StartCoroutine(DelAddYYWX(data, (spd * applySpeed)));
+		StartCoroutine(DelAddYYWX(data, (spd * TotalApplySpeed)));
 	}
 
 
-	IEnumerator DelAddYYWX(YinyangWuXing data, float t) //#####################
+	IEnumerator DelAddYYWX(YinyangWuXing data, float spd) //#####################
 	{
 		float curT = 0;
 		YinyangWuXing incPerSec = new YinyangWuXing();
-		incPerSec.yy.yinAmt = data.yy.yinAmt / t;
-		incPerSec.yy.yangAmt = data.yy.yangAmt / t;
+		incPerSec.yy.yinAmt = data.yy.yinAmt / spd;
+		incPerSec.yy.yangAmt = data.yy.yangAmt / spd;
 
-		incPerSec.wx.woodAmt = data.wx.woodAmt / t;
-		incPerSec.wx.fireAmt = data.wx.fireAmt / t;
-		incPerSec.wx.earthAmt = data.wx.earthAmt / t;
-		incPerSec.wx.metalAmt = data.wx.metalAmt / t;
-		incPerSec.wx.waterAmt = data.wx.waterAmt / t;
+		incPerSec.wx.woodAmt = data.wx.woodAmt / spd;
+		incPerSec.wx.fireAmt = data.wx.fireAmt / spd;
+		incPerSec.wx.earthAmt = data.wx.earthAmt / spd;
+		incPerSec.wx.metalAmt = data.wx.metalAmt / spd;
+		incPerSec.wx.waterAmt = data.wx.waterAmt / spd;
 
 		while (curT < t)
 		{

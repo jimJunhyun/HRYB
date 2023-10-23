@@ -6,12 +6,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerInter : SightModule
 {
-	List<IInterable> checkeds = null;
+	public List<IInterable> checkeds = null;
 
 	Ray r;
 	RaycastHit[] hits;
 
-	int curSel = 0;
+	[HideInInspector]
+	public int curSel = 0;
 
 	public void Check()
 	{
@@ -72,8 +73,7 @@ public class PlayerInter : SightModule
 	{
 		if(checkeds != null && checkeds.Count > 0 && context.performed)
 		{
-			checkeds[curSel].InteractWith();
-			Check();
+			GameManager.instance.pCast.Cast("collect");
 		}
 	}
 }

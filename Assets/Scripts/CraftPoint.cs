@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Linq;
 
 public class CraftPoint : InterPoint
 {
-	public HashSet<YinyangItem> holding = new HashSet<YinyangItem>();
-	public HashSet<YinyangItem> result = new HashSet<YinyangItem>();
-	Stack<YinyangItem> insertOrder = new Stack<YinyangItem>();
+	public HashSet<ItemAmountPair> holding = new HashSet<ItemAmountPair>();
+	public HashSet<ItemAmountPair> result = new HashSet<ItemAmountPair>();
+	Stack<ItemAmountPair> insertOrder = new Stack<ItemAmountPair>();
 
 	public new UnityEvent onInter;
 	public UnityEvent onAlternative;
 
 	protected bool processing = false;
+
+	protected int maxAmt;
 
 	private void Awake()
 	{
@@ -20,38 +23,74 @@ public class CraftPoint : InterPoint
 		onAltInter.AddListener(AltInter);
 	}
 
-	public virtual void NormalInter() //¾ÆÀÌÅÛ ³Ö±â, ÇÁ·Î¼¼½º ½ÃÀÛ
+	public virtual void NormalInter() //ì•„ì´í…œ ë„£ê¸°, ë¹¼ê¸°
 	{
-		if(GameManager.instance.pinven.curHolding == -1 || GameManager.instance.pinven.inven[GameManager.instance.pinven.curHolding].isEmpty())
+		if(GameManager.instance.pinven.curHolding == -1 && maxAmt > holding.Count)
 		{
-			Process();
+			ItemAmountPair info = GameManager.instance.pinven.CurHoldingItem;
+			if (info != ItemAmountPair.Empty)
+			{
+				ItemAmountPair data;
+				if ((data = holding.Where(item => item.info == info.info).FirstOrDefault()).info != null)
+				{
+					holding.Remove(data);
+					holding.Add(new ItemAmountPair(data.info, data.num + 1));
+				}
+				else
+				{
+					holding.Add(new ItemAmountPair(info.info, 1));
+					insertOrder.Push(info);
+				}
+
+				if(info.num - 1 == 0)
+				{
+					GameManager.instance.pinven.CurHoldingItem = ItemAmountPair.Empty;
+				}
+				else
+				{
+					GameManager.instance.pinven.CurHoldingItem = new ItemAmountPair(info.info, info.num - 1);
+				}
+				
+				Debug.Log($"ADDED {info.info.myName}");
+			}
 		}
 		else
 		{
-			YinyangItem info = Item.nameDataHashT[GameManager.instance.pinven.curHolding] as YinyangItem;
-			if (info != null)
+			if(insertOrder.Count > 0)
 			{
-				holding.Add(info);
-				insertOrder.Push(info);
-				Debug.Log($"ADDED {info.myName}");
+				ItemAmountPair info = insertOrder.Peek();
+				if (GameManager.instance.pinven.AddItem(info.info, info.num) == 0)
+				{
+					insertOrder.Pop();
+					if ((info = holding.Where(item => item.info == info.info).FirstOrDefault()).info != null) // #######################
+					{
+
+					}
+				}
 			}
+			
 		}
-		
 	}
 
-	public virtual void AltInter() //¾ÆÀÌÅÛ »©³»±â ¶Ç´Â (ÇÁ·Î¼¼½º Á¾·á (´Â »ó¼ÓÈÄ °æ¿ì¿¡¼­¸¸ ÀÖ´Ù.))
+	public virtual void AltInter() //í”„ë¡œì„¸ìŠ¤ ì‹œìž‘, ì¢…ë£Œ
 	{
-		YinyangItem top = insertOrder.Pop();
-		if (GameManager.instance.pinven.AddItem(top) == 0)
+		if (processing)
 		{
-			holding.Remove(top);
-			Debug.Log($"Removed {top.myName}");
+			Stop();
 		}
-
+		else if(holding.Count > 0)
+		{
+			Process();
+		}
 	}
 
 	public virtual void Process()
 	{
 		processing = true;
+	}
+
+	public virtual void Stop()
+	{
+		processing = false;
 	}
 }

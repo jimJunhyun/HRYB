@@ -35,10 +35,10 @@ public class Item
 {
     public static Hashtable nameDataHashT = new Hashtable()
 	{
-		{"나뭇가지".GetHashCode(), new Item("나뭇가지", ItemType.Solid, StackType.numScale, ItemRarity.Common, 10, false) },
-		{"인삼".GetHashCode(), new YinyangItem("인삼", ItemType.Solid, StackType.numScale, ItemRarity.Uncommon, 5, false, '삼') },
-		{"물".GetHashCode(), new YinyangItem("물", ItemType.Solid, StackType.numScale, ItemRarity.Common, 10, false, '수')},
-		{"밧줄".GetHashCode(), new Item("밧줄", ItemType.Solid, StackType.numScale, ItemRarity.Uncommon, 10, false) },
+		{"나뭇가지".GetHashCode(), new Item("나뭇가지", ItemType.Solid, StackType.numScale, ItemRarity.Common, 10, null, false) },
+		{"인삼".GetHashCode(), new YinyangItem("인삼", ItemType.Solid, StackType.numScale, ItemRarity.Uncommon, 5, null, false, '삼') },
+		{"물".GetHashCode(), new YinyangItem("물", ItemType.Solid, StackType.numScale, ItemRarity.Common, 10, null, false, '수')},
+		{"밧줄".GetHashCode(), new Item("밧줄", ItemType.Solid, StackType.numScale, ItemRarity.Uncommon, 10, null, false) },
 	}; //같은 이름의 아이템을 같은 물건으로 취급하기 위해 사용.
     public int Id {get => myName.GetHashCode();}
     public string myName;
@@ -47,11 +47,13 @@ public class Item
 	public ItemType itemType;
     public StackType stackType;
 
+	public System.Action onUse;
+
     public int maxStack;
 
 	public ItemRarity rarity;
 
-    public Item(string n, ItemType iType, StackType sType, ItemRarity grade, int max, bool isLateInit)
+    public Item(string n, ItemType iType, StackType sType, ItemRarity grade, int max, System.Action useFunc ,bool isLateInit)
 	{
         myName = n;
 		if (isLateInit)
@@ -65,6 +67,7 @@ public class Item
 		itemType = iType;
 		stackType = sType;
 		maxStack = max;
+		onUse = useFunc;
 	}
 
 	public override int GetHashCode()
@@ -91,4 +94,10 @@ public class Item
 		}
 		return res;
 	}
+
+	public virtual void Use()
+	{
+		onUse.Invoke();
+	}
 }
+

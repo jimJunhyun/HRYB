@@ -23,9 +23,11 @@ public class GameManager : MonoBehaviour
 	public PlayerInput pinp;
 	public ItemManager itemManager;
 	public PlayerInven pinven;
+	public PlayerInter pinter;
 	public PlayerMove pMove;
 	public PlayerAttack pAtk;
 	public PlayerLife pLife;
+	public PlayerCast pCast;
 	public CinemachineFreeLook pCam;
 	public CinemachineVirtualCamera aimCam;
 	public CraftManager craftManager;
@@ -55,6 +57,8 @@ public class GameManager : MonoBehaviour
 		pAtk = player.GetComponent<PlayerAttack>();
 		pMove = player.GetComponent<PlayerMove>();
 		pLife = player.GetComponent<PlayerLife>();
+		pCast = player.GetComponent<PlayerCast>();
+		pinter = player.GetComponent<PlayerInter>();
 		pCam = GameObject.Find("PCam").GetComponent<CinemachineFreeLook>();
 		itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
 		aimCam = GameObject.Find("AimCam").GetComponent<CinemachineVirtualCamera>();
