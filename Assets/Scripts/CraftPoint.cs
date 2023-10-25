@@ -10,20 +10,17 @@ public class CraftPoint : InterPoint
 	public HashSet<ItemAmountPair> result = new HashSet<ItemAmountPair>();
 	Stack<ItemAmountPair> insertOrder = new Stack<ItemAmountPair>();
 
-	public new UnityEvent onInter;
-	public UnityEvent onAlternative;
-
 	protected bool processing = false;
 
 	protected int maxAmt;
 
-	private void Awake()
-	{
-		onInter.AddListener( NormalInter);
-		onAltInter.AddListener(AltInter);
-	}
+	//private void Awake()
+	//{
+	//	  onInter.AddListener( NormalInter);
+	//	  onAltInter.AddListener(AltInter);
+	//}
 
-	public virtual void NormalInter() //아이템 넣기, 빼기
+	public override void Inter() //아이템 넣기, 빼기
 	{
 		if(GameManager.instance.pinven.curHolding == -1 && maxAmt > holding.Count)
 		{
@@ -35,11 +32,13 @@ public class CraftPoint : InterPoint
 				{
 					holding.Remove(data);
 					holding.Add(new ItemAmountPair(data.info, data.num + 1));
+					Debug.Log($"{data.info.myName} 1개 추가됨. {data.num + 1}개");
 				}
 				else
 				{
 					holding.Add(new ItemAmountPair(info.info, 1));
 					insertOrder.Push(info);
+					Debug.Log($"{data.info.myName} 1개 새로 추가됨.");
 				}
 
 				if(info.num - 1 == 0)
@@ -62,17 +61,21 @@ public class CraftPoint : InterPoint
 				if (GameManager.instance.pinven.AddItem(info.info, info.num) == 0)
 				{
 					insertOrder.Pop();
-					if ((info = holding.Where(item => item.info == info.info).FirstOrDefault()).info != null) // #######################
+					if ((info = holding.Where(item => item.info == info.info).FirstOrDefault()).info != null)
 					{
-
+						holding.Remove(info);
+						if(info.num - 1 > 0)
+						{
+							holding.Add(new ItemAmountPair(info.info, info.num - 1));
+						}
+						Debug.Log($"아이템 뺌 : {info.info.myName}, {info.num - 1}개.");
 					}
 				}
 			}
-			
 		}
 	}
 
-	public virtual void AltInter() //프로세스 시작, 종료
+	public override void AltInter() //프로세스 시작, 종료
 	{
 		if (processing)
 		{
@@ -92,5 +95,10 @@ public class CraftPoint : InterPoint
 	public virtual void Stop()
 	{
 		processing = false;
+	}
+
+	public virtual string GetMedicineName()
+	{
+		return "";
 	}
 }

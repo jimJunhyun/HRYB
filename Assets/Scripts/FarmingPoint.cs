@@ -20,10 +20,12 @@ public class FarmingPoint : MonoBehaviour, IInterable
 
 	public bool AltInterable => altInterable;
 
+	ItemRarity spotStat;
+
 	Renderer r;
 	Material mat;
 
-	Coroutine ongoing;
+	//Coroutine ongoing;
 
 	private void Awake()
 	{
@@ -47,51 +49,55 @@ public class FarmingPoint : MonoBehaviour, IInterable
 
 	public void InteractWith()
 	{
-		if(ongoing == null)
-		{
-			ongoing = GameManager.instance.StartCoroutine(DelInter()); //ÀÓ½Ã. Ç®¸µÀ¸·Î º¯°æÇÏ¸é ±×³É ¿©±â¼­ ÇÏ¸é µÊ/
-		}
+		//if(ongoing == null)
+		//{
+		//	ongoing = GameManager.instance.StartCoroutine(DelInter()); //ì„ì‹œ. í’€ë§ìœ¼ë¡œ ë³€ê²½í•˜ë©´ ê·¸ëƒ¥ ì—¬ê¸°ì„œ í•˜ë©´ ë¨/
+		//}
+		Inter();
 	}
 
-	void Inter()
+	public void Inter()
 	{
 		int leftovers = 0;
 		if (Item.nameDataHashT.ContainsKey(resItem.GetHashCode()))
 		{
-			leftovers = (GameManager.instance.pinven.AddItem((Item.nameDataHashT[resItem.GetHashCode()] as Item), amount));
+			Item result = (Item.nameDataHashT[resItem.GetHashCode()] as Item);
+			result.SetRarity(spotStat);
+			leftovers = (GameManager.instance.pinven.AddItem(result, amount));
 		}
 		if(leftovers > 0)
 		{ 
-			Debug.Log("¾ÆÀÌÅÛ ¶³±¸°Ú´Ù.");
+			Debug.Log("ì•„ì´í…œ ë–¨êµ¬ê² ë‹¤.");
 		}
 		Debug.Log(transform.name);
 		if (isDestroyed)
 		{
-			Destroy(gameObject); //ÀÓ½Ã. ÀÌÈÄ Ç®¸µÀ¸·Î º¯°æ.
+			Destroy(gameObject);
+			//PoolManager.ReturnObject(gameObject);
 		}
 	}
 
-	public IEnumerator DelInter()
-	{
-		GameManager.instance.pinp.DeactivateInput();
-		float t = 0;
-		while(t < InterTime)
-		{
-			t += Time.deltaTime;
-			yield return null;
-		}
-		Inter();
-		GameManager.instance.pinp.ActivateInput();
+	//public IEnumerator DelInter()
+	//{
+	//	GameManager.instance.pinp.DeactivateInput();
+	//	float t = 0;
+	//	while(t < InterTime)
+	//	{
+	//		t += Time.deltaTime;
+	//		yield return null;
+	//	}
+	//	Inter();
+	//	GameManager.instance.pinp.ActivateInput();
 		
-		ongoing = null;
-	}
+	//	ongoing = null;
+	//}
 
 	public void AltInterWith()
 	{
-		throw new System.NotImplementedException();
+		AltInter();
 	}
 
-	public IEnumerator DelAltInter()
+	public void AltInter()
 	{
 		throw new System.NotImplementedException();
 	}

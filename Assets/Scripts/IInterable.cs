@@ -12,9 +12,8 @@ public interface IInterable
 
 	public void InteractWith();
 	public void AltInterWith();
+	public void Inter();
+	public void AltInter();
 	public void GlowOn();
 	public void GlowOff();
-
-	public IEnumerator DelInter();
-	public IEnumerator DelAltInter();
 }

@@ -14,6 +14,17 @@ public class PlayerInter : SightModule
 	[HideInInspector]
 	public int curSel = 0;
 
+	public IInterable curFocused 
+	{
+		get
+		{
+			if(checkeds == null)
+				return null;
+			else
+				return checkeds[curSel];
+		}
+	}
+
 	public void Check()
 	{
 		r = new Ray(transform.position, transform.forward);
@@ -73,7 +84,15 @@ public class PlayerInter : SightModule
 	{
 		if(checkeds != null && checkeds.Count > 0 && context.performed)
 		{
-			GameManager.instance.pCast.Cast("collect");
+			GameManager.instance.pCast.Cast("interact");
+		}
+	}
+
+	public void AltInteract(InputAction.CallbackContext context)
+	{
+		if (checkeds != null && checkeds.Count > 0 && context.performed)
+		{
+			GameManager.instance.pCast.Cast("altInteract");
 		}
 	}
 }

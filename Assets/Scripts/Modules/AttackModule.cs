@@ -6,6 +6,8 @@ public class AttackModule : MonoBehaviour
 {
 	public YinyangWuXing damage;
 	public float effSpeed;
+	public float effSpeedMod = 1f;
+	public float EffSpeed { get => effSpeed * effSpeedMod;}
 	public bool isDirect;
 
 	public float prepMod = 1f;

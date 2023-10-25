@@ -24,7 +24,7 @@ public struct StatusEffect
 
 public class StatusEffects
 {
-    public Hashtable idStatEffPairs;
+    public Hashtable idStatEffPairs = new Hashtable();
     int id = 0;
 
 	public StatusEffects()
@@ -38,7 +38,7 @@ public class StatusEffects
 
     void OnWoodDebuffActivated(Actor self, Actor inflicter)
 	{
-        self.life.regenMod *= 0.5f;
+        self.life.regenMod = 0.5f;
 	}
 
     void OnWoodDebuffUpdated(Actor self)
@@ -48,12 +48,12 @@ public class StatusEffects
 
     void OnWoodDebuffEnded(Actor self)
     {
-		self.life.regenMod *= 2f;
+		self.life.regenMod = 1f;
 	}
 
     void OnFireDebuffActivated(Actor self, Actor inflicter)
     {
-        self.atk.effSpeed *= 2f;
+        self.atk.effSpeedMod = 2f;
 		
     }
 
@@ -64,14 +64,14 @@ public class StatusEffects
 
     void OnFireDebuffEnded(Actor self)
     {
-        self.atk.effSpeed *= 0.5f;
+        self.atk.effSpeedMod = 1f;
 		
 	}
 
     void OnEarthDebuffActivated(Actor self, Actor inflicter)
     {
-        self.atk.prepMod *= 0.5f;
-		self.cast.castMod *= 0.5f;
+        self.atk.prepMod = 0.5f;
+		self.cast.castMod = 0.5f;
 	}
 
     void OnEarthDebuffUpdated(Actor self)
@@ -81,8 +81,8 @@ public class StatusEffects
 
     void OnEarthDebuffEnded(Actor self)
     {
-		self.atk.prepMod *= 2f;
-		self.cast.castMod *= 2f;
+		self.atk.prepMod = 1f;
+		self.cast.castMod = 1f;
 	}
 
     void OnMetalDebuffActivated(Actor self, Actor inflicter)

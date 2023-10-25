@@ -53,6 +53,30 @@ public struct Recipe
 		recipe = rcp;
 		requirement = req;
 	}
+
+	public static bool operator==(Recipe lft, Recipe rht)
+	{
+		if (lft.requirement == null || rht.requirement == null)
+		{
+			return lft.recipe == rht.recipe;
+		}
+		else
+		{
+			return lft.recipe == rht.recipe && lft.requirement == rht.requirement;
+		}
+	}
+
+	public static bool operator !=(Recipe lft, Recipe rht)
+	{
+		if (lft.requirement == null || rht.requirement == null)
+		{
+			return lft.recipe != rht.recipe;
+		}
+		else
+		{
+			return lft.recipe != rht.recipe || lft.requirement != rht.requirement;
+		}
+	}
 }
 
 
@@ -62,23 +86,75 @@ public class Crafter
 	CraftMethod curMethod;
 	public CraftMethod CurMethod { get => curMethod; set => curMethod = value;}
 
-    public static Hashtable itemAmtRecipeHash = new Hashtable()
+    public static Hashtable recipeItemTable = new Hashtable()
 	{
-		{ new ItemAmountPair("밧줄"), new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("나뭇가지", 2) }, new HashSet<CraftMethod>{  CraftMethod.Base} )},
+		{ new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("나뭇가지", 2) }, new HashSet<CraftMethod>{  CraftMethod.Base} ), new ItemAmountPair("밧줄")},
 	};
 
 	public static void AddRecipe(ItemAmountPair resItem, Recipe recipe)
 	{
-		itemAmtRecipeHash.Add(resItem, recipe);
+		recipeItemTable.Add(resItem, recipe);
+	}
+
+	public bool CraftWith(Recipe recipe)
+	{
+		Debug.Log(curMethod);
+		foreach (Recipe item in recipeItemTable.Keys)
+		{
+			if(recipe == item)
+				recipe = item;
+		}
+		if (recipeItemTable.ContainsKey(recipe))
+		{
+			ItemAmountPair result = (ItemAmountPair)recipeItemTable[recipe];
+			if (recipe.requirement.Contains(curMethod))
+			{
+				foreach (ItemAmountPair items in recipe.recipe)
+				{
+					if (!GameManager.instance.pinven.RemoveItem(items.info, items.num))
+					{
+						Debug.Log("아이템 부족");
+						return false;
+					}
+				}
+				if (GameManager.instance.pinven.AddItem(result.info, result.num) > 0)
+				{
+					Debug.Log("일부 획득 실패");
+					return true;
+				}
+				else
+				{
+					return true;
+				}
+			}
+			Debug.Log("제작 요구 사항 부족");
+			return false;
+		}
+		Debug.Log("레시피 없음.");
+		return false;
 	}
 
     public bool Craft(ItemAmountPair data)
 	{
 		Debug.Log(curMethod);
-		if (itemAmtRecipeHash.ContainsKey(data))
+		if (recipeItemTable.ContainsValue(data))
 		{
-			Recipe recipe = (Recipe)itemAmtRecipeHash[data];
-			if(recipe.requirement.Contains(curMethod))
+			Recipe recipe = new Recipe();
+			Recipe[] keys = new Recipe[recipeItemTable.Count];
+			ItemAmountPair[] values = new ItemAmountPair[recipeItemTable.Count];
+			recipeItemTable.Keys.CopyTo(keys, 0);
+			recipeItemTable.Values.CopyTo(values, 0);
+
+			for (int i = 0; i < values.Length; i++)
+			{
+				if(values[i] == data)
+				{
+					recipe = keys[i];
+					break;
+				}
+			}
+
+			if (recipe.requirement.Contains(curMethod))
 			{
 				foreach (ItemAmountPair items in recipe.recipe)
 				{

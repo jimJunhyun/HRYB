@@ -5,8 +5,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerAttack : AttackModule
 {
-	
-
 	public float chargePerSec;
 	public float maxChargeAmt;
 
@@ -104,7 +102,7 @@ public class PlayerAttack : AttackModule
 	{
 		Debug.Log($"{curCharge} 파워로 발사.");
 		Arrow r = PoolManager.GetObject("ArrowTemp", shootPos.position, shootPos.forward).GetComponent<Arrow>();
-		r.SetInfo(damage, effSpeed, isDirect);
+		r.SetInfo(damage, EffSpeed, isDirect);
 		r.Shoot(curCharge);
 		GameManager.instance.pAtk.curCharge = 0;
 		StartCoroutine(DelayReShoot(atkGap));

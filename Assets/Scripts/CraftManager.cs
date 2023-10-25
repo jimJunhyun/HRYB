@@ -15,7 +15,7 @@ public class CraftManager : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.L))
 		{
-			CraftWithName("¹åÁÙ");
+			CraftWithName("ë°§ì¤„");
 		}
 	}
 
@@ -23,12 +23,17 @@ public class CraftManager : MonoBehaviour
 	{
 		if (crafter.Craft(new ItemAmountPair(name)))
 		{
-			Debug.Log("Àß¸¸µë");
+			Debug.Log("ìž˜ë§Œë“¬");
 		}
 		else
 		{
-			Debug.Log("½ÇÆÐ");
+			Debug.Log("ì‹¤íŒ¨");
 		}
+	}
+
+	public void CraftWithItems(params ItemAmountPair[] items)
+	{
+		
 	}
 
 	public void SetCurMethod(int mtd)

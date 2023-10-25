@@ -4,14 +4,44 @@ using UnityEngine;
 
 public class PlayerCast : CastModule
 {
-	private void Awake()
+	private void Start()
 	{
-		nameCastPair.Add("collect" , new Preparation(
+		nameCastPair.Add("interact" , new Preparation(
 		(self)=>
 		{
-			GameManager.instance.pinter.checkeds[GameManager.instance.pinter.curSel].InteractWith();
-			GameManager.instance.pinter.Check();
+			if(GameManager.instance.pinter.curFocused != null)
+			{
+				GameManager.instance.pinter.curFocused.InteractWith();
+				GameManager.instance.pinter.Check();
+			}
 		},
-		1.0f));
+		() =>
+		{
+			if(GameManager.instance.pinter.curFocused != null)
+			{
+				Debug.Log($"delSec : {GameManager.instance.pinter.curFocused.InterTime}");
+				return GameManager.instance.pinter.curFocused.InterTime;
+			}
+			return 0;
+		}));
+
+		nameCastPair.Add("altInteract", new Preparation(
+		(self) =>
+		{
+			if (GameManager.instance.pinter.curFocused != null && GameManager.instance.pinter.curFocused.AltInterable)
+			{
+				GameManager.instance.pinter.curFocused.AltInterWith();
+				GameManager.instance.pinter.Check();
+			}
+		},
+		() =>
+		{
+			if (GameManager.instance.pinter.curFocused != null)
+			{
+				Debug.Log($"delSec : {GameManager.instance.pinter.curFocused.InterTime}");
+				return GameManager.instance.pinter.curFocused.InterTime;
+			}
+			return 0;
+		}));
 	}
 }

@@ -109,7 +109,7 @@ public class LifeModule : MonoBehaviour
 	}
 
 
-	IEnumerator DelAddYYWX(YinyangWuXing data, float spd) //#####################
+	IEnumerator DelAddYYWX(YinyangWuXing data, float spd)
 	{
 		float curT = 0;
 		YinyangWuXing incPerSec = new YinyangWuXing();
@@ -122,7 +122,7 @@ public class LifeModule : MonoBehaviour
 		incPerSec.wx.metalAmt = data.wx.metalAmt / spd;
 		incPerSec.wx.waterAmt = data.wx.waterAmt / spd;
 
-		while (curT < t)
+		while (curT < spd)
 		{
 			curT += Time.deltaTime;
 			yield return null;

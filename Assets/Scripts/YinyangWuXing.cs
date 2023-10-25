@@ -28,7 +28,8 @@ public class YinYang
 
     public YinYang(float yin, float yang)
 	{
-
+		yinAmt= yin;
+		yangAmt = yang;
 	}
 
     public float this[int i]
@@ -59,6 +60,16 @@ public class YinYang
                     break;
             }
         }
+	}
+
+	public static YinYang operator+(YinYang a, YinYang b)
+	{
+		return new YinYang(a.yinAmt + b.yinAmt, a.yangAmt + b.yangAmt);
+	}
+
+	public static YinYang operator *(YinYang a, float b)
+	{
+		return new YinYang(a.yinAmt + b, a.yangAmt + b);
 	}
 }
 
@@ -124,6 +135,24 @@ public class WuXing
             }
         }
 	}
+
+	public static WuXing operator +(WuXing a, WuXing b)
+	{
+		for (int i = 0; i < ((int)WXInfo.Max); i++)
+		{
+			a[i] += b[i];
+		}
+		return a;
+	}
+
+	public static WuXing operator *(WuXing a, float b)
+	{
+		for (int i = 0; i < ((int)WXInfo.Max); i++)
+		{
+			a[i] *= b;
+		}
+		return a;
+	}
 }
 
 [System.Serializable]
@@ -150,4 +179,17 @@ public struct YinyangWuXing
         }
         return lft;
     }
+
+	public static YinyangWuXing operator+(YinyangWuXing lft, YinyangWuXing rht)
+	{
+		for (int i = 0; i < ((int)YYInfo.Max); i++)
+		{
+			lft.yy[i] += rht.yy[i];
+		}
+		for (int i = 0; i < ((int)WXInfo.Max); i++)
+		{
+			lft.wx[i] += rht.wx[i];
+		}
+		return lft;
+	}
 }

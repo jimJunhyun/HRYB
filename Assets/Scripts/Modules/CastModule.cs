@@ -6,15 +6,15 @@ using System;
 
 public class Preparation
 {
-	public float prepTime;
+	public Func<float> timeFunc;
 
 	public Action<Transform> onPrepComp;
 
 	public bool cancelable = true;
 
-	public Preparation(Action<Transform> act, float t, bool canceling = true)
+	public Preparation(Action<Transform> act, Func<float> tFunc, bool canceling = true)
 	{
-		prepTime = t;
+		timeFunc = tFunc;
 		onPrepComp = act;
 		cancelable = canceling;
 	}
@@ -22,12 +22,12 @@ public class Preparation
 
 public class CastModule : MonoBehaviour
 {
-    public Dictionary<string, Preparation> nameCastPair;
+    public Dictionary<string, Preparation> nameCastPair = new Dictionary<string, Preparation>();
 
 	public float castMod = 1f;
 
 	Coroutine ongoing;
-	public string curName;
+	protected string curName;
 
 	public void Cast(string name)
 	{
@@ -48,13 +48,15 @@ public class CastModule : MonoBehaviour
 
 	IEnumerator DelCast(Preparation p)
 	{
+		GameManager.instance.pinp.DeactivateInput();
 		float t = 0;
-		while(p.prepTime * castMod > t)
+		while(p.timeFunc() * castMod > t)
 		{
 			t += Time.deltaTime;
 			yield return null;
 		}
 		p.onPrepComp?.Invoke(transform);
+		GameManager.instance.pinp.ActivateInput();
 		ongoing = null;
 		curName = null;
 	}

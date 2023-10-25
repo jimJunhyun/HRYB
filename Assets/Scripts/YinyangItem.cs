@@ -11,8 +11,16 @@ public class YinyangItem : Item
 	public char nameAsChar;
 
 	public float applySpeed = 1f;
+	
+	public virtual float ApplySpeed 
+	{
+		get
+		{
+			return applySpeed;
+		}
+	}
 
-    public YinyangItem(string name, ItemType iType, StackType sType, ItemRarity grade, int max, System.Action used, bool isLateInit, char ch = ' ') : base(name, iType, sType, grade, max, used, isLateInit)
+    public YinyangItem(string name, ItemType iType, int max, System.Action used, bool isLateInit, char ch = ' ') : base(name, iType, max, used, isLateInit)
 	{
 		if(ch == ' ')
 		{
@@ -27,7 +35,7 @@ public class YinyangItem : Item
 	}
 	public override void Use()
 	{
-		GameManager.instance.pLife.AddYYWX(yywx, applySpeed);
+		GameManager.instance.pLife.AddYYWX(yywx, ApplySpeed);
 		base.Use();
 	}
 }

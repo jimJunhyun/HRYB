@@ -8,21 +8,45 @@ public enum MedicineType
 
 	Liquid,
 	Powder,
-	Ointment,
 	Pill,
-	Needle,
 }
 
 public class Medicines : YinyangItem
 {
 	public MedicineType type;
 
-	public List<YinyangItem> recipe;
-	float intakeMod { get; } //½Ä ÇÊ¿ä
-
-    public Medicines(string name, ItemType iType, StackType sType, int max, bool isLateInit)
-		:base(name, iType, sType, ItemRarity.Medicine, max, isLateInit, '¾à')
+	public List<ItemAmountPair> recipe;
+	public override float ApplySpeed
 	{
+		get 
+		{
+			switch (type)
+			{
+				case MedicineType.Liquid:
+					return applySpeed * 2f;
+					break;
+				case MedicineType.Powder:
+					return applySpeed * 1f;
+					break;
+				case MedicineType.Pill:
+					return applySpeed * 0.8f;
+					break;
+				default:
+					return applySpeed;
+					break;
+			}
+		}
+	} //ì‹ í•„ìš”
 
+    public Medicines(string name, ItemType iType, int max, System.Action used,bool isLateInit)
+		:base(name, iType, max, used, isLateInit, 'ì•½')
+	{
+		this.rarity = ItemRarity.Medicine;
+	}
+
+	public override void Use()
+	{
+		GameManager.instance.pinven.RemoveItem(this);
+		base.Use();
 	}
 }

@@ -3,13 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum StackType
-{
-    numScale,
-    litScale, 
-
-}
-
 public enum ItemType
 {
 	None = -1,
@@ -21,13 +14,15 @@ public enum ItemType
 
 public enum ItemRarity
 {
-	Common,
-	Uncommon,
-	Rare,
-	Epic,
-	Legendary,
+	S,
+	A,
+	B,
+	C,
+	D,
+	F,
 
 	Medicine,
+	Material,
 }
 
 [System.Serializable]
@@ -35,17 +30,16 @@ public class Item
 {
     public static Hashtable nameDataHashT = new Hashtable()
 	{
-		{"나뭇가지".GetHashCode(), new Item("나뭇가지", ItemType.Solid, StackType.numScale, ItemRarity.Common, 10, null, false) },
-		{"인삼".GetHashCode(), new YinyangItem("인삼", ItemType.Solid, StackType.numScale, ItemRarity.Uncommon, 5, null, false, '삼') },
-		{"물".GetHashCode(), new YinyangItem("물", ItemType.Solid, StackType.numScale, ItemRarity.Common, 10, null, false, '수')},
-		{"밧줄".GetHashCode(), new Item("밧줄", ItemType.Solid, StackType.numScale, ItemRarity.Uncommon, 10, null, false) },
+		{"나뭇가지".GetHashCode(), new Item("나뭇가지", ItemType.Solid, 10, null, false) },
+		{"인삼".GetHashCode(), new YinyangItem("인삼", ItemType.Solid, 5, null, false, '삼') },
+		{"물".GetHashCode(), new YinyangItem("물", ItemType.Liquid,  5, null, false, '수')},
+		{"밧줄".GetHashCode(), new Item("밧줄", ItemType.Solid,  10, null, false) },
 	}; //같은 이름의 아이템을 같은 물건으로 취급하기 위해 사용.
     public int Id {get => myName.GetHashCode();}
     public string myName;
 
     public Sprite icon;
 	public ItemType itemType;
-    public StackType stackType;
 
 	public System.Action onUse;
 
@@ -53,7 +47,31 @@ public class Item
 
 	public ItemRarity rarity;
 
-    public Item(string n, ItemType iType, StackType sType, ItemRarity grade, int max, System.Action useFunc ,bool isLateInit)
+	float modifier = 1f;
+
+	public void SetRarity(ItemRarity val)
+	{
+		rarity = val;
+		switch (val)
+		{
+			case ItemRarity.S://배수 정하기
+				break;
+			case ItemRarity.A:
+				break;
+			case ItemRarity.B:
+				break;
+			case ItemRarity.C:
+				break;
+			case ItemRarity.D:
+				break;
+			case ItemRarity.F:
+				break;
+			default:
+				break;
+		}
+	}
+
+	public Item(string n, ItemType iType, int max, System.Action useFunc ,bool isLateInit)
 	{
         myName = n;
 		if (isLateInit)
@@ -63,9 +81,7 @@ public class Item
 				nameDataHashT.Add(Id, this);
 			}
 		}
-		rarity = grade;
 		itemType = iType;
-		stackType = sType;
 		maxStack = max;
 		onUse = useFunc;
 	}
@@ -77,17 +93,17 @@ public class Item
 
 	public static bool operator ==(Item left, Item right)
 	{
-		return left?.myName == right?.myName;
+		return left?.myName == right?.myName && left?.rarity == right?.rarity;
 	}
 
     public static bool operator !=(Item left, Item right)
     {
-		return left?.myName != right?.myName;
+		return left?.myName != right?.myName || left?.rarity != right?.rarity;
     }
 
     public override bool Equals(object obj)
 	{
-		bool res = (obj as Item)?.Id == this.Id;
+		bool res = (obj as Item)?.Id == this.Id && (obj as Item).rarity == this.rarity;
 		if ((obj as Item)?.Id == null)
 		{
 			return false;

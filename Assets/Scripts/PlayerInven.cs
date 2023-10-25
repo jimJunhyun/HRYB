@@ -73,7 +73,7 @@ public class Inventory
 	}
 
 	List<InventoryItem> data;
-	float quickSize = 5;
+	int quickSize = 5;
 
 	public InventoryItem this[int idx]
 	{ 
@@ -105,6 +105,10 @@ public class Inventory
 	public void AddCapacity(int amt)
 	{
 		data.Capacity += amt;
+		for (int i = 0; i < amt; i++)
+		{
+			data.Add(new InventoryItem(null, 0));
+		}
 	}
 
 	public int Add(InventoryItem item)
@@ -135,6 +139,7 @@ public class Inventory
 	public void Remove(int idx)
 	{
 		data[idx] = new InventoryItem(null, 0);
+		--Count;
 	}
 }
 
@@ -158,6 +163,7 @@ public class PlayerInven : MonoBehaviour
 			inven[curHolding] = new InventoryItem(value.info, value.num);
 		}
 	}
+	public bool isFull { get => inven.Count >= cap;}
 
 	private void Awake()
 	{
