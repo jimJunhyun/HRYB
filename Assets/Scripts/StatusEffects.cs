@@ -8,7 +8,7 @@ public struct StatusEffect
     public string name;
     public string desc;
 
-    public Action<Actor, Actor> onApplied;//´çÇÑ³ğ, °Ç³ğ
+    public Action<Actor, Actor> onApplied;//ë‹¹í•œë†ˆ, ê±´ë†ˆ
     public Action<Actor> onUpdated;
     public Action<Actor> onEnded;
 
@@ -29,11 +29,11 @@ public class StatusEffects
 
 	public StatusEffects()
 	{
-		idStatEffPairs.Add(id++, new StatusEffect("¸ñ °ú´Ù", "¸ñÀÌ »óÇÑÄ¡¸¦ ³Ñ¾î¼¹½À´Ï´Ù!", OnWoodDebuffActivated, OnWoodDebuffUpdated, OnWoodDebuffEnded));
-		idStatEffPairs.Add(id++, new StatusEffect("È­ °ú´Ù", "È­°¡ »óÇÑÄ¡¸¦ ³Ñ¾î¼¹½À´Ï´Ù!", OnFireDebuffActivated, OnFireDebuffUpdated, OnFireDebuffEnded));
-		idStatEffPairs.Add(id++, new StatusEffect("Åä °ú´Ù", "Åä°¡ »óÇÑÄ¡¸¦ ³Ñ¾î¼¹½À´Ï´Ù!", OnEarthDebuffActivated, OnEarthDebuffUpdated, OnEarthDebuffEnded));
-		idStatEffPairs.Add(id++, new StatusEffect("±İ °ú´Ù", "±İÀÌ »óÇÑÄ¡¸¦ ³Ñ¾î¼¹½À´Ï´Ù!", OnMetalDebuffActivated, OnMetalDebuffUpdated, OnMetalDebuffEnded));
-		idStatEffPairs.Add(id++, new StatusEffect("¼ö °ú´Ù", "¼ö°¡ »óÇÑÄ¡¸¦ ³Ñ¾î¼¹½À´Ï´Ù!", OnWaterDebuffActivated, OnWaterDebuffUpdated, OnWaterDebuffEnded));
+		idStatEffPairs.Add(id++, new StatusEffect("ëª© ê³¼ë‹¤", "ëª©ì´ ìƒí•œì¹˜ë¥¼ ë„˜ì–´ì„°ìŠµë‹ˆë‹¤!", OnWoodDebuffActivated, OnWoodDebuffUpdated, OnWoodDebuffEnded));
+		idStatEffPairs.Add(id++, new StatusEffect("í™” ê³¼ë‹¤", "í™”ê°€ ìƒí•œì¹˜ë¥¼ ë„˜ì–´ì„°ìŠµë‹ˆë‹¤!", OnFireDebuffActivated, OnFireDebuffUpdated, OnFireDebuffEnded));
+		idStatEffPairs.Add(id++, new StatusEffect("í†  ê³¼ë‹¤", "í† ê°€ ìƒí•œì¹˜ë¥¼ ë„˜ì–´ì„°ìŠµë‹ˆë‹¤!", OnEarthDebuffActivated, OnEarthDebuffUpdated, OnEarthDebuffEnded));
+		idStatEffPairs.Add(id++, new StatusEffect("ê¸ˆ ê³¼ë‹¤", "ê¸ˆì´ ìƒí•œì¹˜ë¥¼ ë„˜ì–´ì„°ìŠµë‹ˆë‹¤!", OnMetalDebuffActivated, OnMetalDebuffUpdated, OnMetalDebuffEnded));
+		idStatEffPairs.Add(id++, new StatusEffect("ìˆ˜ ê³¼ë‹¤", "ìˆ˜ê°€ ìƒí•œì¹˜ë¥¼ ë„˜ì–´ì„°ìŠµë‹ˆë‹¤!", OnWaterDebuffActivated, OnWaterDebuffUpdated, OnWaterDebuffEnded));
 	}
 
     void OnWoodDebuffActivated(Actor self, Actor inflicter)

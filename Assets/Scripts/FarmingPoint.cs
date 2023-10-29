@@ -49,7 +49,7 @@ public class FarmingPoint : MonoBehaviour, IInterable
 	{
 		if(ongoing == null)
 		{
-			ongoing = GameManager.instance.StartCoroutine(DelInter()); //ÀÓ½Ã. Ç®¸µÀ¸·Î º¯°æÇÏ¸é ±×³É ¿©±â¼­ ÇÏ¸é µÊ/
+			ongoing = GameManager.instance.StartCoroutine(DelInter()); //ì„ì‹œ. í’€ë§ìœ¼ë¡œ ë³€ê²½í•˜ë©´ ê·¸ëƒ¥ ì—¬ê¸°ì„œ í•˜ë©´ ë¨/
 		}
 	}
 
@@ -62,12 +62,12 @@ public class FarmingPoint : MonoBehaviour, IInterable
 		}
 		if(leftovers > 0)
 		{ 
-			Debug.Log("¾ÆÀÌÅÛ ¶³±¸°Ú´Ù.");
+			Debug.Log("ì•„ì´í…œ ë–¨êµ¬ê² ë‹¤.");
 		}
 		Debug.Log(transform.name);
 		if (isDestroyed)
 		{
-			Destroy(gameObject); //ÀÓ½Ã. ÀÌÈÄ Ç®¸µÀ¸·Î º¯°æ.
+			Destroy(gameObject); //ì„ì‹œ. ì´í›„ í’€ë§ìœ¼ë¡œ ë³€ê²½.
 		}
 	}
 
