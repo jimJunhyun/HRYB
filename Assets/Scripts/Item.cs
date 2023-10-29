@@ -31,8 +31,8 @@ public class Item
     public static Hashtable nameDataHashT = new Hashtable()
 	{
 		{"나뭇가지".GetHashCode(), new Item("나뭇가지", ItemType.Solid, 10, null, false) },
-		{"인삼".GetHashCode(), new YinyangItem("인삼", ItemType.Solid, 5, null, false, '삼') },
-		{"물".GetHashCode(), new YinyangItem("물", ItemType.Liquid,  5, null, false, '수')},
+		{"인삼".GetHashCode(), new YinyangItem("인삼", ItemType.Solid, 5, null, false, new YinyangWuXing(1.0f, 1.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f), '삼') },
+		{"물".GetHashCode(), new YinyangItem("물", ItemType.Liquid,  5, null, false, new YinyangWuXing(1.0f, 1.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f), '수')},
 		{"밧줄".GetHashCode(), new Item("밧줄", ItemType.Solid,  10, null, false) },
 	}; //같은 이름의 아이템을 같은 물건으로 취급하기 위해 사용.
     public int Id {get => myName.GetHashCode();}

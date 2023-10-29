@@ -20,8 +20,9 @@ public class YinyangItem : Item
 		}
 	}
 
-    public YinyangItem(string name, ItemType iType, int max, System.Action used, bool isLateInit, char ch = ' ') : base(name, iType, max, used, isLateInit)
+    public YinyangItem(string name, ItemType iType, int max, System.Action used, bool isLateInit, YinyangWuXing yyData, char ch = ' ') : base(name, iType, max, used, isLateInit)
 	{
+		yywx = yyData;
 		if(ch == ' ')
 		{
 			nameAsChar = myName[Random.Range(0, myName.Length)];

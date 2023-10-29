@@ -41,6 +41,11 @@ public struct ItemAmountPair
 	{
 		get => new ItemAmountPair(null as Item, 0);
 	}
+
+	public InventoryItem ToInven()
+	{
+		return new InventoryItem(info, num);
+	}
 }
 
 public struct Recipe

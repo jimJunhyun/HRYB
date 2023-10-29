@@ -38,7 +38,7 @@ public class PlayerCast : CastModule
 		{
 			if (GameManager.instance.pinter.curFocused != null)
 			{
-				Debug.Log($"delSec : {GameManager.instance.pinter.curFocused.InterTime}");
+				Debug.Log($"altdelSec : {GameManager.instance.pinter.curFocused.InterTime}");
 				return GameManager.instance.pinter.curFocused.InterTime;
 			}
 			return 0;

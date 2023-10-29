@@ -22,7 +22,7 @@ public class InterPoint : MonoBehaviour, IInterable
 	Material mat;
 	//Coroutine ongoing;
 
-	private void Awake()
+	protected virtual void Awake()
 	{
 		r = GetComponent<Renderer>();
 		mat = r.material;

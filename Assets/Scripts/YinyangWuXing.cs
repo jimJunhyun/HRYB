@@ -192,4 +192,14 @@ public struct YinyangWuXing
 		}
 		return lft;
 	}
+
+	public static YinyangWuXing Zero
+	{
+		get => new YinyangWuXing(0, 0, 0, 0, 0, 0, 0);
+	}
+
+	public override string ToString()
+	{
+		return $"음 : {yy.yinAmt} 양 : {yy.yangAmt} 목 : {wx.woodAmt} 화 : {wx.fireAmt} 토 : {wx.earthAmt} 금 : {wx.metalAmt} 수 : {wx.waterAmt}";
+	}
 }

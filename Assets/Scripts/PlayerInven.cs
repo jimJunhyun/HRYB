@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum HandStat
 {
@@ -58,6 +59,11 @@ public struct InventoryItem
 	public bool isEmpty()
 	{
 		return number == 0;
+	}
+
+	public ItemAmountPair ToPair()
+	{
+		return new ItemAmountPair(info, number);
 	}
 }
 
@@ -156,11 +162,14 @@ public class PlayerInven : MonoBehaviour
 		{
 			if(curHolding == -1)
 				return ItemAmountPair.Empty;
-			return new ItemAmountPair(inven[curHolding].info, inven[curHolding].number);
+			return inven[curHolding].ToPair();
 		}
 		set
 		{
-			inven[curHolding] = new InventoryItem(value.info, value.num);
+			if(curHolding != -1)
+			{
+				inven[curHolding] = new InventoryItem(value.info, value.num);
+			}
 		}
 	}
 	public bool isFull { get => inven.Count >= cap;}
@@ -373,5 +382,45 @@ public class PlayerInven : MonoBehaviour
 		InventoryItem slotItem = inven[a];
 		inven[a] = inven[b];
 		inven[b] = slotItem;
+	}
+
+	public void OnPressOne(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			Hold(HandStat.Item, 0);
+		}
+	}
+
+	public void OnPressTwo(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			Hold(HandStat.Item, 1);
+		}
+	}
+
+	public void OnPressThree(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			Hold(HandStat.Item, 2);
+		}
+	}
+
+	public void OnPressFour(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			Hold(HandStat.Item, 3);
+		}
+	}
+
+	public void OnPressFive(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			Hold(HandStat.Item, 4);
+		}
 	}
 }

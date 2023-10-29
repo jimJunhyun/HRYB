@@ -85,6 +85,7 @@ public class PlayerInter : SightModule
 		if(checkeds != null && checkeds.Count > 0 && context.performed)
 		{
 			GameManager.instance.pCast.Cast("interact");
+			Debug.Log($"From : {gameObject.name}");
 		}
 	}
 
@@ -93,6 +94,7 @@ public class PlayerInter : SightModule
 		if (checkeds != null && checkeds.Count > 0 && context.performed)
 		{
 			GameManager.instance.pCast.Cast("altInteract");
+			Debug.Log($"From : {gameObject.name}");
 		}
 	}
 }

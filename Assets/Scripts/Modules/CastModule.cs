@@ -6,7 +6,7 @@ using System;
 
 public class Preparation
 {
-	public Func<float> timeFunc;
+	public Func<float> Timefunc;
 
 	public Action<Transform> onPrepComp;
 
@@ -14,7 +14,7 @@ public class Preparation
 
 	public Preparation(Action<Transform> act, Func<float> tFunc, bool canceling = true)
 	{
-		timeFunc = tFunc;
+		Timefunc = tFunc;
 		onPrepComp = act;
 		cancelable = canceling;
 	}
@@ -50,7 +50,8 @@ public class CastModule : MonoBehaviour
 	{
 		GameManager.instance.pinp.DeactivateInput();
 		float t = 0;
-		while(p.timeFunc() * castMod > t)
+		float waitSec = p.Timefunc();
+		while(waitSec * castMod > t)
 		{
 			t += Time.deltaTime;
 			yield return null;
