@@ -17,7 +17,7 @@ public class BrewPoint : CraftPoint
 	int liqMax = 5;
 	int numPerWater = 2;
 
-	new int maxAmt
+	protected override int maxAmt
 	{
 		get => numPerWater * liquidNum.num;
 	}
@@ -33,21 +33,41 @@ public class BrewPoint : CraftPoint
 
 	public override void Inter()
 	{
-		ItemAmountPair hold =  GameManager.instance.pinven.CurHoldingItem;
-		if(liquidNum == ItemAmountPair.Empty && hold.info.itemType == ItemType.Liquid && hold.info.Id == waterHash)
+		if (!processing)
 		{
+			ItemAmountPair hold = GameManager.instance.pinven.CurHoldingItem;
+			if (hold != ItemAmountPair.Empty)
+			{
+				if (liquidNum == ItemAmountPair.Empty && hold.info.itemType == ItemType.Liquid && hold.info.Id == waterHash && GameManager.instance.pinven.RemoveHolding(1))
+				{
+					liquidNum = new ItemAmountPair(hold.info, 1);
+					insertOrder.Push(new ItemAmountPair(hold.info, 1));
+					Debug.Log("물 삽입");
+				}
+				else if (hold.info.itemType == ItemType.Liquid && hold.info == liquidNum.info && liqMax > liquidNum.num && GameManager.instance.pinven.RemoveHolding(1))
+				{
+					liquidNum.num += 1;
+					insertOrder.Push(new ItemAmountPair(hold.info, 1));
+					Debug.Log($"물 추가, 갯수 {liquidNum.num}");
+				}
+				else if (hold != liquidNum)
+				{
+					Debug.Log("물이 아님.");
+					base.Inter();
+				}
+				else
+				{
+					Debug.Log("물 최대치, 추가 불가.");
+				}
+			}
+			else
+			{
+				Debug.Log("손 빔.");
+				base.Inter();
+			}
+		}
+		
 
-		}
-		else if(hold.info.itemType == ItemType.Liquid && hold.info.Id == waterHash && liqMax > liquidNum.num)
-		{
-			liquidNum.info = hold.info;
-			liquidNum.num += 1;
-			insertOrder.Push(new ItemAmountPair(hold.info, hold.num));
-		}
-		else
-		{
-			base.Inter();
-		}
 	}
 
 	public override void Pop()
@@ -55,10 +75,17 @@ public class BrewPoint : CraftPoint
 		ItemAmountPair info = insertOrder.Peek();
 		if(info.info.Id == waterHash)
 		{
-			insertOrder.Pop();
-			liquidNum.num -= 1;
-			if(liquidNum.num == 0)
-				liquidNum = ItemAmountPair.Empty;
+			if(GameManager.instance.pinven.AddItem(info.info, info.num) == 0)
+			{
+				insertOrder.Pop();
+				liquidNum.num -= 1;
+				Debug.Log("물 뺌.");
+				if (liquidNum.num == 0)
+				{
+					liquidNum = ItemAmountPair.Empty;
+					Debug.Log("물 마름.");
+				}
+			}
 		}
 		else
 		{
@@ -70,10 +97,18 @@ public class BrewPoint : CraftPoint
 	{
 		base.Process();
 		Recipe myRecipe = new Recipe(holding, new HashSet<CraftMethod>() { CraftMethod.Medicine });
+
+		Debug.Log(myRecipe.ToString());
+
+		foreach (Recipe item in Crafter.recipeItemTable.Keys)
+		{
+			Debug.Log($"{myRecipe} == {item} --> {myRecipe == item}");
+		}
+
 		if (Crafter.recipeItemTable.ContainsKey(myRecipe))
 		{
+			Debug.Log("!!!!");
 			result.Add((ItemAmountPair)Crafter.recipeItemTable[myRecipe]);
-			
 		}
 		else
 		{

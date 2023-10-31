@@ -12,7 +12,7 @@ public class CraftPoint : InterPoint
 
 	protected bool processing = false;
 
-	protected int maxAmt;
+	protected virtual int maxAmt{ get; set;}
 	protected int count;
 
 	//private void Awake()
@@ -23,14 +23,24 @@ public class CraftPoint : InterPoint
 
 	public override void Inter() //아이템 넣기, 빼기
 	{
-		if(GameManager.instance.pinven.CurHoldingItem == ItemAmountPair.Empty && count < maxAmt)
+		if (!processing)
 		{
-			Put();
+			if (GameManager.instance.pinven.CurHoldingItem != ItemAmountPair.Empty && count < maxAmt)
+			{
+				Debug.Log("넣음");
+				Put();
+			}
+			else if (insertOrder.Count > 0)
+			{
+				Debug.Log("뺌");
+				Pop();
+			}
+			else
+			{
+				Debug.Log("아이템을 들고있지 않거나 최대치에 도달함.");
+			}
 		}
-		else if (insertOrder.Count > 0)
-		{
-			Pop();
-		}
+		
 	}
 
 	public virtual void Put()
@@ -38,7 +48,7 @@ public class CraftPoint : InterPoint
 		if(count < maxAmt)
 		{
 			ItemAmountPair info = GameManager.instance.pinven.CurHoldingItem;
-			if (info != ItemAmountPair.Empty && (info.info as YinyangItem != null))
+			if (info != ItemAmountPair.Empty && (info.info as YinyangItem != null) && GameManager.instance.pinven.RemoveHolding(1))
 			{
 				ItemAmountPair data;
 				if ((data = holding.Where(item => item.info == info.info).FirstOrDefault()).info != null)
@@ -58,21 +68,15 @@ public class CraftPoint : InterPoint
 					count += 1;
 				}
 
-				if (info.num - 1 == 0)
-				{
-					GameManager.instance.pinven.CurHoldingItem = ItemAmountPair.Empty;
-				}
-				else
-				{
-					GameManager.instance.pinven.CurHoldingItem = new ItemAmountPair(info.info, info.num - 1);
-				}
-
 				Debug.Log($"ADDED {info.info.myName}");
 			}
 			else
 				Debug.Log("아이템이 없거나 넣을 수 없는 아이템.");
 		}
-		
+		else
+		{
+			Debug.Log($"최대치 도달 : {maxAmt}");
+		}
 	}
 
 	public virtual void Pop()

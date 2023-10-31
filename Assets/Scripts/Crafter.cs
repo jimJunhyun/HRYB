@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public enum CraftMethod
@@ -63,11 +64,11 @@ public struct Recipe
 	{
 		if (lft.requirement == null || rht.requirement == null)
 		{
-			return lft.recipe == rht.recipe;
+			return lft.recipe.SetEquals(rht.recipe);
 		}
 		else
 		{
-			return lft.recipe == rht.recipe && lft.requirement == rht.requirement;
+			return lft.recipe.SetEquals(rht.recipe) && lft.requirement.SetEquals(rht.requirement);
 		}
 	}
 
@@ -75,12 +76,29 @@ public struct Recipe
 	{
 		if (lft.requirement == null || rht.requirement == null)
 		{
-			return lft.recipe != rht.recipe;
+			return !lft.recipe.SetEquals(rht.recipe);
 		}
 		else
 		{
-			return lft.recipe != rht.recipe || lft.requirement != rht.requirement;
+			return (!lft.recipe.SetEquals(rht.recipe)) || (!lft.requirement.SetEquals(rht.requirement));
 		}
+	}
+
+	public override string ToString()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.Append("(Ingredients : ");
+		foreach (var item in recipe)
+		{
+			sb.Append($" [{item.info.myName} : {item.num}] , ");
+		}
+		sb.Append(")(Requirements : ");
+		foreach (var item in requirement)
+		{
+			sb.Append($" [{item}] , ");
+		}
+		sb.Append(')');
+		return sb.ToString();
 	}
 }
 
@@ -94,6 +112,7 @@ public class Crafter
     public static Hashtable recipeItemTable = new Hashtable()
 	{
 		{ new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("나뭇가지", 2) }, new HashSet<CraftMethod>{  CraftMethod.Base} ), new ItemAmountPair("밧줄")},
+		{ new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("인삼", 2) }, new HashSet<CraftMethod>{  CraftMethod.Medicine} ), new ItemAmountPair(new Medicines("인삼탕", ItemType.Liquid, 1, null, true, new YinyangWuXing(10, 10, 10, 10, 10, 10, 10)))},
 	};
 
 	public static void AddRecipe(ItemAmountPair resItem, Recipe recipe)

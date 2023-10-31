@@ -33,7 +33,12 @@ public class CraftManager : MonoBehaviour
 
 	public void CraftWithItems(params ItemAmountPair[] items)
 	{
-		
+		Recipe recipe = new Recipe();
+		for (int i = 0; i < items.Length; i++)
+		{
+			recipe.recipe.Add(items[i]);
+		}
+		crafter.CraftWith(recipe);
 	}
 
 	public void SetCurMethod(int mtd)

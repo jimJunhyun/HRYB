@@ -168,7 +168,7 @@ public class PlayerInven : MonoBehaviour
 		{
 			if(curHolding != -1)
 			{
-				inven[curHolding] = new InventoryItem(value.info, value.num);
+				inven[curHolding] = value.ToInven();
 			}
 		}
 	}
@@ -375,6 +375,27 @@ public class PlayerInven : MonoBehaviour
 		{
 			inven[curHolding].info.onUse.Invoke();
 		}
+	}
+
+	public bool RemoveHolding(int amt = 1)
+	{
+		if(CurHoldingItem.num >= amt)
+		{
+			if (CurHoldingItem.num - amt <= 0)
+			{
+				CurHoldingItem = ItemAmountPair.Empty;
+			}
+			else
+			{
+				CurHoldingItem = new ItemAmountPair(CurHoldingItem.info, CurHoldingItem.num - amt);
+			}
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
 	}
 
 	void Swap(int a, int b)

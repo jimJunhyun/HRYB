@@ -9,7 +9,6 @@ public enum ItemType
 	Solid,
 	Liquid,
 	Air,
-	Jelly,
 }
 
 public enum ItemRarity
