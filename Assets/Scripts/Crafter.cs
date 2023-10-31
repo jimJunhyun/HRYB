@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -99,6 +100,27 @@ public struct Recipe
 		}
 		sb.Append(')');
 		return sb.ToString();
+	}
+
+	public override bool Equals(object obj)
+	{
+		return obj is Recipe recipe && this == recipe;
+	}
+
+	public override int GetHashCode()
+	{
+		long hash1 = 19;
+		foreach (var item in recipe)
+		{
+			hash1 = hash1 * 31 + HashCode.Combine(item.info.myName, item.num);
+		}
+
+		long hash2 = 31;
+		foreach (var item in requirement)
+		{
+			hash2 = hash2 * 19 + HashCode.Combine(item.ToString());
+		}
+		return HashCode.Combine(hash1, hash2);
 	}
 }
 

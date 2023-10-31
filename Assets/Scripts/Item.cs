@@ -24,6 +24,12 @@ public enum ItemRarity
 	Material,
 }
 
+public class Specials
+{
+	public System.Action onActivated;
+	public float removeTime;
+}
+
 [System.Serializable]
 public class Item
 {
@@ -70,7 +76,7 @@ public class Item
 		}
 	}
 
-	public Item(string n, ItemType iType, int max, System.Action useFunc ,bool isLateInit)
+	public Item(string n, ItemType iType, int max, System.Action useFunc ,bool isLateInit) // ######################################
 	{
         myName = n;
 		if (isLateInit)

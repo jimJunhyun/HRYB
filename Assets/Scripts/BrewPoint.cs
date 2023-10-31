@@ -107,7 +107,6 @@ public class BrewPoint : CraftPoint
 
 		if (Crafter.recipeItemTable.ContainsKey(myRecipe))
 		{
-			Debug.Log("!!!!");
 			result.Add((ItemAmountPair)Crafter.recipeItemTable[myRecipe]);
 		}
 		else
@@ -162,8 +161,9 @@ public class BrewPoint : CraftPoint
 			foreach (var item in holding)
 			{
 				Debug.Log($"{item.info.myName} : {(item.info as YinyangItem).nameAsChar}");
-				YinyangWuXing brewed = (item.info as YinyangItem).yywx * (1 / brewMaxSec) * Random.Range(0.9f, 1.1f) * item.num;
+				YinyangWuXing brewed = (item.info as YinyangItem).yywx * (1 / brewMaxSec) * Random.Range(0.9f, 1.1f) * item.num; //추출 공식은 어떻게 되는가?
 				resultItem.yywx += brewed;
+				//언제 능력이 더해지는가?
 			}
 		}
 		ongoing = null;
