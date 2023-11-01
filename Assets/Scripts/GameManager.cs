@@ -45,6 +45,8 @@ public class GameManager : MonoBehaviour
 
 	public CamStatus curCamStat;
 
+	public WaitForSeconds waitSec = new WaitForSeconds(1.0f);
+
 	private void Awake()
 	{
 		instance = this;

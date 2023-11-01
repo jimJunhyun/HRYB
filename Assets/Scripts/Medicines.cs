@@ -38,7 +38,7 @@ public class Medicines : YinyangItem
 		}
 	} //식 필요
 
-    public Medicines(string name, ItemType iType, int max, System.Action used,bool isLateInit, YinyangWuXing yyData)
+    public Medicines(string name, ItemType iType, int max, Specials used, bool isLateInit, YinyangWuXing yyData)
 		:base(name, iType, max, used, isLateInit,yyData, '약')
 	{
 		this.rarity = ItemRarity.Medicine;

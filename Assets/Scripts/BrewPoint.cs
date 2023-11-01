@@ -22,7 +22,7 @@ public class BrewPoint : CraftPoint
 		get => numPerWater * liquidNum.num;
 	}
 
-	WaitForSeconds waitSec = new WaitForSeconds(1.0f);
+	
 
 	Coroutine ongoing;
 	
@@ -157,7 +157,7 @@ public class BrewPoint : CraftPoint
 		float iter = 0;
 		while (iter < brewMaxSec)
 		{
-			yield return waitSec;
+			yield return GameManager.instance.waitSec;
 			foreach (var item in holding)
 			{
 				Debug.Log($"{item.info.myName} : {(item.info as YinyangItem).nameAsChar}");

@@ -1,59 +1,93 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ProcessType
+public enum ProcessType //ì†ì§ˆì€ ì‚¬ì‹¤ìƒ ì œìž‘ì´ë‹¤.
 {
     None = -1,
 
-    Trim,
-    Grind,
+    
     Roast,
-    Pickle,
-    Age,
-    Steam,
 }
 
 public class PreProcess
 {
+	protected YinyangItem info;
     public ProcessType type;
-    public int additionalInfo;
     public string prefix;
 
-    public PreProcess(ProcessType t, int info = -1)
+    protected PreProcess(ProcessType t, YinyangItem itemInfo)
 	{
+		info = itemInfo;
         type = t;
-        additionalInfo = info;
 		switch (t)
 		{
 			case ProcessType.None:
 				break;
-			case ProcessType.Trim:
-				prefix = "Á¦";
-				break;
-			case ProcessType.Grind:
-				prefix = "ºÐ";
-				break;
 			case ProcessType.Roast:
-				int r = Random.Range(0, 2);
+				int r = UnityEngine.Random.Range(0, 2);
 				if(r == 0)
 				{
-					prefix = "ÀÛ";
+					prefix = "ìž‘";
 				}
 				else
 				{
-					prefix = "¼Ò";
+					prefix = "ì†Œ";
 				}
 				break;
-			case ProcessType.Pickle:
-				prefix = $"{(Item.nameDataHashT[additionalInfo] as YinyangItem).nameAsChar}Ä§";
-				break;
-			case ProcessType.Age:
-				prefix = "¼÷";
-				break;
-			case ProcessType.Steam:
-				prefix = $"{(Item.nameDataHashT[additionalInfo] as YinyangItem).nameAsChar}Áõ";
-				break;
 		}
+	}
+}
+
+
+public class Roast : PreProcess
+{
+	public YinyangWuXing Decreased
+	{
+		get => new YinyangWuXing(info.initDec + (effSec - 1) * info.decPerSec);
+	}
+
+	bool roasted = false;
+
+	float effSec = 0;
+
+	Coroutine ongoing;
+
+	public Roast(YinyangItem itemInfo) : base(ProcessType.Roast, itemInfo)
+	{
+
+	}
+
+	public void StartProcess()
+	{
+		ongoing = GameManager.instance.StartCoroutine(DelProcess());
+	}
+
+	public void EndProcess()
+	{
+		GameManager.instance.StopCoroutine(ongoing);
+	}
+
+	IEnumerator DelProcess()
+	{
+		while (true)
+		{
+			yield return GameManager.instance.waitSec;
+			effSec += 1;
+
+			if(effSec > info.onUse.removeTime)
+			{
+				info.onUse.DeleteSpecial();
+				roasted = true;
+			}
+		}
+	}
+
+	public override int GetHashCode()
+	{
+		int hash1 = 17;
+		int hash2 = HashCode.Combine(hash1, roasted, effSec);
+		return hash2;
 	}
 }

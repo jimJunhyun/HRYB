@@ -28,6 +28,17 @@ public class Specials
 {
 	public System.Action onActivated;
 	public float removeTime;
+
+	public void DeleteSpecial()
+	{
+		onActivated = null;
+	}
+
+	public Specials(System.Action onAct, float removeT)
+	{
+		onActivated = onAct;
+		removeTime = removeT;
+	}
 }
 
 [System.Serializable]
@@ -46,7 +57,7 @@ public class Item
     public Sprite icon;
 	public ItemType itemType;
 
-	public System.Action onUse;
+	public Specials onUse;
 
     public int maxStack;
 
@@ -76,7 +87,7 @@ public class Item
 		}
 	}
 
-	public Item(string n, ItemType iType, int max, System.Action useFunc ,bool isLateInit) // ######################################
+	public Item(string n, ItemType iType, int max, Specials useFunc ,bool isLateInit) // ######################################
 	{
         myName = n;
 		if (isLateInit)
@@ -118,7 +129,7 @@ public class Item
 
 	public virtual void Use()
 	{
-		onUse.Invoke();
+		onUse.onActivated.Invoke();
 	}
 }
 

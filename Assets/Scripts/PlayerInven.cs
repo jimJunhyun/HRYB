@@ -373,7 +373,7 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (!inven[curHolding].isEmpty())
 		{
-			inven[curHolding].info.onUse.Invoke();
+			inven[curHolding].info.onUse.onActivated.Invoke();
 		}
 	}
 

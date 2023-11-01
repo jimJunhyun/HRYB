@@ -28,6 +28,9 @@ public class PlayerMove : MoveModule
 	public float angleXMin;
 	public float angleXMax;
 
+	public bool jumpable;
+	public bool rollable;
+
 	Animator anim;
 
 	private readonly int stateHash = Animator.StringToHash("State");
@@ -95,6 +98,55 @@ public class PlayerMove : MoveModule
 
 	public override void Move()
 	{
+		SlipCalc();
+		GravityCalc();
+
+		if (isLocked && target == null)
+		{
+			ResetTargets();
+		}
+
+		switch (GameManager.instance.curCamStat)
+		{
+			case CamStatus.Freelook:
+				{
+					Vector3 vec = ConvertToCamFront(moveDir);
+
+					if (vec.sqrMagnitude != 0)
+					{
+						to = Quaternion.LookRotation(vec, Vector3.up);
+					}
+					RotateTo();
+					PlayerControllerMove(vec);
+				}
+				
+				break;
+			case CamStatus.Locked:
+				{
+					Vector3 vec = GetDir(target);
+					to = Quaternion.LookRotation(vec, Vector3.up);
+					if (to != Quaternion.identity)
+					{
+						RotateTo();
+					}
+					PlayerControllerMove(transform.rotation * moveDir);
+				}
+				
+				break;
+			case CamStatus.Aim:
+				{
+					Vector3 vec = ConvertToCamFront(moveDir);
+
+					PlayerControllerMove(vec);
+				}
+				break;
+			default:
+				break;
+		}
+	}
+
+	void SlipCalc()
+	{
 		if (slip)
 		{
 			accSlipDir += slipDir * Time.deltaTime;
@@ -106,6 +158,10 @@ public class PlayerMove : MoveModule
 				accSlipDir = Vector3.zero;
 			}
 		}
+	}
+
+	void GravityCalc()
+	{
 		if (!ctrl.isGrounded)
 		{
 			gravityAccel += GRAVITY * Time.deltaTime;
@@ -117,43 +173,31 @@ public class PlayerMove : MoveModule
 				gravityAccel = 0;
 			}
 		}
+	}
 
-		if (isLocked && target == null)
-		{
-			ResetTargets();
-		}
-		if (GameManager.instance.curCamStat == CamStatus.Aim)
-		{
-			Vector3 rot = mainCam.transform.eulerAngles;
-			rot.x = 0;
-			Vector3 v = Quaternion.Euler(rot) * moveDir;
+	Vector3 GetDir(Transform to)
+	{
+		Vector3 v = to.position - transform.position;
+		v.y = 0;
+		return v;
+	}
 
-			ctrl.Move((accSlipDir + (v * speed) - (Vector3.up * GRAVITY) - (Vector3.up * gravityAccel)) * Time.deltaTime);
-		}
-		else if (GameManager.instance.curCamStat == CamStatus.Freelook)
-		{
-			Vector3 rot = mainCam.transform.eulerAngles;
-			rot.x = 0;
-			Vector3 v = Quaternion.Euler(rot) * moveDir;
+	Vector3 ConvertToCamFront(Vector3 original)
+	{
+		Vector3 rot = mainCam.transform.eulerAngles;
+		rot.x = 0;
+		Vector3 v = Quaternion.Euler(rot) * original;
+		return v;
+	}
 
-			if (moveDir.sqrMagnitude != 0)
-			{
-				to = Quaternion.LookRotation(v, Vector3.up);
-			}
-			transform.rotation = Quaternion.RotateTowards(transform.rotation, to, spinSpd);
-			ctrl.Move((accSlipDir + (v * speed) - (Vector3.up * GRAVITY) - (Vector3.up * gravityAccel)) * Time.deltaTime);
-		}
-		else
-		{
-			Vector3 v = target.position - transform.position;
-			v.y = 0;
-			to = Quaternion.LookRotation(v, Vector3.up);
-			if (to != Quaternion.identity)
-			{
-				transform.rotation = Quaternion.RotateTowards(transform.rotation, to, spinSpd);
-			}
-			ctrl.Move((accSlipDir + (transform.rotation * moveDir * speed) - (Vector3.up * GRAVITY) - (Vector3.up * gravityAccel)) * Time.deltaTime);
-		}
+	public void RotateTo()
+	{
+		transform.rotation = Quaternion.RotateTowards(transform.rotation, to, spinSpd);
+	}
+
+	public void PlayerControllerMove(Vector3 dir)
+	{
+		ctrl.Move((accSlipDir + (dir * speed) - (Vector3.up * GRAVITY) - (Vector3.up * gravityAccel)) * Time.deltaTime);
 	}
 
 	public void Move(InputAction.CallbackContext context)
@@ -169,7 +213,7 @@ public class PlayerMove : MoveModule
 
 	public void Jump(InputAction.CallbackContext context)
 	{
-		if (ctrl.isGrounded && !slip)
+		if (ctrl.isGrounded && !slip && jumpable)
 		{
 			gravityAccel = -jumpPwer;
 		}
