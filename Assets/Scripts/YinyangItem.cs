@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 
@@ -32,10 +33,28 @@ public class YinyangItem : Item
 		}
 	}
 
+	public override string MyName 
+	{
+		get
+		{
+			StringBuilder sb = new StringBuilder();
+			for(int i = 0; i < processes.Count; ++i)
+			{
+				sb.Append(processes[i].prefix);
+			}
+			sb.Append(myName);
+			return sb.ToString();
+		}
+		set
+		{
+			myName = value;
+		}
+	}
+
 	public float initDec;
 	public float decPerSec;
 
-	public List<PreProcess> processes = new List<PreProcess>();
+	public List<PreProcess> processes = new List<PreProcess>(); //곱/제 연산의 추가를 고려하여 순서를 중요시.
 	public char nameAsChar;
 
 	public float applySpeed = 1f;
@@ -54,7 +73,7 @@ public class YinyangItem : Item
 		data.isClampedZero = true;
 		if(ch == ' ')
 		{
-			nameAsChar = myName[UnityEngine.Random.Range(0, myName.Length)];
+			nameAsChar = MyName[UnityEngine.Random.Range(0, MyName.Length)];
 		}
 		else
 		{
@@ -70,12 +89,6 @@ public class YinyangItem : Item
 
 	public override int GetHashCode()
 	{
-		int hash1 = 13;
-		for (int i = 0; i < processes.Count; i++)
-		{
-			hash1 += processes[i].GetHashCode();
-		}
-		hash1 = HashCode.Combine(hash1, myName);
-		return hash1;
+		return MyName.GetHashCode();
 	}
 }

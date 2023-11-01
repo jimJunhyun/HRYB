@@ -1,39 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
-public class RoastPoint : InterPoint
+public class RoastPoint : CraftPoint //###################
 {
-	public YinyangItem holding;
+	protected override int maxAmt { get => 1; }
 
-	bool processing = false;
-	Roast ongoing = null;
+	Stack<KeyValuePair<Roast, YinyangItem>> ongoings = new Stack<KeyValuePair<Roast, YinyangItem>>();
 
-	public override void Inter() //템넣기및빼기
+	public override void Process()
 	{
-		if(holding == null)
+		base.Process();
+		foreach (var item in holding)
 		{
-
-		}
-		else
-		{
+			YinyangItem roastTo = (item.info) as YinyangItem;
+			Roast r = new Roast(roastTo);
+			
+			if (!roastTo.processes.Contains(r))
+			{
+				r.StartProcess();
+				ongoings.Push(new KeyValuePair<Roast, YinyangItem>(r, roastTo));
+			}
 			
 		}
 	}
 
-	public override void AltInter()//굽기및 취소
+	public override void Stop()
 	{
-		if (!processing)
+		base.Stop();
+		while(ongoings.Count > 0)
 		{
-			ongoing = new Roast(holding);
-			ongoing.StartProcess();
-			
-			processing = true;
+			KeyValuePair<Roast, YinyangItem> r = ongoings.Pop();
+			r.Key.EndProcess();
+			r.Value.processes.Add(r.Key);
 		}
-		if (processing)
-		{
-			holding.processes.Add(ongoing);
-		}
-		
 	}
 }

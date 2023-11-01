@@ -91,7 +91,7 @@ public struct Recipe
 		sb.Append("(Ingredients : ");
 		foreach (var item in recipe)
 		{
-			sb.Append($" [{item.info.myName} : {item.num}] , ");
+			sb.Append($" [{item.info.MyName} : {item.num}] , ");
 		}
 		sb.Append(")(Requirements : ");
 		foreach (var item in requirement)
@@ -112,7 +112,7 @@ public struct Recipe
 		long hash1 = 19;
 		foreach (var item in recipe)
 		{
-			hash1 = hash1 * 31 + HashCode.Combine(item.info.myName, item.num);
+			hash1 = hash1 * 31 + HashCode.Combine(item.info.MyName, item.num);
 		}
 
 		long hash2 = 31;

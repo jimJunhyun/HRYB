@@ -42,7 +42,7 @@ public class Specials
 }
 
 [System.Serializable]
-public class Item
+public class Item // #################
 {
     public static Hashtable nameDataHashT = new Hashtable()
 	{
@@ -52,7 +52,11 @@ public class Item
 		{"밧줄".GetHashCode(), new Item("밧줄", ItemType.Solid,  10, null, false) },
 	}; //같은 이름의 아이템을 같은 물건으로 취급하기 위해 사용.
     public int Id {get => myName.GetHashCode();}
-    public string myName;
+    protected string myName;
+	public virtual string MyName
+	{
+		get => myName; set => myName = value;
+	}
 
     public Sprite icon;
 	public ItemType itemType;
@@ -87,7 +91,7 @@ public class Item
 		}
 	}
 
-	public Item(string n, ItemType iType, int max, Specials useFunc ,bool isLateInit) // ######################################
+	public Item(string n, ItemType iType, int max, Specials useFunc ,bool isLateInit)
 	{
         myName = n;
 		if (isLateInit)
@@ -104,27 +108,22 @@ public class Item
 
 	public override int GetHashCode()
 	{
-		return base.GetHashCode();
+		return MyName.GetHashCode();
 	}
 
 	public static bool operator ==(Item left, Item right)
 	{
-		return left?.myName == right?.myName && left?.rarity == right?.rarity;
+		return left?.MyName == right?.MyName ;
 	}
 
     public static bool operator !=(Item left, Item right)
     {
-		return left?.myName != right?.myName || left?.rarity != right?.rarity;
+		return left?.MyName != right?.MyName ;
     }
 
     public override bool Equals(object obj)
 	{
-		bool res = (obj as Item)?.Id == this.Id && (obj as Item).rarity == this.rarity;
-		if ((obj as Item)?.Id == null)
-		{
-			return false;
-		}
-		return res;
+		return obj is Item i && i.MyName == MyName;
 	}
 
 	public virtual void Use()

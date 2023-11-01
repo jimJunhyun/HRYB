@@ -56,7 +56,7 @@ public class CraftPoint : InterPoint
 					holding.Remove(data);
 					holding.Add(new ItemAmountPair(data.info, data.num + 1));
 					insertOrder.Push(new ItemAmountPair(info.info, 1));
-					Debug.Log($"{data.info.myName} 1개 추가됨. {data.num + 1}개");
+					Debug.Log($"{data.info.MyName} 1개 추가됨. {data.num + 1}개");
 					count += 1;
 				}
 				else
@@ -64,11 +64,11 @@ public class CraftPoint : InterPoint
 					data = new ItemAmountPair(info.info, 1);
 					holding.Add(data);
 					insertOrder.Push(data);
-					Debug.Log($"{info.info.myName} 1개 새로 추가됨.");
+					Debug.Log($"{info.info.MyName} 1개 새로 추가됨.");
 					count += 1;
 				}
 
-				Debug.Log($"ADDED {info.info.myName}");
+				Debug.Log($"ADDED {info.info.MyName}");
 			}
 			else
 				Debug.Log("아이템이 없거나 넣을 수 없는 아이템.");
@@ -92,7 +92,7 @@ public class CraftPoint : InterPoint
 				{
 					holding.Add(new ItemAmountPair(info.info, info.num - 1));
 				}
-				Debug.Log($"아이템 뺌 : {info.info.myName}, {info.num - 1}개.");
+				Debug.Log($"아이템 뺌 : {info.info.MyName}, {info.num - 1}개.");
 				count -= 1;
 			}
 			else

@@ -26,15 +26,7 @@ public class PreProcess
 			case ProcessType.None:
 				break;
 			case ProcessType.Roast:
-				int r = UnityEngine.Random.Range(0, 2);
-				if(r == 0)
-				{
-					prefix = "작";
-				}
-				else
-				{
-					prefix = "소";
-				}
+				prefix = "작";
 				break;
 		}
 	}
@@ -75,19 +67,28 @@ public class Roast : PreProcess
 		{
 			yield return GameManager.instance.waitSec;
 			effSec += 1;
-
-			if(effSec > info.onUse.removeTime)
+			Debug.Log($"감소량 : {Decreased}");
+			if(info.onUse != null)
 			{
-				info.onUse.DeleteSpecial();
-				roasted = true;
+				if (effSec > info.onUse.removeTime && !roasted)
+				{
+					info.onUse.DeleteSpecial();
+					roasted = true;
+					prefix = "소";
+					Debug.Log("태움.");
+				}
 			}
+			
 		}
+	}
+	public override bool Equals(object obj)
+	{
+		Debug.Log("!!");
+		return obj is Roast;
 	}
 
 	public override int GetHashCode()
 	{
-		int hash1 = 17;
-		int hash2 = HashCode.Combine(hash1, roasted, effSec);
-		return hash2;
+		return 0;
 	}
 }

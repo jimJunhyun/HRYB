@@ -191,7 +191,7 @@ public class PlayerInven : MonoBehaviour
 				inven[idxes[i]] = item;
 				if(amt != num)
 				{
-					Debug.Log($"{inven[idxes[i]].info.myName}, {inven[idxes[i]].number}개로 변경, 위치 {i}");
+					Debug.Log($"{inven[idxes[i]].info.MyName}, {inven[idxes[i]].number}개로 변경, 위치 {i}");
 				}
 				num = amt;
 				if (num == 0)
@@ -210,11 +210,11 @@ public class PlayerInven : MonoBehaviour
 					InventoryItem item = new InventoryItem(data, cnt);
 					int idx = inven.Add(item);
 
-					Debug.Log($"{item.info.myName}, {item.number}개, 새로 추가됨, 위치 : {idx}");
+					Debug.Log($"{item.info.MyName}, {item.number}개, 새로 추가됨, 위치 : {idx}");
 				}
 				else
 				{
-					Debug.Log($"{data.myName}, {num} 만큼은 더이상 추가할 수 없음.");
+					Debug.Log($"{data.MyName}, {num} 만큼은 더이상 추가할 수 없음.");
 					return num;
 				}
 			}
@@ -230,16 +230,16 @@ public class PlayerInven : MonoBehaviour
 				{
 					InventoryItem item = new InventoryItem(data, cnt);
 					int idx = inven.Add(item);
-					Debug.Log($"{item.info.myName}, {item.number}개, 새로 추가됨, 위치 : {idx}");
+					Debug.Log($"{item.info.MyName}, {item.number}개, 새로 추가됨, 위치 : {idx}");
 				}
 				else
 				{
-					Debug.Log($"{data.myName}, {num} 만큼은 더이상 추가할 수 없음.");
+					Debug.Log($"{data.MyName}, {num} 만큼은 더이상 추가할 수 없음.");
 					return num;
 				}
 			}
 		}
-		Debug.Log($"{data.myName}, {num} 만큼은 더이상 추가할 수 없음.");
+		Debug.Log($"{data.MyName}, {num} 만큼은 더이상 추가할 수 없음.");
 		return num;
 	}
 
@@ -321,26 +321,26 @@ public class PlayerInven : MonoBehaviour
 	{
 		if(!inven[from].isEmpty() && !inven[to].isEmpty() && inven[from].info != inven[to].info && num == inven[from].number)
 		{
-			Debug.Log($"{inven[from].info.myName}, {inven[from].number}개, {inven[to].info.myName}, {inven[to].number}개에서, ");
+			Debug.Log($"{inven[from].info.MyName}, {inven[from].number}개, {inven[to].info.MyName}, {inven[to].number}개에서, ");
 			Swap(from, to);
-			Debug.Log($"{inven[from].info.myName}, {inven[from].number}개, {inven[to].info.myName}, {inven[to].number}개로 변경.");
+			Debug.Log($"{inven[from].info.MyName}, {inven[from].number}개, {inven[to].info.MyName}, {inven[to].number}개로 변경.");
 			return true;
 		}
 		else
 		{
 			if ((!inven[from].isEmpty() && inven[to].isEmpty()) || (inven[from].info == inven[to].info))
 			{
-				Debug.Log($"{inven[from].info.myName}, {inven[from].number}개, {(inven[to].isEmpty() ? 0 : inven[to].info.myName)}, {(inven[to].isEmpty() ? 0 : inven[to].number)}개에서, ");
+				Debug.Log($"{inven[from].info.MyName}, {inven[from].number}개, {(inven[to].isEmpty() ? 0 : inven[to].info.MyName)}, {(inven[to].isEmpty() ? 0 : inven[to].number)}개에서, ");
 				int leftover;
 				if ((leftover = AddItem(inven[from].info, to, num)) >= 0)
 				{
 					RemoveItem(from, num - leftover);
-					Debug.Log($"{(inven[from].isEmpty() ? 0 : inven[from].info.myName)}, {(inven[from].isEmpty() ? 0 : inven[from].number)}개, {inven[to].info.myName}, {inven[to].number}개로 변경.");
+					Debug.Log($"{(inven[from].isEmpty() ? 0 : inven[from].info.MyName)}, {(inven[from].isEmpty() ? 0 : inven[from].number)}개, {inven[to].info.MyName}, {inven[to].number}개로 변경.");
 					return true;
 				}
 				Debug.Log("목적지 꽉 참.");
 			}
-			Debug.Log($"목적지 주인 있음. {inven[to].info.myName}");
+			Debug.Log($"목적지 주인 있음. {inven[to].info.MyName}");
 			return false;
 		}
 	}

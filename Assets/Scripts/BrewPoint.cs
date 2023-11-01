@@ -128,7 +128,7 @@ public class BrewPoint : CraftPoint
 			foreach (var item in result)
 			{
 				GameManager.instance.pinven.AddItem(item.info, item.num);
-				Debug.Log($"{item.info.myName} 획득, {(item.info as YinyangItem).yywx.ToString()}");
+				Debug.Log($"{item.info.MyName} 획득, {(item.info as YinyangItem).yywx.ToString()}");
 			}
 		}
 		else
@@ -136,7 +136,7 @@ public class BrewPoint : CraftPoint
 			if (!GameManager.instance.pinven.isFull)
 			{
 				GameManager.instance.pinven.AddItem(resultItem, 1);
-				Debug.Log($"{resultItem.myName} 획득, {(resultItem).yywx.ToString()}");
+				Debug.Log($"{resultItem.MyName} 획득, {(resultItem).yywx.ToString()}");
 			}
 		}
 	}
@@ -160,7 +160,7 @@ public class BrewPoint : CraftPoint
 			yield return GameManager.instance.waitSec;
 			foreach (var item in holding)
 			{
-				Debug.Log($"{item.info.myName} : {(item.info as YinyangItem).nameAsChar}");
+				Debug.Log($"{item.info.MyName} : {(item.info as YinyangItem).nameAsChar}");
 				YinyangWuXing brewed = (item.info as YinyangItem).yywx * (1 / brewMaxSec) * Random.Range(0.9f, 1.1f) * item.num; //추출 공식은 어떻게 되는가?
 				resultItem.yywx += brewed;
 				//언제 능력이 더해지는가?
