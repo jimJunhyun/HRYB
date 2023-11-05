@@ -172,6 +172,10 @@ public class PlayerInven : MonoBehaviour
 			}
 		}
 	}
+	public bool HoldingYinYangItem
+	{
+		get => CurHoldingItem != ItemAmountPair.Empty && CurHoldingItem.info is YinyangItem;
+	}
 	public bool isFull { get => inven.Count >= cap;}
 
 	private void Awake()

@@ -13,6 +13,7 @@ public class DamageObject : MonoBehaviour
 		LifeModule yc;
 		if (other.TryGetComponent<LifeModule>(out yc))
 		{
+			Debug.Log(other);
 			Damage(yc);
 		}
 	}

@@ -4,12 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Linq;
 
-public enum PlayerStates
-{
-	Normal,
-	Sit,
-	Crawl,
-}
+
+
 
 public class PlayerMove : MoveModule
 {
@@ -31,12 +27,7 @@ public class PlayerMove : MoveModule
 	public bool jumpable;
 	public bool rollable;
 
-	Animator anim;
-
-	private readonly int stateHash = Animator.StringToHash("State");
-	private readonly int runHash = Animator.StringToHash("Run");
-
-	private readonly int camStatHash = Animator.StringToHash("CamStat");
+	public float idleDetailT = 2;
 
 	float gravityAccel = 0;
 	float angle = 0;
@@ -44,8 +35,6 @@ public class PlayerMove : MoveModule
 
 	Vector3 slipDir = Vector3.zero;
 	Vector3 accSlipDir = Vector3.zero;
-
-	
 
 	Quaternion to;
 	Camera mainCam;
@@ -59,6 +48,8 @@ public class PlayerMove : MoveModule
 	Transform target;
 	bool isLocked = false;
 
+	
+
 	Transform middle;
 
 	private void Awake()
@@ -66,7 +57,6 @@ public class PlayerMove : MoveModule
 		ctrl = GetComponent<CharacterController>();
 		mainCam = Camera.main;
 		middle = transform.Find("Middle");
-		anim = GetComponentInChildren<Animator>();
 	}
 
 	private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -94,6 +84,10 @@ public class PlayerMove : MoveModule
 	private void FixedUpdate()
 	{
 		Move();
+		if(moveDir.sqrMagnitude < 0.1f)
+		{
+			moveStat = MoveStates.Idle;
+		}
 	}
 
 	public override void Move()
@@ -208,6 +202,38 @@ public class PlayerMove : MoveModule
 		if(target != null && (target.position - transform.position).sqrMagnitude >= lockOnDist * lockOnDist)
 		{
 			ResetTargets();
+		}
+	}
+
+	public void Run(InputAction.CallbackContext context)
+	{
+		if(moveStat != MoveStates.Sit)
+		{
+			if (context.started)
+			{
+				moveStat = MoveStates.Run;
+			}
+			if (context.canceled)
+			{
+				moveStat = MoveStates.Walk;
+			}
+		}
+		
+
+	}
+
+	public void Crouch(InputAction.CallbackContext context)
+	{
+		if (context.started)
+		{
+			if(moveStat == MoveStates.Sit)
+			{
+				moveStat = MoveStates.Walk;
+			}
+			else
+			{
+				moveStat = MoveStates.Sit;
+			}
 		}
 	}
 

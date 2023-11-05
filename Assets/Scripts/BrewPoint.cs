@@ -12,7 +12,7 @@ public class BrewPoint : CraftPoint
 
 
 	ItemAmountPair liquidNum = new ItemAmountPair();
-	int waterHash = "물".GetHashCode();
+	readonly int waterHash = "물".GetHashCode();
 
 	int liqMax = 5;
 	int numPerWater = 2;
@@ -139,6 +139,8 @@ public class BrewPoint : CraftPoint
 				Debug.Log($"{resultItem.MyName} 획득, {(resultItem).yywx.ToString()}");
 			}
 		}
+		Initialize();
+		
 	}
 
 	public override string GetMedicineName()
@@ -150,6 +152,14 @@ public class BrewPoint : CraftPoint
 		}
 		s.Append('탕');
 		return s.ToString();
+	}
+
+	public override void Initialize()
+	{
+		liquidNum = ItemAmountPair.Empty;
+		resultItem = null;
+		ongoing = null;
+		base.Initialize();
 	}
 
 	IEnumerator DelAddStat()

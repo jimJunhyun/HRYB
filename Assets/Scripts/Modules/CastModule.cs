@@ -20,7 +20,7 @@ public class Preparation
 	}
 }
 
-public class CastModule : MonoBehaviour
+public class CastModule : Module
 {
     public Dictionary<string, Preparation> nameCastPair = new Dictionary<string, Preparation>();
 

@@ -8,11 +8,16 @@ public class PlayerInter : SightModule
 {
 	public List<IInterable> checkeds = null;
 
+	public float holdTime = 0.5f;
+
 	Ray r;
 	RaycastHit[] hits;
 
 	[HideInInspector]
 	public int curSel = 0;
+
+	float pressStart = 0;
+	float pressStop = 0;
 
 	public IInterable curFocused 
 	{
@@ -82,19 +87,23 @@ public class PlayerInter : SightModule
 
     public void Interact(InputAction.CallbackContext context)
 	{
-		if(checkeds != null && checkeds.Count > 0 && context.performed)
+		if (context.performed)
 		{
-			GameManager.instance.pCast.Cast("interact");
-			Debug.Log($"From : {gameObject.name}");
+			pressStart = Time.time;
+		}
+
+		if(checkeds != null && checkeds.Count > 0 && context.canceled)
+		{
+			pressStop = Time.time;
+			if ((pressStop - pressStart) < 0.5f || (!curFocused.AltInterable))
+			{
+				GameManager.instance.pCast.Cast("interact");
+			}
+			else
+			{
+				GameManager.instance.pCast.Cast("altInteract");
+			}
 		}
 	}
 
-	public void AltInteract(InputAction.CallbackContext context)
-	{
-		if (checkeds != null && checkeds.Count > 0 && context.performed)
-		{
-			GameManager.instance.pCast.Cast("altInteract");
-			Debug.Log($"From : {gameObject.name}");
-		}
-	}
 }

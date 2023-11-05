@@ -15,6 +15,8 @@ public class CraftPoint : InterPoint
 	protected virtual int maxAmt{ get; set;}
 	protected int count;
 
+	
+
 	//private void Awake()
 	//{
 	//	  onInter.AddListener( NormalInter);
@@ -37,7 +39,7 @@ public class CraftPoint : InterPoint
 			}
 			else
 			{
-				Debug.Log("아이템을 들고있지 않거나 최대치에 도달함.");
+				Debug.Log($"아이템을 들고있지 않음 : {GameManager.instance.pinven.CurHoldingItem == ItemAmountPair.Empty} 최대치에 도달 {count >= maxAmt}");
 			}
 		}
 		
@@ -48,7 +50,7 @@ public class CraftPoint : InterPoint
 		if(count < maxAmt)
 		{
 			ItemAmountPair info = GameManager.instance.pinven.CurHoldingItem;
-			if (info != ItemAmountPair.Empty && (info.info as YinyangItem != null) && GameManager.instance.pinven.RemoveHolding(1))
+			if (GameManager.instance.pinven.HoldingYinYangItem && GameManager.instance.pinven.RemoveHolding(1))
 			{
 				ItemAmountPair data;
 				if ((data = holding.Where(item => item.info == info.info).FirstOrDefault()).info != null)
@@ -61,7 +63,7 @@ public class CraftPoint : InterPoint
 				}
 				else
 				{
-					data = new ItemAmountPair(info.info, 1);
+					data = new ItemAmountPair(new YinyangItem(info.info as YinyangItem), 1);
 					holding.Add(data);
 					insertOrder.Push(data);
 					Debug.Log($"{info.info.MyName} 1개 새로 추가됨.");
@@ -108,7 +110,7 @@ public class CraftPoint : InterPoint
 		{
 			Stop();
 		}
-		else if(holding.Count > 0)
+		else if (holding.Count > 0)
 		{
 			Process();
 		}
@@ -127,5 +129,14 @@ public class CraftPoint : InterPoint
 	public virtual string GetMedicineName()
 	{
 		return "";
+	}
+
+	public virtual void Initialize()
+	{
+		processing = false;
+		holding.Clear();
+		result.Clear();
+		insertOrder.Clear();
+		count = 0;
 	}
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+
 public class PlayerAttack : AttackModule
 {
 	public float chargePerSec;
@@ -16,9 +18,10 @@ public class PlayerAttack : AttackModule
 	Transform shootPos;
 	public Transform ShootPos { get; protected set;}
 	float curCharge;
-	bool isAimed = false;
 
 	bool shaking = false;
+
+	bool aiming = false;
 
 
 	float AimTime { get => Time.time - aimStart;}
@@ -27,7 +30,9 @@ public class PlayerAttack : AttackModule
 	float aimStart = 0;
 	float prevShot = 0;
 
-	bool loaded = false;
+	bool loaded = true;
+
+	
 
 	private readonly int bowOnHash = Animator.StringToHash("BowOn");
 	private readonly int aimHash = Animator.StringToHash("Aim");
@@ -45,7 +50,7 @@ public class PlayerAttack : AttackModule
 
 	private void Update()
 	{
-		if (isAimed)
+		if (loaded && attackState == AttackStates.Prepare)
 		{
 			curCharge += chargePerSec * prepMod * Time.deltaTime;
 			curCharge = Mathf.Clamp(curCharge, 0, maxChargeAmt);
@@ -65,34 +70,31 @@ public class PlayerAttack : AttackModule
 				shaking = false;
 				GameManager.instance.UnShakeCam();
 			}
-
-			
 		}
 	}
 
 	public void OnAim(InputAction.CallbackContext context)
 	{
-		if (context.performed && !isAimed)
+		if (context.performed && !loaded)
 		{
 			GameManager.instance.SwitchTo(CamStatus.Aim);
-			if (loaded)
-			{
-				isAimed = true; 
-				aimStart = Time.time;
-			}
+			attackState = AttackStates.Prepare;
+			StartCoroutine(DelayReShoot(atkGap));
+			aiming = true;
 		}
 		if (context.canceled)
 		{
 			GameManager.instance.SwitchTo(CamStatus.Freelook);
-			loaded = false;
-			isAimed = false;
-			curCharge = 0;
+			attackState = AttackStates.None;
+
+			ResetBowStat();
+			aiming = false;
 		}
 	}
 
 	public void OnAttack(InputAction.CallbackContext context)
 	{
-		if (context.started && loaded && isAimed)	
+		if (context.started && loaded && curCharge > 0.1f)	
 		{
 			Attack();
 		}
@@ -101,18 +103,26 @@ public class PlayerAttack : AttackModule
 	public override void Attack()
 	{
 		Debug.Log($"{curCharge} 파워로 발사.");
+		attackState = AttackStates.Trigger;
+		GetActor().anim.SetAttackTrigger();
+
 		Arrow r = PoolManager.GetObject("ArrowTemp", shootPos.position, shootPos.forward).GetComponent<Arrow>();
 		r.SetInfo(damage, EffSpeed, isDirect);
 		r.Shoot(curCharge);
-		GameManager.instance.pAtk.curCharge = 0;
-		StartCoroutine(DelayReShoot(atkGap));
+
+		attackState = AttackStates.Prepare;
+		ResetBowStat();
+	}
+
+	void ResetBowStat()
+	{
+		curCharge = 0;
+		loaded = false;
 	}
 
 	IEnumerator DelayReShoot(float gap)
 	{
 		yield return new WaitForSeconds(gap);
-		prevShot = Time.time;
-		aimStart = Time.time;
 		loaded = true;
 	}
 }

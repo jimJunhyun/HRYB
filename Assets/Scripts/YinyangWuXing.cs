@@ -177,6 +177,13 @@ public struct YinyangWuXing
 		isClampedZero = minZero;
 	}
 
+	public YinyangWuXing(bool minZero = false)
+	{
+		yy = new YinYang(0, 0);
+		wx = new WuXing(0, 0, 0, 0, 0);
+		isClampedZero = minZero;
+	}
+
 	public static YinyangWuXing operator*(YinyangWuXing lft, float rht)
 	{
 		for (int i = 0; i < ((int)YYInfo.Max); i++)
