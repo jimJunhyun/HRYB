@@ -7,10 +7,22 @@ public class PlayerAnim : AnimModule
 	
 	protected readonly int camStatHash = Animator.StringToHash("CamStat");
 	protected readonly int atkStatHash = Animator.StringToHash("AtkStat");
+	protected readonly int jumpHash = Animator.StringToHash("Jump");
+	protected readonly int onAirHash = Animator.StringToHash("OnAir");
+	protected readonly int interactHash = Animator.StringToHash("Interact");
+	protected readonly int vertPowerHash = Animator.StringToHash("VertPower");
+
+	PlayerMove pmove;
 
 	public override void Awake()
 	{
 		anim = GetComponentInChildren<Animator>();
+		
+	}
+
+	private void Start()
+	{
+		pmove = GetActor().move as PlayerMove;
 	}
 
 	private void LateUpdate()
@@ -37,12 +49,9 @@ public class PlayerAnim : AnimModule
 					}
 					break;
 				case CamStatus.Locked:
-					anim.SetFloat(moveXHash, GetActor().move.MoveVelocity.x);
-					anim.SetFloat(moveYHash, GetActor().move.MoveVelocity.z);
-					break;
 				case CamStatus.Aim:
-					anim.SetFloat(moveXHash, GetActor().move.MoveVelocity.x);
-					anim.SetFloat(moveYHash, GetActor().move.MoveVelocity.z);
+					anim.SetFloat(moveXHash, pmove.Velocity.x);
+					anim.SetFloat(moveYHash, pmove.Velocity.z);
 					break;
 				default:
 					break;
@@ -57,5 +66,17 @@ public class PlayerAnim : AnimModule
 		}
 
 		anim.SetInteger(atkStatHash, ((int)GetActor().atk.attackState));
+		anim.SetBool(onAirHash, pmove.onAir);
+		anim.SetFloat(vertPowerHash, pmove.Velocity.y);
+	}
+
+	public void SetJumpTrigger()
+	{
+		anim.SetTrigger(jumpHash);
+	}
+
+	public void SetInteractTrigger()
+	{
+		anim.SetTrigger(interactHash);
 	}
 }

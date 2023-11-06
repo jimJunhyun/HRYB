@@ -27,7 +27,10 @@ public class PlayerMove : MoveModule
 	public bool jumpable;
 	public bool rollable;
 
-	public float idleDetailT = 2;
+	public bool onAir
+	{
+		get => !ctrl.isGrounded;
+	}
 
 	float gravityAccel = 0;
 	float angle = 0;
@@ -63,6 +66,11 @@ public class PlayerMove : MoveModule
 					return Vector3.zero;
 			}
 		}
+	}
+
+	public Vector3 Velocity
+	{
+		get => ctrl.velocity;
 	}
 
 
@@ -256,6 +264,7 @@ public class PlayerMove : MoveModule
 		if (ctrl.isGrounded && !slip && jumpable)
 		{
 			gravityAccel = -jumpPwer;
+			(GetActor().anim as PlayerAnim).SetJumpTrigger();
 		}
 	}
 

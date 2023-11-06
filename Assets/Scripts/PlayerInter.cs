@@ -97,10 +97,12 @@ public class PlayerInter : SightModule
 			pressStop = Time.time;
 			if ((pressStop - pressStart) < 0.5f || (!curFocused.AltInterable))
 			{
+				(GetActor().anim as PlayerAnim).SetInteractTrigger();
 				GameManager.instance.pCast.Cast("interact");
 			}
 			else
 			{
+				(GetActor().anim as PlayerAnim).SetInteractTrigger();
 				GameManager.instance.pCast.Cast("altInteract");
 			}
 		}

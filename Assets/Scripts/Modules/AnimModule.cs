@@ -6,10 +6,14 @@ public class AnimModule : Module
 {
 	protected readonly int moveHash = Animator.StringToHash("Move");
 	protected readonly int idleHash = Animator.StringToHash("Idle");
-	protected readonly int jumpHash = Animator.StringToHash("Jump");
+	
 	protected readonly int attackHash = Animator.StringToHash("Attack");
 	protected readonly int moveXHash = Animator.StringToHash("MoveX");
 	protected readonly int moveYHash = Animator.StringToHash("MoveY");
+	protected readonly int hitHash = Animator.StringToHash("Hit");
+	protected readonly int dieHash = Animator.StringToHash("Die");
+
+
 
 
 	protected Animator anim;
@@ -24,5 +28,16 @@ public class AnimModule : Module
 	{
 		anim.SetTrigger(attackHash);
 	}
+
+	public virtual void SetHitTrigger()
+	{
+		anim.SetTrigger(hitHash);
+	}
+
+	public virtual void SetDieTrigger()
+	{
+		anim.SetTrigger(dieHash);
+	}
+
 	
 }
