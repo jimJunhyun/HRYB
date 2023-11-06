@@ -38,6 +38,7 @@ public class StatusEffects
 
     void OnWoodDebuffActivated(Actor self, Actor inflicter)
 	{
+		
         self.life.regenMod = 0.5f;
 	}
 
@@ -104,7 +105,7 @@ public class StatusEffects
 
     void OnWaterDebuffActivated(Actor self, Actor inflicter)
     {
-        self.move.speed *= 0.5f;
+        self.move.Speed *= 0.5f;
         self.atk.atkGap *= 2;
     }
 
@@ -115,7 +116,7 @@ public class StatusEffects
 
     void OnWaterDebuffEnded(Actor self)
     {
-        self.move.speed *= 2f;
+        self.move.Speed *= 2f;
         self.atk.atkGap *= 0.5f;
     }
 }

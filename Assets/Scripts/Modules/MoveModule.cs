@@ -4,7 +4,6 @@ using UnityEngine;
 
 public enum MoveStates
 {
-	Idle,
 	Walk,
 	Run,
 	Sit,
@@ -14,11 +13,26 @@ public enum MoveStates
 public class MoveModule : Module
 {
     protected float speed = 4f;
+
+	public float Speed
+	{
+
+		get => speed * speedMod;
+		set => speed = value;
+	}
+
     public Vector3 moveDir = Vector3.zero;
+
+	public virtual Vector3 MoveVelocity
+	{
+		get => moveDir * speed;
+	}
 
 	public float runSpeed;
 	public float walkSpeed;
 	public float crouchSpeed;
+
+	public float speedMod = 1.0f;
 
 	private MoveStates curStat;
 	public MoveStates moveStat
@@ -28,9 +42,6 @@ public class MoveModule : Module
 		{
 			switch (value)
 			{
-				case MoveStates.Idle:
-					curStat = MoveStates.Idle;
-					break;
 				case MoveStates.Walk:
 					curStat = MoveStates.Walk;
 					speed = walkSpeed;
@@ -47,6 +58,11 @@ public class MoveModule : Module
 					break;
 			}
 		}
+	}
+
+	public bool idling
+	{
+		get => moveDir.sqrMagnitude < 0.1f;
 	}
 
 	public virtual void Move()

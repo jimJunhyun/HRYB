@@ -21,55 +21,38 @@ public class PlayerAttack : AttackModule
 
 	bool shaking = false;
 
-	bool aiming = false;
-
 
 	float AimTime { get => Time.time - aimStart;}
-	float CurGap { get => Time.time - prevShot;}
+	
+	float curGap = 0;
 
 	float aimStart = 0;
-	float prevShot = 0;
 
-	bool loaded = true;
+	bool loaded = false;
 
-	
-
-	private readonly int bowOnHash = Animator.StringToHash("BowOn");
-	private readonly int aimHash = Animator.StringToHash("Aim");
-
-	private readonly int knifeOnHash = Animator.StringToHash("KnifeOn");
-
-	Animator anim;
 
 	private void Awake()
 	{
-		anim = GetComponentInChildren<Animator>();
 		shootPos = GameObject.Find("ShootPos").transform;
 		curCharge = 0;
 	}
 
 	private void Update()
 	{
+		if(!loaded && attackState == AttackStates.Prepare)
+		{
+			curGap += Time.deltaTime;
+			if(curGap > atkGap)
+			{
+				loaded = true;
+				curGap = 0;
+			}
+		}
 		if (loaded && attackState == AttackStates.Prepare)
 		{
-			curCharge += chargePerSec * prepMod * Time.deltaTime;
-			curCharge = Mathf.Clamp(curCharge, 0, maxChargeAmt);
 
-			if (AimTime >= maxChargeTime)
-			{
-				Attack();
-			}
-
-			if (AimTime >= shakeFrom && !shaking)
-			{
-				shaking = true;
-				GameManager.instance.ShakeCam();
-			}
-			if(AimTime <= shakeFrom && shaking)
-			{
-				shaking = false;
-				GameManager.instance.UnShakeCam();
-			}
+			aimStart = Time.time;
+			Charge();
 		}
 	}
 
@@ -79,8 +62,6 @@ public class PlayerAttack : AttackModule
 		{
 			GameManager.instance.SwitchTo(CamStatus.Aim);
 			attackState = AttackStates.Prepare;
-			StartCoroutine(DelayReShoot(atkGap));
-			aiming = true;
 		}
 		if (context.canceled)
 		{
@@ -88,7 +69,6 @@ public class PlayerAttack : AttackModule
 			attackState = AttackStates.None;
 
 			ResetBowStat();
-			aiming = false;
 		}
 	}
 
@@ -114,15 +94,33 @@ public class PlayerAttack : AttackModule
 		ResetBowStat();
 	}
 
+
+	void Charge()
+	{
+		
+		curCharge += chargePerSec * prepMod * Time.deltaTime;
+		curCharge = Mathf.Clamp(curCharge, 0, maxChargeAmt);
+
+		if (AimTime >= maxChargeTime)
+		{
+			Attack();
+		}
+
+		if (AimTime >= shakeFrom && !shaking)
+		{
+			shaking = true;
+			GameManager.instance.ShakeCam();
+		}
+		if (AimTime <= shakeFrom && shaking)
+		{
+			shaking = false;
+			GameManager.instance.UnShakeCam();
+		}
+	}
+
 	void ResetBowStat()
 	{
 		curCharge = 0;
 		loaded = false;
-	}
-
-	IEnumerator DelayReShoot(float gap)
-	{
-		yield return new WaitForSeconds(gap);
-		loaded = true;
 	}
 }

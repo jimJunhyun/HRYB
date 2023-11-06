@@ -1234,8 +1234,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fc2186f7ee167d4ab78cdb161565e87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
   moveDir: {x: 0, y: 0, z: 0}
+  runSpeed: 0
+  walkSpeed: 0
+  crouchSpeed: 0
+  speedMod: 1
 --- !u!114 &435347428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1488,8 +1491,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26be43ea688eb84469c03a2d407943e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
   moveDir: {x: 0, y: 0, z: 0}
+  runSpeed: 8
+  walkSpeed: 4
+  crouchSpeed: 2
+  speedMod: 1
   spinSpd: 10
   jumpPwer: 13
   slipThreshold: 45
@@ -1781,6 +1787,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: c8058234-0a71-4c43-bdce-23e5a8fde744
     m_ActionName: Player/Inven5[/Keyboard/5]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 531192229}
+        m_TargetAssemblyTypeName: PlayerMove, Assembly-CSharp
+        m_MethodName: Run
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1fde4bff-68eb-4544-8fcb-2844a04968cd
+    m_ActionName: Player/Run[/Keyboard/shift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 531192229}
+        m_TargetAssemblyTypeName: PlayerMove, Assembly-CSharp
+        m_MethodName: Crouch
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4b1fdfc7-4d06-4b2c-a3b2-d90e28f0b6e4
+    m_ActionName: Player/Crouch[/Keyboard/c]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: MnK
   m_DefaultActionMap: Player
@@ -2028,7 +2066,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 574064422}
-  m_LocalRotation: {x: 0.3826835, y: 0.000000022481224, z: -0.000000009312028, w: 0.92387956}
+  m_LocalRotation: {x: 0.3826835, y: -0.000000022481213, z: 0.000000009312024, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2111,7 +2149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4996169005105878503, guid: 2174b7c0d515d9c4bb5ff2ccf89e280c, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

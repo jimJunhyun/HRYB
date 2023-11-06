@@ -74,14 +74,14 @@ public class LifeModule : Module
 		if (yywx.wx[((int)to)] > limitation[((int)to)])
 		{
 			appliedDebuff.Add(eff);
-			eff.onApplied.Invoke(self, self);
-			self.updateActs += eff.onUpdated;
+			eff.onApplied.Invoke(GetActor(), GetActor());
+			GetActor().updateActs += eff.onUpdated;
 		}
 		else if(appliedDebuff.Contains(eff))
 		{
 			appliedDebuff.Remove(eff);
-			eff.onEnded.Invoke(self);
-			self.updateActs -= eff.onUpdated;
+			eff.onEnded.Invoke(GetActor());
+			GetActor().updateActs -= eff.onUpdated;
 		}
 	}
 

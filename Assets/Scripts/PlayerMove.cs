@@ -48,7 +48,24 @@ public class PlayerMove : MoveModule
 	Transform target;
 	bool isLocked = false;
 
-	
+	public Vector3 MoveDirCalced
+	{
+		get
+		{
+			switch (GameManager.instance.curCamStat)
+			{
+				case CamStatus.Aim:
+				case CamStatus.Freelook:
+					return ConvertToCamFront(moveDir) * speed;
+				case CamStatus.Locked:
+					return transform.rotation * moveDir * speed;
+				default:
+					return Vector3.zero;
+			}
+		}
+	}
+
+
 
 	Transform middle;
 
@@ -84,10 +101,6 @@ public class PlayerMove : MoveModule
 	private void FixedUpdate()
 	{
 		Move();
-		if(moveDir.sqrMagnitude < 0.1f)
-		{
-			moveStat = MoveStates.Idle;
-		}
 	}
 
 	public override void Move()
@@ -99,12 +112,11 @@ public class PlayerMove : MoveModule
 		{
 			ResetTargets();
 		}
-
 		switch (GameManager.instance.curCamStat)
 		{
 			case CamStatus.Freelook:
 				{
-					Vector3 vec = ConvertToCamFront(moveDir);
+					Vector3 vec = MoveDirCalced;
 
 					if (vec.sqrMagnitude != 0)
 					{
@@ -113,7 +125,7 @@ public class PlayerMove : MoveModule
 					RotateTo();
 					PlayerControllerMove(vec);
 				}
-				
+
 				break;
 			case CamStatus.Locked:
 				{
@@ -123,13 +135,13 @@ public class PlayerMove : MoveModule
 					{
 						RotateTo();
 					}
-					PlayerControllerMove(transform.rotation * moveDir);
+					PlayerControllerMove(MoveDirCalced);
 				}
-				
+
 				break;
 			case CamStatus.Aim:
 				{
-					Vector3 vec = ConvertToCamFront(moveDir);
+					Vector3 vec = MoveDirCalced;
 
 					PlayerControllerMove(vec);
 				}
@@ -137,6 +149,8 @@ public class PlayerMove : MoveModule
 			default:
 				break;
 		}
+		
+		
 	}
 
 	void SlipCalc()
@@ -191,7 +205,7 @@ public class PlayerMove : MoveModule
 
 	public void PlayerControllerMove(Vector3 dir)
 	{
-		ctrl.Move((accSlipDir + (dir * speed) - (Vector3.up * GRAVITY) - (Vector3.up * gravityAccel)) * Time.deltaTime);
+		ctrl.Move( (accSlipDir + (dir) - (Vector3.up * GRAVITY) - (Vector3.up * gravityAccel)) * Time.deltaTime);
 	}
 
 	public void Move(InputAction.CallbackContext context)
@@ -199,7 +213,7 @@ public class PlayerMove : MoveModule
 		Vector2 inp = context.ReadValue<Vector2>();
 		moveDir = new Vector3(inp.x, moveDir.y, inp.y);
 
-		if(target != null && (target.position - transform.position).sqrMagnitude >= lockOnDist * lockOnDist)
+		if (target != null && (target.position - transform.position).sqrMagnitude >= lockOnDist * lockOnDist)
 		{
 			ResetTargets();
 		}
