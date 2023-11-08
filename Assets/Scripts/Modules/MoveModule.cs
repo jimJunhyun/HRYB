@@ -71,4 +71,9 @@ public class MoveModule : Module
 	{
 		
 	}
+
+	public virtual void ForceCalc()
+	{
+
+	}
 }

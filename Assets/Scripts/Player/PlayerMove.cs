@@ -174,18 +174,12 @@ public class PlayerMove : MoveModule
 		{
 			forceDir.y -= GRAVITY * Time.deltaTime;
 		}
-		else
-		{
-			if (forceDir.y < 0)
-			{
-				forceDir.y = 0;
-			}
-		}
 	}
 
-	void ForceCalc()
+	public override void ForceCalc()
 	{
-		//############3
+		Vector3 antiForce = -(moveDir + forceDir) * 0.25f * Time.deltaTime;
+		forceDir += antiForce; 
 	}
 
 	Vector3 GetDir(Transform to)

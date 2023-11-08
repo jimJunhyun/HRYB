@@ -1795,6 +1795,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveDir: {x: 0, y: 0, z: 0}
+  forceDir: {x: 0, y: 0, z: 0}
   runSpeed: 0
   walkSpeed: 0
   crouchSpeed: 0
@@ -1825,6 +1826,7 @@ MonoBehaviour:
   effSpeed: 0
   effSpeedMod: 1
   isDirect: 0
+  atkDist: 0
   atkGap: 0
 --- !u!114 &435347429
 MonoBehaviour:
@@ -2051,12 +2053,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveDir: {x: 0, y: 0, z: 0}
+  forceDir: {x: 0, y: 0, z: 0}
   runSpeed: 8
   walkSpeed: 4
   crouchSpeed: 2
   speedMod: 1
   spinSpd: 10
-  jumpPwer: 17
+  jumpPwer: 13
   slipThreshold: 45
   slipPower: 4
   lockOnDist: 30
@@ -2393,6 +2396,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 8ef8df7c-8a89-4fc3-bac2-c87153f897bb
     m_ActionName: Player/Switch[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 65766e41-4eb6-4b91-9eea-2d874705652b
+    m_ActionName: Player/Inventory[/Keyboard/i]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: MnK
   m_DefaultActionMap: Player
@@ -2454,9 +2461,9 @@ MonoBehaviour:
   effSpeed: 1
   effSpeedMod: 1
   isDirect: 0
+  atkDist: 0
   atkGap: 0.5
   chargePerSec: 20
-  maxChargeAmt: 60
   shakeFrom: 5
   maxChargeTime: 7
 --- !u!136 &531192234
@@ -2638,7 +2645,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 574064422}
-  m_LocalRotation: {x: 0.3826835, y: 0.000000022481224, z: -0.000000009312028, w: 0.92387956}
+  m_LocalRotation: {x: 0.3826835, y: -0.000000022481213, z: 0.000000009312024, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
