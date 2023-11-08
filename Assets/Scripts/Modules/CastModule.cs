@@ -24,7 +24,7 @@ public class CastModule : Module
 {
     public Dictionary<string, Preparation> nameCastPair = new Dictionary<string, Preparation>();
 
-	public float castMod = 1f;
+	public virtual float castMod{ get;set;} = 1;
 
 	Coroutine ongoing;
 	protected string curName;
@@ -46,9 +46,8 @@ public class CastModule : Module
 		}
 	}
 
-	IEnumerator DelCast(Preparation p)
+	protected virtual IEnumerator DelCast(Preparation p)
 	{
-		GameManager.instance.pinp.DeactivateInput();
 		float t = 0;
 		float waitSec = p.Timefunc();
 		while(waitSec * castMod > t)
@@ -57,7 +56,6 @@ public class CastModule : Module
 			yield return null;
 		}
 		p.onPrepComp?.Invoke(transform);
-		GameManager.instance.pinp.ActivateInput();
 		ongoing = null;
 		curName = null;
 	}

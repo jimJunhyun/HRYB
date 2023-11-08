@@ -23,6 +23,8 @@ public class MoveModule : Module
 
     public Vector3 moveDir = Vector3.zero;
 
+	public Vector3 forceDir = Vector3.zero;
+
 	public virtual Vector3 MoveVelocity
 	{
 		get => moveDir * speed;

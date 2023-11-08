@@ -18,7 +18,9 @@ public class AttackModule : Module
 	public float EffSpeed { get => effSpeed * effSpeedMod;}
 	public bool isDirect;
 
-	public float prepMod = 1f;
+	public float atkDist;
+
+	public virtual float prepMod { get;set;} = 1;
 
 	public float atkGap;
 

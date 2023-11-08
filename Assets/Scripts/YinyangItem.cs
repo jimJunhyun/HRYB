@@ -68,7 +68,7 @@ public class YinyangItem : Item
 
 	public override void Use()
 	{
-		GameManager.instance.pLife.AddYYWX(yywx, ApplySpeed);
+		GameManager.instance.pActor.life.AddYYWX(yywx, ApplySpeed);
 		base.Use();
 	}
 

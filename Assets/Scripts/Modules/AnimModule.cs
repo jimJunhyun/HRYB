@@ -39,5 +39,16 @@ public class AnimModule : Module
 		anim.SetTrigger(dieHash);
 	}
 
+	public virtual void SetMoveState(int val)
+	{
+		anim.SetInteger(moveHash, val);
+	}
+
+	public virtual void SetIdleState(bool val)
+	{
+		anim.SetBool(idleHash, val);
+	}
+
+	
 	
 }
