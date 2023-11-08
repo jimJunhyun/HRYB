@@ -176,12 +176,6 @@ public class PlayerMove : MoveModule
 		}
 	}
 
-	public override void ForceCalc()
-	{
-		Vector3 antiForce = -(moveDir + forceDir) * 0.25f * Time.deltaTime;
-		forceDir += antiForce; 
-	}
-
 	Vector3 GetDir(Transform to)
 	{
 		Vector3 v = to.position - transform.position;
@@ -257,7 +251,7 @@ public class PlayerMove : MoveModule
 
 	public void Jump(InputAction.CallbackContext context)
 	{
-		if (ctrl.isGrounded && !slip && jumpable)
+		if (jumpable && context.performed && ctrl.isGrounded && !slip)
 		{
 			forceDir.y += jumpPwer;
 			(GetActor().anim as PlayerAnim).SetJumpTrigger();
@@ -341,5 +335,6 @@ public class PlayerMove : MoveModule
 
 		isLocked = false;
 	}
+
 	
 }

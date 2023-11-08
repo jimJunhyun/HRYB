@@ -8,9 +8,6 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance;   //변수 선언부// 
 
-    public Item iBranch;
-    public Item iInsam;
-
     public Sprite Branch;
     public Sprite Insam;
 
@@ -26,15 +23,8 @@ public class UIManager : MonoBehaviour
     {
         UIManager.instance = this;  //변수 초기화부 // 
 
-        iBranch = (Item)Item.nameDataHashT["나뭇가지".GetHashCode()];
-        iInsam = (Item)Item.nameDataHashT["인삼".GetHashCode()];
     }
 
-    private void Start()
-    {
-        iBranch.icon = Branch;
-        iInsam.icon = Insam;
-    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))

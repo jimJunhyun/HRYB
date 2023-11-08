@@ -21,12 +21,13 @@ public class GameManager : MonoBehaviour
 
     public GameObject player;
 	public PlayerInput pinp;
-	public ItemManager itemManager;
 	public PlayerInven pinven;
 	public Actor pActor;
 	public CinemachineFreeLook pCam;
 	public CinemachineVirtualCamera aimCam;
 	public CraftManager craftManager;
+
+	public ImageManager imageManager;
 
 	public Arrow arrow;
 
@@ -54,10 +55,10 @@ public class GameManager : MonoBehaviour
 		pinven = player.GetComponent<PlayerInven>();
 		pActor = player.GetComponent<Actor>();
 		pCam = GameObject.Find("PCam").GetComponent<CinemachineFreeLook>();
-		itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
 		aimCam = GameObject.Find("AimCam").GetComponent<CinemachineVirtualCamera>();
 		aimCamShaker = aimCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 		craftManager = GameObject.Find("CraftManager").GetComponent<CraftManager>();
+		imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
 		statEff = new StatusEffects();
 		SwitchTo(CamStatus.Freelook);
 	}

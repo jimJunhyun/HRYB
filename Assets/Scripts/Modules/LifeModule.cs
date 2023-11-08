@@ -5,6 +5,7 @@ using System;
 
 public class LifeModule : Module
 {
+	public bool isImmune = false;
 
 	public YinyangWuXing yywx;
 

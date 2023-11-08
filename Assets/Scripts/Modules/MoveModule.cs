@@ -74,6 +74,15 @@ public class MoveModule : Module
 
 	public virtual void ForceCalc()
 	{
-
+		if(forceDir.sqrMagnitude > 0.001f)
+		{
+			
+			Vector3 antiForce = -(forceDir) * 3f * Time.deltaTime;
+			forceDir += antiForce;
+		}
+		else
+		{
+			forceDir = Vector3.zero;
+		}
 	}
 }

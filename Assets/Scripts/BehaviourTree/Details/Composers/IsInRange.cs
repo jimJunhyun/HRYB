@@ -7,12 +7,14 @@ public class IsInRange : INode
 	public float rng;
 	Actor self;
 	Transform target;
+	System.Action foundAction;
 
-	public IsInRange(Actor self, Transform target, float dist)
+	public IsInRange(Actor self, Transform target, float dist, System.Action onFound = null)
 	{
 		this.self = self;
 		this.target = target;
 		rng = dist;
+		foundAction = onFound;
 	}
 
 	public NodeStatus Examine()
@@ -24,6 +26,7 @@ public class IsInRange : INode
 		}
 		else
 		{
+			foundAction?.Invoke();
 			return NodeStatus.Sucs;
 		}
 	}
