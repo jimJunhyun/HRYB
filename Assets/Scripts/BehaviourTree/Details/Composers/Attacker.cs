@@ -5,13 +5,17 @@ using UnityEngine;
 public class Attacker : INode
 {
     Actor self;
-	public Attacker(Actor self)
+	System.Action onAttack;
+	public Attacker(Actor self, System.Action atk = null)
 	{
+		onAttack = atk;	
 		this.self = self;
 	}
 
 	public NodeStatus Examine()
 	{
+		Debug.Log("Attacked");
+		onAttack.Invoke();
 		self.atk.Attack();
 
 		return NodeStatus.Run;

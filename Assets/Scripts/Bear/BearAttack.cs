@@ -26,6 +26,7 @@ public class BearAttack : AttackModule
 	private void Awake()
 	{
 		range1 = transform.Find("Range1").gameObject;
+		ResetAttackRangeOne();
 	}
 
 	public void SetTarget(Actor a)

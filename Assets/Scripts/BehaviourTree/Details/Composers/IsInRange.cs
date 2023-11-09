@@ -20,8 +20,10 @@ public class IsInRange : INode
 	public NodeStatus Examine()
 	{
 		Vector3 dir = (self.transform.position - target.position);
+		//Debug.Log($"{dir.sqrMagnitude} > {rng * rng} ? {dir.sqrMagnitude > rng * rng}");
 		if (dir.sqrMagnitude > rng * rng)
 		{
+			
 			return NodeStatus.Fail;
 		}
 		else

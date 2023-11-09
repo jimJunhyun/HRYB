@@ -10,10 +10,18 @@ public class Waiter : INode
 	bool readyResets = true;
 	Coroutine ongoing;
 
+
 	public Waiter(float time, bool isResetReady = true)
 	{
 		delTime = time;
 		readyResets = isResetReady;
+		GameManager.instance.StartCoroutine(Delayer());
+	}
+
+	public void ResetReady()
+	{
+		ready =false;
+		GameManager.instance.StartCoroutine(Delayer());
 	}
 
 
@@ -21,16 +29,16 @@ public class Waiter : INode
 	{
 		if(ready)
 		{
-			if (readyResets)
-			{
-				ready = false;
-			}
+			Debug.Log("Ready!");
 			return NodeStatus.Sucs;
 		}
 		else
 		{
 			if(ongoing == null)
+			{
 				ongoing = GameManager.instance.StartCoroutine(Delayer());
+				Debug.Log("DELAYED");
+			}
 			return NodeStatus.Fail;
 		}
 	}
@@ -43,6 +51,7 @@ public class Waiter : INode
 			t += Time.deltaTime;
 			yield return null;
 		}
+		Debug.Log("Load complete");
 		ready = true;
 		ongoing = null;
 	}

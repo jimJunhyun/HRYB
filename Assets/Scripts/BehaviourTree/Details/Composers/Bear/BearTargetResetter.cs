@@ -2,19 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mover : INode
+public class BearTargetResetter : INode
 {
 	Actor self;
-
-	public Mover(Actor self)
+	public BearTargetResetter(Actor self)
 	{
 		this.self = self;
 	}
-
 	public NodeStatus Examine()
 	{
-		Debug.Log("@#@#4");
-		self.move.Move();
+		(self.move as BearMove).SetTarget(null);
 		return NodeStatus.Run;
 	}
 }
