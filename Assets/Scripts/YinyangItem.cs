@@ -1,14 +1,32 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 
 [System.Serializable]
 public class YinyangItem : Item
 {
-	public YinyangWuXing yywx;
-	public List<PreProcess> processes;
-	public char nameAsChar;
+	YinyangWuXing data;
+	public YinyangWuXing yywx
+	{
+		get
+		{
+			return data;
+		}
+		set
+		{
+			data = value;
+		}
+	}
+
+	public HashSet<ProcessType> processes = new HashSet<ProcessType>();
+
+	public float initDec;
+	public float decPerSec;
+
+	public string nameAsChar;
 
 	public float applySpeed = 1f;
 	
@@ -20,23 +38,42 @@ public class YinyangItem : Item
 		}
 	}
 
-    public YinyangItem(string name, ItemType iType, int max, System.Action used, bool isLateInit, YinyangWuXing yyData, char ch = ' ') : base(name, iType, max, used, isLateInit)
+	public YinyangItem(YinyangItem item) : base(item)
 	{
-		yywx = yyData;
-		if(ch == ' ')
+		data = item.data;
+		data.isClampedZero = true;
+		if (item.nameAsChar == "")
 		{
-			nameAsChar = myName[Random.Range(0, myName.Length)];
+			nameAsChar = MyName[UnityEngine.Random.Range(0, MyName.Length)].ToString();
+		}
+		else
+		{
+			nameAsChar = item.nameAsChar;
+		}
+	}
+
+    public YinyangItem(string name, ItemType iType, int max, Specials used, bool isNewItem, YinyangWuXing yyData, string ch = "") : base(name, iType, max, used, isNewItem)
+	{
+		data = yyData;
+		data.isClampedZero = true;
+		if(ch == "")
+		{
+			nameAsChar = MyName[UnityEngine.Random.Range(0, MyName.Length)].ToString();
 		}
 		else
 		{
 			nameAsChar = ch;
 		}
-		
-		
 	}
+
 	public override void Use()
 	{
-		GameManager.instance.pLife.AddYYWX(yywx, ApplySpeed);
+		GameManager.instance.pActor.life.AddYYWX(yywx, ApplySpeed);
 		base.Use();
+	}
+
+	public override int GetHashCode()
+	{
+		return MyName.GetHashCode();
 	}
 }

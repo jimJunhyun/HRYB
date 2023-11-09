@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class LifeModule : MonoBehaviour
+public class LifeModule : Module
 {
-	Actor self;
 
 	public YinyangWuXing yywx;
 
@@ -36,11 +35,6 @@ public class LifeModule : MonoBehaviour
 
 	bool regenOn = false;
 	float diff;
-
-	private void Awake()
-	{
-		self = GetComponent<Actor>();
-	}
 
 	private void Update()
 	{
@@ -80,14 +74,14 @@ public class LifeModule : MonoBehaviour
 		if (yywx.wx[((int)to)] > limitation[((int)to)])
 		{
 			appliedDebuff.Add(eff);
-			eff.onApplied.Invoke(self, self);
-			self.updateActs += eff.onUpdated;
+			eff.onApplied.Invoke(GetActor(), GetActor());
+			GetActor().updateActs += eff.onUpdated;
 		}
 		else if(appliedDebuff.Contains(eff))
 		{
 			appliedDebuff.Remove(eff);
-			eff.onEnded.Invoke(self);
-			self.updateActs -= eff.onUpdated;
+			eff.onEnded.Invoke(GetActor());
+			GetActor().updateActs -= eff.onUpdated;
 		}
 	}
 
@@ -112,7 +106,7 @@ public class LifeModule : MonoBehaviour
 	IEnumerator DelAddYYWX(YinyangWuXing data, float spd)
 	{
 		float curT = 0;
-		YinyangWuXing incPerSec = new YinyangWuXing();
+		YinyangWuXing incPerSec = YinyangWuXing.Zero;
 		incPerSec.yy.yinAmt = data.yy.yinAmt / spd;
 		incPerSec.yy.yangAmt = data.yy.yangAmt / spd;
 

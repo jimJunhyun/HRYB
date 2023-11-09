@@ -161,13 +161,30 @@ public struct YinyangWuXing
     public YinYang yy;
     public WuXing wx;
 
-    public YinyangWuXing(float yin, float yang, float wood, float fire, float earth, float metal, float water)
+	public bool isClampedZero;
+
+    public YinyangWuXing(float yin, float yang, float wood, float fire, float earth, float metal, float water, bool minZero = false)
 	{
         yy = new YinYang(yin, yang);
         wx = new WuXing(wood, fire, earth, metal, water);
+		isClampedZero = minZero;
 	}
 
-    public static YinyangWuXing operator*(YinyangWuXing lft, float rht)
+	public YinyangWuXing(float allVal, bool minZero = false)
+	{
+		yy = new YinYang(allVal, allVal);
+		wx = new WuXing(allVal, allVal, allVal, allVal, allVal);
+		isClampedZero = minZero;
+	}
+
+	public YinyangWuXing(bool minZero = false)
+	{
+		yy = new YinYang(0, 0);
+		wx = new WuXing(0, 0, 0, 0, 0);
+		isClampedZero = minZero;
+	}
+
+	public static YinyangWuXing operator*(YinyangWuXing lft, float rht)
 	{
 		for (int i = 0; i < ((int)YYInfo.Max); i++)
 		{
@@ -189,6 +206,25 @@ public struct YinyangWuXing
 		for (int i = 0; i < ((int)WXInfo.Max); i++)
 		{
 			lft.wx[i] += rht.wx[i];
+		}
+		return lft;
+	}
+
+	public static YinyangWuXing operator -(YinyangWuXing lft, YinyangWuXing rht)
+	{
+		for (int i = 0; i < ((int)YYInfo.Max); i++)
+		{
+			if (lft.isClampedZero)
+			{
+				lft.yy[i] = Mathf.Max(lft.yy[i] - rht.yy[i], 0);
+			}
+		}
+		for (int i = 0; i < ((int)WXInfo.Max); i++)
+		{
+			if (lft.isClampedZero)
+			{
+				lft.wx[i] = Mathf.Max(lft.wx[i] - rht.wx[i], 0);
+			}
 		}
 		return lft;
 	}

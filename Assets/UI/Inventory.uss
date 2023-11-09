@@ -1,15 +1,38 @@
-.Inven {
+.Container {
     flex-grow: 1;
-    background-color: rgba(0, 0, 0, 0.31);
-    height: auto;
-    width: 964px;
-    margin-left: 0;
-    margin-right: 52px;
-    margin-top: 118px;
-    margin-bottom: 118px;
-    align-self: flex-end;
-    align-items: stretch;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0);
+    justify-content: center;
+    align-items: center;
+}
+
+.Inventory {
+    flex-grow: 1;
+    background-color: rgb(28, 32, 36);
+    width: 50%;
+    height: 75%;
+    max-width: 50%;
+    max-height: 75%;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top-width: 5px;
+    border-top-color: rgb(255, 197, 0);
+}
+
+.slotContainer {
+    width: 80px;
+    height: 80px;
+    margin: 8px;
+    background-color: rgb(9, 19, 21);
+}
+
+.slotIcon {
+    padding: 15px;
+    flex-shrink: 0;
+    flex-grow: 1;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }

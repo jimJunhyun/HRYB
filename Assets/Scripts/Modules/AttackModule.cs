@@ -2,7 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackModule : MonoBehaviour
+public enum AttackStates
+{
+	None,
+	Prepare,
+	Trigger,
+
+}
+
+public class AttackModule : Module
 {
 	public YinyangWuXing damage;
 	public float effSpeed;
@@ -10,9 +18,17 @@ public class AttackModule : MonoBehaviour
 	public float EffSpeed { get => effSpeed * effSpeedMod;}
 	public bool isDirect;
 
-	public float prepMod = 1f;
+	public float atkDist;
+
+	public virtual float prepMod { get;set;} = 1;
 
 	public float atkGap;
+
+	public AttackStates attackState
+	{
+		get;
+		protected set;
+	} = AttackStates.None;
 
 	public virtual void Attack()
 	{
