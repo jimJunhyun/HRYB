@@ -67,7 +67,7 @@ public class Item // #################
 
 	public ItemRarity rarity;
 
-	float modifier = 1f;
+	
 
 	public void SetRarity(ItemRarity val)
 	{

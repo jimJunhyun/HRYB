@@ -13,7 +13,6 @@ public class Mover : INode
 
 	public NodeStatus Examine()
 	{
-		Debug.Log("@#@#4");
 		self.move.Move();
 		return NodeStatus.Run;
 	}

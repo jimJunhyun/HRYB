@@ -3,6 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public enum StatEffID
+{
+	WoodDebuff,
+	FireDebuff,
+	EarthDebuff,
+	MetalDebuff,
+	WaterDebuff,
+	Knockback,
+	Immune,
+}
+
 public struct StatusEffect
 {
     public string name;
@@ -29,12 +40,13 @@ public class StatusEffects
 
 	public StatusEffects()
 	{
-		idStatEffPairs.Add(id++, new StatusEffect("목 과다", "목이 상한치를 넘어섰습니다!", OnWoodDebuffActivated, OnWoodDebuffUpdated, OnWoodDebuffEnded));
-		idStatEffPairs.Add(id++, new StatusEffect("화 과다", "화가 상한치를 넘어섰습니다!", OnFireDebuffActivated, OnFireDebuffUpdated, OnFireDebuffEnded));
-		idStatEffPairs.Add(id++, new StatusEffect("토 과다", "토가 상한치를 넘어섰습니다!", OnEarthDebuffActivated, OnEarthDebuffUpdated, OnEarthDebuffEnded));
-		idStatEffPairs.Add(id++, new StatusEffect("금 과다", "금이 상한치를 넘어섰습니다!", OnMetalDebuffActivated, OnMetalDebuffUpdated, OnMetalDebuffEnded));
-		idStatEffPairs.Add(id++, new StatusEffect("수 과다", "수가 상한치를 넘어섰습니다!", OnWaterDebuffActivated, OnWaterDebuffUpdated, OnWaterDebuffEnded));
-		idStatEffPairs.Add(id++, new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", OnWaterDebuffActivated, OnWaterDebuffUpdated, OnWaterDebuffEnded));
+		idStatEffPairs.Add(((int)StatEffID.WoodDebuff), new StatusEffect("목 과다", "목이 상한치를 넘어섰습니다!", OnWoodDebuffActivated, OnWoodDebuffUpdated, OnWoodDebuffEnded));
+		idStatEffPairs.Add(((int)StatEffID.FireDebuff), new StatusEffect("화 과다", "화가 상한치를 넘어섰습니다!", OnFireDebuffActivated, OnFireDebuffUpdated, OnFireDebuffEnded));
+		idStatEffPairs.Add(((int)StatEffID.EarthDebuff), new StatusEffect("토 과다", "토가 상한치를 넘어섰습니다!", OnEarthDebuffActivated, OnEarthDebuffUpdated, OnEarthDebuffEnded));
+		idStatEffPairs.Add(((int)StatEffID.MetalDebuff), new StatusEffect("금 과다", "금이 상한치를 넘어섰습니다!", OnMetalDebuffActivated, OnMetalDebuffUpdated, OnMetalDebuffEnded));
+		idStatEffPairs.Add(((int)StatEffID.WaterDebuff), new StatusEffect("수 과다", "수가 상한치를 넘어섰습니다!", OnWaterDebuffActivated, OnWaterDebuffUpdated, OnWaterDebuffEnded));
+		idStatEffPairs.Add(((int)StatEffID.Knockback), new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", OnKnockbackActivated, OnKnockbackDebuffUpdated, OnKnockbackDebuffEnded));
+		idStatEffPairs.Add(((int)StatEffID.Immune), new StatusEffect("무적", "어머니의 비호를 받고 있습니다.", OnImmuneActivated, OnImmuneUpdated, OnImmuneEnded));
 	}
 
     void OnWoodDebuffActivated(Actor self, Actor inflicter)
@@ -123,7 +135,7 @@ public class StatusEffects
 
 	void OnKnockbackActivated(Actor self, Actor inflicter)
 	{
-		
+		self.move.forceDir += (self.transform.position - inflicter.transform.position).normalized * 9;
 	}
 
 	void OnKnockbackDebuffUpdated(Actor self)
@@ -134,5 +146,19 @@ public class StatusEffects
 	void OnKnockbackDebuffEnded(Actor self)
 	{
 		
+	}
+
+	void OnImmuneActivated(Actor self, Actor inflicter)
+	{
+		self.life.isImmune = true;
+	}
+
+	void OnImmuneUpdated(Actor self)
+	{
+
+	}
+	void OnImmuneEnded(Actor self)
+	{
+		self.life.isImmune = false;
 	}
 }

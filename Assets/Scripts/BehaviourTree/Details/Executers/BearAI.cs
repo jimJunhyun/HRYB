@@ -5,6 +5,7 @@ using UnityEngine;
 public class BearAI : MonoBehaviour
 {
     Actor self;
+	Actor player;
 
 	Selecter head;
 
@@ -12,10 +13,57 @@ public class BearAI : MonoBehaviour
 
 	private void Start()
 	{
+		player = GameManager.instance.pActor;
+
 		self = GetComponent<Actor>();
 		head = new Selecter();
 
-		IsInRange inSight = new IsInRange(self, GameManager.instance.player.transform, self.sight.sightRange, ()=>
+		IsUnderBalance under70 = new IsUnderBalance(self, 0.7f);
+		IsInRange inRangeSp = new IsInRange(self, player.transform, (self.atk as BearAttack).atkDist2, (player.move as PlayerMove).GetSneakDist,()=>
+		{
+			(self.atk as BearAttack).SetAttackType(AttackType.SpecialAttack);
+		});
+		Waiter waitSp = new Waiter(1);
+		Attacker spAttack = new Attacker(self, ()=>
+		{
+			StopExamine();
+		});
+		Sequencer spAttacker = new Sequencer();
+		spAttacker.connecteds.Add(under70);
+		spAttacker.connecteds.Add(inRangeSp);
+		spAttacker.connecteds.Add(waitSp);
+		spAttacker.connecteds.Add(spAttack);
+
+
+		IsInRange inRange2 = new IsInRange(self, player.transform, (self.atk as BearAttack).atkDist2, (player.move as PlayerMove).GetSneakDist, () =>
+		{
+			(self.atk as BearAttack).SetAttackType(AttackType.MouthAttack);
+		});
+		Waiter wait2 = new Waiter(10);
+		Attacker atk2 = new Attacker(self, () =>
+		{
+			StopExamine();
+		});
+		Sequencer secondAttacker = new Sequencer();
+		secondAttacker.connecteds.Add(inRange2);
+		secondAttacker.connecteds.Add(wait2);
+		secondAttacker.connecteds.Add(atk2);
+
+		IsInRange inRange1 = new IsInRange(self, player.transform, self.atk.atkDist, (player.move as PlayerMove).GetSneakDist, () =>
+		{
+			(self.atk as BearAttack).SetAttackType(AttackType.HandAttack);
+		});
+		Waiter wait1 = new Waiter(2);
+		Attacker atk1 = new Attacker(self, () =>
+		{
+			StopExamine();
+		});
+		Sequencer firstAttacker = new Sequencer();
+		firstAttacker.connecteds.Add(inRange1);
+		firstAttacker.connecteds.Add(wait1);
+		firstAttacker.connecteds.Add(atk1);
+
+		IsInRange inSight = new IsInRange(self, player.transform, self.sight.sightRange, (player.move as PlayerMove).GetSneakDist, ()=>
 		{
 			(self.move as BearMove).SetTarget(GameManager.instance.pActor.transform);
 		});
@@ -24,20 +72,7 @@ public class BearAI : MonoBehaviour
 		chaser.connecteds.Add(inSight);
 		chaser.connecteds.Add(move);
 
-		IsInRange inRange1 = new IsInRange(self, GameManager.instance.player.transform, self.atk.atkDist, ()=>
-		{
-			(self.atk as BearAttack).SetAttackType(AttackType.HandAttack);
-		});
-		Waiter wait1 = new Waiter(2);
-		Attacker atk1 = new Attacker(self,  ()=>
-		{ 
-			wait1.ResetReady();
-			StartCoroutine(DelayExamine(1));
-		});
-		Sequencer firstAttacker = new Sequencer();
-		firstAttacker.connecteds.Add(wait1);
-		firstAttacker.connecteds.Add(inRange1);
-		firstAttacker.connecteds.Add(atk1);
+		
 
 		Inverter inv = new Inverter();
 		inv.connected = inRange1;
@@ -46,13 +81,11 @@ public class BearAI : MonoBehaviour
 		idler.connecteds.Add(inv);
 		idler.connecteds.Add(reset);
 
-		//2공격만들기
-
-		//3공격만들기
 
 
-		//3공격
-		//2공격
+
+		head.connecteds.Add(spAttacker);
+		head.connecteds.Add(secondAttacker);
 		head.connecteds.Add(firstAttacker);
 		head.connecteds.Add(chaser);
 		head.connecteds.Add(idler);
@@ -66,10 +99,16 @@ public class BearAI : MonoBehaviour
 		}
 	}
 
-	IEnumerator DelayExamine(float t)
+	public void StopExamine()
 	{
 		stopped = true;
-		yield return new WaitForSeconds(t);
-		stopped = false;
+		Debug.Log("STOP");
 	}
+
+	public void StartExamine()
+	{
+		stopped = false;
+		Debug.Log("START");
+	}
+
 }

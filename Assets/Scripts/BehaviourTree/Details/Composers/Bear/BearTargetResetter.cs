@@ -12,6 +12,7 @@ public class BearTargetResetter : INode
 	public NodeStatus Examine()
 	{
 		(self.move as BearMove).SetTarget(null);
+		self.anim.SetMoveState(0);
 		return NodeStatus.Run;
 	}
 }

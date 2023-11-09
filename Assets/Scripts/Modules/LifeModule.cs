@@ -5,6 +5,8 @@ using System;
 
 public class LifeModule : Module
 {
+	public const float IMMUNETIME = 0.3f;
+
 	public bool isImmune = false;
 
 	public YinyangWuXing yywx;
@@ -74,33 +76,52 @@ public class LifeModule : Module
 		StatusEffect eff = ((StatusEffect)GameManager.instance.statEff.idStatEffPairs[(int)to]);
 		if (yywx.wx[((int)to)] > limitation[((int)to)])
 		{
-			appliedDebuff.Add(eff);
-			eff.onApplied.Invoke(GetActor(), GetActor());
-			GetActor().updateActs += eff.onUpdated;
+			ApplyStatus(eff);
 		}
 		else if(appliedDebuff.Contains(eff))
 		{
-			appliedDebuff.Remove(eff);
-			eff.onEnded.Invoke(GetActor());
-			GetActor().updateActs -= eff.onUpdated;
+			EndStaus(eff);
 		}
 	}
 
-	public void AddYYWX(YinyangWuXing data)
+	void ApplyStatus(StatusEffect eff)
 	{
-		AddYY(data.yy.yinAmt, YYInfo.Yin);
-		AddYY(data.yy.yangAmt, YYInfo.Yang);
-
-		AddWX(data.wx.woodAmt, WXInfo.Wood);
-		AddWX(data.wx.fireAmt, WXInfo.Fire);
-		AddWX(data.wx.earthAmt, WXInfo.Earth);
-		AddWX(data.wx.metalAmt, WXInfo.Metal);
-		AddWX(data.wx.waterAmt, WXInfo.Water);
+		appliedDebuff.Add(eff);
+		eff.onApplied.Invoke(GetActor(), GetActor());
+		GetActor().updateActs += eff.onUpdated;
 	}
 
-	public void AddYYWX(YinyangWuXing data, float spd)
+	void EndStaus(StatusEffect eff)
 	{
-		StartCoroutine(DelAddYYWX(data, (spd * TotalApplySpeed)));
+		appliedDebuff.Remove(eff);
+		eff.onEnded.Invoke(GetActor());
+		GetActor().updateActs -= eff.onUpdated;
+	}
+
+	public void AddYYWX(YinyangWuXing data, bool isNegatable = false)
+	{
+		if(!(isNegatable && isImmune))
+		{
+			AddYY(data.yy.yinAmt, YYInfo.Yin);
+			AddYY(data.yy.yangAmt, YYInfo.Yang);
+
+			AddWX(data.wx.woodAmt, WXInfo.Wood);
+			AddWX(data.wx.fireAmt, WXInfo.Fire);
+			AddWX(data.wx.earthAmt, WXInfo.Earth);
+			AddWX(data.wx.metalAmt, WXInfo.Metal);
+			AddWX(data.wx.waterAmt, WXInfo.Water);
+
+			StartCoroutine(DelImmuner(IMMUNETIME));
+		}
+	}
+
+	public void AddYYWX(YinyangWuXing data, float spd, bool isNegatable = false)
+	{
+		if(!(isNegatable && isImmune))
+		{ 
+			StartCoroutine(DelAddYYWX(data, (spd * TotalApplySpeed)));
+			StartCoroutine(DelImmuner(IMMUNETIME));
+		}
 	}
 
 
@@ -130,6 +151,13 @@ public class LifeModule : Module
 			AddWX(incPerSec.wx.metalAmt * Time.deltaTime, WXInfo.Metal);
 			AddWX(incPerSec.wx.waterAmt * Time.deltaTime, WXInfo.Water);
 		}
+	}
+
+	IEnumerator DelImmuner(float dur)
+	{
+		ApplyStatus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)StatEffID.Immune)]);
+		yield return new WaitForSeconds(dur);
+		EndStaus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)StatEffID.Immune)]);
 	}
 
 	public virtual void OnDead()

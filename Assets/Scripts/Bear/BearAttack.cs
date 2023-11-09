@@ -5,28 +5,30 @@ using UnityEngine;
 public enum AttackType
 {
 	HandAttack,
-	MouthAttack,
+
+	MouthAttack = 2,
 	SpecialAttack,
 }
 
 
 public class BearAttack : AttackModule
 {
+	public float atkDist2;
+	public float atkDist3;
 
-	public YinyangWuXing damage2;
 
-	public YinyangWuXing damage3;
+	List<GameObject> ranges;
 
-	GameObject range1;
-
-	AttackType nextAttackCall = AttackType.HandAttack;
+	public AttackType nextAttackCall = AttackType.HandAttack;
 
 	Actor target;
 
 	private void Awake()
 	{
-		range1 = transform.Find("Range1").gameObject;
-		ResetAttackRangeOne();
+		ranges.Add(transform.Find("Range1").gameObject);
+		ranges.Add(transform.Find("Range2").gameObject);
+		ResetAttackRange(0);
+		ResetAttackRange(1);
 	}
 
 	public void SetTarget(Actor a)
@@ -44,26 +46,26 @@ public class BearAttack : AttackModule
 		switch (nextAttackCall)
 		{
 			case AttackType.HandAttack:
-				GetActor().anim.SetAttackTrigger();
 				break;
 			case AttackType.MouthAttack:
-				if (!target.life.isImmune)
-				{
-					target.life.AddYYWX(damage2, EffSpeed);
-				}
+				target.life.AddYYWX(damage, EffSpeed, true);
 				break;
 			case AttackType.SpecialAttack:
+				//대지가르기 생성
 				break;
 		}
+		GetActor().anim.SetAttackTrigger();
 	}
 
-	public void SetAttackRangeOne()
+	public void SetAttackRange(int idx)
 	{
-		range1.SetActive(true);
+		ranges[idx].SetActive(true);
 	}
 
-	public void ResetAttackRangeOne()
+	public void ResetAttackRange(int idx)
 	{
-		range1.SetActive(false);
+		ranges[idx].SetActive(false);
 	}
+
+	
 }

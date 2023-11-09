@@ -29,16 +29,15 @@ public class Waiter : INode
 	{
 		if(ready)
 		{
+			if (readyResets)
+			{
+				ResetReady();
+			}
 			Debug.Log("Ready!");
 			return NodeStatus.Sucs;
 		}
 		else
 		{
-			if(ongoing == null)
-			{
-				ongoing = GameManager.instance.StartCoroutine(Delayer());
-				Debug.Log("DELAYED");
-			}
 			return NodeStatus.Fail;
 		}
 	}

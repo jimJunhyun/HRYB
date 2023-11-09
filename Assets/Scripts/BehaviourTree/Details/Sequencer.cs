@@ -7,7 +7,6 @@ public class Sequencer : INode
 	public List<INode> connecteds = new List<INode>();
 	public NodeStatus Examine()
 	{
-		Debug.Log("Sequencer Exam");
 		for (int i = 0; i < connecteds.Count; i++)
 		{
 			switch (connecteds[i].Examine())

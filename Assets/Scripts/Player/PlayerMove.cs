@@ -15,6 +15,7 @@ public class PlayerMove : MoveModule
 	
 	public float spinSpd = 300f;
 	public float jumpPwer = 20f;
+	public float sneakPower = 3f;
 
 	public float slipThreshold = 45f;
 	public float slipPower = 4f;
@@ -324,6 +325,15 @@ public class PlayerMove : MoveModule
 				ResetTargets();
 			}
 		}
+	}
+
+	public float GetSneakDist()
+	{
+		if(moveStat == MoveStates.Sit)
+		{
+			return sneakPower;
+		}
+		return 0;
 	}
 
 	void ResetTargets()

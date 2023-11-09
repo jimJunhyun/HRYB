@@ -32,6 +32,11 @@ public class YinYang
 		yangAmt = yang;
 	}
 
+	public float GetBalanceRatio()
+	{
+		return yinAmt > yangAmt ? yangAmt / yinAmt : yinAmt / yangAmt;
+	}
+
     public float this[int i]
 	{
 		get

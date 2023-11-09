@@ -4,15 +4,31 @@ using UnityEngine;
 
 public class BearAnim : AnimModule
 {
-	private void Update()
+	protected readonly int attackAltHash = Animator.StringToHash("AttackAlt");
+	protected readonly int attack2Hash = Animator.StringToHash("Attack2");
+	protected readonly int attack3Hash = Animator.StringToHash("Attack3");
+	int atkCnt = 0;
+	public override void SetAttackTrigger()
 	{
-		if (!GetActor().move.idling)
+		switch((GetActor().atk as BearAttack).nextAttackCall)
 		{
-			SetMoveState(1);
-		}
-		else
-		{
-			SetMoveState(0);
+			case AttackType.HandAttack:
+				atkCnt += 1;
+				if(atkCnt % 2 == 0)
+				{
+					anim.SetTrigger(attackHash);
+				}
+				else
+				{
+					anim.SetTrigger(attackAltHash);
+				}
+				break;
+			case AttackType.MouthAttack:
+				anim.SetTrigger(attack2Hash);
+				break;
+			case AttackType.SpecialAttack:
+				anim.SetTrigger(attack3Hash);
+				break;
 		}
 	}
 }
