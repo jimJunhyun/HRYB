@@ -74,11 +74,11 @@ public class LifeModule : Module
 	{
 		yywx.wx[((int)to)] += amt * adequity.wx[((int)to)];
 		StatusEffect eff = ((StatusEffect)GameManager.instance.statEff.idStatEffPairs[(int)to]);
-		if (yywx.wx[((int)to)] > limitation[((int)to)])
+		if (!appliedDebuff.Contains(eff) && yywx.wx[((int)to)] > limitation[((int)to)])
 		{
 			ApplyStatus(eff);
 		}
-		else if(appliedDebuff.Contains(eff))
+		else if(appliedDebuff.Contains(eff) && yywx.wx[((int)to)] < limitation[((int)to)])
 		{
 			EndStaus(eff);
 		}

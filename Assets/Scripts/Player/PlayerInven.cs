@@ -334,7 +334,7 @@ public class PlayerInven : MonoBehaviour
 		{
 			if ((!inven[from].isEmpty() && inven[to].isEmpty()) || (inven[from].info == inven[to].info))
 			{
-				Debug.Log($"{inven[from].info.MyName}, {inven[from].number}개, {(inven[to].isEmpty() ? 0 : inven[to].info.MyName)}, {(inven[to].isEmpty() ? 0 : inven[to].number)}개에서, ");
+				Debug.Log($"{(inven[from].isEmpty() ? 0 : inven[from].info.MyName)}, {inven[from].number}개, {(inven[to].isEmpty() ? 0 : inven[to].info.MyName)}, {(inven[to].isEmpty() ? 0 : inven[to].number)}개에서, ");
 				int leftover;
 				if ((leftover = AddItem(inven[from].info, to, num)) >= 0)
 				{

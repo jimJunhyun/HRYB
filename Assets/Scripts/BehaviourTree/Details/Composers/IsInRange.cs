@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class IsInRange : INode
 {
-	float range;
+	Func<float> range;
 	Func<float> sneakDecFunc;
 	Actor self;
 	Transform target;
 	System.Action foundAction;
 
-	public IsInRange(Actor self, Transform target,float dist,  Func<float> distDec, Action onFound = null)
+	public IsInRange(Actor self, Transform target, Func<float> dist,  Func<float> distDec, Action onFound = null)
 	{
 		this.self = self;
 		this.target = target;
@@ -23,8 +23,8 @@ public class IsInRange : INode
 	public NodeStatus Examine()
 	{
 		Vector3 dir = (self.transform.position - target.position);
-		//Debug.Log($"{dir.sqrMagnitude} > {rng * rng} ? {dir.sqrMagnitude > rng * rng}");
-		float sqrRng = sneakDecFunc == null ? range * range : (range - sneakDecFunc()) * (range - sneakDecFunc());
+		float sqrRng = sneakDecFunc == null ? range() * range() : (range() - sneakDecFunc()) * (range() - sneakDecFunc());
+		Debug.Log($"{sqrRng}");
 
 		if (dir.sqrMagnitude > sqrRng)
 		{

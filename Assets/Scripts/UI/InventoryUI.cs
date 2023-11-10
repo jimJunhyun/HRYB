@@ -11,7 +11,6 @@ public class InventoryUI : MonoBehaviour,IDropHandler
     public InventoryItem items;
     public Image Iconimg;
     public TMPro.TMP_Text text;
-    public GameObject item;
 
     int dropPoint;
 
@@ -19,7 +18,6 @@ public class InventoryUI : MonoBehaviour,IDropHandler
     {
         Iconimg = transform.GetComponentInChildren<Image>();
         text = GetComponentInChildren<TMP_Text>();
-        item = GetComponent<GameObject>();
     }
  
     void UpdateItem()
@@ -39,22 +37,18 @@ public class InventoryUI : MonoBehaviour,IDropHandler
         }
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Z))
-        {
-            UpdateItem();
-        }
-    }
-
     public void OnDrop(PointerEventData eventData)
     {
         Debug.Log("부모 이름" + transform.parent.name);
-        dropPoint = int.Parse(transform.parent.name);
+        if (int.TryParse(transform.parent.name, out dropPoint))
+		{
+			GameManager.instance.uiManager.DropPoint = dropPoint;
+			Debug.Log("드롭" + GameManager.instance.uiManager.DropPoint);
 
-        UIManager.instance.DropPoint = dropPoint;
-        Debug.Log("드롭" + UIManager.instance.DropPoint);
 
-        GameManager.instance.pinven.Move(UIManager.instance.DragPoint, UIManager.instance.DropPoint, GameManager.instance.pinven.inven[UIManager.instance.DragPoint].number);
+			GameManager.instance.pinven.Move(GameManager.instance.uiManager.DragPoint, GameManager.instance.uiManager.DropPoint, GameManager.instance.pinven.inven[GameManager.instance.uiManager.DragPoint].number);
+		}
+
+		
     }
 }

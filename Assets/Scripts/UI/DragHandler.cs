@@ -4,7 +4,6 @@ using System.Net;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -15,9 +14,10 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void OnBeginDrag(PointerEventData eventData)
     {
         itemBeingDragged = gameObject;
+		itemBeingDragged.GetComponent<Image>().raycastTarget = false;
         startPosition = transform.position;
 
-        UIManager.instance.DragPoint = int.Parse(transform.parent.name);
+        GameManager.instance.uiManager.DragPoint = int.Parse(transform.parent.name);
         //GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
@@ -31,5 +31,6 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void OnEndDrag(PointerEventData eventData)
     {
         transform.position = startPosition;
-    }
+		itemBeingDragged.GetComponent<Image>().raycastTarget = true;
+	}
 }

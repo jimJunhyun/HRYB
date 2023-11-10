@@ -24,6 +24,11 @@ public class AttackModule : Module
 
 	public float atkGap;
 
+	public float GetDist()
+	{
+		return atkDist;
+	}
+
 	public AttackStates attackState
 	{
 		get;

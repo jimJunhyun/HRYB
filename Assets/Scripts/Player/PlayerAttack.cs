@@ -50,7 +50,7 @@ public class PlayerAttack : AttackModule
 	{
 		if (loaded && attackState == AttackStates.Prepare)
 		{
-			aimStart = Time.time;
+			
 			Charge();
 		}
 		if(GameManager.instance.pinven.stat != HandStat.Weapon)
@@ -116,6 +116,7 @@ public class PlayerAttack : AttackModule
 	{
 		
 		curCharge += chargePerSec / atkGap * Time.deltaTime;
+		
 		curCharge = Mathf.Clamp(curCharge, 0, atkDist);
 
 		if (AimTime >= maxChargeTime)
@@ -152,6 +153,7 @@ public class PlayerAttack : AttackModule
 	public void SetBowStat()
 	{
 		loaded = true;
+		aimStart = Time.time;
 	}
 
 	IEnumerator DelayResetCam()

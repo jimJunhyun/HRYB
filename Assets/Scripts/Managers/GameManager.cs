@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
 	public CinemachineFreeLook pCam;
 	public CinemachineVirtualCamera aimCam;
 	public CraftManager craftManager;
+	public UIManager uiManager;
 
 	public ImageManager imageManager;
 
@@ -59,6 +60,7 @@ public class GameManager : MonoBehaviour
 		aimCamShaker = aimCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 		craftManager = GameObject.Find("CraftManager").GetComponent<CraftManager>();
 		imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
+		uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
 		statEff = new StatusEffects();
 		SwitchTo(CamStatus.Freelook);
 	}

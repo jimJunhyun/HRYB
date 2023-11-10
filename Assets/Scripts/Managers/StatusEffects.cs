@@ -101,8 +101,12 @@ public class StatusEffects
 
     void OnMetalDebuffActivated(Actor self, Actor inflicter)
     {
+		Debug.Log("금과다");
         self.sight.sightRange *= 0.5f;
-        GameManager.instance.CalcCamVFov(-20);
+		if(self == GameManager.instance.pActor)
+		{
+			GameManager.instance.CalcCamVFov(-20);
+		}
     }
 
     void OnMetalDebuffUpdated(Actor self)
@@ -112,9 +116,13 @@ public class StatusEffects
 
     void OnMetalDebuffEnded(Actor self)
     {
+		Debug.Log("금과다 해제");
         self.sight.sightRange *= 2f;
-        GameManager.instance.CalcCamVFov(20);
-    }
+		if (self == GameManager.instance.pActor)
+		{
+			GameManager.instance.CalcCamVFov(20);
+		}
+	}
 
     void OnWaterDebuffActivated(Actor self, Actor inflicter)
     {

@@ -18,30 +18,37 @@ public class BearAI : MonoBehaviour
 		self = GetComponent<Actor>();
 		head = new Selecter();
 
+		IsFirstTime once = new IsFirstTime();
 		IsUnderBalance under70 = new IsUnderBalance(self, 0.7f);
-		IsInRange inRangeSp = new IsInRange(self, player.transform, (self.atk as BearAttack).atkDist2, (player.move as PlayerMove).GetSneakDist,()=>
+		IsInRange inRangeSp = new IsInRange(self, player.transform, (self.atk as BearAttack).GetDist3, (player.move as PlayerMove).GetSneakDist,()=>
 		{
 			(self.atk as BearAttack).SetAttackType(AttackType.SpecialAttack);
 		});
 		Waiter waitSp = new Waiter(1);
 		Attacker spAttack = new Attacker(self, ()=>
 		{
+			(self.move as BearMove).LookAt(player.transform);
+			once.Invalidate();
 			StopExamine();
+			
 		});
 		Sequencer spAttacker = new Sequencer();
+		spAttacker.connecteds.Add(once);
 		spAttacker.connecteds.Add(under70);
 		spAttacker.connecteds.Add(inRangeSp);
 		spAttacker.connecteds.Add(waitSp);
 		spAttacker.connecteds.Add(spAttack);
 
 
-		IsInRange inRange2 = new IsInRange(self, player.transform, (self.atk as BearAttack).atkDist2, (player.move as PlayerMove).GetSneakDist, () =>
+		IsInRange inRange2 = new IsInRange(self, player.transform, (self.atk as BearAttack).GetDist2, (player.move as PlayerMove).GetSneakDist, () =>
 		{
 			(self.atk as BearAttack).SetAttackType(AttackType.MouthAttack);
+			(self.atk as BearAttack).SetTarget(player);
 		});
 		Waiter wait2 = new Waiter(10);
 		Attacker atk2 = new Attacker(self, () =>
 		{
+			(self.move as BearMove).LookAt(player.transform);
 			StopExamine();
 		});
 		Sequencer secondAttacker = new Sequencer();
@@ -49,13 +56,14 @@ public class BearAI : MonoBehaviour
 		secondAttacker.connecteds.Add(wait2);
 		secondAttacker.connecteds.Add(atk2);
 
-		IsInRange inRange1 = new IsInRange(self, player.transform, self.atk.atkDist, (player.move as PlayerMove).GetSneakDist, () =>
+		IsInRange inRange1 = new IsInRange(self, player.transform, self.atk.GetDist, (player.move as PlayerMove).GetSneakDist, () =>
 		{
 			(self.atk as BearAttack).SetAttackType(AttackType.HandAttack);
 		});
 		Waiter wait1 = new Waiter(2);
 		Attacker atk1 = new Attacker(self, () =>
 		{
+			(self.move as BearMove).LookAt(player.transform);
 			StopExamine();
 		});
 		Sequencer firstAttacker = new Sequencer();
@@ -63,7 +71,7 @@ public class BearAI : MonoBehaviour
 		firstAttacker.connecteds.Add(wait1);
 		firstAttacker.connecteds.Add(atk1);
 
-		IsInRange inSight = new IsInRange(self, player.transform, self.sight.sightRange, (player.move as PlayerMove).GetSneakDist, ()=>
+		IsInRange inSight = new IsInRange(self, player.transform, self.sight.GetSightRange, (player.move as PlayerMove).GetSneakDist, ()=>
 		{
 			(self.move as BearMove).SetTarget(GameManager.instance.pActor.transform);
 		});

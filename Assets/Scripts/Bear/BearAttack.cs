@@ -16,8 +16,18 @@ public class BearAttack : AttackModule
 	public float atkDist2;
 	public float atkDist3;
 
+	public float GetDist2()
+	{
+		return atkDist2;
+	}
 
-	List<GameObject> ranges;
+	public float GetDist3()
+	{
+		return atkDist3;
+	}
+
+
+	List<GameObject> ranges= new List<GameObject>();
 
 	public AttackType nextAttackCall = AttackType.HandAttack;
 
