@@ -20,7 +20,7 @@ public class InventoryUI : MonoBehaviour,IDropHandler
         text = GetComponentInChildren<TMP_Text>();
     }
  
-    void UpdateItem()
+    public void UpdateItem()
     {
         items = GameManager.instance.pinven.inven[int.Parse(transform.parent.name)];
 

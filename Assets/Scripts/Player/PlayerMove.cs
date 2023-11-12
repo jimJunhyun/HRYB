@@ -10,14 +10,19 @@ using System.Linq;
 public class PlayerMove : MoveModule
 {
 	public const float GRAVITY = 9.8f;
+	
 
 	CharacterController ctrl;
+
+	public float climbSpeed = 7f;
+	public float climbDistance = 0.7f;
 	
 	public float spinSpd = 300f;
 	public float jumpPwer = 20f;
 	public float sneakPower = 3f;
 
 	public float slipThreshold = 45f;
+	public float climbThreshold = 85f;
 	public float slipPower = 4f;
 
 	public float lockOnDist = 15f;
@@ -27,16 +32,20 @@ public class PlayerMove : MoveModule
 
 	public bool jumpable;
 	public bool rollable;
+	public bool climbable;
 
 	public bool onAir
 	{
-		get => !ctrl.isGrounded;
+		get => moveStat != MoveStates.Climb && !ctrl.isGrounded;
 	}
 
 	float angle = 0;
 	bool slip = false;
+	//bool climbing = false;
 
 	Vector3 slipDir = Vector3.zero;
+
+	Vector3 ropeNormal = Vector3.zero;
 
 	Quaternion to;
 	Camera mainCam;
@@ -50,20 +59,30 @@ public class PlayerMove : MoveModule
 	Transform target;
 	bool isLocked = false;
 
+	RaycastHit hitCache;
+
 	public Vector3 MoveDirCalced
 	{
 		get
 		{
-			switch (GameManager.instance.curCamStat)
+			if (moveStat == MoveStates.Climb)
 			{
-				case CamStatus.Aim:
-				case CamStatus.Freelook:
-					return ConvertToCamFront(moveDir) * speed;
-				case CamStatus.Locked:
-					return transform.rotation * moveDir * speed;
-				default:
-					return Vector3.zero;
+				return moveDir * speed;
 			}
+			else
+			{
+				switch (GameManager.instance.curCamStat)
+				{
+					case CamStatus.Aim:
+					case CamStatus.Freelook:
+						return ConvertToCamFront(moveDir) * speed;
+					case CamStatus.Locked:
+						return transform.rotation * moveDir * speed;
+					default:
+						return Vector3.zero;
+				}
+			}
+			
 		}
 	}
 
@@ -72,7 +91,30 @@ public class PlayerMove : MoveModule
 		get => ctrl.velocity;
 	}
 
-
+	public override MoveStates moveStat 
+	{
+		get => base.moveStat; 
+		protected set 
+		{
+			if(value == MoveStates.Climb)
+			{
+				curStat = MoveStates.Climb;
+				speed = climbSpeed;
+			}
+			else if(value == MoveStates.Sit)
+			{
+				if (moveStat != MoveStates.Climb)
+				{
+					curStat = MoveStates.Sit;
+					speed = crouchSpeed;
+				}
+			}
+			else
+			{
+				base.moveStat = value;
+			}
+		}
+	}
 
 	Transform middle;
 
@@ -87,7 +129,10 @@ public class PlayerMove : MoveModule
 	{
 		if(hit.point.y <= middle.position.y)
 		{
+			
+
 			angle = Mathf.Acos(Vector3.Dot(hit.normal, transform.up) / (hit.normal.magnitude * transform.up.magnitude)) * Mathf.Rad2Deg;
+			
 			if (angle >= slipThreshold)
 			{
 				slip = true;
@@ -103,62 +148,90 @@ public class PlayerMove : MoveModule
 				slipDir = Vector3.zero;
 			}
 		}
+
+		
 	}
 
 	private void FixedUpdate()
 	{
 		Move();
+		if (moveStat == MoveStates.Climb)
+		{
+			CalcClimbState();
+		}
 	}
 
 	public override void Move()
 	{
-		ForceCalc();
-		SlipCalc();
-		GravityCalc();
-
-		if (isLocked && target == null)
+		if (moveStat != MoveStates.Climb)
 		{
-			ResetTargets();
-		}
-		switch (GameManager.instance.curCamStat)
-		{
-			case CamStatus.Freelook:
-				{
-					Vector3 vec = MoveDirCalced;
+			ForceCalc();
+			SlipCalc();
+			GravityCalc();
+			
 
-					if (vec.sqrMagnitude != 0)
+			if (isLocked && target == null)
+			{
+				ResetTargets();
+			}
+			switch (GameManager.instance.curCamStat)
+			{
+				case CamStatus.Freelook:
 					{
-						to = Quaternion.LookRotation(vec, Vector3.up);
-					}
-					RotateTo();
-					PlayerControllerMove(vec);
-				}
+						Vector3 vec = MoveDirCalced;
 
-				break;
-			case CamStatus.Locked:
-				{
-					Vector3 vec = GetDir(target);
-					to = Quaternion.LookRotation(vec, Vector3.up);
-					if (to != Quaternion.identity)
-					{
+						if (vec.sqrMagnitude != 0)
+						{
+							to = Quaternion.LookRotation(vec, Vector3.up);
+						}
 						RotateTo();
+						PlayerControllerMove(vec);
 					}
-					PlayerControllerMove(MoveDirCalced);
-				}
 
-				break;
-			case CamStatus.Aim:
-				{
-					Vector3 vec = MoveDirCalced;
+					break;
+				case CamStatus.Locked:
+					{
+						Vector3 vec = GetDir(target);
+						to = Quaternion.LookRotation(vec, Vector3.up);
+						if (to != Quaternion.identity)
+						{
+							RotateTo();
+						}
+						PlayerControllerMove(MoveDirCalced);
+					}
 
-					PlayerControllerMove(vec);
-				}
-				break;
-			default:
-				break;
+					break;
+				case CamStatus.Aim:
+					{
+						Vector3 vec = MoveDirCalced;
+
+						PlayerControllerMove(vec);
+					}
+					break;
+				default:
+					break;
+			}
 		}
-		
-		
+		else{
+			PlayerControllerMove(MoveDirCalced);
+		}
+	}
+
+	public void CalcClimbState()
+	{
+		Debug.DrawRay(transform.position, ropeNormal, Color.cyan, 1000f);
+		if(!Physics.SphereCast(transform.position, 0.5f, transform.forward,out hitCache, climbDistance, ~(1 << GameManager.PLAYERLAYER)) && moveStat == MoveStates.Climb)
+		{
+			if (Physics.Raycast(middle.position, Vector3.down, 5f, ~(1 << GameManager.PLAYERLAYER)))
+			{
+				Debug.Log("!@!@@!!@");
+				//ResetClimb();
+			}
+			else
+			{
+				PlayerControllerMove(-ropeNormal * speed);
+			}
+		}
 	}
 
 	void SlipCalc()
@@ -199,14 +272,40 @@ public class PlayerMove : MoveModule
 
 	public void PlayerControllerMove(Vector3 dir)
 	{
-		ctrl.Move( (forceDir + (dir) - (Vector3.up * GRAVITY)) * Time.deltaTime);
+		if (moveStat != MoveStates.Climb)
+		{
+			dir -= Vector3.up * GRAVITY;
+			dir += forceDir;
+		}
+		ctrl.Move( (dir) * Time.deltaTime);
 		GetActor().anim.SetIdleState(idling);
 	}
 
 	public void Move(InputAction.CallbackContext context)
 	{
 		Vector2 inp = context.ReadValue<Vector2>();
-		moveDir = new Vector3(inp.x, moveDir.y, inp.y);
+		if (moveStat != MoveStates.Climb)
+		{
+			if (Physics.SphereCast(middle.position, 0.5f, transform.forward, out hitCache, climbDistance, (1 << GameManager.CLIMBABLELAYER)) && inp.y > 0)
+			{
+				SetClimb();
+			}
+			else
+			{
+				moveDir = new Vector3(inp.x, moveDir.y, inp.y);
+			}
+		}
+		else
+		{
+			if (!Physics.SphereCast(transform.position, 0.5f, transform.forward, out hitCache, climbDistance, ~(1 << GameManager.PLAYERLAYER)) && inp.y < 0)
+			{
+				ResetClimb();
+			}
+			else
+			{
+				moveDir = new Vector3(0, inp.y, 0);
+			}
+		}
 
 		if (target != null && (target.position - transform.position).sqrMagnitude >= lockOnDist * lockOnDist)
 		{
@@ -216,7 +315,7 @@ public class PlayerMove : MoveModule
 
 	public void Run(InputAction.CallbackContext context)
 	{
-		if(moveStat != MoveStates.Sit)
+		if(moveStat != MoveStates.Sit && moveStat != MoveStates.Climb)
 		{
 			if (context.started)
 			{
@@ -235,7 +334,7 @@ public class PlayerMove : MoveModule
 
 	public void Crouch(InputAction.CallbackContext context)
 	{
-		if (context.started)
+		if (context.started && moveStat != MoveStates.Climb)
 		{
 			if(moveStat == MoveStates.Sit)
 			{
@@ -252,11 +351,25 @@ public class PlayerMove : MoveModule
 
 	public void Jump(InputAction.CallbackContext context)
 	{
-		if (jumpable && context.performed && ctrl.isGrounded && !slip)
+		if (context.performed && jumpable)
 		{
-			forceDir.y += jumpPwer;
-			(GetActor().anim as PlayerAnim).SetJumpTrigger();
+			if (moveStat == MoveStates.Climb)
+			{
+				forceDir.y += jumpPwer / climbSpeed;
+				Vector3 ropeJumpDir = (ropeNormal + Vector3.up).normalized;
+				forceDir += ropeJumpDir * jumpPwer;
+				ResetClimb();
+			}
+			else
+			{
+				if (ctrl.isGrounded && !slip)
+				{
+					forceDir.y += jumpPwer;
+					(GetActor().anim as PlayerAnim).SetJumpTrigger();
+				}
+			}
 		}
+		
 	}
 
 	public void Turn(InputAction.CallbackContext context)
@@ -274,7 +387,7 @@ public class PlayerMove : MoveModule
 	{
 		if (context.started)
 		{
-			Collider[] c = Physics.OverlapSphere(transform.position, lockOnDist, ~(1 << 7 | 1 << 11));
+			Collider[] c = Physics.OverlapSphere(transform.position, lockOnDist, ~(1 << GameManager.PLAYERLAYER | 1 << GameManager.GROUNDLAYER));
 			if (c.Length > 0)
 			{
 				prevTargets = targets;
@@ -346,5 +459,17 @@ public class PlayerMove : MoveModule
 		isLocked = false;
 	}
 
-	
+	void ResetClimb()
+	{
+		moveStat = MoveStates.Walk;
+		moveDir = Vector3.zero;
+	}
+
+	void SetClimb()
+	{
+		moveStat = MoveStates.Climb;
+		forceDir = Vector3.zero;
+		slipDir = Vector3.zero;
+		moveDir = Vector3.zero;
+	}
 }

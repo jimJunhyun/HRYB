@@ -18,12 +18,20 @@ public class UIManager : MonoBehaviour
     public bool isOn = false;
 
 	List<InventoryUI> uis = new List<InventoryUI>();
+
+	private void Awake()
+	{
+		Panel.SetActive(true);
+	}
+
 	private void Start()
 	{
 		for (int i = 0; i < GameManager.instance.pinven.cap; i++)
 		{
-			uis.Add(GameObject.Find(i.ToString()).GetComponent<InventoryUI>());
+			//Debug.Log(GameObject.);
+			uis.Add(GameObject.Find(i.ToString()).GetComponentInChildren<InventoryUI>());
 		}
+		Panel.SetActive(false);
 	}
 
 	public void OnInven(InputAction.CallbackContext context)
@@ -51,7 +59,10 @@ public class UIManager : MonoBehaviour
 
 	public void UpdateInvenUI()
 	{
-
+		for (int i = 0; i < uis.Count; i++)
+		{
+			uis[i].UpdateItem();
+		}
 	}
 
     

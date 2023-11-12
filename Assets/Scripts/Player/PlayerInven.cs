@@ -79,7 +79,7 @@ public class Inventory
 	}
 
 	List<InventoryItem> data;
-	int quickSize = 5;
+	int quickSize = 4;
 
 	public InventoryItem this[int idx]
 	{ 
@@ -152,7 +152,7 @@ public class Inventory
 public class PlayerInven : MonoBehaviour
 {
     public Inventory inven;
-    public int cap = 25;
+    public int cap = 20;
 
 	public HandStat stat = HandStat.Item;
 	public int curHolding = 0;
@@ -243,6 +243,8 @@ public class PlayerInven : MonoBehaviour
 				}
 			}
 		}
+		
+		GameManager.instance.uiManager.UpdateInvenUI();
 		Debug.Log($"{data.MyName}, {num} 만큼은 더이상 추가할 수 없음.");
 		return num;
 	}
@@ -261,6 +263,7 @@ public class PlayerInven : MonoBehaviour
 			inven[to] = item;
 			return leftover;
 		}
+		GameManager.instance.uiManager.UpdateInvenUI();
 		return -1;
 	}
 
@@ -291,6 +294,7 @@ public class PlayerInven : MonoBehaviour
 						break;
 					}
 				}
+				GameManager.instance.uiManager.UpdateInvenUI();
 				return true;
 			}
 			Debug.Log("아이템 숫자 부족.");
@@ -315,7 +319,7 @@ public class PlayerInven : MonoBehaviour
 			{
 				inven[from] = slotItem;
 			}
-			
+			GameManager.instance.uiManager.UpdateInvenUI();
 			return true;
 		}
 		return false;
@@ -328,6 +332,8 @@ public class PlayerInven : MonoBehaviour
 			Debug.Log($"{inven[from].info.MyName}, {inven[from].number}개, {inven[to].info.MyName}, {inven[to].number}개에서, ");
 			Swap(from, to);
 			Debug.Log($"{inven[from].info.MyName}, {inven[from].number}개, {inven[to].info.MyName}, {inven[to].number}개로 변경.");
+
+			GameManager.instance.uiManager.UpdateInvenUI();
 			return true;
 		}
 		else
@@ -340,6 +346,7 @@ public class PlayerInven : MonoBehaviour
 				{
 					RemoveItem(from, num - leftover);
 					Debug.Log($"{(inven[from].isEmpty() ? 0 : inven[from].info.MyName)}, {(inven[from].isEmpty() ? 0 : inven[from].number)}개, {inven[to].info.MyName}, {inven[to].number}개로 변경.");
+					GameManager.instance.uiManager.UpdateInvenUI();
 					return true;
 				}
 				Debug.Log("목적지 꽉 참.");
@@ -393,6 +400,7 @@ public class PlayerInven : MonoBehaviour
 				break;
 		}
 		this.stat = stat;
+		GameManager.instance.uiManager.UpdateInvenUI();
 	}
 
 	public void UseHolding()
@@ -401,6 +409,7 @@ public class PlayerInven : MonoBehaviour
 		{
 			inven[curHolding].info.onUse.onActivated.Invoke();
 		}
+		GameManager.instance.uiManager.UpdateInvenUI();
 	}
 
 	public bool RemoveHolding(int amt = 1)
@@ -415,6 +424,7 @@ public class PlayerInven : MonoBehaviour
 			{
 				CurHoldingItem = new ItemAmountPair(CurHoldingItem.info, CurHoldingItem.num - amt);
 			}
+			GameManager.instance.uiManager.UpdateInvenUI();
 			return true;
 		}
 		else

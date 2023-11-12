@@ -17,7 +17,12 @@ public class GameManager : MonoBehaviour
 	public const int FORWARDCAM = 20;
 	public const int BACKWARDCAM = 10;
 
-    public static GameManager instance;
+	public const int PLAYERLAYER = 7;
+	public const int INTERABLELAYER = 8;
+	public const int GROUNDLAYER = 11;
+	public const int CLIMBABLELAYER = 17;
+
+	public static GameManager instance;
 
     public GameObject player;
 	public PlayerInput pinp;

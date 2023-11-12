@@ -7,6 +7,7 @@ public enum MoveStates
 	Walk,
 	Run,
 	Sit,
+	Climb,
 
 }
 
@@ -36,8 +37,8 @@ public class MoveModule : Module
 
 	public float speedMod = 1.0f;
 
-	private MoveStates curStat;
-	public MoveStates moveStat
+	protected MoveStates curStat;
+	public virtual MoveStates moveStat
 	{
 		get => curStat;
 		protected set

@@ -48,6 +48,9 @@ public class PlayerAnim : AnimModule
 						case MoveStates.Sit:
 							anim.SetFloat(moveYHash, GetActor().move.crouchSpeed);
 							break;
+						case MoveStates.Climb:
+							
+							break;
 						default:
 							break;
 					}
