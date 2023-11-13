@@ -472,12 +472,4 @@ public class PlayerInven : MonoBehaviour
 			Hold(HandStat.Item, 3);
 		}
 	}
-
-	public void OnPressFive(InputAction.CallbackContext context)
-	{
-		if (context.performed)
-		{
-			Hold(HandStat.Item, 4);
-		}
-	}
 }

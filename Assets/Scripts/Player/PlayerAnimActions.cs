@@ -21,4 +21,14 @@ public class PlayerAnimActions : MonoBehaviour
 	{
 		(self.atk as PlayerAttack).Attack();
 	}
+
+	public void DisableInput()
+	{
+		GameManager.instance.pinp.DeactivateInput();
+	}
+
+	public void EnableInput()
+	{
+		GameManager.instance.pinp.ActivateInput();
+	}
 }

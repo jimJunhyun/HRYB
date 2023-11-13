@@ -24,7 +24,6 @@ public class IsInRange : INode
 	{
 		Vector3 dir = (self.transform.position - target.position);
 		float sqrRng = sneakDecFunc == null ? range() * range() : (range() - sneakDecFunc()) * (range() - sneakDecFunc());
-		Debug.Log($"{sqrRng}");
 
 		if (dir.sqrMagnitude > sqrRng)
 		{

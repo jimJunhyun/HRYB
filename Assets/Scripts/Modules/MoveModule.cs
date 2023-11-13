@@ -26,11 +26,6 @@ public class MoveModule : Module
 
 	public Vector3 forceDir = Vector3.zero;
 
-	public virtual Vector3 MoveVelocity
-	{
-		get => moveDir * speed;
-	}
-
 	public float runSpeed;
 	public float walkSpeed;
 	public float crouchSpeed;

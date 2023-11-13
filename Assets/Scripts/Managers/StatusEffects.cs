@@ -126,7 +126,7 @@ public class StatusEffects
 
     void OnWaterDebuffActivated(Actor self, Actor inflicter)
     {
-        self.move.Speed *= 0.5f;
+        self.move.speedMod *= 0.5f;
         self.atk.prepMod *= 0.5f;
     }
 
@@ -137,7 +137,7 @@ public class StatusEffects
 
     void OnWaterDebuffEnded(Actor self)
     {
-        self.move.Speed *= 2f;
+        self.move.speedMod *= 2f;
         self.atk.prepMod *= 2;
     }
 

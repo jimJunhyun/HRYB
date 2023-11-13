@@ -46,6 +46,11 @@ public class PlayerAttack : AttackModule
 		curCharge = 0;
 	}
 
+	private void Start()
+	{
+		BowDown();
+	}
+
 	private void Update()
 	{
 		if (loaded && attackState == AttackStates.Prepare)
@@ -53,9 +58,10 @@ public class PlayerAttack : AttackModule
 			
 			Charge();
 		}
-		if(GameManager.instance.pinven.stat != HandStat.Weapon)
+		else if (shaking)
 		{
-			BowDown();
+			shaking = false;
+			GameManager.instance.UnShakeCam();
 		}
 	}
 
@@ -68,6 +74,7 @@ public class PlayerAttack : AttackModule
 				GameManager.instance.SwitchTo(CamStatus.Aim);
 				attackState = AttackStates.Prepare;
 				(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
+				GameManager.instance.uiManager.aimUI.On();
 			}
 			if (context.canceled)
 			{
@@ -81,6 +88,7 @@ public class PlayerAttack : AttackModule
 				else
 				{
 					BowDown();
+
 				}
 			}
 		}
@@ -99,7 +107,6 @@ public class PlayerAttack : AttackModule
 	{
 		Debug.Log($"{curCharge} 파워로 발사.");
 		attackState = AttackStates.Trigger;
-		(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
 
 		Arrow r = PoolManager.GetObject("ArrowTemp", shootPos.position, shootPos.forward).GetComponent<Arrow>();
 		r.SetInfo(damage, EffSpeed, isDirect);
@@ -121,18 +128,18 @@ public class PlayerAttack : AttackModule
 
 		if (AimTime >= maxChargeTime)
 		{
-			Attack();
+			atked = true;
+			GetActor().anim.SetAttackTrigger();
 		}
 
-		if (AimTime >= shakeFrom && !shaking)
+		if (curCharge == atkDist && AimTime >= shakeFrom)
 		{
-			shaking = true;
-			GameManager.instance.ShakeCam();
-		}
-		if (AimTime <= shakeFrom && shaking)
-		{
-			shaking = false;
-			GameManager.instance.UnShakeCam();
+			if (!shaking)
+			{
+				shaking = true;
+				GameManager.instance.ShakeCam();
+			}
+			
 		}
 	}
 
@@ -148,6 +155,7 @@ public class PlayerAttack : AttackModule
 		GameManager.instance.SwitchTo(CamStatus.Freelook);
 		attackState = AttackStates.None;
 		(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
+		GameManager.instance.uiManager.aimUI.Off();
 	}
 
 	public void SetBowStat()
@@ -164,6 +172,7 @@ public class PlayerAttack : AttackModule
 		GameManager.instance.SwitchTo(CamStatus.Freelook);
 		attackState = AttackStates.None;
 		(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
+		GameManager.instance.uiManager.aimUI.On();
 		ongoingResetter = null;
 	}
 }

@@ -7,6 +7,12 @@ using UnityEngine.InputSystem;
 
 public class UIManager : MonoBehaviour
 {
+	Canvas canvas;
+
+	public YYCtrl yinYangUI;
+	public WXCtrl wuXingUI;
+	public AimPointCtrl aimUI;
+    public GameObject invenPanel;
 
     public RectTransform CursorPos;
     public Image Cursor;
@@ -14,14 +20,18 @@ public class UIManager : MonoBehaviour
     public int DragPoint;
     public int DropPoint;
 
-    public GameObject Panel;
     public bool isOn = false;
 
 	List<InventoryUI> uis = new List<InventoryUI>();
 
 	private void Awake()
 	{
-		Panel.SetActive(true);
+		canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+		invenPanel = canvas.transform.Find("InventoryPanel").gameObject;
+		yinYangUI = canvas.GetComponentInChildren<YYCtrl>();
+		wuXingUI = canvas.GetComponentInChildren<WXCtrl>();
+		aimUI = canvas.GetComponentInChildren<AimPointCtrl>();
+		invenPanel.SetActive(true);
 	}
 
 	private void Start()
@@ -31,7 +41,7 @@ public class UIManager : MonoBehaviour
 			//Debug.Log(GameObject.);
 			uis.Add(GameObject.Find(i.ToString()).GetComponentInChildren<InventoryUI>());
 		}
-		Panel.SetActive(false);
+		invenPanel.SetActive(false);
 	}
 
 	public void OnInven(InputAction.CallbackContext context)
@@ -40,7 +50,7 @@ public class UIManager : MonoBehaviour
 		{
 			if (!isOn)
 			{
-				Panel.SetActive(true);
+				invenPanel.SetActive(true);
 				isOn = true;
 				GameManager.instance.UnLockCursor();
 
@@ -49,7 +59,7 @@ public class UIManager : MonoBehaviour
 			}
 			else
 			{
-				Panel.SetActive(false);
+				invenPanel.SetActive(false);
 				isOn = false;
 				GameManager.instance.LockCursor();
 			}

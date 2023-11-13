@@ -135,6 +135,7 @@ public class GameManager : MonoBehaviour
 		pCam.m_Lens.FieldOfView += differ;
 	}
 
+
 	public void SwitchTo(CamStatus stat)
 	{
 		curCamStat = stat;

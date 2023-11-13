@@ -19,6 +19,7 @@ public class PlayerMove : MoveModule
 	
 	public float spinSpd = 300f;
 	public float jumpPwer = 20f;
+	public float jumpGap = 0.5f;
 	public float sneakPower = 3f;
 
 	public float slipThreshold = 45f;
@@ -26,6 +27,7 @@ public class PlayerMove : MoveModule
 	public float slipPower = 4f;
 
 	public float lockOnDist = 15f;
+
 
 	public float angleXMin;
 	public float angleXMax;
@@ -41,7 +43,9 @@ public class PlayerMove : MoveModule
 
 	float angle = 0;
 	bool slip = false;
-	//bool climbing = false;
+	bool climbGrounded = false;
+
+	float prevJump = 0;
 
 	Vector3 slipDir = Vector3.zero;
 
@@ -61,7 +65,33 @@ public class PlayerMove : MoveModule
 
 	RaycastHit hitCache;
 
+
 	public Vector3 MoveDirCalced
+	{
+		get
+		{
+			if (moveStat == MoveStates.Climb)
+			{
+				return moveDir * Speed;
+			}
+			else
+			{
+				switch (GameManager.instance.curCamStat)
+				{
+					case CamStatus.Aim:
+					case CamStatus.Freelook:
+						return ConvertToCamFront(moveDir) * Speed;
+					case CamStatus.Locked:
+						return transform.rotation * moveDir * Speed;
+					default:
+						return Vector3.zero;
+				}
+			}
+			
+		}
+	}
+
+	public Vector3 MoveDirUncalced
 	{
 		get
 		{
@@ -82,13 +112,8 @@ public class PlayerMove : MoveModule
 						return Vector3.zero;
 				}
 			}
-			
-		}
-	}
 
-	public Vector3 Velocity
-	{
-		get => ctrl.velocity;
+		}
 	}
 
 	public override MoveStates moveStat 
@@ -165,6 +190,13 @@ public class PlayerMove : MoveModule
 	{
 		if (moveStat != MoveStates.Climb)
 		{
+			if (Physics.SphereCast(middle.position, 0.5f, transform.forward, out hitCache, climbDistance, (1 << GameManager.CLIMBABLELAYER)) && moveDir.z > 0)
+			{
+				Debug.Log("등반");
+				ropeNormal = hitCache.normal;
+				SetClimb();
+			}
+
 			ForceCalc();
 			SlipCalc();
 			GravityCalc();
@@ -213,25 +245,46 @@ public class PlayerMove : MoveModule
 			}
 		}
 		else{
-			PlayerControllerMove(MoveDirCalced);
+
+			if (climbGrounded && moveDir.y < 0)
+			{
+				Debug.Log("착지");
+				ResetClimb();
+			}
+
+			if(!climbGrounded && !Physics.SphereCast(transform.position, 0.5f, transform.forward, out hitCache, climbDistance, (1 << GameManager.CLIMBABLELAYER)) && moveDir.y > 0)
+			{
+				Debug.Log("등반완");
+				PlayerControllerMove(-ropeNormal * climbSpeed);
+				if (Physics.Raycast(transform.position, Vector3.down, 2f, ~(1 << GameManager.PLAYERLAYER)))
+				{
+					ResetClimb();
+				}
+			}
+			else
+			{
+				PlayerControllerMove(MoveDirCalced);
+			}
 		}
 	}
 
 	public void CalcClimbState()
 	{
-		Debug.DrawRay(transform.position, ropeNormal, Color.cyan, 1000f);
-		if(!Physics.SphereCast(transform.position, 0.5f, transform.forward,out hitCache, climbDistance, ~(1 << GameManager.PLAYERLAYER)) && moveStat == MoveStates.Climb)
+		if(moveStat == MoveStates.Climb)
 		{
-			if (Physics.Raycast(middle.position, Vector3.down, 5f, ~(1 << GameManager.PLAYERLAYER)))
+			Debug.DrawRay(middle.position, Vector3.down * 1.5f, Color.cyan, 1000f);
+			if (Physics.Raycast(transform.position, Vector3.down, 0.5f, ~(1 << GameManager.PLAYERLAYER)))
 			{
-				Debug.Log("!@!@@!!@");
-				//ResetClimb();
+				Debug.Log("GND");
+				climbGrounded = true;
 			}
 			else
 			{
-				PlayerControllerMove(-ropeNormal * speed);
+				climbGrounded = false;
 			}
 		}
+		
+		
 	}
 
 	void SlipCalc()
@@ -286,25 +339,13 @@ public class PlayerMove : MoveModule
 		Vector2 inp = context.ReadValue<Vector2>();
 		if (moveStat != MoveStates.Climb)
 		{
-			if (Physics.SphereCast(middle.position, 0.5f, transform.forward, out hitCache, climbDistance, (1 << GameManager.CLIMBABLELAYER)) && inp.y > 0)
-			{
-				SetClimb();
-			}
-			else
-			{
-				moveDir = new Vector3(inp.x, moveDir.y, inp.y);
-			}
+			moveDir = new Vector3(inp.x, moveDir.y, inp.y);
+			
 		}
 		else
 		{
-			if (!Physics.SphereCast(transform.position, 0.5f, transform.forward, out hitCache, climbDistance, ~(1 << GameManager.PLAYERLAYER)) && inp.y < 0)
-			{
-				ResetClimb();
-			}
-			else
-			{
-				moveDir = new Vector3(0, inp.y, 0);
-			}
+			moveDir = new Vector3(0, inp.y, 0);
+			
 		}
 
 		if (target != null && (target.position - transform.position).sqrMagnitude >= lockOnDist * lockOnDist)
@@ -362,8 +403,9 @@ public class PlayerMove : MoveModule
 			}
 			else
 			{
-				if (ctrl.isGrounded && !slip)
+				if (ctrl.isGrounded && !slip && Time.time - prevJump >= jumpGap)
 				{
+					prevJump = Time.time;
 					forceDir.y += jumpPwer;
 					(GetActor().anim as PlayerAnim).SetJumpTrigger();
 				}

@@ -27,13 +27,15 @@ public class InventoryUI : MonoBehaviour,IDropHandler
         if(items.isEmpty())
         {
             Iconimg.sprite = null;
+			Iconimg.color = Color.clear;
             text.text = "";
             return;
         }
         else
         {
             Iconimg.sprite = items.info.icon;
-            text.text = items.number.ToString();
+			Iconimg.color = Color.white;
+			text.text = items.number.ToString();
         }
     }
 

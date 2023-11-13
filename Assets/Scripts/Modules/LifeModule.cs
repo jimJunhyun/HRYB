@@ -36,10 +36,10 @@ public class LifeModule : Module
 		get => yywx.yy.yinAmt * 2 <= yywx.yy.yangAmt || yywx.yy.yangAmt * 2 <= yywx.yy.yinAmt || yywx.yy.yangAmt + yywx.yy.yinAmt > maxSoul;
 	}
 
-	bool regenOn = false;
+	protected bool regenOn = false;
 	float diff;
 
-	private void Update()
+	public virtual void Update()
 	{
 		if(Mathf.Abs((diff = yywx.yy.yinAmt - yywx.yy.yangAmt)) > regenThreshold)
 		{
@@ -98,28 +98,34 @@ public class LifeModule : Module
 		GetActor().updateActs -= eff.onUpdated;
 	}
 
-	public void AddYYWX(YinyangWuXing data, bool isNegatable = false)
+	public virtual void AddYYWXBase(YinyangWuXing data)
+	{
+		AddYY(data.yy.yinAmt, YYInfo.Yin);
+		AddYY(data.yy.yangAmt, YYInfo.Yang);
+
+		AddWX(data.wx.woodAmt, WXInfo.Wood);
+		AddWX(data.wx.fireAmt, WXInfo.Fire);
+		AddWX(data.wx.earthAmt, WXInfo.Earth);
+		AddWX(data.wx.metalAmt, WXInfo.Metal);
+		AddWX(data.wx.waterAmt, WXInfo.Water);
+	}
+
+	public virtual void AddYYWX(YinyangWuXing data, bool isNegatable = false)
 	{
 		if(!(isNegatable && isImmune))
 		{
-			AddYY(data.yy.yinAmt, YYInfo.Yin);
-			AddYY(data.yy.yangAmt, YYInfo.Yang);
-
-			AddWX(data.wx.woodAmt, WXInfo.Wood);
-			AddWX(data.wx.fireAmt, WXInfo.Fire);
-			AddWX(data.wx.earthAmt, WXInfo.Earth);
-			AddWX(data.wx.metalAmt, WXInfo.Metal);
-			AddWX(data.wx.waterAmt, WXInfo.Water);
-
+			AddYYWXBase(data);
+			GetActor().anim.SetHitTrigger();
 			StartCoroutine(DelImmuner(IMMUNETIME));
 		}
 	}
 
-	public void AddYYWX(YinyangWuXing data, float spd, bool isNegatable = false)
+	public virtual void AddYYWX(YinyangWuXing data, float spd, bool isNegatable = false)
 	{
 		if(!(isNegatable && isImmune))
 		{ 
 			StartCoroutine(DelAddYYWX(data, (spd * TotalApplySpeed)));
+			GetActor().anim.SetHitTrigger();
 			StartCoroutine(DelImmuner(IMMUNETIME));
 		}
 	}
@@ -137,19 +143,11 @@ public class LifeModule : Module
 		incPerSec.wx.earthAmt = data.wx.earthAmt / spd;
 		incPerSec.wx.metalAmt = data.wx.metalAmt / spd;
 		incPerSec.wx.waterAmt = data.wx.waterAmt / spd;
-
 		while (curT < spd)
 		{
 			curT += Time.deltaTime;
 			yield return null;
-			AddYY(incPerSec.yy.yinAmt * Time.deltaTime, YYInfo.Yin);
-			AddYY(incPerSec.yy.yangAmt * Time.deltaTime, YYInfo.Yang);
-
-			AddWX(incPerSec.wx.woodAmt * Time.deltaTime, WXInfo.Wood);
-			AddWX(incPerSec.wx.fireAmt * Time.deltaTime, WXInfo.Fire);
-			AddWX(incPerSec.wx.earthAmt * Time.deltaTime, WXInfo.Earth);
-			AddWX(incPerSec.wx.metalAmt * Time.deltaTime, WXInfo.Metal);
-			AddWX(incPerSec.wx.waterAmt * Time.deltaTime, WXInfo.Water);
+			AddYYWXBase(incPerSec * Time.deltaTime);
 		}
 	}
 
@@ -163,6 +161,7 @@ public class LifeModule : Module
 	public virtual void OnDead()
 	{
 		StopAllCoroutines();
-		PoolManager.ReturnObject(gameObject);
+		GetActor().anim.SetDieTrigger();
+		//PoolManager.ReturnObject(gameObject);
 	}
 }

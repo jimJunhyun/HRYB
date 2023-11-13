@@ -32,6 +32,12 @@ public class YinYang
 		yangAmt = yang;
 	}
 
+	public YinYang(YinYang origin)
+	{
+		yinAmt = origin.yinAmt;
+		yangAmt = origin.yangAmt;
+	}
+
 	public float GetBalanceRatio()
 	{
 		return yinAmt > yangAmt ? yangAmt / yinAmt : yinAmt / yangAmt;
@@ -96,7 +102,16 @@ public class WuXing
         waterAmt = water;
 	}
 
-    public float this[int i]
+	public WuXing(WuXing origin)
+	{
+		woodAmt = origin.woodAmt;
+		fireAmt = origin.fireAmt;
+		earthAmt = origin.earthAmt;
+		metalAmt = origin.metalAmt;
+		waterAmt = origin.waterAmt;
+	}
+
+	public float this[int i]
 	{
         get
         {
@@ -189,49 +204,61 @@ public struct YinyangWuXing
 		isClampedZero = minZero;
 	}
 
+	public YinyangWuXing(YinyangWuXing origin)
+	{
+		yy = new YinYang(origin.yy);
+		wx = new WuXing(origin.wx);
+		isClampedZero = origin.isClampedZero;
+	}
+
 	public static YinyangWuXing operator*(YinyangWuXing lft, float rht)
 	{
+		YinyangWuXing res = new YinyangWuXing( lft);
 		for (int i = 0; i < ((int)YYInfo.Max); i++)
 		{
-            lft.yy[i] *= rht;
+            res.yy[i] *= rht;
 		}
         for (int i = 0; i < ((int)WXInfo.Max); i++)
         {
-            lft.wx[i] *= rht;
+            res.wx[i] *= rht;
         }
-        return lft;
+        return res;
     }
 
 	public static YinyangWuXing operator+(YinyangWuXing lft, YinyangWuXing rht)
 	{
+		YinyangWuXing res = new YinyangWuXing(lft);
 		for (int i = 0; i < ((int)YYInfo.Max); i++)
 		{
-			lft.yy[i] += rht.yy[i];
+			res.yy[i] += rht.yy[i];
 		}
 		for (int i = 0; i < ((int)WXInfo.Max); i++)
 		{
-			lft.wx[i] += rht.wx[i];
+			res.wx[i] += rht.wx[i];
 		}
-		return lft;
+		return res;
 	}
 
 	public static YinyangWuXing operator -(YinyangWuXing lft, YinyangWuXing rht)
 	{
+		YinyangWuXing res = new YinyangWuXing(lft);
 		for (int i = 0; i < ((int)YYInfo.Max); i++)
 		{
-			if (lft.isClampedZero)
+			res.yy[i] = lft.yy[i] - rht.yy[i];
+			if (res.isClampedZero)
 			{
-				lft.yy[i] = Mathf.Max(lft.yy[i] - rht.yy[i], 0);
+				res.yy[i] = Mathf.Max(res.yy[i], 0);
 			}
 		}
 		for (int i = 0; i < ((int)WXInfo.Max); i++)
 		{
-			if (lft.isClampedZero)
+			res.wx[i] = lft.wx[i] - rht.wx[i];
+			if (res.isClampedZero)
 			{
-				lft.wx[i] = Mathf.Max(lft.wx[i] - rht.wx[i], 0);
+				res.wx[i] = Mathf.Max(res.wx[i], 0);
 			}
 		}
-		return lft;
+		return res;
 	}
 
 	public static YinyangWuXing Zero

@@ -20,7 +20,7 @@ public class BearAI : MonoBehaviour
 
 		IsFirstTime once = new IsFirstTime();
 		IsUnderBalance under70 = new IsUnderBalance(self, 0.7f);
-		IsInRange inRangeSp = new IsInRange(self, player.transform, (self.atk as BearAttack).GetDist3, (player.move as PlayerMove).GetSneakDist,()=>
+		IsInRange inRangeSp = new IsInRange(self, player.transform, (self.atk as BearAttack).GetDist3, null,()=>
 		{
 			(self.atk as BearAttack).SetAttackType(AttackType.SpecialAttack);
 		});
@@ -40,7 +40,7 @@ public class BearAI : MonoBehaviour
 		spAttacker.connecteds.Add(spAttack);
 
 
-		IsInRange inRange2 = new IsInRange(self, player.transform, (self.atk as BearAttack).GetDist2, (player.move as PlayerMove).GetSneakDist, () =>
+		IsInRange inRange2 = new IsInRange(self, player.transform, (self.atk as BearAttack).GetDist2, null, () =>
 		{
 			(self.atk as BearAttack).SetAttackType(AttackType.MouthAttack);
 			(self.atk as BearAttack).SetTarget(player);
@@ -56,7 +56,7 @@ public class BearAI : MonoBehaviour
 		secondAttacker.connecteds.Add(wait2);
 		secondAttacker.connecteds.Add(atk2);
 
-		IsInRange inRange1 = new IsInRange(self, player.transform, self.atk.GetDist, (player.move as PlayerMove).GetSneakDist, () =>
+		IsInRange inRange1 = new IsInRange(self, player.transform, self.atk.GetDist, null, () =>
 		{
 			(self.atk as BearAttack).SetAttackType(AttackType.HandAttack);
 		});
@@ -110,13 +110,11 @@ public class BearAI : MonoBehaviour
 	public void StopExamine()
 	{
 		stopped = true;
-		Debug.Log("STOP");
 	}
 
 	public void StartExamine()
 	{
 		stopped = false;
-		Debug.Log("START");
 	}
 
 }

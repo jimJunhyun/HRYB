@@ -57,8 +57,8 @@ public class PlayerAnim : AnimModule
 					break;
 				case CamStatus.Locked:
 				case CamStatus.Aim:
-					anim.SetFloat(moveXHash, pmove.Velocity.x);
-					anim.SetFloat(moveYHash, pmove.Velocity.z);
+					anim.SetFloat(moveXHash, pmove.MoveDirUncalced.x);
+					anim.SetFloat(moveYHash, pmove.MoveDirUncalced.z);
 					break;
 				default:
 					break;
@@ -66,7 +66,7 @@ public class PlayerAnim : AnimModule
 		}
 
 		anim.SetBool(onAirHash, pmove.onAir);
-		anim.SetFloat(vertPowerHash, pmove.Velocity.y);
+		anim.SetFloat(vertPowerHash, pmove.MoveDirUncalced.y);
 	}
 
 	public void SetJumpTrigger()
