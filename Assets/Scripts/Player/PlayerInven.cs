@@ -108,6 +108,19 @@ public class Inventory
 		return res;
 	}
 
+	public int SumContains(Item info)
+	{
+		int sum = 0;
+		for (int i = 0; i < data.Count; i++)
+		{
+			if (!this[i].isEmpty() && this[i].info == info)
+			{
+				sum += this[i].number;
+			}
+		}
+		return sum	;
+	}
+
 	public void AddCapacity(int amt)
 	{
 		data.Capacity += amt;
@@ -272,11 +285,7 @@ public class PlayerInven : MonoBehaviour
 		List<int> idxes;
 		if ((idxes = inven.Contains(data)).Count > 0)
 		{
-			int sum = 0;
-			for (int i = 0; i < idxes.Count; i++)
-			{
-				sum += inven[idxes[i]].number;
-			}
+			int sum = inven.SumContains(data);
 
 			if(sum >= num)
 			{

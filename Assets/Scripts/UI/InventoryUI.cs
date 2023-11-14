@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine.EventSystems;
 
 
-public class InventoryUI : MonoBehaviour,IDropHandler
+public class InventoryUI : MonoBehaviour,IDropHandler, IPointerClickHandler
 {
     public InventoryItem items;
     public Image Iconimg;
@@ -53,4 +53,19 @@ public class InventoryUI : MonoBehaviour,IDropHandler
 
 		
     }
+
+	public void OnPointerClick(PointerEventData eventData)
+	{
+		if(items.info != null)
+		{
+			Debug.Log("YESITEM");
+			GameManager.instance.uiManager.infoUI.OnWithInfo(items.info);
+		}
+		else
+		{
+
+		GameManager.instance.uiManager.infoUI.Off();
+			Debug.Log("NOITEM");
+		}
+	}
 }

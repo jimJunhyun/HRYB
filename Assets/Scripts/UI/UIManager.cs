@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
 	public YYCtrl yinYangUI;
 	public WXCtrl wuXingUI;
 	public AimPointCtrl aimUI;
+	public InfoCtrl infoUI;
+	public SimpleCrafter crafterUI;
     public GameObject invenPanel;
 
     public RectTransform CursorPos;
@@ -31,6 +33,8 @@ public class UIManager : MonoBehaviour
 		yinYangUI = canvas.GetComponentInChildren<YYCtrl>();
 		wuXingUI = canvas.GetComponentInChildren<WXCtrl>();
 		aimUI = canvas.GetComponentInChildren<AimPointCtrl>();
+		infoUI = canvas.GetComponentInChildren<InfoCtrl>();
+		crafterUI = canvas.GetComponentInChildren<SimpleCrafter>();
 		invenPanel.SetActive(true);
 	}
 

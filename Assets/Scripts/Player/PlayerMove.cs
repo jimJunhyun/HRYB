@@ -379,9 +379,11 @@ public class PlayerMove : MoveModule
 			if(moveStat == MoveStates.Sit)
 			{
 				moveStat = MoveStates.Walk;
+				ctrl.height *= 2f;
 			}
 			else
 			{
+				ctrl.height *= 0.5f;
 				moveStat = MoveStates.Sit;
 			}
 			GetActor().anim.SetMoveState(((int)moveStat));

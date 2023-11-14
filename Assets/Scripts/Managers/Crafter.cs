@@ -54,11 +54,13 @@ public struct Recipe
 {
 	public HashSet<ItemAmountPair> recipe;
 	public HashSet<CraftMethod> requirement;
+	public string category;
 
-	public Recipe(HashSet<ItemAmountPair> rcp, HashSet<CraftMethod> req)
+	public Recipe(HashSet<ItemAmountPair> rcp, HashSet<CraftMethod> req, string catg)
 	{
 		recipe = rcp;
 		requirement = req;
+		category = catg;
 	}
 
 	public static bool operator==(Recipe lft, Recipe rht)
@@ -133,8 +135,8 @@ public class Crafter
 
     public static Hashtable recipeItemTable = new Hashtable()
 	{
-		{ new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("나뭇가지", 2) }, new HashSet<CraftMethod>{  CraftMethod.Base} ), new ItemAmountPair("밧줄")},
-		{ new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("인삼", 2) }, new HashSet<CraftMethod>{  CraftMethod.Medicine} ), new ItemAmountPair(new Medicines("인삼탕", ItemType.Liquid, 1, null, true, new YinyangWuXing(10, 10, 10, 10, 10, 10, 10)))},
+		{ new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("나뭇가지", 2) }, new HashSet<CraftMethod>{  CraftMethod.Base}, "도구" ), new ItemAmountPair("밧줄")},
+		{ new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("인삼", 2) }, new HashSet<CraftMethod>{  CraftMethod.Medicine}, "" ), new ItemAmountPair(new Medicines("인삼탕", "인삼을 잘 끓이면 이렇게 되더라", ItemType.Liquid, 1, null, true, new YinyangWuXing(10, 10, 10, 10, 10, 10, 10)))},
 	};
 
 	public static void AddRecipe(ItemAmountPair resItem, Recipe recipe)

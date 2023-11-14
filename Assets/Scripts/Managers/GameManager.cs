@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
 
 	public Arrow arrow;
 
+	public Sprite uiBase;
+
 	public float ampGain = 0.5f;
 	public float frqGain = 1f;
 
@@ -135,6 +137,10 @@ public class GameManager : MonoBehaviour
 		pCam.m_Lens.FieldOfView += differ;
 	}
 
+	public void CraftWithUI()
+	{
+		craftManager.crafter.CraftWith( uiManager.crafterUI.curRecipe);
+	}
 
 	public void SwitchTo(CamStatus stat)
 	{

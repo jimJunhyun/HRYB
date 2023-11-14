@@ -97,7 +97,7 @@ public class BrewPoint : CraftPoint
 	public override void Process()
 	{
 		base.Process();
-		Recipe myRecipe = new Recipe(holding, new HashSet<CraftMethod>() { CraftMethod.Medicine });
+		Recipe myRecipe = new Recipe(holding, new HashSet<CraftMethod>() { CraftMethod.Medicine }, null);
 
 		Debug.Log(myRecipe.ToString());
 
@@ -112,7 +112,7 @@ public class BrewPoint : CraftPoint
 		}
 		else
 		{
-			resultItem = new Medicines(GetMedicineName(), ItemType.Liquid, 1, null, true, YinyangWuXing.Zero);
+			resultItem = new Medicines(GetMedicineName(), "약이다.", ItemType.Liquid, 1, null, true, YinyangWuXing.Zero);
 			ongoing = StartCoroutine(DelAddStat());
 		}
 	}
