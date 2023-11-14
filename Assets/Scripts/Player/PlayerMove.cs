@@ -361,13 +361,12 @@ public class PlayerMove : MoveModule
 			if (context.started)
 			{
 				moveStat = MoveStates.Run;
-				GetActor().anim.SetMoveState(((int)moveStat));
 			}
 			if (context.canceled)
 			{
 				moveStat = MoveStates.Walk;
-				GetActor().anim.SetMoveState(((int)moveStat));
 			}
+			GetActor().anim.SetMoveState(((int)moveStat));
 		}
 		
 
@@ -380,13 +379,12 @@ public class PlayerMove : MoveModule
 			if(moveStat == MoveStates.Sit)
 			{
 				moveStat = MoveStates.Walk;
-				GetActor().anim.SetMoveState(((int)moveStat));
 			}
 			else
 			{
 				moveStat = MoveStates.Sit;
-				GetActor().anim.SetMoveState(((int)moveStat));
 			}
+			GetActor().anim.SetMoveState(((int)moveStat));
 		}
 	}
 
@@ -505,6 +503,7 @@ public class PlayerMove : MoveModule
 	{
 		moveStat = MoveStates.Walk;
 		moveDir = Vector3.zero;
+		GetActor().anim.SetMoveState(((int)moveStat));
 	}
 
 	void SetClimb()
@@ -513,5 +512,6 @@ public class PlayerMove : MoveModule
 		forceDir = Vector3.zero;
 		slipDir = Vector3.zero;
 		moveDir = Vector3.zero;
+		GetActor().anim.SetMoveState(((int)moveStat));
 	}
 }

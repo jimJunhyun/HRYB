@@ -11,9 +11,14 @@ public class EscaperAI : MonoBehaviour
 
 	bool stopped = false;
 	// Start is called before the first frame update
+
+	private void Awake()
+	{
+		self = GetComponent<Actor>();
+	}
 	void Start()
     {
-        self = GetComponent<Actor>();
+        
 		player = GameManager.instance.pActor;
 
 		IsInRange inRange = new IsInRange(self, player.transform, self.sight.GetSightRange, (player.move as PlayerMove).GetSneakDist, ()=>
@@ -28,13 +33,23 @@ public class EscaperAI : MonoBehaviour
 
 		Inverter inv = new Inverter();
 		inv.connected = inRange;
-		
+		EscaperTargetResetter doNothing = new EscaperTargetResetter(self);
+		Sequencer idle = new Sequencer();
+		idle.connecteds.Add(inv);
+		idle.connecteds.Add(doNothing);
 
+
+		head = new Selecter();
+		head.connecteds.Add(escaper);
+		head.connecteds.Add(idle);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+		if (!stopped)
+		{
+			head.Examine();
+		}
     }
 }
