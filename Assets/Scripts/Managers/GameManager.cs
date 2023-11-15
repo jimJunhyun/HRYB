@@ -37,7 +37,9 @@ public class GameManager : MonoBehaviour
 
 	public Arrow arrow;
 
+	[Header("따로 설정이 필요함")]
 	public Sprite uiBase;
+	public TMPro.TMP_FontAsset tmpText;
 
 	public float ampGain = 0.5f;
 	public float frqGain = 1f;

@@ -135,7 +135,7 @@ public class Crafter
 
     public static Hashtable recipeItemTable = new Hashtable()
 	{
-		{ new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("나뭇가지", 2) }, new HashSet<CraftMethod>{  CraftMethod.Base}, "도구" ), new ItemAmountPair("밧줄")},
+		{ new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("나뭇가지", 2) }, new HashSet<CraftMethod>{  CraftMethod.None}, "도구" ), new ItemAmountPair("밧줄")},
 		{ new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("인삼", 2) }, new HashSet<CraftMethod>{  CraftMethod.Medicine}, "" ), new ItemAmountPair(new Medicines("인삼탕", "인삼을 잘 끓이면 이렇게 되더라", ItemType.Liquid, 1, null, true, new YinyangWuXing(10, 10, 10, 10, 10, 10, 10)))},
 	};
 
@@ -165,13 +165,16 @@ public class Crafter
 						return false;
 					}
 				}
+				
 				if (GameManager.instance.pinven.AddItem(result.info, result.num) > 0)
 				{
+					GameManager.instance.uiManager.UpdateInvenUI();
 					Debug.Log("일부 획득 실패");
 					return true;
 				}
 				else
 				{
+					GameManager.instance.uiManager.UpdateInvenUI();
 					return true;
 				}
 			}
@@ -214,11 +217,13 @@ public class Crafter
 				}
 				if (GameManager.instance.pinven.AddItem(data.info, data.num) > 0)
 				{
+					GameManager.instance.uiManager.UpdateInvenUI();
 					Debug.Log("일부 획득 실패");
 					return true;
 				}
 				else
 				{
+					GameManager.instance.uiManager.UpdateInvenUI();
 					return true;
 				}
 			}

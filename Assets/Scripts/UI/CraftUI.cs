@@ -18,6 +18,8 @@ public class CraftUI : MonoBehaviour
 
 
 	Recipe recipe;
+	ItemAmountPair objItem;
+	
 
 	private void Awake()
 	{
@@ -32,6 +34,7 @@ public class CraftUI : MonoBehaviour
 	public void SetRecipe(KeyValuePair<Recipe, ItemAmountPair> r)
 	{
 		recipe = r.Key;
+		objItem = r.Value;
 
 		itemImg.sprite = r.Value.info.icon;
 		itemName.text = r.Value.info.MyName;
@@ -39,11 +42,9 @@ public class CraftUI : MonoBehaviour
 		int idx = 0;
 		foreach (var item in recipe.recipe)
 		{
-			crReq[idx].gameObject.SetActive(true);
-
 			if(crReq.Count <= idx)
 			{
-				GameObject g = new GameObject("ItemAmount1");
+				GameObject g = new GameObject($"ItemAmount{crReq.Count +1}");
 				g.AddComponent<RectTransform>().sizeDelta = Vector2.one * SIZEDELTA;
 				CraftReqItemUI req = g.AddComponent<CraftReqItemUI>();
 				req.SetInfo(item.info.MyName, item.num, GameManager.instance.pinven.inven.SumContains(item.info));
@@ -52,6 +53,7 @@ public class CraftUI : MonoBehaviour
 			}
 			else
 			{
+				crReq[idx].gameObject.SetActive(true);
 				crReq[idx].SetInfo(item.info.MyName, item.num, GameManager.instance.pinven.inven.SumContains(item.info));
 			}
 			++idx;
@@ -64,5 +66,11 @@ public class CraftUI : MonoBehaviour
 				crReq[i].gameObject.SetActive(false);
 			}
 		}
+	}
+
+	public void Craft()
+	{
+		GameManager.instance.craftManager.crafter.Craft(objItem);
+		SetRecipe(new KeyValuePair<Recipe, ItemAmountPair>(recipe, objItem));
 	}
 }

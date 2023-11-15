@@ -64,7 +64,7 @@ public class InventoryUI : MonoBehaviour,IDropHandler, IPointerClickHandler
 		else
 		{
 
-		GameManager.instance.uiManager.infoUI.Off();
+			GameManager.instance.uiManager.infoUI.Off();
 			Debug.Log("NOITEM");
 		}
 	}

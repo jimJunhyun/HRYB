@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using TMPro;
 
 public class SimpleCrafter : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class SimpleCrafter : MonoBehaviour
 	public CategoryImages categoryImgPair;
 
 	public Transform categories;
+
+	public Image categoryIconDisplay;
+	public TextMeshProUGUI categoryNameDisplay;
 	public List<Image> categoryImages = new List<Image>();
 
 	public Transform recipes;
@@ -31,6 +35,9 @@ public class SimpleCrafter : MonoBehaviour
 
 		recipes = transform.Find("Recipes");
 		craft = transform.Find("Craft").GetComponent<CraftUI>();
+
+		categoryNameDisplay = GameObject.Find("CatgName").GetComponent<TextMeshProUGUI>();
+		categoryIconDisplay = GameObject.Find("CatgImg").GetComponent<Image>();
 
 	}
 
@@ -63,7 +70,9 @@ public class SimpleCrafter : MonoBehaviour
 
 	public void On()
 	{
+		gameObject.SetActive(true);
 		CategoryOn("도구");
+		CraftOff();
 		Debug.Log("CROn");
 	}
 
@@ -77,6 +86,8 @@ public class SimpleCrafter : MonoBehaviour
 	{
 		categories.gameObject.SetActive(true);
 		catgRecipes = categoryRecipesPair[name];
+		categoryIconDisplay.sprite = categoryImgPair.info[name];
+		categoryNameDisplay.text = name;
 		RecipeOn();
 	}
 
@@ -95,6 +106,7 @@ public class SimpleCrafter : MonoBehaviour
 				int idx = recipeId - 1;
 				b.onClick.AddListener(()=>{CraftOn(idx);});
 				RecipeUI r = g.AddComponent<RecipeUI>();
+				img.color = new Color(1, 1, 1, 0.3f);
 				g.transform.SetParent(recipes);
 				r.SetInfo(catgRecipes[i].Value.info.icon, catgRecipes[i].Value.info.MyName);
 				allRecipeImg.Add(r);
