@@ -17,18 +17,33 @@ public class GameManager : MonoBehaviour
 	public const int FORWARDCAM = 20;
 	public const int BACKWARDCAM = 10;
 
-    public static GameManager instance;
+	public const int PLAYERLAYER = 7;
+	public const int INTERABLELAYER = 8;
+	public const int GROUNDLAYER = 11;
+	public const int CLIMBABLELAYER = 17;
+	public const int HOOKABLELAYER = 19;
+
+	public const float CAMVFOV = 55;
+
+	public static GameManager instance;
 
     public GameObject player;
 	public PlayerInput pinp;
-	public ItemManager itemManager;
 	public PlayerInven pinven;
 	public Actor pActor;
 	public CinemachineFreeLook pCam;
 	public CinemachineVirtualCamera aimCam;
 	public CraftManager craftManager;
+	public UIManager uiManager;
+	public QuestManager qManager;
+
+	public ImageManager imageManager;
 
 	public Arrow arrow;
+
+	[Header("따로 설정이 필요함")]
+	public Sprite uiBase;
+	public TMPro.TMP_FontAsset tmpText;
 
 	public float ampGain = 0.5f;
 	public float frqGain = 1f;
@@ -43,23 +58,41 @@ public class GameManager : MonoBehaviour
 
 	public WaitForSeconds waitSec = new WaitForSeconds(1.0f);
 
+	public float curVFov = CAMVFOV;
+	public float? fixedCamVFov = null;
+
 	private void Awake()
 	{
 		instance = this;
 
 		LockCursor();
 
+		qManager = new QuestManager(
+			"점프를 하시오",
+			"밧줄을 거시오",
+			"곰을 잡으시오",
+			"수고하시었소"
+			);
+
 		player = GameObject.Find("Player");
 		pinp = player.GetComponent<PlayerInput>();
 		pinven = player.GetComponent<PlayerInven>();
 		pActor = player.GetComponent<Actor>();
 		pCam = GameObject.Find("PCam").GetComponent<CinemachineFreeLook>();
-		itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
 		aimCam = GameObject.Find("AimCam").GetComponent<CinemachineVirtualCamera>();
 		aimCamShaker = aimCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 		craftManager = GameObject.Find("CraftManager").GetComponent<CraftManager>();
+		imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
+		uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
 		statEff = new StatusEffects();
 		SwitchTo(CamStatus.Freelook);
+
+		
+	}
+
+	private void Start()
+	{
+		qManager.NextQuest();
 	}
 
 	public void LockCursor()
@@ -122,9 +155,34 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public void CalcCamVFov(float differ)
+
+	public void SetCamVFov(float val)
 	{
-		pCam.m_Lens.FieldOfView += differ;
+		if(fixedCamVFov == null)
+		{
+			curVFov = val;
+			pCam.m_Lens.FieldOfView = curVFov;
+		}
+		else
+		{
+			pCam.m_Lens.FieldOfView = (float)fixedCamVFov;
+		}
+	}
+
+	public void SetFixedCamFov(float val)
+	{
+		fixedCamVFov = val;
+	}
+
+	public void ResetFixedCamFov()
+	{
+		fixedCamVFov = null;
+		pCam.m_Lens.FieldOfView = curVFov;
+	}
+
+	public void CraftWithUI()
+	{
+		craftManager.crafter.CraftWith( uiManager.crafterUI.curRecipe);
 	}
 
 	public void SwitchTo(CamStatus stat)

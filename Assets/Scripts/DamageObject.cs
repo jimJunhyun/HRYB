@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DamageObject : MonoBehaviour
 {
-    public YinyangWuXing yywx {private get; set;}
-    public float effS {private get; set;}
-	public bool isDirect { private get; set;}
+    public YinyangWuXing yywx ;
+    public float effS;
+	public bool isDirect ;
 
 	public virtual void OnTriggerEnter(Collider other)
 	{
@@ -29,11 +29,11 @@ public class DamageObject : MonoBehaviour
 	{
 		if (isDirect)
 		{
-			to.AddYYWX(yywx);
+			to.AddYYWX(yywx, true);
 		}
 		else
 		{
-			to.AddYYWX(yywx, effS);
+			to.AddYYWX(yywx, effS, true);
 		}
 	}
 }

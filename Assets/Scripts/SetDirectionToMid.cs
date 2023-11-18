@@ -17,4 +17,10 @@ public class SetDirectionToMid : MonoBehaviour
     {
         transform.LookAt(target.transform.position + target.transform.forward * dist);
     }
+
+	private void OnDrawGizmos()
+	{
+		Gizmos.color = Color.cyan;
+		Gizmos.DrawRay(transform.position, transform.forward * dist);
+	}
 }

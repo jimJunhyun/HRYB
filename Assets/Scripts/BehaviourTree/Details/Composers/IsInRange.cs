@@ -1,29 +1,38 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class IsInRange : INode
 {
-	public float rng;
+	Func<float> range;
+	Func<float> sneakDecFunc;
 	Actor self;
 	Transform target;
+	System.Action foundAction;
 
-	public IsInRange(Actor self, Transform target, float dist)
+	public IsInRange(Actor self, Transform target, Func<float> dist,  Func<float> distDec, Action onFound = null)
 	{
 		this.self = self;
 		this.target = target;
-		rng = dist;
+		range = dist;
+		sneakDecFunc = distDec;
+		foundAction = onFound;
 	}
 
 	public NodeStatus Examine()
 	{
 		Vector3 dir = (self.transform.position - target.position);
-		if (dir.sqrMagnitude > rng * rng)
+		float sqrRng = sneakDecFunc == null ? range() * range() : (range() - sneakDecFunc()) * (range() - sneakDecFunc());
+
+		if (dir.sqrMagnitude > sqrRng)
 		{
+			
 			return NodeStatus.Fail;
 		}
 		else
 		{
+			foundAction?.Invoke();
 			return NodeStatus.Sucs;
 		}
 	}

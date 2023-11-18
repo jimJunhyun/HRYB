@@ -48,10 +48,28 @@ public class PlayerCast : CastModule
 		}));
 	}
 
+	public override void CastCancel()
+	{
+		base.CastCancel();
+		GameManager.instance.uiManager.interingUI.Off();
+	}
+
 	protected override IEnumerator DelCast(Preparation p)
 	{
 		GameManager.instance.pinp.DeactivateInput();
-		yield return base.DelCast(p);
+		GameManager.instance.uiManager.interingUI.On();
+		float t = 0;
+		float waitSec = p.Timefunc();
+		while (waitSec * castMod > t)
+		{
+			t += Time.deltaTime;
+			GameManager.instance.uiManager.interingUI.SetGaugeValue(t / (waitSec * castMod));
+			yield return null;
+		}
+		p.onPrepComp?.Invoke(transform);
+		ongoing = null;
+		curName = null;
+		GameManager.instance.uiManager.interingUI.Off();
 		GameManager.instance.pinp.ActivateInput();
 	}
 }

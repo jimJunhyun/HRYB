@@ -3,6 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public enum StatEffID
+{
+	WoodDebuff,
+	FireDebuff,
+	EarthDebuff,
+	MetalDebuff,
+	WaterDebuff,
+	Knockback,
+	Immune,
+}
+
 public struct StatusEffect
 {
     public string name;
@@ -29,18 +40,19 @@ public class StatusEffects
 
 	public StatusEffects()
 	{
-		idStatEffPairs.Add(id++, new StatusEffect("목 과다", "목이 상한치를 넘어섰습니다!", OnWoodDebuffActivated, OnWoodDebuffUpdated, OnWoodDebuffEnded));
-		idStatEffPairs.Add(id++, new StatusEffect("화 과다", "화가 상한치를 넘어섰습니다!", OnFireDebuffActivated, OnFireDebuffUpdated, OnFireDebuffEnded));
-		idStatEffPairs.Add(id++, new StatusEffect("토 과다", "토가 상한치를 넘어섰습니다!", OnEarthDebuffActivated, OnEarthDebuffUpdated, OnEarthDebuffEnded));
-		idStatEffPairs.Add(id++, new StatusEffect("금 과다", "금이 상한치를 넘어섰습니다!", OnMetalDebuffActivated, OnMetalDebuffUpdated, OnMetalDebuffEnded));
-		idStatEffPairs.Add(id++, new StatusEffect("수 과다", "수가 상한치를 넘어섰습니다!", OnWaterDebuffActivated, OnWaterDebuffUpdated, OnWaterDebuffEnded));
-		idStatEffPairs.Add(id++, new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", OnWaterDebuffActivated, OnWaterDebuffUpdated, OnWaterDebuffEnded));
+		idStatEffPairs.Add(((int)StatEffID.WoodDebuff), new StatusEffect("목 과다", "목이 상한치를 넘어섰습니다!", OnWoodDebuffActivated, OnWoodDebuffUpdated, OnWoodDebuffEnded));
+		idStatEffPairs.Add(((int)StatEffID.FireDebuff), new StatusEffect("화 과다", "화가 상한치를 넘어섰습니다!", OnFireDebuffActivated, OnFireDebuffUpdated, OnFireDebuffEnded));
+		idStatEffPairs.Add(((int)StatEffID.EarthDebuff), new StatusEffect("토 과다", "토가 상한치를 넘어섰습니다!", OnEarthDebuffActivated, OnEarthDebuffUpdated, OnEarthDebuffEnded));
+		idStatEffPairs.Add(((int)StatEffID.MetalDebuff), new StatusEffect("금 과다", "금이 상한치를 넘어섰습니다!", OnMetalDebuffActivated, OnMetalDebuffUpdated, OnMetalDebuffEnded));
+		idStatEffPairs.Add(((int)StatEffID.WaterDebuff), new StatusEffect("수 과다", "수가 상한치를 넘어섰습니다!", OnWaterDebuffActivated, OnWaterDebuffUpdated, OnWaterDebuffEnded));
+		idStatEffPairs.Add(((int)StatEffID.Knockback), new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", OnKnockbackActivated, OnKnockbackDebuffUpdated, OnKnockbackDebuffEnded));
+		idStatEffPairs.Add(((int)StatEffID.Immune), new StatusEffect("무적", "어머니의 비호를 받고 있습니다.", OnImmuneActivated, OnImmuneUpdated, OnImmuneEnded));
 	}
 
     void OnWoodDebuffActivated(Actor self, Actor inflicter)
 	{
 		
-        self.life.regenMod = 0.5f;
+        self.life.fixedRegenMod = 0.5f;
 	}
 
     void OnWoodDebuffUpdated(Actor self)
@@ -50,12 +62,12 @@ public class StatusEffects
 
     void OnWoodDebuffEnded(Actor self)
     {
-		self.life.regenMod = 1f;
+		self.life.fixedRegenMod = null;
 	}
 
     void OnFireDebuffActivated(Actor self, Actor inflicter)
     {
-        self.atk.effSpeedMod = 2f;
+        self.atk.effSpeedMod = 0.7f;
 		
     }
 
@@ -72,8 +84,8 @@ public class StatusEffects
 
     void OnEarthDebuffActivated(Actor self, Actor inflicter)
     {
-        self.atk.atkGap *= 2f;
-		self.cast.castMod = 0.5f;
+        self.atk.fixedAtkGap *= 10 / 7;
+		self.cast.fixedCastMod = 0.7f;
 	}
 
     void OnEarthDebuffUpdated(Actor self)
@@ -83,14 +95,17 @@ public class StatusEffects
 
     void OnEarthDebuffEnded(Actor self)
     {
-		self.atk.atkGap *= 0.5f;
-		self.cast.castMod = 1f;
+		self.atk.fixedAtkGap = null;
+		self.cast.fixedCastMod = null;
 	}
 
     void OnMetalDebuffActivated(Actor self, Actor inflicter)
     {
         self.sight.sightRange *= 0.5f;
-        GameManager.instance.CalcCamVFov(-20);
+		if(self == GameManager.instance.pActor)
+		{
+			GameManager.instance.SetFixedCamFov(GameManager.CAMVFOV - 15);
+		}
     }
 
     void OnMetalDebuffUpdated(Actor self)
@@ -101,13 +116,16 @@ public class StatusEffects
     void OnMetalDebuffEnded(Actor self)
     {
         self.sight.sightRange *= 2f;
-        GameManager.instance.CalcCamVFov(20);
-    }
+		if (self == GameManager.instance.pActor)
+		{
+			GameManager.instance.ResetFixedCamFov();
+		}
+	}
 
     void OnWaterDebuffActivated(Actor self, Actor inflicter)
     {
-        self.move.Speed *= 0.5f;
-        self.atk.prepMod *= 0.5f;
+        self.move.fixedSpeedMod = 0.75f;
+        self.atk.fixedPrepMod = 0.75f;
     }
 
     void OnWaterDebuffUpdated(Actor self)
@@ -117,13 +135,13 @@ public class StatusEffects
 
     void OnWaterDebuffEnded(Actor self)
     {
-        self.move.Speed *= 2f;
-        self.atk.prepMod *= 2;
+        self.move.fixedSpeedMod = null;
+        self.atk.fixedPrepMod = null;
     }
 
 	void OnKnockbackActivated(Actor self, Actor inflicter)
 	{
-		
+		self.move.forceDir += (self.transform.position - inflicter.transform.position).normalized * 9;
 	}
 
 	void OnKnockbackDebuffUpdated(Actor self)
@@ -134,5 +152,19 @@ public class StatusEffects
 	void OnKnockbackDebuffEnded(Actor self)
 	{
 		
+	}
+
+	void OnImmuneActivated(Actor self, Actor inflicter)
+	{
+		self.life.isImmune = true;
+	}
+
+	void OnImmuneUpdated(Actor self)
+	{
+
+	}
+	void OnImmuneEnded(Actor self)
+	{
+		self.life.isImmune = false;
 	}
 }

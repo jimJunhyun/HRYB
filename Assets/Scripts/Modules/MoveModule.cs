@@ -7,6 +7,7 @@ public enum MoveStates
 	Walk,
 	Run,
 	Sit,
+	Climb,
 
 }
 
@@ -17,7 +18,7 @@ public class MoveModule : Module
 	public float Speed
 	{
 
-		get => speed * speedMod;
+		get => speed * (fixedSpeedMod == null ? speedMod : (float)fixedSpeedMod);
 		set => speed = value;
 	}
 
@@ -25,19 +26,15 @@ public class MoveModule : Module
 
 	public Vector3 forceDir = Vector3.zero;
 
-	public virtual Vector3 MoveVelocity
-	{
-		get => moveDir * speed;
-	}
-
 	public float runSpeed;
 	public float walkSpeed;
 	public float crouchSpeed;
 
 	public float speedMod = 1.0f;
+	public float? fixedSpeedMod = null;
 
-	private MoveStates curStat;
-	public MoveStates moveStat
+	protected MoveStates curStat;
+	public virtual MoveStates moveStat
 	{
 		get => curStat;
 		protected set
@@ -74,6 +71,15 @@ public class MoveModule : Module
 
 	public virtual void ForceCalc()
 	{
-
+		if(forceDir.sqrMagnitude > 0.001f)
+		{
+			
+			Vector3 antiForce = -(forceDir) * 3f * Time.deltaTime;
+			forceDir += antiForce;
+		}
+		else
+		{
+			forceDir = Vector3.zero;
+		}
 	}
 }

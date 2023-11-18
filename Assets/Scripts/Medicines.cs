@@ -38,15 +38,15 @@ public class Medicines : YinyangItem
 		}
 	} //식 필요
 
-    public Medicines(string name, ItemType iType, int max, Specials used, bool isNewItem, YinyangWuXing yyData)
-		:base(name, iType, max, used, isNewItem, yyData, "약")
+    public Medicines(string name, string desc, ItemType iType, int max, Specials used, bool isNewItem, YinyangWuXing yyData)
+		:base(name, desc, iType, max, used, isNewItem, yyData, "약")
 	{
 		this.rarity = ItemRarity.Medicine;
 	}
 
 	public override void Use()
 	{
-		GameManager.instance.pinven.RemoveItem(this);
+		//GameManager.instance.pinven.RemoveItem(this);
 		base.Use();
 	}
 }

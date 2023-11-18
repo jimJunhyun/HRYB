@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6644475192279886614}
   - component: {fileID: 2547865374106797516}
-  - component: {fileID: 8623929995346993802}
   m_Layer: 5
   m_Name: Inven
   m_TagString: Untagged
@@ -48,36 +47,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3718754237358599716}
   m_CullTransparentMesh: 1
---- !u!114 &8623929995346993802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3718754237358599716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &3787125792101857214
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,8 +113,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ef590ad3837419d448c386ead622fd24, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 788163d909a3d2e4aaebe059e81838bb, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -382,9 +351,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94a7426ee17a2e948ac7de24acce1de4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Iconimg: {fileID: 8623929995346993802}
+  Iconimg: {fileID: 0}
   text: {fileID: 0}
-  item: {fileID: 0}
 --- !u!114 &7325815280974041883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -397,6 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a052a6972c8ca44ace4841f2c879fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDragged: 1
 --- !u!223 &3342824079805931583
 Canvas:
   m_ObjectHideFlags: 0

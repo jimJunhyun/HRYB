@@ -52,7 +52,7 @@ public class YinyangItem : Item
 		}
 	}
 
-    public YinyangItem(string name, ItemType iType, int max, Specials used, bool isNewItem, YinyangWuXing yyData, string ch = "") : base(name, iType, max, used, isNewItem)
+    public YinyangItem(string name, string desc, ItemType iType, int max, Specials used, bool isNewItem, YinyangWuXing yyData, string ch = "") : base(name, desc, iType, max, used, isNewItem)
 	{
 		data = yyData;
 		data.isClampedZero = true;
@@ -68,7 +68,7 @@ public class YinyangItem : Item
 
 	public override void Use()
 	{
-		GameManager.instance.pActor.life.AddYYWX(yywx, ApplySpeed);
+		//GameManager.instance.pActor.life.AddYYWX(yywx, ApplySpeed);
 		base.Use();
 	}
 
