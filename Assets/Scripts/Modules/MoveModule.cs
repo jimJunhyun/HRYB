@@ -18,7 +18,7 @@ public class MoveModule : Module
 	public float Speed
 	{
 
-		get => speed * speedMod;
+		get => speed * (fixedSpeedMod == null ? speedMod : (float)fixedSpeedMod);
 		set => speed = value;
 	}
 
@@ -31,6 +31,7 @@ public class MoveModule : Module
 	public float crouchSpeed;
 
 	public float speedMod = 1.0f;
+	public float? fixedSpeedMod = null;
 
 	protected MoveStates curStat;
 	public virtual MoveStates moveStat

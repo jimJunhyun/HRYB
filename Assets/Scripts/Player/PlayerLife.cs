@@ -24,6 +24,7 @@ public class PlayerLife : LifeModule
 	public override void OnDead()
 	{
 		base.OnDead();
+		GetActor().anim.SetDieTrigger();
 		Debug.Log("Player dead");
 	}
 }

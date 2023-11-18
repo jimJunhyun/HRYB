@@ -46,7 +46,7 @@ public class Medicines : YinyangItem
 
 	public override void Use()
 	{
-		GameManager.instance.pinven.RemoveItem(this);
+		//GameManager.instance.pinven.RemoveItem(this);
 		base.Use();
 	}
 }

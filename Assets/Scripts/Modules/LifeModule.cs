@@ -18,8 +18,9 @@ public class LifeModule : Module
 	public float maxSoul;
 
 	public float regenMod = 1f;
+	public float? fixedRegenMod = null;
 	float baseRegen = 1f;
-	public float TotalRegenSpeed { get => regenMod * baseRegen;}
+	public float TotalRegenSpeed { get => (fixedRegenMod == null ? regenMod : (float)fixedRegenMod) * baseRegen;}
 
 	public float regenThreshold = 10f;
 
@@ -74,6 +75,29 @@ public class LifeModule : Module
 	{
 		yywx.wx[((int)to)] += amt * adequity.wx[((int)to)];
 		StatusEffect eff = ((StatusEffect)GameManager.instance.statEff.idStatEffPairs[(int)to]);
+		//&&&&&&&&&&&&&&&&&&&&&&&&&&이후 필히 수정 필요&&&&&&&&&&&&&&&&&
+		switch (to)
+		{
+			case WXInfo.Wood:
+				GameManager.instance.SetCamVFov(55 + 30 * (Mathf.Min(yywx.wx[((int)to)], 90) / 90));
+				GetActor().sight.sightRange = 5 + 2.27f * (Mathf.Min(yywx.wx[((int)to)], 90) / 90);
+				break;
+			case WXInfo.Fire:
+				GetActor().move.speedMod = 1 + 0.75f * (Mathf.Min(yywx.wx[((int)to)], 90) / 90);
+				GetActor().atk.prepMod = 1 + 1 * (Mathf.Min(yywx.wx[((int)to)], 90) / 90);
+				break;
+			case WXInfo.Earth:
+				regenMod = 1 + 4 * (Mathf.Min(yywx.wx[((int)to)], 90) / 90);
+				break;
+			case WXInfo.Metal:
+				GetActor().atk.effSpeedMod = 1 + 1 * (Mathf.Min(yywx.wx[((int)to)], 90) / 90);
+				break;
+			case WXInfo.Water:
+				GetActor().cast.castMod = 1 + 1 * (Mathf.Min(yywx.wx[((int)to)], 90) / 90);
+				break;
+		}
+
+
 		if (!appliedDebuff.Contains(eff) && yywx.wx[((int)to)] > limitation[((int)to)])
 		{
 			ApplyStatus(eff);

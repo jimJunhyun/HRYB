@@ -52,7 +52,7 @@ public class StatusEffects
     void OnWoodDebuffActivated(Actor self, Actor inflicter)
 	{
 		
-        self.life.regenMod = 0.5f;
+        self.life.fixedRegenMod = 0.5f;
 	}
 
     void OnWoodDebuffUpdated(Actor self)
@@ -62,12 +62,12 @@ public class StatusEffects
 
     void OnWoodDebuffEnded(Actor self)
     {
-		self.life.regenMod = 1f;
+		self.life.fixedRegenMod = null;
 	}
 
     void OnFireDebuffActivated(Actor self, Actor inflicter)
     {
-        self.atk.effSpeedMod = 2f;
+        self.atk.effSpeedMod = 0.7f;
 		
     }
 
@@ -84,8 +84,8 @@ public class StatusEffects
 
     void OnEarthDebuffActivated(Actor self, Actor inflicter)
     {
-        self.atk.atkGap *= 2f;
-		self.cast.castMod = 0.5f;
+        self.atk.fixedAtkGap *= 10 / 7;
+		self.cast.fixedCastMod = 0.7f;
 	}
 
     void OnEarthDebuffUpdated(Actor self)
@@ -95,17 +95,16 @@ public class StatusEffects
 
     void OnEarthDebuffEnded(Actor self)
     {
-		self.atk.atkGap *= 0.5f;
-		self.cast.castMod = 1f;
+		self.atk.fixedAtkGap = null;
+		self.cast.fixedCastMod = null;
 	}
 
     void OnMetalDebuffActivated(Actor self, Actor inflicter)
     {
-		Debug.Log("금과다");
         self.sight.sightRange *= 0.5f;
 		if(self == GameManager.instance.pActor)
 		{
-			GameManager.instance.CalcCamVFov(-20);
+			GameManager.instance.SetFixedCamFov(GameManager.CAMVFOV - 15);
 		}
     }
 
@@ -116,18 +115,17 @@ public class StatusEffects
 
     void OnMetalDebuffEnded(Actor self)
     {
-		Debug.Log("금과다 해제");
         self.sight.sightRange *= 2f;
 		if (self == GameManager.instance.pActor)
 		{
-			GameManager.instance.CalcCamVFov(20);
+			GameManager.instance.ResetFixedCamFov();
 		}
 	}
 
     void OnWaterDebuffActivated(Actor self, Actor inflicter)
     {
-        self.move.speedMod *= 0.5f;
-        self.atk.prepMod *= 0.5f;
+        self.move.fixedSpeedMod = 0.75f;
+        self.atk.fixedPrepMod = 0.75f;
     }
 
     void OnWaterDebuffUpdated(Actor self)
@@ -137,8 +135,8 @@ public class StatusEffects
 
     void OnWaterDebuffEnded(Actor self)
     {
-        self.move.speedMod *= 2f;
-        self.atk.prepMod *= 2;
+        self.move.fixedSpeedMod = null;
+        self.atk.fixedPrepMod = null;
     }
 
 	void OnKnockbackActivated(Actor self, Actor inflicter)

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class YYCtrl : MonoBehaviour
 {
-	const float UICIRCUM = 172;
+	const float UICIRCUM = 150;
 
     float spirit;
     YinYang yy;

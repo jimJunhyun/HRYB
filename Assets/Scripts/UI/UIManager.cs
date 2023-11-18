@@ -5,6 +5,10 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// 끄고킬수있는 UI의 인터페이스 등 구조를 만들자.
+/// </summary>
+
 public class UIManager : MonoBehaviour
 {
 	Canvas canvas;
@@ -14,6 +18,9 @@ public class UIManager : MonoBehaviour
 	public AimPointCtrl aimUI;
 	public InfoCtrl infoUI;
 	public SimpleCrafter crafterUI;
+	public QuestUICtrl questUI;
+	public InterPrevUI preInterUI;
+	public InterProcessUI interingUI;
     public GameObject invenPanel;
 
     public RectTransform CursorPos;
@@ -35,6 +42,9 @@ public class UIManager : MonoBehaviour
 		aimUI = canvas.GetComponentInChildren<AimPointCtrl>();
 		infoUI = canvas.GetComponentInChildren<InfoCtrl>();
 		crafterUI = canvas.GetComponentInChildren<SimpleCrafter>();
+		questUI = canvas.GetComponentInChildren<QuestUICtrl>();
+		preInterUI = canvas.GetComponentInChildren<InterPrevUI>();
+		interingUI = canvas.GetComponentInChildren<InterProcessUI>();
 		invenPanel.SetActive(true);
 	}
 
@@ -45,6 +55,9 @@ public class UIManager : MonoBehaviour
 			//Debug.Log(GameObject.);
 			uis.Add(GameObject.Find(i.ToString()).GetComponentInChildren<InventoryUI>());
 		}
+		interingUI.SetGaugeValue(0);
+		interingUI.Off();
+		preInterUI.Off();
 		invenPanel.SetActive(false);
 	}
 

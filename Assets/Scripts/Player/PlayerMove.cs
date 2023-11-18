@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Linq;
-
-
-
+using System;
 
 public class PlayerMove : MoveModule
 {
 	public const float GRAVITY = 9.8f;
 	
 
-	CharacterController ctrl;
+	internal CharacterController ctrl;
 
 	public float climbSpeed = 7f;
 	public float climbDistance = 0.7f;
@@ -65,6 +63,7 @@ public class PlayerMove : MoveModule
 
 	RaycastHit hitCache;
 
+	
 
 	public Vector3 MoveDirCalced
 	{
@@ -380,10 +379,12 @@ public class PlayerMove : MoveModule
 			{
 				moveStat = MoveStates.Walk;
 				ctrl.height *= 2f;
+				ctrl.center =Vector3.up;
 			}
 			else
 			{
 				ctrl.height *= 0.5f;
+				ctrl.center = Vector3.up * 0.5f;
 				moveStat = MoveStates.Sit;
 			}
 			GetActor().anim.SetMoveState(((int)moveStat));
@@ -482,6 +483,23 @@ public class PlayerMove : MoveModule
 		}
 	}
 
+	public void Roll(InputAction.CallbackContext context)
+	{
+		if (context.started)
+		{
+			GetActor().life.isImmune = true;
+			GameManager.instance.pinp.DeactivateInput();
+			moveDir = Vector3.forward;
+			to = Quaternion.LookRotation(moveDir, Vector3.up);
+			RotateTo();
+			(GetActor().anim as PlayerAnim).SetRollTrigger();
+			ctrl.height *= 0.25f;
+			ctrl.radius *= 0.5f;
+			ctrl.center = Vector3.up * 0.5f;
+		}
+		
+	}
+
 	public float GetSneakDist()
 	{
 		if(moveStat == MoveStates.Sit)
@@ -490,6 +508,8 @@ public class PlayerMove : MoveModule
 		}
 		return 0;
 	}
+
+	
 
 	void ResetTargets()
 	{

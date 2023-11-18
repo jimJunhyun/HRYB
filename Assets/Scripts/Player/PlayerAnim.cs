@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class PlayerAnim : AnimModule
 	protected readonly int interSpeedHash = Animator.StringToHash("InterSpeed");
 	protected readonly int equipHash = Animator.StringToHash("Equip");
 	protected readonly int unequipHash = Animator.StringToHash("Unequip");
+	protected readonly int rollHash = Animator.StringToHash("Roll");
 
 	PlayerMove pmove;
 
@@ -102,5 +104,10 @@ public class PlayerAnim : AnimModule
 	public void SetUnequipTrigger()
 	{
 		anim.SetTrigger(unequipHash);
+	}
+
+	public void SetRollTrigger()
+	{
+		anim.SetTrigger(rollHash);
 	}
 }

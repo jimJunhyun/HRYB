@@ -9,7 +9,7 @@ public enum CraftMethod
 	None,
 	Base,
 	Medicine,
-
+	Trimmer,
 }
 
 public struct ItemAmountPair
