@@ -43,12 +43,13 @@ public class SimpleCrafter : MonoBehaviour
 
 	private void Start()
 	{
-		foreach (var item in Crafter.recipeItemTable.Keys)
+		foreach (var item in Crafter.recipeItemTable.Keys) //############################
 		{
 			if(((Recipe)item).category != ""){
 				if (!categoryRecipesPair.ContainsKey(((Recipe)item).category))
 				{
 					categoryRecipesPair[((Recipe)item).category] = new List<KeyValuePair<Recipe, ItemAmountPair>>();
+					Debug.Log(((Recipe)item).category);
 					GameObject g = new GameObject($"Category{++categoryId}");
 					Image i = g.AddComponent<Image>();
 					Button b = g.AddComponent<Button>();
