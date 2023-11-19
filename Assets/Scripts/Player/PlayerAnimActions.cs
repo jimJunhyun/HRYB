@@ -80,6 +80,7 @@ public class PlayerAnimActions : MonoBehaviour
 		self.move.moveDir = Vector3.zero;
 		(self.move as PlayerMove).ctrl.height *= 4f;
 		(self.move as PlayerMove).ctrl.radius *= 2f;
-		(self.move as PlayerMove).ctrl.center *= 2f;
+		if (self.move.moveStat != MoveStates.Sit)
+			(self.move as PlayerMove).ctrl.center *= 2f;
 	}
 }

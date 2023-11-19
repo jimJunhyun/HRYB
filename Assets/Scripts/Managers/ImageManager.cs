@@ -9,7 +9,7 @@ public class ImageManager : MonoBehaviour
 
 
 	public ItemNameDictionary dictionary;
-	private void Start()
+	private void Awake()
 	{
 		var icons = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "itemicons"));
 		if(icons == null)

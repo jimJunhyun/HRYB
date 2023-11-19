@@ -354,7 +354,7 @@ public class PlayerInven : MonoBehaviour
 				if ((leftover = AddItem(inven[from].info, to, num)) >= 0)
 				{
 					RemoveItem(from, num - leftover);
-					Debug.Log($"{(inven[from].isEmpty() ? 0 : inven[from].info.MyName)}, {(inven[from].isEmpty() ? 0 : inven[from].number)}개, {inven[to].info.MyName}, {inven[to].number}개로 변경.");
+					Debug.Log($"{(inven[from].isEmpty() ? 0 : inven[from].info.MyName)}, {inven[from].number}개, {(inven[to].isEmpty() ? 0 : inven[to].info.MyName)}, {(inven[to].isEmpty() ? 0 : inven[to].number)}개로 변경.");
 					GameManager.instance.uiManager.UpdateInvenUI();
 					return true;
 				}

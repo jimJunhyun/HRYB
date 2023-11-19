@@ -39,13 +39,11 @@ public class SimpleCrafter : MonoBehaviour
 		categoryNameDisplay = GameObject.Find("CatgName").GetComponent<TextMeshProUGUI>();
 		categoryIconDisplay = GameObject.Find("CatgImg").GetComponent<Image>();
 
-	}
 
-	private void Start()
-	{
 		foreach (var item in Crafter.recipeItemTable.Keys)
 		{
-			if(((Recipe)item).category != ""){
+			if (((Recipe)item).category != "")
+			{
 				if (!categoryRecipesPair.ContainsKey(((Recipe)item).category))
 				{
 					categoryRecipesPair[((Recipe)item).category] = new List<KeyValuePair<Recipe, ItemAmountPair>>();
@@ -58,15 +56,14 @@ public class SimpleCrafter : MonoBehaviour
 					b.onClick.AddListener(() => { CategoryOn(catName); });
 					g.transform.SetParent(categories);
 					categoryImages.Add(i);
-
+					Debug.Log("NEW CATEGORY : " + catName);
 				}
 				categoryRecipesPair[((Recipe)item).category].Add(new KeyValuePair<Recipe, ItemAmountPair>((Recipe)item, (ItemAmountPair)Crafter.recipeItemTable[item]));
 			}
-			
-		}
 
-		On();
+		}
 	}
+
 
 	public void On()
 	{
@@ -110,10 +107,12 @@ public class SimpleCrafter : MonoBehaviour
 				g.transform.SetParent(recipes);
 				r.SetInfo(catgRecipes[i].Value.info.icon, catgRecipes[i].Value.info.MyName);
 				allRecipeImg.Add(r);
+				Debug.Log("AddedInfo");
 			}
 			else
 			{
 				allRecipeImg[i].SetInfo(catgRecipes[i].Value.info.icon, catgRecipes[i].Value.info.MyName);
+				Debug.Log($"Settinginfo {catgRecipes[i].Value.info.icon.name}");
 			}
 			allRecipeImg[i].gameObject.SetActive(true);
 		}

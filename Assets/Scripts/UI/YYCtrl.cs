@@ -35,7 +35,7 @@ public class YYCtrl : MonoBehaviour
 	private void Update()
 	{
 		
-		transform.eulerAngles += Vector3.back * spinSpeed * Time.deltaTime * (1 + (diff - 1) * emerSpeed);
+		transform.eulerAngles += Vector3.back * spinSpeed * Time.deltaTime * (1 + (1 - diff) * emerSpeed);
 
 	}
 
