@@ -28,6 +28,7 @@ public class BearAttack : AttackModule
 
 
 	List<GameObject> ranges= new List<GameObject>();
+	PlayGroundBreak gb;
 
 	public AttackType nextAttackCall = AttackType.HandAttack;
 
@@ -37,6 +38,7 @@ public class BearAttack : AttackModule
 	{
 		ranges.Add(transform.Find("Range1").gameObject);
 		ranges.Add(transform.Find("Range2").gameObject);
+		gb = transform.Find("GroundBreak").GetComponent<PlayGroundBreak>();
 		ResetAttackRange(0);
 		ResetAttackRange(1);
 	}
@@ -61,7 +63,7 @@ public class BearAttack : AttackModule
 				target.life.AddYYWX(damage, EffSpeed, true);
 				break;
 			case AttackType.SpecialAttack:
-				//대지가르기 생성
+				
 				break;
 		}
 		GetActor().anim.SetAttackTrigger();
@@ -70,6 +72,10 @@ public class BearAttack : AttackModule
 	public void SetAttackRange(int idx)
 	{
 		ranges[idx].SetActive(true);
+		if(idx == 1)
+		{
+			gb.PlayEffect();
+		}
 	}
 
 	public void ResetAttackRange(int idx)

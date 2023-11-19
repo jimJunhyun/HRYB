@@ -495,7 +495,7 @@ public class PlayerMove : MoveModule
 			(GetActor().anim as PlayerAnim).SetRollTrigger();
 			ctrl.height *= 0.25f;
 			ctrl.radius *= 0.5f;
-			ctrl.center = Vector3.up * 0.5f;
+			ctrl.center *= 0.5f;
 		}
 		
 	}

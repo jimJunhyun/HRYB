@@ -25,6 +25,8 @@ public class PlayerLife : LifeModule
 	{
 		base.OnDead();
 		GetActor().anim.SetDieTrigger();
+		(GetActor().move as PlayerMove).ctrl.radius *= 0.25f;
+		(GetActor().move as PlayerMove).ctrl.height *= 0.25f;
 		Debug.Log("Player dead");
 	}
 }
