@@ -61,4 +61,8 @@ public class CastModule : Module
 		curName = null;
 	}
 
+	public override void ResetStatus()
+	{
+		base.ResetStatus();
+	}
 }

@@ -12,19 +12,16 @@ public class TrimPoint : CraftPoint
 	public override void Process()
 	{
 		base.Process();
-
-		Recipe myRecipe = new Recipe(holding, new HashSet<CraftMethod>() { CraftMethod.Trimmer }, null);
-
-		Debug.Log(myRecipe.ToString());
-
-		foreach (Recipe item in Crafter.recipeItemTable.Keys)
+		bool suc = true;
+		foreach (var item in holding)
 		{
-			Debug.Log($"{myRecipe} == {item} --> {myRecipe == item}");
+			suc &= (GameManager.instance.craftManager.TrimWithName(item.info.MyName));
+		}
+		if (suc)
+		{
+			Initialize();
 		}
 
-		if (Crafter.recipeItemTable.ContainsKey(myRecipe))
-		{
-			result.Add((ItemAmountPair)Crafter.recipeItemTable[myRecipe]);
-		}
+		base.Stop();
 	}
 }

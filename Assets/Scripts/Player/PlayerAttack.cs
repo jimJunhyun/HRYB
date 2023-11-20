@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-
+using UnityEngine.VFX;
 
 public class PlayerAttack : AttackModule
 {
-	public float chargePerSec;
+	protected float chargePerSec;
+	public float initChargePerSec;
 
 	public float ChargePerSec { get => chargePerSec;}
 	public override float prepMod 
@@ -24,6 +24,7 @@ public class PlayerAttack : AttackModule
 	public float maxChargeTime;
 
 	Transform shootPos;
+	VisualEffect eff;
 	Ray camRay;
 	public Transform ShootPos { get; protected set;}
 	float curCharge;
@@ -49,6 +50,9 @@ public class PlayerAttack : AttackModule
 
 		animActions = GetComponentInChildren<PlayerAnimActions>();
 		curCharge = 0;
+
+		eff = shootPos.GetComponentInChildren<VisualEffect>();
+		eff.Stop();
 	}
 
 	private void Start()
@@ -156,7 +160,7 @@ public class PlayerAttack : AttackModule
 		
 		curCharge = Mathf.Clamp(curCharge, 0, atkDist);
 
-		if (AimTime >= maxChargeTime)
+		if (AimTime >= maxChargeTime && !atked)
 		{
 			atked = true;
 			GetActor().anim.SetAttackTrigger();
@@ -177,6 +181,8 @@ public class PlayerAttack : AttackModule
 
 	void ResetBowStat()
 	{
+		eff.Reinit();
+		eff.Stop();
 		curCharge = 0;
 		loaded = false;
 	}
@@ -193,8 +199,14 @@ public class PlayerAttack : AttackModule
 
 	public void SetBowStat()
 	{
+		eff.Play();
 		loaded = true;
 		aimStart = Time.time;
+	}
+
+	public void ObtainBowRender()
+	{
+		animActions.eBowRend.enabled = true;
 	}
 
 	IEnumerator DelayResetCam()
@@ -207,5 +219,11 @@ public class PlayerAttack : AttackModule
 		(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
 		GameManager.instance.uiManager.aimUI.On();
 		ongoingResetter = null;
+	}
+
+	public override void ResetStatus()
+	{
+		base.ResetStatus();
+		chargePerSec = initChargePerSec;
 	}
 }

@@ -18,6 +18,9 @@ public class InterPoint : MonoBehaviour, IInterable
 
 	public bool AltInterable => altInterable;
 
+	public virtual InterType interType { get;set;} = InterType.Insert;
+	public virtual AltInterType altInterType { get; set ; } = AltInterType.Process;
+
 	Renderer r;
 	Material mat;
 	//Coroutine ongoing;

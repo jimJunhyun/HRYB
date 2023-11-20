@@ -41,6 +41,10 @@ public class GameManager : MonoBehaviour
 
 	public Arrow arrow;
 
+	public AudioPlayer audioPlayer;
+
+	public Terrain terrain;
+
 	[Header("따로 설정이 필요함")]
 	public Sprite uiBase;
 	public TMPro.TMP_FontAsset tmpText;
@@ -84,6 +88,8 @@ public class GameManager : MonoBehaviour
 		craftManager = GameObject.Find("CraftManager").GetComponent<CraftManager>();
 		imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
 		uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+		//terrain = GameObject.Find("Terrain").GetComponent<Terrain>();
+		audioPlayer = GameObject.Find("AudioManager").GetComponent<AudioPlayer>();
 		statEff = new StatusEffects();
 		SwitchTo(CamStatus.Freelook);
 
@@ -209,6 +215,40 @@ public class GameManager : MonoBehaviour
 			default:
 				break;
 		}
+	}
+
+	public static float[] GetTerrainData(Vector3 pos, Terrain t)
+	{
+		Vector3 tmp = t.transform.position;
+		TerrainData tData = t.terrainData;
+
+		int mapX = Mathf.RoundToInt((pos.x - tmp.x) / tData.size.x * tData.alphamapWidth) ;
+		int mapZ = Mathf.RoundToInt((pos.z - tmp.z) / tData.size.z * tData.alphamapHeight) ;
+
+		float[,,] sampleData = tData.GetAlphamaps(mapX, mapZ, 1, 1);
+		float[] infos = new float[sampleData.GetUpperBound(2) + 1];
+		for (int i = 0; i < infos.Length; i++)
+		{
+			infos[i] = sampleData[0, 0, i];
+		}
+		return infos;
+	}
+
+	public static string GetLayerName(Vector3 pos, Terrain t)
+	{
+		float[] info = GetTerrainData(pos, t);
+		float largest = float.MinValue;
+		int largestIdx = -1;
+		for (int i = 0; i < info.Length; i++)
+		{
+			if(info[i] > largest)
+			{
+				largest = info[i];
+				largestIdx = i;
+			}
+		}
+
+		return t.terrainData.terrainLayers[largestIdx].name;
 	}
 
 	public static float ClampAngle(float angle, float min, float max)
