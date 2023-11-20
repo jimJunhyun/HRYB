@@ -34,6 +34,11 @@ public class PlayerInter : SightModule
 		}
 	}
 
+	private void Start()
+	{
+		Check();
+	}
+
 	private void Update()
 	{
 		if(holding)
@@ -58,10 +63,37 @@ public class PlayerInter : SightModule
 			if (checkeds[curSel].IsInterable)
 			{
 				GameManager.instance.uiManager.preInterUI.On();
+				switch (checkeds[curSel].interType)
+				{
+					case InterType.Insert:
+						GameManager.instance.uiManager.preInterUI.SetDescTxt("넣기");
+						break;
+					case InterType.PickUp:
+						GameManager.instance.uiManager.preInterUI.SetDescTxt("획득하기");
+						break;
+				}
+			}
+			else
+			{
+				GameManager.instance.uiManager.preInterUI.SetDescTxt("");
+
 			}
 			if (checkeds[curSel].AltInterable)
 			{
-
+				GameManager.instance.uiManager.preInterUI.On();
+				switch (checkeds[curSel].altInterType)
+				{
+					case AltInterType.Process:
+						GameManager.instance.uiManager.preInterUI.SetDescAltTxt("작동");
+						break;
+					case AltInterType.ProcessEnd:
+						GameManager.instance.uiManager.preInterUI.SetDescAltTxt("중단");
+						break;
+				}
+			}
+			else
+			{
+				GameManager.instance.uiManager.preInterUI.SetDescAltTxt("");
 			}
 		}
 		else
@@ -133,5 +165,10 @@ public class PlayerInter : SightModule
 		}
 		
 	}
-
+	public override void ResetStatus()
+	{
+		base.ResetStatus();
+		curSel = 0;
+		checkeds = null;
+	}
 }

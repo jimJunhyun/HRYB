@@ -14,6 +14,7 @@ public class DamageObject : MonoBehaviour
 		if (other.TryGetComponent<LifeModule>(out yc))
 		{
 			Debug.Log(other);
+			PoolManager.GetObject("DamagedEffect", other.transform.position + (Vector3.up * other.transform.localScale.magnitude * 0.5f), Quaternion.LookRotation(other.transform.forward));
 			Damage(yc);
 		}
 	}

@@ -167,6 +167,8 @@ public class PlayerInven : MonoBehaviour
     public Inventory inven;
     public int cap = 20;
 
+	bool havingBow = false;
+
 	public HandStat stat = HandStat.Item;
 	public int curHolding = 0;
 	public ItemAmountPair CurHoldingItem 
@@ -213,6 +215,7 @@ public class PlayerInven : MonoBehaviour
 				num = amt;
 				if (num == 0)
 				{
+					GameManager.instance.uiManager.UpdateInvenUI();
 					return 0;
 				}
 			}
@@ -228,10 +231,12 @@ public class PlayerInven : MonoBehaviour
 					int idx = inven.Add(item);
 
 					Debug.Log($"{item.info.MyName}, {item.number}개, 새로 추가됨, 위치 : {idx}");
+					GameManager.instance.uiManager.UpdateInvenUI();
 				}
 				else
 				{
 					Debug.Log($"{data.MyName}, {num} 만큼은 더이상 추가할 수 없음.");
+					GameManager.instance.uiManager.UpdateInvenUI();
 					return num;
 				}
 			}
@@ -252,6 +257,7 @@ public class PlayerInven : MonoBehaviour
 				else
 				{
 					Debug.Log($"{data.MyName}, {num} 만큼은 더이상 추가할 수 없음.");
+					GameManager.instance.uiManager.UpdateInvenUI();
 					return num;
 				}
 			}
@@ -313,6 +319,23 @@ public class PlayerInven : MonoBehaviour
 		return false;
 	}
 
+	public bool RemoveItemExamine(Item data, int num = 1)
+	{
+		if ((inven.Contains(data)).Count > 0)
+		{
+			int sum = inven.SumContains(data);
+
+			if (sum >= num)
+			{
+				return true;
+			}
+			Debug.Log("아이템 숫자 부족.");
+			return false;
+		}
+		Debug.Log("아이템 없음.");
+		return false;
+	}
+
 	public bool RemoveItem(int from, int num = 1)
 	{
 		InventoryItem slotItem = inven[from];
@@ -354,7 +377,7 @@ public class PlayerInven : MonoBehaviour
 				if ((leftover = AddItem(inven[from].info, to, num)) >= 0)
 				{
 					RemoveItem(from, num - leftover);
-					Debug.Log($"{(inven[from].isEmpty() ? 0 : inven[from].info.MyName)}, {(inven[from].isEmpty() ? 0 : inven[from].number)}개, {inven[to].info.MyName}, {inven[to].number}개로 변경.");
+					Debug.Log($"{(inven[from].isEmpty() ? 0 : inven[from].info.MyName)}, {inven[from].number}개, {(inven[to].isEmpty() ? 0 : inven[to].info.MyName)}, {(inven[to].isEmpty() ? 0 : inven[to].number)}개로 변경.");
 					GameManager.instance.uiManager.UpdateInvenUI();
 					return true;
 				}
@@ -365,6 +388,12 @@ public class PlayerInven : MonoBehaviour
 		}
 	}
 
+	public void ObtainWeapon()
+	{
+		havingBow = true;
+		(GameManager.instance.pActor.atk as PlayerAttack).ObtainBowRender();
+	}
+
 	public void SwitchHand(InputAction.CallbackContext context)
 	{
 		if (context.performed)
@@ -373,8 +402,12 @@ public class PlayerInven : MonoBehaviour
 			{
 				case HandStat.None:
 				case HandStat.Item:
-					stat = HandStat.Weapon;
-					(GameManager.instance.pActor.anim as PlayerAnim).SetEquipTrigger();
+					if (havingBow)
+					{
+						stat = HandStat.Weapon;
+						(GameManager.instance.pActor.anim as PlayerAnim).SetEquipTrigger();
+					}
+					
 					break;
 				case HandStat.Weapon:
 					stat = HandStat.Item;

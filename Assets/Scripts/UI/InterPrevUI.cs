@@ -7,13 +7,44 @@ using TMPro;
 public class InterPrevUI : MonoBehaviour
 {
     public TextMeshProUGUI text;
+    public TextMeshProUGUI descText;
+    public TextMeshProUGUI descTextAlt;
 	public Image fill;
 	bool isOn = true;
 
 	private void Awake()
 	{
-		text = GetComponentInChildren<TextMeshProUGUI>();
+		text = GetComponentsInChildren<TextMeshProUGUI>()[0];
+		descText = GetComponentsInChildren<TextMeshProUGUI>()[1];
+		descTextAlt = GetComponentsInChildren<TextMeshProUGUI>()[2];
 		fill = transform.Find("Fill").GetComponent<Image>();
+		SetGaugeValue(0);
+	}
+	
+	public void SetDescTxt(string txt)
+	{
+		if (txt == null)
+		{
+			descText.text = "";
+		}
+		else
+		{
+
+			descText.text = $"누르기 : {txt}";
+		}
+	}
+
+	public void SetDescAltTxt(string txt)
+	{
+		if (txt == null)
+		{
+			descTextAlt.text = "";
+		}
+		else
+		{
+
+			descTextAlt.text = $"홀드 : {txt}";
+		}
 	}
 
 	public void SetKeyInfoTxt(string txt)

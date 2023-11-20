@@ -15,7 +15,36 @@ public class CraftPoint : InterPoint
 	protected virtual int maxAmt{ get; set;}
 	protected int count;
 
-	
+	public override InterType interType
+	{
+		get
+		{
+			if (!(GameManager.instance.pinven.CurHoldingItem != ItemAmountPair.Empty && count < maxAmt) && insertOrder.Count > 0)
+			{
+				return InterType.PickUp;
+			}
+			else
+			{
+				return InterType.Insert;
+			}
+		}
+	}
+
+	public override AltInterType altInterType
+	{
+		get
+		{
+			if (processing)
+			{
+				return AltInterType.ProcessEnd;
+			}
+			else
+			{
+				return AltInterType.Process;
+			}
+
+		}
+	}
 
 	//private void Awake()
 	//{

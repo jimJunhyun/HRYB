@@ -16,4 +16,9 @@ public class Module : MonoBehaviour
 			return self;
 		}
 	}
+
+	public virtual void ResetStatus()
+	{
+
+	}
 }

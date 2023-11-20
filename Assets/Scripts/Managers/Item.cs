@@ -53,6 +53,14 @@ public class Item // #################
 		{
 			return (GameManager.instance.pActor.atk as PlayerAttack).ThrowRope();
 		}, Mathf.Infinity), false) },
+		{"섬유".GetHashCode(), new Item("섬유", "튼튼한 섬유이다.", ItemType.Solid, 10, null, false) },
+		{"활".GetHashCode(), new Item("활", "적당한 나무활이다. 사용해서 장착해볼까?", ItemType.Solid, 1, new Specials(()=>{
+			GameManager.instance.pinven.ObtainWeapon();
+			return true;
+		}, Mathf.Infinity), false) },
+		{"버섯".GetHashCode(), new Item("버섯", "아무거나 먹으면 금방 선계간다.", ItemType.Solid, 5, null, false) },
+		{"녹제".GetHashCode(), new YinyangItem("녹제", "사슴의 발굽이다.", ItemType.Solid, 5, null, false, new YinyangWuXing(1, 1, 1, 1,  1, 1, 1)) },
+		{"녹각".GetHashCode(), new YinyangItem("녹각", "사슴의 뿔이다.", ItemType.Solid, 5, null, false, new YinyangWuXing(1, 1, 1, 1,  1, 1, 1)) },
 	}; //같은 이름의 아이템을 같은 물건으로 취급하기 위해 사용.
     public int Id {get => MyName.GetHashCode();}
     protected string myName;

@@ -13,18 +13,26 @@ public class YYCtrl : MonoBehaviour
 	public float spinSpeed;
 	public float emerSpeed = 5;
 
+	Transform bgnd;
 	Image blk;
 	Image wht;
+
+	Slider blkGauge;
+	Slider whtGauge;
 	
 	float diff;
 
 	private void Awake()
 	{
 
-		Transform bgnd = transform.GetChild(0);
+		bgnd = transform.GetChild(0);
 		Image[] imgs = bgnd.GetComponentsInChildren<Image>();
-		blk = imgs[0];
-		wht = imgs[1];
+
+		blk = imgs[1];
+		wht = imgs[2];
+
+		blkGauge = transform.Find("YinGauge").GetComponent<Slider>();
+		whtGauge = transform.Find("YangGauge").GetComponent<Slider>();
 	}
 
 	private void Start()
@@ -35,7 +43,7 @@ public class YYCtrl : MonoBehaviour
 	private void Update()
 	{
 		
-		transform.eulerAngles += Vector3.back * spinSpeed * Time.deltaTime * (1 + (diff - 1) * emerSpeed);
+		bgnd.eulerAngles += Vector3.back * spinSpeed * Time.deltaTime * (1 + (1 - diff) * emerSpeed);
 
 	}
 
@@ -50,5 +58,8 @@ public class YYCtrl : MonoBehaviour
 
 		blk.rectTransform.sizeDelta = Vector2.one * (UICIRCUM * yy.yinAmt / sum);
 		wht.rectTransform.sizeDelta = Vector2.one * (UICIRCUM * yy.yangAmt / sum);
+
+		blkGauge.value = GameManager.instance.pActor.life.yywx.yy.yinAmt / GameManager.instance.pActor.life.maxSoul;
+		whtGauge.value = GameManager.instance.pActor.life.yywx.yy.yangAmt / GameManager.instance.pActor.life.maxSoul;
 	}
 }

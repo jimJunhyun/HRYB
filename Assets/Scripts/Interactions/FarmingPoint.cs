@@ -12,6 +12,9 @@ public class FarmingPoint : MonoBehaviour, IInterable
 	public bool isDestroyed = true;
 	bool altInterable  =false;
 
+	public bool regenable = true;
+	public float regenSec = 6f;
+
 	public string resItem;
 	public int amount;
 
@@ -20,10 +23,16 @@ public class FarmingPoint : MonoBehaviour, IInterable
 
 	public bool AltInterable => altInterable;
 
+	public InterType interType { get ; set ; } = InterType.PickUp;
+	public AltInterType altInterType { get ; set ; } = AltInterType.None;
+
 	ItemRarity spotStat;
 
 	Renderer r;
+	Collider c;
 	Material mat;
+
+	WaitForSeconds sec;
 
 	//Coroutine ongoing;
 
@@ -33,7 +42,9 @@ public class FarmingPoint : MonoBehaviour, IInterable
 		mat = r.material;
 		r.material = new Material(mat);
 		mat = r.material;
+		c = GetComponent<Collider>();
 		GlowOff();
+		sec = new WaitForSeconds(regenSec);
 	}
 
 	public void GlowOn()
@@ -70,27 +81,28 @@ public class FarmingPoint : MonoBehaviour, IInterable
 			Debug.Log("아이템 떨구겠다.");
 		}
 		Debug.Log(transform.name);
-		if (isDestroyed)
+		if(regenable && isDestroyed)
+		{
+			c.enabled = false;
+			r.enabled = false;
+			IsInterable = false;
+			StartCoroutine(DelRegen());
+		}
+		else if (isDestroyed)
 		{
 			Destroy(gameObject);
 			//PoolManager.ReturnObject(gameObject);
 		}
 	}
 
-	//public IEnumerator DelInter()
-	//{
-	//	GameManager.instance.pinp.DeactivateInput();
-	//	float t = 0;
-	//	while(t < InterTime)
-	//	{
-	//		t += Time.deltaTime;
-	//		yield return null;
-	//	}
-	//	Inter();
-	//	GameManager.instance.pinp.ActivateInput();
-		
-	//	ongoing = null;
-	//}
+	public IEnumerator DelRegen()
+	{
+		yield return sec;
+		r.enabled = true;
+		c.enabled = true;
+		IsInterable = true;
+	}
+
 
 	public void AltInterWith()
 	{

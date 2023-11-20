@@ -9,6 +9,8 @@ public class BearAI : MonoBehaviour
 
 	Selecter head;
 
+	public Transform targetPo;
+
 	bool stopped = false;
 
 	private void Start()
@@ -17,6 +19,36 @@ public class BearAI : MonoBehaviour
 
 		self = GetComponent<Actor>();
 		head = new Selecter();
+
+		IsFirstTime firstFound = new IsFirstTime();
+		IsInRange inWakeUp = new IsInRange(self, player.transform, self.sight.GetSightRange, (player.move as PlayerMove).GetSneakDist, () =>
+		{
+			(self.move as BearMove).SetTarget(targetPo);
+			(self.anim as BearAnim).ResetSleepMode();
+			firstFound.Invalidate();
+			Debug.Log("FOUDNEN");
+		});
+		Inverter passed = new Inverter();
+		passed.connected = firstFound;
+		Selecter wakeUper = new Selecter();
+		wakeUper.connecteds.Add(passed);
+		wakeUper.connecteds.Add(inWakeUp);
+
+		IsFirstTime firstArrive = new IsFirstTime();
+		IsInRange arrival = new IsInRange(self, targetPo, ()=>1f, null, ()=>
+		{
+			firstArrive.Invalidate();
+		});
+		Mover escape = new Mover(self);
+		Sequencer escaper = new Sequencer();
+		Inverter notArrive = new Inverter();
+		notArrive.connected = arrival;
+
+		escaper.connecteds.Add(wakeUper);
+		escaper.connecteds.Add(firstArrive);
+		escaper.connecteds.Add(notArrive);
+		escaper.connecteds.Add(escape);
+
 
 		IsFirstTime once = new IsFirstTime();
 		IsUnderBalance under70 = new IsUnderBalance(self, 0.7f);
@@ -28,6 +60,7 @@ public class BearAI : MonoBehaviour
 		Attacker spAttack = new Attacker(self, ()=>
 		{
 			(self.move as BearMove).LookAt(player.transform);
+			(self.move as BearMove).ResetDest();
 			once.Invalidate();
 			StopExamine();
 			
@@ -49,6 +82,7 @@ public class BearAI : MonoBehaviour
 		Attacker atk2 = new Attacker(self, () =>
 		{
 			(self.move as BearMove).LookAt(player.transform);
+			(self.move as BearMove).ResetDest();
 			StopExamine();
 		});
 		Sequencer secondAttacker = new Sequencer();
@@ -64,6 +98,7 @@ public class BearAI : MonoBehaviour
 		Attacker atk1 = new Attacker(self, () =>
 		{
 			(self.move as BearMove).LookAt(player.transform);
+			(self.move as BearMove).ResetDest();
 			StopExamine();
 		});
 		Sequencer firstAttacker = new Sequencer();
@@ -90,8 +125,7 @@ public class BearAI : MonoBehaviour
 		idler.connecteds.Add(reset);
 
 
-
-
+		head.connecteds.Add(escaper);
 		head.connecteds.Add(spAttacker);
 		head.connecteds.Add(secondAttacker);
 		head.connecteds.Add(firstAttacker);

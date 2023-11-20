@@ -7,6 +7,7 @@ public class BearAnim : AnimModule
 	protected readonly int attackAltHash = Animator.StringToHash("AttackAlt");
 	protected readonly int attack2Hash = Animator.StringToHash("Attack2");
 	protected readonly int attack3Hash = Animator.StringToHash("Attack3");
+	protected readonly int sleepHash = Animator.StringToHash("Sleep");
 	int atkCnt = 0;
 	public override void SetAttackTrigger()
 	{
@@ -30,5 +31,10 @@ public class BearAnim : AnimModule
 				anim.SetTrigger(attack3Hash);
 				break;
 		}
+	}
+
+	public void ResetSleepMode()
+	{
+		anim.SetBool(sleepHash, false);
 	}
 }

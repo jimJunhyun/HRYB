@@ -14,7 +14,7 @@ public class RecipeUI : MonoBehaviour
 
 	public void SetInfo(Sprite img, string n)
 	{
-		if ((itemImg = transform.Find("ResItemImg")?.GetComponent<Image>()) == null)
+		if ((itemImg) == null)
 		{
 			GameObject g = new GameObject("ResItemBgnd");
 			GameObject g1 = new GameObject("ResItemImg");
@@ -29,8 +29,9 @@ public class RecipeUI : MonoBehaviour
 
 			g.transform.SetParent(transform);
 			g1.transform.SetParent(g.transform);
+			Debug.Log("GENERATEDNEWIMAGE");
 		}
-		if ((itemName = transform.Find("ResItemName")?.GetComponent<TextMeshProUGUI>()) == null)
+		if ((itemName) == null)
 		{
 			GameObject g = new GameObject("ResItemName");
 			g.transform.SetParent(transform);
@@ -41,5 +42,6 @@ public class RecipeUI : MonoBehaviour
 		}
 		itemName.text = n;
 		itemImg.sprite = img;
+		Debug.Log("SETMYIMAGE");
 	}
 }
