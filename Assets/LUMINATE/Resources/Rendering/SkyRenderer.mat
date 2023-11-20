@@ -1,0 +1,133 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SkyRenderer
+  m_Shader: {fileID: -6465566751694194690, guid: 46d7f7e59f8328843ab4df514703ff33,
+    type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _CLOUDS
+  - _CLOUDS_LAYER
+  m_InvalidKeywords:
+  - _CLOUDS_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Noise_Texture:
+        m_Texture: {fileID: 11700000, guid: e10883516a193f344913d48cd1572370, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise_Texture_1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Alpha_Softness: 0.35
+    - _Alpha_Softness_1: 0.1
+    - _Alpha_Step: 0
+    - _Alpha_Step_1: 0.4
+    - _Anisotropy: 0.8
+    - _Anisotropy_1: 0.8
+    - _CLOUDS: 1
+    - _Clouds_Brightness: 0.3
+    - _Coverage_Scale: 5
+    - _Coverage_Scale_1: 1
+    - _DayBrightness: 3
+    - _DayScatterStrength: 1
+    - _Day_Brightness: 10
+    - _Day_Brightness_1: 10
+    - _Day_Min_Darkness: 0.5
+    - _Day_Min_Darkness_1: 0.5
+    - _Density: 0.5
+    - _DensityPower: 8
+    - _Density_1: 0.164
+    - _EveningBrightness: 1
+    - _EveningScatterStrength: 8
+    - _EveningThreshold: 3
+    - _Evening_Brightness: 30
+    - _Evening_Brightness_1: 10
+    - _Evening_Min_Darkness: 0.1
+    - _Evening_Min_Darkness_1: 0.1
+    - _Fog_Density: 0.159
+    - _Fog_Density_1: 0.135
+    - _Fog_Strength: 0.5
+    - _Fog_Strength_1: 0.527
+    - _Height_Falloff: 0.2
+    - _Height_Falloff_1: 0.2
+    - _Invert_Noise: 1
+    - _Invert_Noise_1: 1
+    - _Jitter: 0.1
+    - _Jitter_1: 0.2
+    - _Noise_Scale: 10
+    - _Noise_Scale_1: 15
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _Saturation: 1.5
+    - _Scattering: 0.25
+    - _Scattering_1: 0.35
+    - _Sky_Brightness: 0.2
+    - _Speed: 1
+    - _Speed_1: 1.5
+    - _Star_Brightness: 5
+    - _Step_Size: 80
+    - _Step_Size_1: 50
+    - _Steps: 30
+    - _Steps_1: 50
+    - _SunIntensity: 1000
+    - _SunSize: 0.1
+    - _Thickness: 0.16
+    - _Thickness_1: 0.227
+    m_Colors:
+    - _Albedo: {r: 1, g: 1, b: 1, a: 1}
+    - _Albedo_1: {r: 1, g: 1, b: 1, a: 1}
+    - _Bounds: {r: 1000000, g: 500, b: 1000000, a: 0}
+    - _Bounds_1: {r: 1000000, g: 500, b: 1000000, a: 0}
+    - _DayColour: {r: 1, g: 1, b: 1, a: 1}
+    - _EveningColour: {r: 1, g: 0.509, b: 0.509, a: 1}
+    - _Noise_Weights: {r: 5, g: 3, b: 1.5, a: 0}
+    - _Noise_Weights_1: {r: 2, g: 3, b: 1.95, a: 0}
+    - _Position: {r: 0, g: 3000, b: 0, a: 0}
+    - _Position_1: {r: 0, g: 6000, b: 0, a: 0}
+    - _Wavelengths: {r: 680, g: 550, b: 440, a: 0}
+  m_BuildTextureStacks: []
+--- !u!114 &2166469187546024569
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 8
