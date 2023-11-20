@@ -6,7 +6,8 @@ using UnityEngine.VFX;
 
 public class PlayerAttack : AttackModule
 {
-	public float chargePerSec;
+	protected float chargePerSec;
+	public float initChargePerSec;
 
 	public float ChargePerSec { get => chargePerSec;}
 	public override float prepMod 
@@ -218,5 +219,11 @@ public class PlayerAttack : AttackModule
 		(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
 		GameManager.instance.uiManager.aimUI.On();
 		ongoingResetter = null;
+	}
+
+	public override void ResetStatus()
+	{
+		base.ResetStatus();
+		chargePerSec = initChargePerSec;
 	}
 }

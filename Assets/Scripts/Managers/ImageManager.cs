@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class ImageManager : MonoBehaviour
 {
-	public Sprite MedicineSprite;
-
+	public static Sprite MedicineSprite;
+	public const string LIQMEDICINE = "탕약";
 
 	public ItemNameDictionary dictionary;
 	private void Awake()
@@ -18,8 +18,18 @@ public class ImageManager : MonoBehaviour
 		Sprite[] allIcons =  icons.LoadAllAssets<Sprite>();
 		for (int i = 0; i < allIcons.Length; i++)
 		{
-			(Item.nameDataHashT[dictionary.Dict[allIcons[i].name].GetHashCode()] as Item).icon = allIcons[i];
-			Debug.Log($"아이템 스프라이트 설정 완료 : {allIcons[i].name} -> {(Item.nameDataHashT[dictionary.Dict[allIcons[i].name].GetHashCode()] as Item).MyName}");
+			if(dictionary.Dict[ allIcons[i].name] == LIQMEDICINE)
+			{
+				MedicineSprite = allIcons[i];
+				Debug.Log($"아이템 스프라이트 설정 완료 : {allIcons[i].name} -> {LIQMEDICINE}");
+			}
+			else
+			{
+				(Item.nameDataHashT[dictionary.Dict[allIcons[i].name].GetHashCode()] as Item).icon = allIcons[i];
+				Debug.Log($"아이템 스프라이트 설정 완료 : {allIcons[i].name} -> {(Item.nameDataHashT[dictionary.Dict[allIcons[i].name].GetHashCode()] as Item).MyName}");
+			}
+			
+
 		}
 	}
 }

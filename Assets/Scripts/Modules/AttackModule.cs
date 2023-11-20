@@ -12,13 +12,19 @@ public enum AttackStates
 
 public class AttackModule : Module
 {
-	public YinyangWuXing damage;
-	public float effSpeed;
+	public float initEffSpeed;
+	public bool initIsDirect;
+	public float initAtkDist;
+	public float initAtkGap;
+	public YinyangWuXing initDamage;
+
+	protected YinyangWuXing damage;
+	protected float effSpeed;
 	public float effSpeedMod = 1f;
 	public float EffSpeed { get => effSpeed * effSpeedMod;}
 	public bool isDirect;
 
-	public float atkDist;
+	protected float atkDist;
 
 	protected float curPrepMod = 1;
 	public virtual float prepMod
@@ -56,5 +62,18 @@ public class AttackModule : Module
 	public virtual void Attack()
 	{
 
+	}
+	public override void ResetStatus()
+	{
+		base.ResetStatus();
+		effSpeed = initEffSpeed;
+		isDirect = initIsDirect;
+		atkDist = initAtkDist;
+		curPrepMod = 1;
+		effSpeedMod = 1;
+		curAtkGap = initAtkGap;
+		fixedPrepMod = null;
+		fixedAtkGap = null;
+		damage = initDamage;
 	}
 }

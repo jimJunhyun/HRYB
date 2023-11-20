@@ -42,6 +42,17 @@ public class Medicines : YinyangItem
 		:base(name, desc, iType, max, used, isNewItem, yyData, "약")
 	{
 		this.rarity = ItemRarity.Medicine;
+		switch (type)
+		{
+			case MedicineType.Liquid:
+				icon =ImageManager.MedicineSprite;
+				break;
+			case MedicineType.Powder:
+				break;
+			case MedicineType.Pill:
+				break;
+		}
+
 	}
 
 	public override void Use()

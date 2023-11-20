@@ -482,6 +482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cfa38d0aac433b49a3951792ad250bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initSightRange: 5
   sightRange: 5
   holdTime: 0.5
   curSel: 0
@@ -512,22 +513,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127c54838b7090c4385f3b8baf009f91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage:
+  initEffSpeed: 1
+  initIsDirect: 0
+  initAtkDist: 60
+  initAtkGap: 1
+  initDamage:
     yy:
-      yinAmt: 24
+      yinAmt: 15
       yangAmt: 0
     wx:
-      woodAmt: 0
-      fireAmt: 0
-      earthAmt: 0
-      metalAmt: 2
-      waterAmt: 0
-    isClampedZero: 1
-  effSpeed: 1
+      woodAmt: 2
+      fireAmt: 1
+      earthAmt: 1
+      metalAmt: 1
+      waterAmt: 1
+    isClampedZero: 0
   effSpeedMod: 1
   isDirect: 0
-  atkDist: 60
-  chargePerSec: 20
+  initChargePerSec: 20
   shakeFrom: 4
   maxChargeTime: 7
 --- !u!114 &3650084912648737930
@@ -567,6 +570,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isImmune: 0
+  initYywx:
+    yy:
+      yinAmt: 50
+      yangAmt: 50
+    wx:
+      woodAmt: 10
+      fireAmt: 10
+      earthAmt: 10
+      metalAmt: 10
+      waterAmt: 10
+    isClampedZero: 0
+  initLimitation:
+    woodAmt: 90
+    fireAmt: 90
+    earthAmt: 90
+    metalAmt: 90
+    waterAmt: 90
+  initAdequity:
+    yy:
+      yinAmt: 1.3
+      yangAmt: 0.6
+    wx:
+      woodAmt: 1.3
+      fireAmt: 1.6
+      earthAmt: 1
+      metalAmt: 0.7
+      waterAmt: 0.5
+    isClampedZero: 0
+  initSoul: 200
   yywx:
     yy:
       yinAmt: 95
@@ -584,17 +616,6 @@ MonoBehaviour:
     earthAmt: 90
     metalAmt: 90
     waterAmt: 90
-  adequity:
-    yy:
-      yinAmt: 1
-      yangAmt: 1
-    wx:
-      woodAmt: 1
-      fireAmt: 1
-      earthAmt: 1
-      metalAmt: 1
-      waterAmt: 1
-    isClampedZero: 1
   maxSoul: 300
   regenMod: 1
   regenThreshold: 10
@@ -995,6 +1016,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 164.611
       objectReference: {fileID: 0}
+    - target: {fileID: 2482937515986629953, guid: a0b4a04a0100e03488a45ace767f46c1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9218077201470460842, guid: a0b4a04a0100e03488a45ace767f46c1, type: 3}
       propertyPath: m_Name
       value: EquipingBow
@@ -1117,11 +1142,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 60476920, guid: 2174b7c0d515d9c4bb5ff2ccf89e280c, type: 3}
       propertyPath: m_TranslationOffsets.Array.data[0].x
-      value: 0.06727147
+      value: 0.06727028
       objectReference: {fileID: 0}
     - target: {fileID: 60476920, guid: 2174b7c0d515d9c4bb5ff2ccf89e280c, type: 3}
       propertyPath: m_TranslationOffsets.Array.data[0].y
-      value: 0.069832325
+      value: 0.069832444
       objectReference: {fileID: 0}
     - target: {fileID: 60476920, guid: 2174b7c0d515d9c4bb5ff2ccf89e280c, type: 3}
       propertyPath: m_TranslationOffsets.Array.data[0].z
@@ -1177,11 +1202,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1379094529, guid: 2174b7c0d515d9c4bb5ff2ccf89e280c, type: 3}
       propertyPath: m_TranslationOffsets.Array.data[0].x
-      value: -0.04395628
+      value: -0.043956757
       objectReference: {fileID: 0}
     - target: {fileID: 1379094529, guid: 2174b7c0d515d9c4bb5ff2ccf89e280c, type: 3}
       propertyPath: m_TranslationOffsets.Array.data[0].y
-      value: 0.07363045
+      value: 0.07363057
       objectReference: {fileID: 0}
     - target: {fileID: 1379094529, guid: 2174b7c0d515d9c4bb5ff2ccf89e280c, type: 3}
       propertyPath: m_TranslationOffsets.Array.data[0].z
@@ -2840,6 +2865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0776e69c14016014786fd64c11c16145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eBowRend: {fileID: 0}
 --- !u!4 &6657884854646882255 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1301272617451482500, guid: 2174b7c0d515d9c4bb5ff2ccf89e280c, type: 3}

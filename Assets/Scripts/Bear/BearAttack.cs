@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public enum AttackType
 {
@@ -29,16 +30,18 @@ public class BearAttack : AttackModule
 
 	List<GameObject> ranges= new List<GameObject>();
 	PlayGroundBreak gb;
+	AnimationEffectPlayer scratch;
 
 	public AttackType nextAttackCall = AttackType.HandAttack;
 
 	Actor target;
 
-	private void Awake()
+	public void Awake()
 	{
 		ranges.Add(transform.Find("Range1").gameObject);
 		ranges.Add(transform.Find("Range2").gameObject);
 		gb = transform.Find("GroundBreak").GetComponent<PlayGroundBreak>();
+		scratch = transform.Find("ScrEffect").GetComponent<AnimationEffectPlayer>();
 		ResetAttackRange(0);
 		ResetAttackRange(1);
 	}
@@ -58,9 +61,11 @@ public class BearAttack : AttackModule
 		switch (nextAttackCall)
 		{
 			case AttackType.HandAttack:
+
 				break;
 			case AttackType.MouthAttack:
 				target.life.AddYYWX(damage, EffSpeed, true);
+				PoolManager.GetObject("DamagedEffect", target.transform.position + (Vector3.up * target.transform.localScale.magnitude * 0.5f), Quaternion.LookRotation(target.transform.forward));
 				break;
 			case AttackType.SpecialAttack:
 				
@@ -72,6 +77,11 @@ public class BearAttack : AttackModule
 	public void SetAttackRange(int idx)
 	{
 		ranges[idx].SetActive(true);
+		if(idx == 0)
+		{
+			scratch.PlayEffect();
+			scratch.Rotate180();
+		}
 		if(idx == 1)
 		{
 			gb.PlayEffect();

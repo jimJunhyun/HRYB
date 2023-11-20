@@ -324,6 +324,27 @@ public class PlayerMove : MoveModule
 
 	public void PlayerControllerMove(Vector3 dir)
 	{
+		if (dir.sqrMagnitude > 0.1f)
+		{
+			switch (moveStat)
+			{
+				case MoveStates.Run:
+					GameManager.instance.audioPlayer.PlayGlobal("GrassRun");
+					break;
+				case MoveStates.Walk:
+				case MoveStates.Sit:
+					GameManager.instance.audioPlayer.PlayGlobal("GrassWalk");
+					break;
+				case MoveStates.Climb:
+					break;
+			}
+		}
+		else if (GameManager.instance.audioPlayer.IsPlaying)
+		{
+			GameManager.instance.audioPlayer.StopGlobal();
+		}
+
+
 		if (moveStat != MoveStates.Climb)
 		{
 			dir -= Vector3.up * GRAVITY;
@@ -331,6 +352,8 @@ public class PlayerMove : MoveModule
 		}
 		ctrl.Move( (dir) * Time.deltaTime);
 		GetActor().anim.SetIdleState(idling);
+		
+		
 	}
 
 	public void Move(InputAction.CallbackContext context)
@@ -377,9 +400,14 @@ public class PlayerMove : MoveModule
 		{
 			if(moveStat == MoveStates.Sit)
 			{
-				moveStat = MoveStates.Walk;
-				ctrl.height *= 2f;
-				ctrl.center =Vector3.up;
+				Debug.DrawRay(middle.position, Vector3.up * ctrl.height, Color.green, 1000f);
+				if(!Physics.Raycast(middle.position,Vector3.up, ctrl.height, ~(1 << GameManager.PLAYERLAYER), QueryTriggerInteraction.Ignore))
+				{
+					moveStat = MoveStates.Walk;
+					ctrl.height *= 2f;
+					ctrl.center = Vector3.up;
+				}
+				
 			}
 			else
 			{
@@ -538,5 +566,16 @@ public class PlayerMove : MoveModule
 		slipDir = Vector3.zero;
 		moveDir = Vector3.zero;
 		GetActor().anim.SetMoveState(((int)moveStat));
+	}
+
+	public override void ResetStatus()
+	{
+		base.ResetStatus();
+
+		GameManager.instance.pinp.ActivateInput();
+		already.Clear();
+		ctrl.height = 2;
+		ctrl.radius = 0.5f;
+		ctrl.center = Vector3.up;
 	}
 }

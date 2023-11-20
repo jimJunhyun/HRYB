@@ -12,6 +12,7 @@ public class AnimModule : Module
 	protected readonly int moveYHash = Animator.StringToHash("MoveY");
 	protected readonly int hitHash = Animator.StringToHash("Hit");
 	protected readonly int dieHash = Animator.StringToHash("Die");
+	protected readonly int respawnHash = Animator.StringToHash("Respawn");
 
 
 
@@ -49,6 +50,11 @@ public class AnimModule : Module
 		anim.SetBool(idleHash, val);
 	}
 
-	
-	
+	public override void ResetStatus()
+	{
+		base.ResetStatus();
+
+		anim.SetTrigger(respawnHash);
+	}
+
 }

@@ -29,9 +29,23 @@ public class Actor : MonoBehaviour
 		cast = GetComponent<CastModule>();
 		anim = GetComponent<AnimModule>();
 	}
+	void Start()
+	{
+		Respawn();
+	}
 
 	private void Update()
 	{
 		updateActs?.Invoke(this);
+	}
+
+	public virtual void Respawn()
+	{
+		atk.ResetStatus();
+		move.ResetStatus();
+		life.ResetStatus();
+		sight.ResetStatus();
+		cast.ResetStatus();
+		anim.ResetStatus();
 	}
 }

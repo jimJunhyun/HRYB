@@ -69,7 +69,7 @@ public class PlayerInter : SightModule
 						GameManager.instance.uiManager.preInterUI.SetDescTxt("넣기");
 						break;
 					case InterType.PickUp:
-						GameManager.instance.uiManager.preInterUI.SetDescTxt("빼기");
+						GameManager.instance.uiManager.preInterUI.SetDescTxt("획득하기");
 						break;
 				}
 			}
@@ -165,5 +165,10 @@ public class PlayerInter : SightModule
 		}
 		
 	}
-
+	public override void ResetStatus()
+	{
+		base.ResetStatus();
+		curSel = 0;
+		checkeds = null;
+	}
 }

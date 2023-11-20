@@ -15,6 +15,9 @@ public class MoveModule : Module
 {
     protected float speed = 4f;
 
+	const string GRASSLAYERNAME = "Grass";
+	const string STONELAYERNAME = "Stone";
+
 	public virtual float Speed
 	{
 
@@ -64,6 +67,7 @@ public class MoveModule : Module
 		get => moveDir.sqrMagnitude < 0.1f;
 	}
 
+
 	public virtual void Move()
 	{
 		
@@ -81,5 +85,15 @@ public class MoveModule : Module
 		{
 			forceDir = Vector3.zero;
 		}
+	}
+
+	public override void ResetStatus()
+	{
+		base.ResetStatus();
+		speedMod = 1;
+		fixedSpeedMod = null;
+		moveStat  =MoveStates.Walk;
+		moveDir = Vector3.zero;
+		forceDir = Vector3.zero;
 	}
 }

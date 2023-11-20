@@ -9,12 +9,20 @@ public class LifeModule : Module
 
 	public bool isImmune = false;
 
+	public YinyangWuXing initYywx;
+	public WuXing initLimitation;
+	public YinyangWuXing initAdequity;
+	public float initSoul;
+
+	[HideInInspector]
 	public YinyangWuXing yywx;
 
+	[HideInInspector]
 	public WuXing limitation;
 
-	public YinyangWuXing adequity;
+	protected YinyangWuXing adequity;
 
+	[HideInInspector]
 	public float maxSoul;
 
 	public float regenMod = 1f;
@@ -39,6 +47,7 @@ public class LifeModule : Module
 
 	protected bool regenOn = false;
 	float diff;
+
 
 	public virtual void Update()
 	{
@@ -187,5 +196,26 @@ public class LifeModule : Module
 		StopAllCoroutines();
 		GetActor().anim.SetDieTrigger();
 		//PoolManager.ReturnObject(gameObject);
+	}
+
+	public override void ResetStatus()
+	{
+		base.ResetStatus();
+		yywx = new YinyangWuXing(initYywx);
+		adequity = initAdequity;
+		limitation = initLimitation;
+		maxSoul = initSoul;
+		regenMod = 1;
+		regenOn = false;
+		regenThreshold =10;
+		baseRegen = 1;
+		isImmune = false;
+		applyMod = 1;
+		baseApplySpeed = 1;
+		fixedRegenMod = null;
+
+
+		GameManager.instance.uiManager.yinYangUI.RefreshValues();
+		GameManager.instance.uiManager.wuXingUI.RefreshValues();
 	}
 }
