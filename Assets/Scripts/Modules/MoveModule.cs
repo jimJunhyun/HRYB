@@ -15,7 +15,7 @@ public class MoveModule : Module
 {
     protected float speed = 4f;
 
-	public float Speed
+	public virtual float Speed
 	{
 
 		get => speed * (fixedSpeedMod == null ? speedMod : (float)fixedSpeedMod);

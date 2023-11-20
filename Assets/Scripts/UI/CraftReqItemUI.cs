@@ -13,7 +13,7 @@ public class CraftReqItemUI : MonoBehaviour
 
 	public void SetInfo(string name, int reqNum, int curNum)
 	{
-		if ((icon = transform.Find("IconImg")?.GetComponent<Image>()) == null)
+		if ((icon) == null)
 		{
 			GameObject g = new GameObject("IconBgnd");
 			GameObject g1 = new GameObject("IconImg");
@@ -27,7 +27,7 @@ public class CraftReqItemUI : MonoBehaviour
 			icon = g1.AddComponent<Image>();
 			icon.rectTransform.sizeDelta = Vector2.one * ICONSCALE;
 		}
-		if ((itemName = transform.Find("ItemName")?.GetComponent<TextMeshProUGUI>()) == null)
+		if ((itemName) == null)
 		{
 			GameObject g = new GameObject("ItemName");
 			itemName = g.AddComponent<TextMeshProUGUI>();
@@ -37,7 +37,7 @@ public class CraftReqItemUI : MonoBehaviour
 			itemName.font = GameManager.instance.tmpText;
 			g.transform.SetParent(transform);
 		}
-		if ((itemReqNum = transform.Find("ItemAmt")?.GetComponent<TextMeshProUGUI>()) == null)
+		if ((itemReqNum) == null)
 		{
 			GameObject g = new GameObject("ItemAmt");
 			itemReqNum = g.AddComponent<TextMeshProUGUI>();

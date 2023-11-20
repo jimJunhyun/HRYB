@@ -28,6 +28,7 @@ public class BearAI : MonoBehaviour
 		Attacker spAttack = new Attacker(self, ()=>
 		{
 			(self.move as BearMove).LookAt(player.transform);
+			(self.move as BearMove).ResetDest();
 			once.Invalidate();
 			StopExamine();
 			
@@ -49,6 +50,7 @@ public class BearAI : MonoBehaviour
 		Attacker atk2 = new Attacker(self, () =>
 		{
 			(self.move as BearMove).LookAt(player.transform);
+			(self.move as BearMove).ResetDest();
 			StopExamine();
 		});
 		Sequencer secondAttacker = new Sequencer();
@@ -64,6 +66,7 @@ public class BearAI : MonoBehaviour
 		Attacker atk1 = new Attacker(self, () =>
 		{
 			(self.move as BearMove).LookAt(player.transform);
+			(self.move as BearMove).ResetDest();
 			StopExamine();
 		});
 		Sequencer firstAttacker = new Sequencer();

@@ -23,7 +23,8 @@ public class BrewPoint : CraftPoint
 		get => numPerWater * liquidNum.num;
 	}
 
-	
+
+
 
 	Coroutine ongoing;
 	

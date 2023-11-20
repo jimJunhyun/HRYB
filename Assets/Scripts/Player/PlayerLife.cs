@@ -24,9 +24,12 @@ public class PlayerLife : LifeModule
 	public override void OnDead()
 	{
 		base.OnDead();
+		GameManager.instance.pinp.DeactivateInput();
 		GetActor().anim.SetDieTrigger();
-		(GetActor().move as PlayerMove).ctrl.radius *= 0.25f;
-		(GetActor().move as PlayerMove).ctrl.height *= 0.25f;
+		GetActor().move.moveDir = Vector3.zero;
+		GetActor().move.forceDir = Vector3.zero;
+		(GetActor().move as PlayerMove).ctrl.center = Vector3.up;
+		(GetActor().move as PlayerMove).ctrl.height = 1;
 		Debug.Log("Player dead");
 	}
 }

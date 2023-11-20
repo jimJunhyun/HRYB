@@ -68,7 +68,7 @@ public class SimpleCrafter : MonoBehaviour
 	public void On()
 	{
 		gameObject.SetActive(true);
-		CategoryOn("도구");
+		CategoryOn("무기");
 		CraftOff();
 		Debug.Log("CROn");
 	}
@@ -112,7 +112,7 @@ public class SimpleCrafter : MonoBehaviour
 			else
 			{
 				allRecipeImg[i].SetInfo(catgRecipes[i].Value.info.icon, catgRecipes[i].Value.info.MyName);
-				Debug.Log($"Settinginfo {catgRecipes[i].Value.info.icon.name}");
+				Debug.Log($"Settinginfo {catgRecipes[i].Value.info.icon?.name}");
 			}
 			allRecipeImg[i].gameObject.SetActive(true);
 		}

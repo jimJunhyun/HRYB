@@ -47,15 +47,11 @@ public class CraftUI : MonoBehaviour
 				GameObject g = new GameObject($"ItemAmount{crReq.Count +1}");
 				g.AddComponent<RectTransform>().sizeDelta = Vector2.one * SIZEDELTA;
 				CraftReqItemUI req = g.AddComponent<CraftReqItemUI>();
-				req.SetInfo(item.info.MyName, item.num, GameManager.instance.pinven.inven.SumContains(item.info));
 				crReq.Add(req);
 				g.transform.SetParent(recipeList.content);
 			}
-			else
-			{
-				crReq[idx].gameObject.SetActive(true);
-				crReq[idx].SetInfo(item.info.MyName, item.num, GameManager.instance.pinven.inven.SumContains(item.info));
-			}
+			crReq[idx].gameObject.SetActive(true);
+			crReq[idx].SetInfo(item.info.MyName, item.num, GameManager.instance.pinven.inven.SumContains(item.info));
 			++idx;
 		}
 

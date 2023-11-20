@@ -53,6 +53,11 @@ public class Item // #################
 		{
 			return (GameManager.instance.pActor.atk as PlayerAttack).ThrowRope();
 		}, Mathf.Infinity), false) },
+		{"섬유".GetHashCode(), new Item("섬유", "튼튼한 섬유이다.", ItemType.Solid, 10, null, false) },
+		{"활".GetHashCode(), new Item("활", "적당한 나무활이다. 사용해서 장착해볼까?", ItemType.Solid, 1, new Specials(()=>{
+			GameManager.instance.pinven.ObtainWeapon();
+			return true;
+		}, Mathf.Infinity), false) },
 	}; //같은 이름의 아이템을 같은 물건으로 취급하기 위해 사용.
     public int Id {get => MyName.GetHashCode();}
     protected string myName;
