@@ -17,9 +17,13 @@ public class FollowingFoxFire : MonoBehaviour
 	[Header("Lighting")]
 	public KeyCode LightKey = KeyCode.L;
 	public float minEmissive, maxEmissive;
+	public float SmoothTime = 1f;
 	public int MaxEmissiveLevel;
 	[SerializeField]
 	private int CurrentEmissiveLevel = 1; //1~Max
+	public bool isChanging = false;
+
+	private WaitForSeconds wait = new WaitForSeconds(0.1f);
 
     void Awake()
     {
@@ -30,7 +34,7 @@ public class FollowingFoxFire : MonoBehaviour
 
     void Update()
 	{
-		if (Input.GetKeyDown(LightKey))
+		if (Input.GetKeyDown(LightKey) && !isChanging)
 		{
 			if (CurrentEmissiveLevel + 1 > MaxEmissiveLevel) CurrentEmissiveLevel = 1;
 			else CurrentEmissiveLevel++;
@@ -51,6 +55,20 @@ public class FollowingFoxFire : MonoBehaviour
 	private void SetEmissiveValue()
 	{
 		float targetValue = Mathf.Lerp(minEmissive, maxEmissive, ((float)CurrentEmissiveLevel-1f) / (float)(MaxEmissiveLevel-1f));
-		light.intensity = targetValue;
+		StartCoroutine(SmoothEmissive(targetValue));
+	}
+
+	private IEnumerator SmoothEmissive(float value)
+	{
+		isChanging = true;
+		float t = 0;
+		float i = light.intensity;
+		while(t < SmoothTime)
+		{
+			light.intensity = Mathf.Lerp(i, value, t / SmoothTime);
+			yield return wait;
+			t += 0.1f;
+		}
+		isChanging = false;
 	}
 }
