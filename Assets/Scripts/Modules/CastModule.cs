@@ -25,8 +25,9 @@ public class CastModule : Module
     public Dictionary<string, Preparation> nameCastPair = new Dictionary<string, Preparation>();
 
 	public virtual float castMod{ get;set;} = 1;
+	public float? fixedCastMod = null ;
 
-	Coroutine ongoing;
+	protected Coroutine ongoing;
 	protected string curName;
 
 	public void Cast(string name)
@@ -38,7 +39,7 @@ public class CastModule : Module
 		}
 	}
 
-	public void CastCancel()
+	public virtual void CastCancel()
 	{
 		if (ongoing != null && nameCastPair[curName].cancelable)
 		{
@@ -50,7 +51,7 @@ public class CastModule : Module
 	{
 		float t = 0;
 		float waitSec = p.Timefunc();
-		while(waitSec * castMod > t)
+		while(waitSec * (fixedCastMod == null? castMod : (float)fixedCastMod) > t)
 		{
 			t += Time.deltaTime;
 			yield return null;
@@ -60,4 +61,8 @@ public class CastModule : Module
 		curName = null;
 	}
 
+	public override void ResetStatus()
+	{
+		base.ResetStatus();
+	}
 }

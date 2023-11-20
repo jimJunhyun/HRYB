@@ -3,39 +3,51 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Linq;
-
-
-
+using System;
 
 public class PlayerMove : MoveModule
 {
 	public const float GRAVITY = 9.8f;
+	
 
-	CharacterController ctrl;
+	internal CharacterController ctrl;
+
+	public float climbSpeed = 7f;
+	public float climbDistance = 0.7f;
 	
 	public float spinSpd = 300f;
 	public float jumpPwer = 20f;
+	public float jumpGap = 0.5f;
+	public float sneakPower = 3f;
 
 	public float slipThreshold = 45f;
+	public float climbThreshold = 85f;
 	public float slipPower = 4f;
 
 	public float lockOnDist = 15f;
+
 
 	public float angleXMin;
 	public float angleXMax;
 
 	public bool jumpable;
 	public bool rollable;
+	public bool climbable;
 
 	public bool onAir
 	{
-		get => !ctrl.isGrounded;
+		get => moveStat != MoveStates.Climb && !ctrl.isGrounded;
 	}
 
 	float angle = 0;
 	bool slip = false;
+	bool climbGrounded = false;
+
+	float prevJump = 0;
 
 	Vector3 slipDir = Vector3.zero;
+
+	Vector3 ropeNormal = Vector3.zero;
 
 	Quaternion to;
 	Camera mainCam;
@@ -49,29 +61,84 @@ public class PlayerMove : MoveModule
 	Transform target;
 	bool isLocked = false;
 
+	RaycastHit hitCache;
+
+	
+
 	public Vector3 MoveDirCalced
 	{
 		get
 		{
-			switch (GameManager.instance.curCamStat)
+			if (moveStat == MoveStates.Climb)
 			{
-				case CamStatus.Aim:
-				case CamStatus.Freelook:
-					return ConvertToCamFront(moveDir) * speed;
-				case CamStatus.Locked:
-					return transform.rotation * moveDir * speed;
-				default:
-					return Vector3.zero;
+				return moveDir * Speed;
 			}
+			else
+			{
+				switch (GameManager.instance.curCamStat)
+				{
+					case CamStatus.Aim:
+					case CamStatus.Freelook:
+						return ConvertToCamFront(moveDir) * Speed;
+					case CamStatus.Locked:
+						return transform.rotation * moveDir * Speed;
+					default:
+						return Vector3.zero;
+				}
+			}
+			
 		}
 	}
 
-	public Vector3 Velocity
+	public Vector3 MoveDirUncalced
 	{
-		get => ctrl.velocity;
+		get
+		{
+			if (moveStat == MoveStates.Climb)
+			{
+				return moveDir * speed;
+			}
+			else
+			{
+				switch (GameManager.instance.curCamStat)
+				{
+					case CamStatus.Aim:
+					case CamStatus.Freelook:
+						return ConvertToCamFront(moveDir) * speed;
+					case CamStatus.Locked:
+						return transform.rotation * moveDir * speed;
+					default:
+						return Vector3.zero;
+				}
+			}
+
+		}
 	}
 
-
+	public override MoveStates moveStat 
+	{
+		get => base.moveStat; 
+		protected set 
+		{
+			if(value == MoveStates.Climb)
+			{
+				curStat = MoveStates.Climb;
+				speed = climbSpeed;
+			}
+			else if(value == MoveStates.Sit)
+			{
+				if (moveStat != MoveStates.Climb)
+				{
+					curStat = MoveStates.Sit;
+					speed = crouchSpeed;
+				}
+			}
+			else
+			{
+				base.moveStat = value;
+			}
+		}
+	}
 
 	Transform middle;
 
@@ -86,7 +153,10 @@ public class PlayerMove : MoveModule
 	{
 		if(hit.point.y <= middle.position.y)
 		{
+			
+
 			angle = Mathf.Acos(Vector3.Dot(hit.normal, transform.up) / (hit.normal.magnitude * transform.up.magnitude)) * Mathf.Rad2Deg;
+			
 			if (angle >= slipThreshold)
 			{
 				slip = true;
@@ -102,59 +172,115 @@ public class PlayerMove : MoveModule
 				slipDir = Vector3.zero;
 			}
 		}
+
+		
 	}
 
 	private void FixedUpdate()
 	{
 		Move();
+		if (moveStat == MoveStates.Climb)
+		{
+			CalcClimbState();
+		}
 	}
 
 	public override void Move()
 	{
-		ForceCalc();
-		SlipCalc();
-		GravityCalc();
-
-		if (isLocked && target == null)
+		if (moveStat != MoveStates.Climb)
 		{
-			ResetTargets();
-		}
-		switch (GameManager.instance.curCamStat)
-		{
-			case CamStatus.Freelook:
-				{
-					Vector3 vec = MoveDirCalced;
+			if (Physics.SphereCast(middle.position, 0.5f, transform.forward, out hitCache, climbDistance, (1 << GameManager.CLIMBABLELAYER)) && moveDir.z > 0)
+			{
+				Debug.Log("등반");
+				ropeNormal = hitCache.normal;
+				SetClimb();
+			}
 
-					if (vec.sqrMagnitude != 0)
-					{
-						to = Quaternion.LookRotation(vec, Vector3.up);
-					}
-					RotateTo();
-					PlayerControllerMove(vec);
-				}
+			ForceCalc();
+			SlipCalc();
+			GravityCalc();
+			
 
-				break;
-			case CamStatus.Locked:
-				{
-					Vector3 vec = GetDir(target);
-					to = Quaternion.LookRotation(vec, Vector3.up);
-					if (to != Quaternion.identity)
+			if (isLocked && target == null)
+			{
+				ResetTargets();
+			}
+			switch (GameManager.instance.curCamStat)
+			{
+				case CamStatus.Freelook:
 					{
+						Vector3 vec = MoveDirCalced;
+
+						if (vec.sqrMagnitude != 0)
+						{
+							to = Quaternion.LookRotation(vec, Vector3.up);
+						}
 						RotateTo();
+						PlayerControllerMove(vec);
 					}
-					PlayerControllerMove(MoveDirCalced);
-				}
 
-				break;
-			case CamStatus.Aim:
+					break;
+				case CamStatus.Locked:
+					{
+						Vector3 vec = GetDir(target);
+						to = Quaternion.LookRotation(vec, Vector3.up);
+						if (to != Quaternion.identity)
+						{
+							RotateTo();
+						}
+						PlayerControllerMove(MoveDirCalced);
+					}
+
+					break;
+				case CamStatus.Aim:
+					{
+						Vector3 vec = MoveDirCalced;
+
+						PlayerControllerMove(vec);
+					}
+					break;
+				default:
+					break;
+			}
+		}
+		else{
+
+			if (climbGrounded && moveDir.y < 0)
+			{
+				Debug.Log("착지");
+				ResetClimb();
+			}
+
+			if(!climbGrounded && !Physics.SphereCast(transform.position, 0.5f, transform.forward, out hitCache, climbDistance, (1 << GameManager.CLIMBABLELAYER)) && moveDir.y > 0)
+			{
+				Debug.Log("등반완");
+				PlayerControllerMove(-ropeNormal * climbSpeed);
+				if (Physics.Raycast(transform.position, Vector3.down, 2f, ~(1 << GameManager.PLAYERLAYER)))
 				{
-					Vector3 vec = MoveDirCalced;
-
-					PlayerControllerMove(vec);
+					ResetClimb();
 				}
-				break;
-			default:
-				break;
+			}
+			else
+			{
+				PlayerControllerMove(MoveDirCalced);
+			}
+		}
+	}
+
+	public void CalcClimbState()
+	{
+		if(moveStat == MoveStates.Climb)
+		{
+			Debug.DrawRay(middle.position, Vector3.down * 1.5f, Color.cyan, 1000f);
+			if (Physics.Raycast(transform.position, Vector3.down, 0.5f, ~(1 << GameManager.PLAYERLAYER)))
+			{
+				Debug.Log("GND");
+				climbGrounded = true;
+			}
+			else
+			{
+				climbGrounded = false;
+			}
 		}
 		
 		
@@ -174,12 +300,6 @@ public class PlayerMove : MoveModule
 		{
 			forceDir.y -= GRAVITY * Time.deltaTime;
 		}
-	}
-
-	public override void ForceCalc()
-	{
-		Vector3 antiForce = -(moveDir + forceDir) * 0.25f * Time.deltaTime;
-		forceDir += antiForce; 
 	}
 
 	Vector3 GetDir(Transform to)
@@ -204,14 +324,51 @@ public class PlayerMove : MoveModule
 
 	public void PlayerControllerMove(Vector3 dir)
 	{
-		ctrl.Move( (forceDir + (dir) - (Vector3.up * GRAVITY)) * Time.deltaTime);
+		if (dir.sqrMagnitude > 0.1f)
+		{
+			switch (moveStat)
+			{
+				case MoveStates.Run:
+					GameManager.instance.audioPlayer.PlayGlobal("GrassRun");
+					break;
+				case MoveStates.Walk:
+				case MoveStates.Sit:
+					GameManager.instance.audioPlayer.PlayGlobal("GrassWalk");
+					break;
+				case MoveStates.Climb:
+					break;
+			}
+		}
+		else if (GameManager.instance.audioPlayer.IsPlaying)
+		{
+			GameManager.instance.audioPlayer.StopGlobal();
+		}
+
+
+		if (moveStat != MoveStates.Climb)
+		{
+			dir -= Vector3.up * GRAVITY;
+			dir += forceDir;
+		}
+		ctrl.Move( (dir) * Time.deltaTime);
 		GetActor().anim.SetIdleState(idling);
+		
+		
 	}
 
 	public void Move(InputAction.CallbackContext context)
 	{
 		Vector2 inp = context.ReadValue<Vector2>();
-		moveDir = new Vector3(inp.x, moveDir.y, inp.y);
+		if (moveStat != MoveStates.Climb)
+		{
+			moveDir = new Vector3(inp.x, moveDir.y, inp.y);
+			
+		}
+		else
+		{
+			moveDir = new Vector3(0, inp.y, 0);
+			
+		}
 
 		if (target != null && (target.position - transform.position).sqrMagnitude >= lockOnDist * lockOnDist)
 		{
@@ -221,18 +378,17 @@ public class PlayerMove : MoveModule
 
 	public void Run(InputAction.CallbackContext context)
 	{
-		if(moveStat != MoveStates.Sit)
+		if(moveStat != MoveStates.Sit && moveStat != MoveStates.Climb)
 		{
 			if (context.started)
 			{
 				moveStat = MoveStates.Run;
-				GetActor().anim.SetMoveState(((int)moveStat));
 			}
 			if (context.canceled)
 			{
 				moveStat = MoveStates.Walk;
-				GetActor().anim.SetMoveState(((int)moveStat));
 			}
+			GetActor().anim.SetMoveState(((int)moveStat));
 		}
 		
 
@@ -240,28 +396,51 @@ public class PlayerMove : MoveModule
 
 	public void Crouch(InputAction.CallbackContext context)
 	{
-		if (context.started)
+		if (context.started && moveStat != MoveStates.Climb)
 		{
 			if(moveStat == MoveStates.Sit)
 			{
-				moveStat = MoveStates.Walk;
-				GetActor().anim.SetMoveState(((int)moveStat));
+				Debug.DrawRay(middle.position, Vector3.up * ctrl.height, Color.green, 1000f);
+				if(!Physics.Raycast(middle.position,Vector3.up, ctrl.height, ~(1 << GameManager.PLAYERLAYER), QueryTriggerInteraction.Ignore))
+				{
+					moveStat = MoveStates.Walk;
+					ctrl.height *= 2f;
+					ctrl.center = Vector3.up;
+				}
+				
 			}
 			else
 			{
+				ctrl.height *= 0.5f;
+				ctrl.center = Vector3.up * 0.5f;
 				moveStat = MoveStates.Sit;
-				GetActor().anim.SetMoveState(((int)moveStat));
 			}
+			GetActor().anim.SetMoveState(((int)moveStat));
 		}
 	}
 
 	public void Jump(InputAction.CallbackContext context)
 	{
-		if (ctrl.isGrounded && !slip && jumpable)
+		if (context.performed && jumpable)
 		{
-			forceDir.y += jumpPwer;
-			(GetActor().anim as PlayerAnim).SetJumpTrigger();
+			if (moveStat == MoveStates.Climb)
+			{
+				forceDir.y += jumpPwer / climbSpeed;
+				Vector3 ropeJumpDir = (ropeNormal + Vector3.up).normalized;
+				forceDir += ropeJumpDir * jumpPwer;
+				ResetClimb();
+			}
+			else
+			{
+				if (ctrl.isGrounded && !slip && Time.time - prevJump >= jumpGap)
+				{
+					prevJump = Time.time;
+					forceDir.y += jumpPwer;
+					(GetActor().anim as PlayerAnim).SetJumpTrigger();
+				}
+			}
 		}
+		
 	}
 
 	public void Turn(InputAction.CallbackContext context)
@@ -279,7 +458,7 @@ public class PlayerMove : MoveModule
 	{
 		if (context.started)
 		{
-			Collider[] c = Physics.OverlapSphere(transform.position, lockOnDist, ~(1 << 7 | 1 << 11));
+			Collider[] c = Physics.OverlapSphere(transform.position, lockOnDist, ~(1 << GameManager.PLAYERLAYER | 1 << GameManager.GROUNDLAYER));
 			if (c.Length > 0)
 			{
 				prevTargets = targets;
@@ -332,6 +511,37 @@ public class PlayerMove : MoveModule
 		}
 	}
 
+	public void Roll(InputAction.CallbackContext context)
+	{
+		if (context.started)
+		{
+			GetActor().life.isImmune = true;
+			GameManager.instance.pinp.DeactivateInput();
+			moveDir = Vector3.forward;
+			to = Quaternion.LookRotation(moveDir, Vector3.up);
+			RotateTo();
+			(GetActor().anim as PlayerAnim).SetRollTrigger();
+			ctrl.height *= 0.25f;
+			ctrl.radius *= 0.5f;
+			if(GetActor().move.moveStat != MoveStates.Sit)
+				ctrl.center *= 0.5f;
+		}
+		
+	}
+
+	public float GetSneakDist()
+	{
+		if(moveStat == MoveStates.Sit)
+		{
+			return sneakPower;
+		}
+		return 0;
+	}
+
+	
+
+	
+
 	void ResetTargets()
 	{
 		target = null;
@@ -341,5 +551,31 @@ public class PlayerMove : MoveModule
 
 		isLocked = false;
 	}
-	
+
+	void ResetClimb()
+	{
+		moveStat = MoveStates.Walk;
+		moveDir = Vector3.zero;
+		GetActor().anim.SetMoveState(((int)moveStat));
+	}
+
+	void SetClimb()
+	{
+		moveStat = MoveStates.Climb;
+		forceDir = Vector3.zero;
+		slipDir = Vector3.zero;
+		moveDir = Vector3.zero;
+		GetActor().anim.SetMoveState(((int)moveStat));
+	}
+
+	public override void ResetStatus()
+	{
+		base.ResetStatus();
+
+		GameManager.instance.pinp.ActivateInput();
+		already.Clear();
+		ctrl.height = 2;
+		ctrl.radius = 0.5f;
+		ctrl.center = Vector3.up;
+	}
 }

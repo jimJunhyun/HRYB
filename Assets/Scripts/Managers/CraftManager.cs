@@ -11,12 +11,9 @@ public class CraftManager : MonoBehaviour
 		crafter = new Crafter();
 	}
 
-	private void Update()
+	public bool TrimWithName(string name)
 	{
-		if (Input.GetKeyDown(KeyCode.L))
-		{
-			CraftWithName("밧줄");
-		}
+		return crafter.TrimItem(name);
 	}
 
 	public void CraftWithName(string name)

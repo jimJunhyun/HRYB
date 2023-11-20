@@ -26,7 +26,7 @@ public enum ItemRarity
 
 public class Specials
 {
-	public System.Action onActivated;
+	public System.Func<bool> onActivated;
 	public float removeTime;
 
 	public void DeleteSpecial()
@@ -34,7 +34,7 @@ public class Specials
 		onActivated = null;
 	}
 
-	public Specials(System.Action onAct, float removeT)
+	public Specials(System.Func<bool> onAct, float removeT)
 	{
 		onActivated = onAct;
 		removeTime = removeT;
@@ -46,10 +46,21 @@ public class Item // #################
 {
     public static Hashtable nameDataHashT = new Hashtable()
 	{
-		{"나뭇가지".GetHashCode(), new Item("나뭇가지", ItemType.Solid, 10, null, false) },
-		{"인삼".GetHashCode(), new YinyangItem("인삼", ItemType.Solid, 5, null, false, new YinyangWuXing(1.0f, 1.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f), "삼") },
-		{"물".GetHashCode(), new YinyangItem("물", ItemType.Liquid,  5, null, false, new YinyangWuXing(1.0f, 1.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f), "수")},
-		{"밧줄".GetHashCode(), new Item("밧줄", ItemType.Solid,  10, null, false) },
+		{"나뭇가지".GetHashCode(), new Item("나뭇가지","나무에서 열리는 가지를 나뭇가지라고 부르더라", ItemType.Solid, 10, null, false) },
+		{"인삼".GetHashCode(), new YinyangItem("인삼", "사실 인삼이나 산삼이나 거기서 거기다", ItemType.Solid, 5, null, false, new YinyangWuXing(1.0f, 1.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f), "삼") },
+		{"물".GetHashCode(), new YinyangItem("물", "물로 보지 말랜다", ItemType.Liquid,  5, null, false, new YinyangWuXing(1.0f, 1.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f), "수")},
+		{"밧줄".GetHashCode(), new Item("밧줄", "무언가에 매기 위해 맨 줄이다.", ItemType.Solid,  10, new Specials(()=>
+		{
+			return (GameManager.instance.pActor.atk as PlayerAttack).ThrowRope();
+		}, Mathf.Infinity), false) },
+		{"섬유".GetHashCode(), new Item("섬유", "튼튼한 섬유이다.", ItemType.Solid, 10, null, false) },
+		{"활".GetHashCode(), new Item("활", "적당한 나무활이다. 사용해서 장착해볼까?", ItemType.Solid, 1, new Specials(()=>{
+			GameManager.instance.pinven.ObtainWeapon();
+			return true;
+		}, Mathf.Infinity), false) },
+		{"버섯".GetHashCode(), new Item("버섯", "아무거나 먹으면 금방 선계간다.", ItemType.Solid, 5, null, false) },
+		{"녹제".GetHashCode(), new YinyangItem("녹제", "사슴의 발굽이다.", ItemType.Solid, 5, null, false, new YinyangWuXing(1, 1, 1, 1,  1, 1, 1)) },
+		{"녹각".GetHashCode(), new YinyangItem("녹각", "사슴의 뿔이다.", ItemType.Solid, 5, null, false, new YinyangWuXing(1, 1, 1, 1,  1, 1, 1)) },
 	}; //같은 이름의 아이템을 같은 물건으로 취급하기 위해 사용.
     public int Id {get => MyName.GetHashCode();}
     protected string myName;
@@ -57,6 +68,8 @@ public class Item // #################
 	{
 		get => myName; set => myName = value;
 	}
+
+	public string desc;
 
     public Sprite icon;
 	public ItemType itemType;
@@ -67,7 +80,7 @@ public class Item // #################
 
 	public ItemRarity rarity;
 
-	float modifier = 1f;
+	
 
 	public void SetRarity(ItemRarity val)
 	{
@@ -94,15 +107,17 @@ public class Item // #################
 	public Item(Item dat)
 	{
 		myName = dat.myName;
+		desc = dat.desc;
 		itemType = dat.itemType;
 		maxStack = dat.maxStack;
 		onUse = dat.onUse;
 		icon = dat.icon;
 	}
 
-	public Item(string n, ItemType iType, int max, Specials useFunc ,bool isNewItem)
+	public Item(string n, string d, ItemType iType, int max, Specials useFunc ,bool isNewItem)
 	{
         myName = n;
+		desc = d;
 		if (isNewItem)
 		{
 			InsertToTable();
@@ -145,7 +160,11 @@ public class Item // #################
 
 	public virtual void Use()
 	{
-		onUse.onActivated.Invoke();
+		if (onUse != null && onUse.onActivated != null && onUse.onActivated.Invoke())
+		{
+
+			GameManager.instance.pinven.RemoveItem(this);
+		}
 	}
 
 	public void SetSprite(Sprite sp)

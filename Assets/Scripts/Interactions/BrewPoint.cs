@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class BrewPoint : CraftPoint
 {
-	public float brewMaxSec = 10f;
+	public float brewDefSec = 12;
+	public float brewMaxSec;
 
 	public Medicines resultItem;
 
@@ -15,14 +16,15 @@ public class BrewPoint : CraftPoint
 	readonly int waterHash = "물".GetHashCode();
 
 	int liqMax = 5;
-	int numPerWater = 2;
+	int numPerWater = 1;
 
 	protected override int maxAmt
 	{
 		get => numPerWater * liquidNum.num;
 	}
 
-	
+
+
 
 	Coroutine ongoing;
 	
@@ -96,7 +98,7 @@ public class BrewPoint : CraftPoint
 	public override void Process()
 	{
 		base.Process();
-		Recipe myRecipe = new Recipe(holding, new HashSet<CraftMethod>() { CraftMethod.Medicine });
+		Recipe myRecipe = new Recipe(holding, new HashSet<CraftMethod>() { CraftMethod.Medicine }, null);
 
 		Debug.Log(myRecipe.ToString());
 
@@ -111,7 +113,7 @@ public class BrewPoint : CraftPoint
 		}
 		else
 		{
-			resultItem = new Medicines(GetMedicineName(), ItemType.Liquid, 1, null, true, YinyangWuXing.Zero);
+			resultItem = new Medicines(GetMedicineName(), "약이다.", ItemType.Liquid, 1, null, true, YinyangWuXing.Zero);
 			ongoing = StartCoroutine(DelAddStat());
 		}
 	}
@@ -159,19 +161,47 @@ public class BrewPoint : CraftPoint
 		liquidNum = ItemAmountPair.Empty;
 		resultItem = null;
 		ongoing = null;
+		brewMaxSec = 0;
 		base.Initialize();
 	}
 
 	IEnumerator DelAddStat()
 	{
 		float iter = 0;
+		float varModifier = 1;
+		switch (holding.Count)
+		{
+			case 1:
+				varModifier = 1;
+				break;
+			case 2:
+				varModifier = 0.83f;
+				break;
+			case 3:
+				varModifier = 0.66f;
+				break;
+			case 4:
+				varModifier = 0.49f;
+				break;
+			case 5:
+				varModifier = 0.38f;
+				break;
+			default:
+				break;
+		}
+		brewMaxSec = brewDefSec * count;
 		while (iter < brewMaxSec)
 		{
 			yield return GameManager.instance.waitSec;
 			foreach (var item in holding)
 			{
 				Debug.Log($"{item.info.MyName} : {(item.info as YinyangItem).nameAsChar}");
-				YinyangWuXing brewed = (item.info as YinyangItem).yywx * (1 / brewMaxSec) * Random.Range(0.9f, 1.1f) * item.num; //추출 공식은 어떻게 되는가?
+				float multDecMod = 0;
+				for (int i = 1; i <= item.num; i++)
+				{
+					multDecMod += 1 / i;
+				}
+				YinyangWuXing brewed = (item.info as YinyangItem).yywx * (1 / brewMaxSec) * multDecMod * varModifier; //추출 공식은 어떻게 되는가?
 				resultItem.yywx += brewed;
 				//언제 능력이 더해지는가?
 			}

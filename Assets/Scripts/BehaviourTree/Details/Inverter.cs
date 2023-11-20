@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Inverter : INode
 {
-	INode connected;
+	public INode connected;
 
 	public NodeStatus Examine()
 	{

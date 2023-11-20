@@ -28,7 +28,7 @@ public class Arrow : DamageObject
 	{
 		if(rig.velocity.sqrMagnitude != 0)
 		{
-		transform.rotation = Quaternion.LookRotation(rig.velocity);
+			transform.rotation = Quaternion.LookRotation(rig.velocity);
 
 		}
 	}

@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerInter : SightModule
 {
+	const float ALTINTERTIME = 0.5f;
+
 	public List<IInterable> checkeds = null;
 
 	public float holdTime = 0.5f;
@@ -16,6 +18,8 @@ public class PlayerInter : SightModule
 	[HideInInspector]
 	public int curSel = 0;
 
+	bool holding = false;
+
 	float pressStart = 0;
 	float pressStop = 0;
 
@@ -23,11 +27,22 @@ public class PlayerInter : SightModule
 	{
 		get
 		{
-			if(checkeds == null)
+			if(checkeds == null || checkeds.Count <= curSel)
 				return null;
 			else
 				return checkeds[curSel];
 		}
+	}
+
+	private void Start()
+	{
+		Check();
+	}
+
+	private void Update()
+	{
+		if(holding)
+			GameManager.instance.uiManager.preInterUI.SetGaugeValue(Mathf.Clamp01((Time.time - pressStart) / 0.5f));
 	}
 
 	public void Check()
@@ -45,6 +60,41 @@ public class PlayerInter : SightModule
 			checkeds = hits.OrderByDescending(item => (transform.position - item.point).sqrMagnitude).Select(item => item.collider.GetComponent<IInterable>()).ToList();
 			curSel %= checkeds.Count;
 			checkeds[curSel].GlowOn();
+			if (checkeds[curSel].IsInterable)
+			{
+				GameManager.instance.uiManager.preInterUI.On();
+				switch (checkeds[curSel].interType)
+				{
+					case InterType.Insert:
+						GameManager.instance.uiManager.preInterUI.SetDescTxt("넣기");
+						break;
+					case InterType.PickUp:
+						GameManager.instance.uiManager.preInterUI.SetDescTxt("획득하기");
+						break;
+				}
+			}
+			else
+			{
+				GameManager.instance.uiManager.preInterUI.SetDescTxt("");
+
+			}
+			if (checkeds[curSel].AltInterable)
+			{
+				GameManager.instance.uiManager.preInterUI.On();
+				switch (checkeds[curSel].altInterType)
+				{
+					case AltInterType.Process:
+						GameManager.instance.uiManager.preInterUI.SetDescAltTxt("작동");
+						break;
+					case AltInterType.ProcessEnd:
+						GameManager.instance.uiManager.preInterUI.SetDescAltTxt("중단");
+						break;
+				}
+			}
+			else
+			{
+				GameManager.instance.uiManager.preInterUI.SetDescAltTxt("");
+			}
 		}
 		else
 		{
@@ -57,6 +107,7 @@ public class PlayerInter : SightModule
 				checkeds.Clear();
 			}
 			curSel = 0;
+			GameManager.instance.uiManager.preInterUI.Off();
 		}
 	}
 
@@ -92,10 +143,13 @@ public class PlayerInter : SightModule
 			if (context.performed)
 			{
 				pressStart = Time.time;
+				holding = true;
 			}
 
 			if (checkeds != null && checkeds.Count > 0 && context.canceled)
 			{
+				holding = false;
+				GameManager.instance.uiManager.preInterUI.SetGaugeValue(0);
 				pressStop = Time.time;
 				if ((pressStop - pressStart) < 0.5f || (!curFocused.AltInterable))
 				{
@@ -111,5 +165,10 @@ public class PlayerInter : SightModule
 		}
 		
 	}
-
+	public override void ResetStatus()
+	{
+		base.ResetStatus();
+		curSel = 0;
+		checkeds = null;
+	}
 }

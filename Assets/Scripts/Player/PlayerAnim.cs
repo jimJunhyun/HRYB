@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class PlayerAnim : AnimModule
 	protected readonly int interSpeedHash = Animator.StringToHash("InterSpeed");
 	protected readonly int equipHash = Animator.StringToHash("Equip");
 	protected readonly int unequipHash = Animator.StringToHash("Unequip");
+	protected readonly int rollHash = Animator.StringToHash("Roll");
 
 	PlayerMove pmove;
 
@@ -48,14 +50,17 @@ public class PlayerAnim : AnimModule
 						case MoveStates.Sit:
 							anim.SetFloat(moveYHash, GetActor().move.crouchSpeed);
 							break;
+						case MoveStates.Climb:
+							
+							break;
 						default:
 							break;
 					}
 					break;
 				case CamStatus.Locked:
 				case CamStatus.Aim:
-					anim.SetFloat(moveXHash, pmove.Velocity.x);
-					anim.SetFloat(moveYHash, pmove.Velocity.z);
+					anim.SetFloat(moveXHash, pmove.MoveDirUncalced.x);
+					anim.SetFloat(moveYHash, pmove.MoveDirUncalced.z);
 					break;
 				default:
 					break;
@@ -63,7 +68,7 @@ public class PlayerAnim : AnimModule
 		}
 
 		anim.SetBool(onAirHash, pmove.onAir);
-		anim.SetFloat(vertPowerHash, pmove.Velocity.y);
+		anim.SetFloat(vertPowerHash, pmove.MoveDirUncalced.y);
 	}
 
 	public void SetJumpTrigger()
@@ -99,5 +104,10 @@ public class PlayerAnim : AnimModule
 	public void SetUnequipTrigger()
 	{
 		anim.SetTrigger(unequipHash);
+	}
+
+	public void SetRollTrigger()
+	{
+		anim.SetTrigger(rollHash);
 	}
 }

@@ -5,18 +5,30 @@ using System;
 
 public class LifeModule : Module
 {
+	public const float IMMUNETIME = 0.3f;
 
+	public bool isImmune = false;
+
+	public YinyangWuXing initYywx;
+	public WuXing initLimitation;
+	public YinyangWuXing initAdequity;
+	public float initSoul;
+
+	[HideInInspector]
 	public YinyangWuXing yywx;
 
+	[HideInInspector]
 	public WuXing limitation;
 
-	public YinyangWuXing adequity;
+	protected YinyangWuXing adequity;
 
+	[HideInInspector]
 	public float maxSoul;
 
 	public float regenMod = 1f;
+	public float? fixedRegenMod = null;
 	float baseRegen = 1f;
-	public float TotalRegenSpeed { get => regenMod * baseRegen;}
+	public float TotalRegenSpeed { get => (fixedRegenMod == null ? regenMod : (float)fixedRegenMod) * baseRegen;}
 
 	public float regenThreshold = 10f;
 
@@ -33,10 +45,11 @@ public class LifeModule : Module
 		get => yywx.yy.yinAmt * 2 <= yywx.yy.yangAmt || yywx.yy.yangAmt * 2 <= yywx.yy.yinAmt || yywx.yy.yangAmt + yywx.yy.yinAmt > maxSoul;
 	}
 
-	bool regenOn = false;
+	protected bool regenOn = false;
 	float diff;
 
-	private void Update()
+
+	public virtual void Update()
 	{
 		if(Mathf.Abs((diff = yywx.yy.yinAmt - yywx.yy.yangAmt)) > regenThreshold)
 		{
@@ -71,21 +84,54 @@ public class LifeModule : Module
 	{
 		yywx.wx[((int)to)] += amt * adequity.wx[((int)to)];
 		StatusEffect eff = ((StatusEffect)GameManager.instance.statEff.idStatEffPairs[(int)to]);
-		if (yywx.wx[((int)to)] > limitation[((int)to)])
+		//&&&&&&&&&&&&&&&&&&&&&&&&&&이후 필히 수정 필요&&&&&&&&&&&&&&&&&
+		switch (to)
 		{
-			appliedDebuff.Add(eff);
-			eff.onApplied.Invoke(GetActor(), GetActor());
-			GetActor().updateActs += eff.onUpdated;
+			case WXInfo.Wood:
+				GameManager.instance.SetCamVFov(55 + 30 * (Mathf.Min(yywx.wx[((int)to)], 90) / 90));
+				GetActor().sight.sightRange = 5 + 2.27f * (Mathf.Min(yywx.wx[((int)to)], 90) / 90);
+				break;
+			case WXInfo.Fire:
+				GetActor().move.speedMod = 1 + 0.75f * (Mathf.Min(yywx.wx[((int)to)], 90) / 90);
+				GetActor().atk.prepMod = 1 + 1 * (Mathf.Min(yywx.wx[((int)to)], 90) / 90);
+				break;
+			case WXInfo.Earth:
+				regenMod = 1 + 4 * (Mathf.Min(yywx.wx[((int)to)], 90) / 90);
+				break;
+			case WXInfo.Metal:
+				GetActor().atk.effSpeedMod = 1 + 1 * (Mathf.Min(yywx.wx[((int)to)], 90) / 90);
+				break;
+			case WXInfo.Water:
+				GetActor().cast.castMod = 1 + 1 * (Mathf.Min(yywx.wx[((int)to)], 90) / 90);
+				break;
 		}
-		else if(appliedDebuff.Contains(eff))
+
+
+		if (!appliedDebuff.Contains(eff) && yywx.wx[((int)to)] > limitation[((int)to)])
 		{
-			appliedDebuff.Remove(eff);
-			eff.onEnded.Invoke(GetActor());
-			GetActor().updateActs -= eff.onUpdated;
+			ApplyStatus(eff);
+		}
+		else if(appliedDebuff.Contains(eff) && yywx.wx[((int)to)] < limitation[((int)to)])
+		{
+			EndStaus(eff);
 		}
 	}
 
-	public void AddYYWX(YinyangWuXing data)
+	void ApplyStatus(StatusEffect eff)
+	{
+		appliedDebuff.Add(eff);
+		eff.onApplied.Invoke(GetActor(), GetActor());
+		GetActor().updateActs += eff.onUpdated;
+	}
+
+	void EndStaus(StatusEffect eff)
+	{
+		appliedDebuff.Remove(eff);
+		eff.onEnded.Invoke(GetActor());
+		GetActor().updateActs -= eff.onUpdated;
+	}
+
+	public virtual void AddYYWXBase(YinyangWuXing data)
 	{
 		AddYY(data.yy.yinAmt, YYInfo.Yin);
 		AddYY(data.yy.yangAmt, YYInfo.Yang);
@@ -97,9 +143,24 @@ public class LifeModule : Module
 		AddWX(data.wx.waterAmt, WXInfo.Water);
 	}
 
-	public void AddYYWX(YinyangWuXing data, float spd)
+	public virtual void AddYYWX(YinyangWuXing data, bool isNegatable = false)
 	{
-		StartCoroutine(DelAddYYWX(data, (spd * TotalApplySpeed)));
+		if(!(isNegatable && isImmune))
+		{
+			AddYYWXBase(data);
+			GetActor().anim.SetHitTrigger();
+			StartCoroutine(DelImmuner(IMMUNETIME));
+		}
+	}
+
+	public virtual void AddYYWX(YinyangWuXing data, float spd, bool isNegatable = false)
+	{
+		if(!(isNegatable && isImmune))
+		{ 
+			StartCoroutine(DelAddYYWX(data, (spd * TotalApplySpeed)));
+			GetActor().anim.SetHitTrigger();
+			StartCoroutine(DelImmuner(IMMUNETIME));
+		}
 	}
 
 
@@ -115,25 +176,46 @@ public class LifeModule : Module
 		incPerSec.wx.earthAmt = data.wx.earthAmt / spd;
 		incPerSec.wx.metalAmt = data.wx.metalAmt / spd;
 		incPerSec.wx.waterAmt = data.wx.waterAmt / spd;
-
 		while (curT < spd)
 		{
 			curT += Time.deltaTime;
 			yield return null;
-			AddYY(incPerSec.yy.yinAmt * Time.deltaTime, YYInfo.Yin);
-			AddYY(incPerSec.yy.yangAmt * Time.deltaTime, YYInfo.Yang);
-
-			AddWX(incPerSec.wx.woodAmt * Time.deltaTime, WXInfo.Wood);
-			AddWX(incPerSec.wx.fireAmt * Time.deltaTime, WXInfo.Fire);
-			AddWX(incPerSec.wx.earthAmt * Time.deltaTime, WXInfo.Earth);
-			AddWX(incPerSec.wx.metalAmt * Time.deltaTime, WXInfo.Metal);
-			AddWX(incPerSec.wx.waterAmt * Time.deltaTime, WXInfo.Water);
+			AddYYWXBase(incPerSec * Time.deltaTime);
 		}
+	}
+
+	IEnumerator DelImmuner(float dur)
+	{
+		ApplyStatus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)StatEffID.Immune)]);
+		yield return new WaitForSeconds(dur);
+		EndStaus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)StatEffID.Immune)]);
 	}
 
 	public virtual void OnDead()
 	{
 		StopAllCoroutines();
-		PoolManager.ReturnObject(gameObject);
+		GetActor().anim.SetDieTrigger();
+		//PoolManager.ReturnObject(gameObject);
+	}
+
+	public override void ResetStatus()
+	{
+		base.ResetStatus();
+		yywx = new YinyangWuXing(initYywx);
+		adequity = initAdequity;
+		limitation = initLimitation;
+		maxSoul = initSoul;
+		regenMod = 1;
+		regenOn = false;
+		regenThreshold =10;
+		baseRegen = 1;
+		isImmune = false;
+		applyMod = 1;
+		baseApplySpeed = 1;
+		fixedRegenMod = null;
+
+
+		GameManager.instance.uiManager.yinYangUI.RefreshValues();
+		GameManager.instance.uiManager.wuXingUI.RefreshValues();
 	}
 }
