@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 1009335919193796681}
   - component: {fileID: 5216609104935014384}
   - component: {fileID: 1431484353080831140}
+  - component: {fileID: 3985512049892690664}
+  - component: {fileID: 205524834456155985}
   m_Layer: 0
   m_Name: TallTree01_LOD0.001
   m_TagString: Untagged
@@ -31,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5216609104935014384
 MeshFilter:
@@ -83,3 +85,44 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3985512049892690664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9105757272429621524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb441ae724af6f745809f03081fed471, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interTime: 1
+  isInterable: 1
+  isDestroyed: 1
+  regenable: 1
+  regenSec: 15
+  resItem:
+  - "\uB098\uBB47\uAC00\uC9C0"
+  amount: 1
+--- !u!135 &205524834456155985
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9105757272429621524}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.95042133
+  m_Center: {x: -0.9377924, y: 0.4262609, z: 0.057697356}

@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
 	public InterPrevUI preInterUI;
 	public InterProcessUI interingUI;
     public GameObject invenPanel;
+    public GameObject optionPanel;
 
     public RectTransform CursorPos;
     public Image Cursor;
@@ -37,6 +38,7 @@ public class UIManager : MonoBehaviour
 	{
 		canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
 		invenPanel = canvas.transform.Find("InventoryPanel").gameObject;
+		optionPanel = canvas.transform.Find("OptonUI").gameObject;
 		yinYangUI = canvas.GetComponentInChildren<YYCtrl>();
 		wuXingUI = canvas.GetComponentInChildren<WXCtrl>();
 		aimUI = canvas.GetComponentInChildren<AimPointCtrl>();
@@ -46,6 +48,7 @@ public class UIManager : MonoBehaviour
 		preInterUI = canvas.GetComponentInChildren<InterPrevUI>();
 		interingUI = canvas.GetComponentInChildren<InterProcessUI>();
 		invenPanel.SetActive(true);
+		optionPanel.SetActive(false);
 	}
 
 	private void Start()
@@ -84,6 +87,16 @@ public class UIManager : MonoBehaviour
 		
 	}
 
+	public void OnHelp(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			OnOption();
+			GameManager.instance.UnLockCursor();
+		}
+
+	}
+
 	public void UpdateInvenUI()
 	{
 		for (int i = 0; i < uis.Count; i++)
@@ -91,6 +104,19 @@ public class UIManager : MonoBehaviour
 			uis[i].UpdateItem();
 		}
 	}
+
+	public void OffOption()
+	{
+		optionPanel.SetActive(false);
+		GameManager.instance.LockCursor();
+	}
+
+	public void OnOption()
+	{
+		optionPanel.SetActive(true);
+	}
+
+
 
     
 }
