@@ -201,6 +201,27 @@ public class PlayerInven : MonoBehaviour
 	public int AddItem(Item data, int num = 1)
 	{
 		List<int> idxes;
+		switch (data.MyName)
+		{
+			case "녹각":
+			case "녹제":
+				GameManager.instance.qManager.NextIf(Quests.GETDEER);
+				break;
+			case "활":
+				GameManager.instance.qManager.NextIf(Quests.GETBOW);
+				break;
+			case "밧줄":
+				GameManager.instance.qManager.NextIf(Quests.GETROPE);
+				break;
+			case "녹용":
+				GameManager.instance.qManager.NextIf(Quests.GETDEERHORN);
+				break;
+			case "도약탕":
+				GameManager.instance.qManager.NextIf(Quests.GETJUMPMEDICINE);
+				break;
+			default:
+				break;
+		}
 		if ((idxes = inven.Contains(data)).Count > 0)
 		{
 			for (int i = 0; i < idxes.Count; i++)

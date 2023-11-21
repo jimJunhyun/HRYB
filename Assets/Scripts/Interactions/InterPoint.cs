@@ -36,12 +36,14 @@ public class InterPoint : MonoBehaviour, IInterable
 
 	public void GlowOff()
 	{
-		mat.SetFloat(IInterable.GlowPowerHash, 0f);
+		//mat.SetFloat(IInterable.GlowPowerHash, 0f);
+		mat.SetFloat(IInterable.GlowOnHash, 0);
 	}
 
 	public void GlowOn()
 	{
 		mat.SetFloat(IInterable.GlowPowerHash, 0.5f);
+		mat.SetFloat(IInterable.GlowOnHash, 1);
 	}
 
 	public void InteractWith()

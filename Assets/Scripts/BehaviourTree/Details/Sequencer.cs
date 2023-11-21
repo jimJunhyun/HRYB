@@ -12,11 +12,13 @@ public class Sequencer : INode
 			switch (connecteds[i].Examine())
 			{
 				case NodeStatus.Run:
+					//Debug.Log("Seq running a " + i);
 					return NodeStatus.Run;
 				case NodeStatus.Sucs:
+					//Debug.Log("Seq succ, next a " + i);
 					break;
-				case NodeStatus.Fail:
-					return NodeStatus.Fail;
+				case NodeStatus.Fail://Debug.Log("Seq faioled a " + i);
+					return NodeStatus.Fail; 
 				default:
 					break;
 			}

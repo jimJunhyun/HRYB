@@ -8,6 +8,7 @@ public class AudioPlayer : MonoBehaviour
 {
     
 	AudioSource global;
+	AudioSource globalBgm;
 	public NameAudioDictionary dict;
 
 	public bool IsPlaying { get => global.isPlaying;}
@@ -17,6 +18,22 @@ public class AudioPlayer : MonoBehaviour
 	private void Awake()
 	{
 		global = Camera.main.GetComponent<AudioSource>();
+		globalBgm = GameObject.Find("BgmPlayer").GetComponent<AudioSource>();
+	}
+
+	public void PlayBgm(string clipName)
+	{
+		if (dict.ContainsKey(clipName))
+		{
+			globalBgm.Stop();
+			globalBgm.clip = dict[clipName];
+			globalBgm.Play();
+		}
+	}
+
+	public void StopBgm()
+	{
+		globalBgm.Stop();
 	}
 
 	public void PlayGlobal(string clipName, bool isInterrupt = true, bool loop = true)

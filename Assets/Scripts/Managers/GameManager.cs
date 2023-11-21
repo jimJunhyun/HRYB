@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using UnityEngine.Playables;
 
 public enum CamStatus
 {
@@ -36,6 +37,10 @@ public class GameManager : MonoBehaviour
 	public CraftManager craftManager;
 	public UIManager uiManager;
 	public QuestManager qManager;
+	public SectionManager sManager;
+
+	public PlayableDirector timeliner;
+	public PlayableDirector timeliner2;
 
 	public ImageManager imageManager;
 
@@ -72,10 +77,13 @@ public class GameManager : MonoBehaviour
 		LockCursor();
 
 		qManager = new QuestManager(
-			"점프를 하시오",
-			"밧줄을 거시오",
-			"곰을 잡으시오",
-			"수고하시었소"
+			"사슴 시체의 냄새가 나.\n 약재를 얻어볼까?",
+			"연못 주위에 있는 덤불을 채집하고\n 밧줄을 제작하자.",
+			"먼저 녹각을 손질해서 녹용을 만들어보자.",
+			"녹용 2개와 녹제 1개로 도약탕을 만들 수 있어. 물도 넣는걸 잊지마.",
+			"약을 먹고 동굴 밖으로 빠져나가자.",
+			"쓸모있는 나뭇가지가 보이네.\n 활을 제작해보자.",
+			"방금 도망간 곰을 쫓아가 사냥해볼까?"
 			);
 
 		player = GameObject.Find("Player");
@@ -88,8 +96,11 @@ public class GameManager : MonoBehaviour
 		craftManager = GameObject.Find("CraftManager").GetComponent<CraftManager>();
 		imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
 		uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
-		//terrain = GameObject.Find("Terrain").GetComponent<Terrain>();
+		terrain = GameObject.Find("Terrain").GetComponentInChildren<Terrain>();
 		audioPlayer = GameObject.Find("AudioManager").GetComponent<AudioPlayer>();
+		sManager = GameObject.Find("SectionManager").GetComponent<SectionManager>();
+		timeliner = GameObject.Find("Timeliner").GetComponent<PlayableDirector>(); //////////#####타임라인매니저
+		timeliner2 = GameObject.Find("Timeliner2").GetComponent<PlayableDirector>();
 		statEff = new StatusEffects();
 		SwitchTo(CamStatus.Freelook);
 
@@ -215,6 +226,13 @@ public class GameManager : MonoBehaviour
 			default:
 				break;
 		}
+	}
+
+	public IEnumerator DelInputCtrl(float sec)
+	{
+		pinp.DeactivateInput();
+		yield return new WaitForSeconds(sec);
+		pinp.ActivateInput();
 	}
 
 	public static float[] GetTerrainData(Vector3 pos, Terrain t)

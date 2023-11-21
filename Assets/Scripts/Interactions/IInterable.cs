@@ -20,6 +20,7 @@ public enum AltInterType
 public interface IInterable
 {
 	public static readonly int GlowPowerHash = Shader.PropertyToID("_GlowPower");
+	public static readonly int GlowOnHash = Shader.PropertyToID("_IsGlowOn");
 
 	public bool IsInterable { get; set; }
 	public bool AltInterable { get;}

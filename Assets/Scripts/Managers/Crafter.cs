@@ -137,13 +137,13 @@ public class Crafter
 	{
 		{ new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("섬유", 5) }, new HashSet<CraftMethod>{  CraftMethod.None}, "도구" ), new ItemAmountPair("밧줄") },
 		{ new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("나뭇가지", 8), new ItemAmountPair("섬유", 3) }, new HashSet<CraftMethod>{  CraftMethod.None}, "무기" ),new ItemAmountPair("활")},
-		{ new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("인삼", 2) }, new HashSet<CraftMethod>{  CraftMethod.Medicine}, "" ),new ItemAmountPair(new Medicines("인삼탕", "인삼을 잘 끓이면 이렇게 되더라", ItemType.Liquid, 1, null, true, new YinyangWuXing(10, 10, 10, 10, 10, 10, 10))) }
+		{ new Recipe(new HashSet<ItemAmountPair>{ new ItemAmountPair("녹용", 2), new ItemAmountPair("녹제") }, new HashSet<CraftMethod>{  CraftMethod.Medicine}, "" ),new ItemAmountPair("도약탕") }
 		
 	};
 
 	public static Hashtable recipeItemTableTrim = new Hashtable()
 	{
-		{ new ItemAmountPair("인삼") , new HashSet<ItemAmountPair>{ new ItemAmountPair("인"), new ItemAmountPair("삼") } },
+		{ new ItemAmountPair("녹각") , new HashSet<ItemAmountPair>{ new ItemAmountPair("녹용", 3) } },
 	};
 
 	public static void AddRecipe(ItemAmountPair resItem, Recipe recipe)
@@ -211,7 +211,7 @@ public class Crafter
 	public bool Craft(ItemAmountPair data)
 	{
 		Debug.Log(curMethod);
-		if (recipeItemTable.ContainsValue(new HashSet<ItemAmountPair> { data }))
+		if (recipeItemTable.ContainsValue(data))
 		{
 			Recipe recipe = new Recipe();
 			Recipe[] keys = new Recipe[recipeItemTable.Count];

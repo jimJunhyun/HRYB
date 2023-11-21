@@ -8,13 +8,26 @@ public class Waiter : INode
 
 	bool ready = false;
 	bool readyResets = true;
+
+	NodeStatus defaultStat;
+
 	Coroutine ongoing;
 
 
-	public Waiter(float time, bool isResetReady = true)
+	public Waiter(float time, bool isResetReady = true, NodeStatus defStat = NodeStatus.Fail, bool countFromStart = false)
 	{
 		delTime = time;
 		readyResets = isResetReady;
+		defaultStat = defStat;
+		if (countFromStart)
+		{
+			StartReady();
+
+		}
+	}
+
+	public void StartReady()
+	{
 		GameManager.instance.StartCoroutine(Delayer());
 	}
 
@@ -38,7 +51,8 @@ public class Waiter : INode
 		}
 		else
 		{
-			return NodeStatus.Fail;
+			Debug.Log("Returned Default " + defaultStat);
+			return defaultStat;
 		}
 	}
 

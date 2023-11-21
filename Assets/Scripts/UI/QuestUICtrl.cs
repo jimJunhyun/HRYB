@@ -22,13 +22,19 @@ public class QuestUICtrl : MonoBehaviour
 	public void On()
 	{
 		if(ongoing == null && !isOn)
-		ongoing=  StartCoroutine(DelMove(false));
+		{
+			isOn = true;
+			ongoing=  StartCoroutine(DelMove(false));
+		}
 	}
 
 	public void Off()
 	{
 		if(ongoing == null && isOn)
+		{
+			isOn =false;
 		ongoing = StartCoroutine(DelMove(true));
+		}
 	}
 
 	public void SetText(string str)

@@ -47,8 +47,8 @@ public class Item // #################
     public static Hashtable nameDataHashT = new Hashtable()
 	{
 		{"나뭇가지".GetHashCode(), new Item("나뭇가지","나무에서 열리는 가지를 나뭇가지라고 부르더라", ItemType.Solid, 10, null, false) },
-		{"인삼".GetHashCode(), new YinyangItem("인삼", "사실 인삼이나 산삼이나 거기서 거기다", ItemType.Solid, 5, null, false, new YinyangWuXing(1.0f, 1.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f), "삼") },
-		{"물".GetHashCode(), new YinyangItem("물", "물로 보지 말랜다", ItemType.Liquid,  5, null, false, new YinyangWuXing(1.0f, 1.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f), "수")},
+		{"인삼".GetHashCode(), new YinyangItem("인삼", "사실 인삼이나 산삼이나 거기서 거기다", ItemType.Solid, 5, null, false, new YinyangWuXing(0), "삼") },
+		{"물".GetHashCode(), new YinyangItem("물", "물로 보지 말랜다", ItemType.Liquid,  5, null, false, new YinyangWuXing(0), "수")},
 		{"밧줄".GetHashCode(), new Item("밧줄", "무언가에 매기 위해 맨 줄이다.", ItemType.Solid,  10, new Specials(()=>
 		{
 			return (GameManager.instance.pActor.atk as PlayerAttack).ThrowRope();
@@ -59,8 +59,10 @@ public class Item // #################
 			return true;
 		}, Mathf.Infinity), false) },
 		{"버섯".GetHashCode(), new Item("버섯", "아무거나 먹으면 금방 선계간다.", ItemType.Solid, 5, null, false) },
-		{"녹제".GetHashCode(), new YinyangItem("녹제", "사슴의 발굽이다.", ItemType.Solid, 5, null, false, new YinyangWuXing(1, 1, 1, 1,  1, 1, 1)) },
-		{"녹각".GetHashCode(), new YinyangItem("녹각", "사슴의 뿔이다.", ItemType.Solid, 5, null, false, new YinyangWuXing(1, 1, 1, 1,  1, 1, 1)) },
+		{"녹제".GetHashCode(), new YinyangItem("녹제", "사슴의 발굽이다.", ItemType.Solid, 5, null, false, new YinyangWuXing(0)) },
+		{"녹각".GetHashCode(), new YinyangItem("녹각", "사슴의 뿔이다.", ItemType.Solid, 5, null, false, new YinyangWuXing(0)) },
+		{"녹용".GetHashCode(), new YinyangItem("녹용", "사슴의 뿔을 손질했다.", ItemType.Solid, 5, null, false, new YinyangWuXing(0)) },
+		{"도약탕".GetHashCode(), new Medicines("도약탕", "다리의 힘을 비약적으로 상승시켜 땅을 박차고 공중으로 도약할 수 있게 해준다.", ItemType.Liquid, 1, new Specials(()=>{ (GameManager.instance.pActor.move as PlayerMove).jumpable = true; return true; }, Mathf.Infinity), false, new YinyangWuXing(0, 0, 0, 25, 0, 0, 0)) },
 	}; //같은 이름의 아이템을 같은 물건으로 취급하기 위해 사용.
     public int Id {get => MyName.GetHashCode();}
     protected string myName;

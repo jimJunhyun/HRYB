@@ -15,7 +15,7 @@ public class FarmingPoint : MonoBehaviour, IInterable
 	public bool regenable = true;
 	public float regenSec = 6f;
 
-	public string resItem;
+	public List<string> resItem;
 	public int amount;
 
 	public bool IsInterable { get => isInterable; set => isInterable = value; }
@@ -50,32 +50,35 @@ public class FarmingPoint : MonoBehaviour, IInterable
 	public void GlowOn()
 	{
 		mat.SetFloat(IInterable.GlowPowerHash, 0.5f);
-		
+		mat.SetFloat(IInterable.GlowOnHash, 1);
+
+		//mat.SetInt(IInterable.GlowOnHash, 1);
 	}
 
 	public void GlowOff()
 	{
-		mat.SetFloat(IInterable.GlowPowerHash, 0f);
+		//mat.SetFloat(IInterable.GlowPowerHash, 0f);
+		mat.SetFloat(IInterable.GlowOnHash, 0);
 	}
 
 	public void InteractWith()
 	{
-		//if(ongoing == null)
-		//{
-		//	ongoing = GameManager.instance.StartCoroutine(DelInter()); //임시. 풀링으로 변경하면 그냥 여기서 하면 됨/
-		//}
 		Inter();
 	}
 
 	public void Inter()
 	{
 		int leftovers = 0;
-		if (Item.nameDataHashT.ContainsKey(resItem.GetHashCode()))
+		for (int i = 0; i < resItem.Count; i++)
 		{
-			Item result = (Item.nameDataHashT[resItem.GetHashCode()] as Item);
-			result.SetRarity(spotStat);
-			leftovers = (GameManager.instance.pinven.AddItem(result, amount));
+			if (Item.nameDataHashT.ContainsKey(resItem[i].GetHashCode()))
+			{
+				Item result = (Item.nameDataHashT[resItem[i].GetHashCode()] as Item);
+				//result.SetRarity(spotStat);
+				leftovers += (GameManager.instance.pinven.AddItem(result, amount));
+			}
 		}
+		
 		if(leftovers > 0)
 		{ 
 			Debug.Log("아이템 떨구겠다.");

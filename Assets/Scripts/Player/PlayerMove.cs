@@ -324,16 +324,29 @@ public class PlayerMove : MoveModule
 
 	public void PlayerControllerMove(Vector3 dir)
 	{
-		if (dir.sqrMagnitude > 0.1f)
+		if (dir.sqrMagnitude > 0.1f && !ctrl.isGrounded)
 		{
 			switch (moveStat)
 			{
 				case MoveStates.Run:
-					GameManager.instance.audioPlayer.PlayGlobal("GrassRun");
+					if(GameManager.GetLayerName(transform.position, GameManager.instance.terrain).Contains("Grass")){
+						GameManager.instance.audioPlayer.PlayGlobal("GrassRun");
+					}
+					else
+					{
+						GameManager.instance.audioPlayer.PlayGlobal("StoneRun");
+					}
 					break;
 				case MoveStates.Walk:
 				case MoveStates.Sit:
-					GameManager.instance.audioPlayer.PlayGlobal("GrassWalk");
+					if (GameManager.GetLayerName(transform.position, GameManager.instance.terrain).Contains("Grass"))
+					{
+						GameManager.instance.audioPlayer.PlayGlobal("GrassWalk");
+					}
+					else
+					{
+						GameManager.instance.audioPlayer.PlayGlobal("StoneWalk");
+					}
 					break;
 				case MoveStates.Climb:
 					break;
@@ -432,7 +445,7 @@ public class PlayerMove : MoveModule
 			}
 			else
 			{
-				if (ctrl.isGrounded && !slip && Time.time - prevJump >= jumpGap)
+				if (ctrl.isGrounded && Time.time - prevJump >= jumpGap)
 				{
 					prevJump = Time.time;
 					forceDir.y += jumpPwer;
@@ -513,7 +526,7 @@ public class PlayerMove : MoveModule
 
 	public void Roll(InputAction.CallbackContext context)
 	{
-		if (context.started)
+		if (context.started && moveStat != MoveStates.Climb)
 		{
 			GetActor().life.isImmune = true;
 			GameManager.instance.pinp.DeactivateInput();

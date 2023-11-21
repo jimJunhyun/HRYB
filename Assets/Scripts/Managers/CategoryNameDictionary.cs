@@ -49,5 +49,5 @@ public class SerializedNameSpritePairs : Dictionary<string, Sprite>, ISerializat
 [CreateAssetMenu()]
 public class CategoryImages : ScriptableObject
 {
-    public SerializedNameSpritePairs info = new SerializedNameSpritePairs();
+    public SerializedNameSpritePairs info;
 }

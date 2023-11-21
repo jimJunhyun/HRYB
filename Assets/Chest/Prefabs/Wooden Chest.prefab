@@ -262,6 +262,8 @@ GameObject:
   - component: {fileID: 33477892634079384}
   - component: {fileID: 23044034382215672}
   - component: {fileID: 95964531805101434}
+  - component: {fileID: 1836516069764856635}
+  - component: {fileID: 8508310408943904107}
   m_Layer: 0
   m_Name: chest_wooden
   m_TagString: Untagged
@@ -357,6 +359,46 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1836516069764856635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544191852190126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb441ae724af6f745809f03081fed471, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interTime: 1
+  isInterable: 1
+  isDestroyed: 1
+  regenable: 0
+  regenSec: 6
+  resItem: "\uB3C4\uC57D\uD0D5"
+  amount: 1
+--- !u!65 &8508310408943904107
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544191852190126}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.1170114, y: 0.76001835, z: 0.7391509}
+  m_Center: {x: 0.0000000017059385, y: -0.003253626, z: 0.36957544}
 --- !u!1 &1632052825836748
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,11 +425,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4922331647626204}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1902644749702062
 GameObject:

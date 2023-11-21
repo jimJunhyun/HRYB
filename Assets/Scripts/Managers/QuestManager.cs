@@ -5,12 +5,13 @@ using UnityEngine;
 public enum Quests
 {
 	None = -1,
-	MOVE,
-	
-	MAKEJUMPMEDICINE,
-
+	GETDEER,
+	GETROPE,
+	GETDEERHORN,
+	GETJUMPMEDICINE,
+	ESCAPECAVE,
+	GETBOW,
 	HUNTBEAR,
-
 	MAX
 }
 
@@ -21,7 +22,7 @@ public class QuestManager
 
 	public void NextQuest()
 	{
-		if(curIdx != Quests.MAX)
+		if(curIdx + 1 != Quests.MAX)
 		{
 			curIdx += 1;
 			GameManager.instance.uiManager.questUI.SetText(questDescOrder[((int)curIdx)]);
