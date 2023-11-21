@@ -18,6 +18,7 @@ public class ImageManager : MonoBehaviour
 		Sprite[] allIcons =  icons.LoadAllAssets<Sprite>();
 		for (int i = 0; i < allIcons.Length; i++)
 		{
+			Debug.Log($"{allIcons[i].name} ==> {dictionary.Dict[allIcons[i].name]}");
 			if(dictionary.Dict[ allIcons[i].name] == LIQMEDICINE)
 			{
 				MedicineSprite = allIcons[i];

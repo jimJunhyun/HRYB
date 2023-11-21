@@ -31,6 +31,7 @@ public class UIManager : MonoBehaviour
     public int DropPoint;
 
     public bool isOn = false;
+    public bool isOptionOn = false;
 
 	List<InventoryUI> uis = new List<InventoryUI>();
 
@@ -91,8 +92,7 @@ public class UIManager : MonoBehaviour
 	{
 		if (context.performed)
 		{
-			OnOption();
-			GameManager.instance.UnLockCursor();
+			OnOffOption();
 		}
 
 	}
@@ -107,13 +107,35 @@ public class UIManager : MonoBehaviour
 
 	public void OffOption()
 	{
-		optionPanel.SetActive(false);
-		GameManager.instance.LockCursor();
+		if (isOptionOn)
+		{
+			isOptionOn = false;
+			optionPanel.SetActive(false);
+			GameManager.instance.LockCursor();
+		}
+		
 	}
 
 	public void OnOption()
 	{
-		optionPanel.SetActive(true);
+		if (!isOptionOn)
+		{
+			optionPanel.SetActive(true);
+			GameManager.instance.UnLockCursor();
+			isOptionOn = true;
+		}
+	}
+
+	public void OnOffOption()
+	{
+		if (isOptionOn)
+		{
+			OffOption();
+		}
+		else
+		{
+			OnOption();
+		}
 	}
 
 
