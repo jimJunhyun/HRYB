@@ -22,13 +22,16 @@ public class FollowingFoxFire : MonoBehaviour
 	[SerializeField]
 	private int CurrentEmissiveLevel = 1; //1~Max
 	public bool isChanging = false;
+	private Transform effect;
 
 	private WaitForSeconds wait = new WaitForSeconds(0.1f);
+	private WaitForSeconds stopWait = new WaitForSeconds(1f);
 
     void Awake()
     {
-		if (playerTr == null) playerTr = GameObject.Find("Player").transform;    
+		if (playerTr == null) playerTr = GameObject.Find("Player").transform;
 		if(light == null) light = GetComponentInChildren<Light>();
+		if (effect == null) effect = transform.GetChild(0);
 
     }
 
@@ -36,7 +39,7 @@ public class FollowingFoxFire : MonoBehaviour
 	{
 		if (Input.GetKeyDown(LightKey) && !isChanging)
 		{
-			if (CurrentEmissiveLevel + 1 > MaxEmissiveLevel) CurrentEmissiveLevel = 1;
+			if (CurrentEmissiveLevel + 1 > MaxEmissiveLevel) CurrentEmissiveLevel = 0;
 			else CurrentEmissiveLevel++;
 
 			SetEmissiveValue();
@@ -54,20 +57,31 @@ public class FollowingFoxFire : MonoBehaviour
 	}
 	private void SetEmissiveValue()
 	{
-		float targetValue = Mathf.Lerp(minEmissive, maxEmissive, ((float)CurrentEmissiveLevel-1f) / (float)(MaxEmissiveLevel-1f));
+		float targetValue = CurrentEmissiveLevel == 0 ? 0 : Mathf.Lerp(minEmissive, maxEmissive, ((float)CurrentEmissiveLevel-1f) / (float)(MaxEmissiveLevel-1f));
 		StartCoroutine(SmoothEmissive(targetValue));
 	}
 
 	private IEnumerator SmoothEmissive(float value)
 	{
 		isChanging = true;
+		var particle = effect.GetComponent<ParticleSystem>();
+		if (particle.isStopped) particle.Play();
+
 		float t = 0;
 		float i = light.intensity;
+
 		while(t < SmoothTime)
 		{
 			light.intensity = Mathf.Lerp(i, value, t / SmoothTime);
 			yield return wait;
 			t += 0.1f;
+		}
+
+		if (CurrentEmissiveLevel == 0)
+		{
+			particle.Stop();
+			yield return stopWait;
+			
 		}
 		isChanging = false;
 	}
