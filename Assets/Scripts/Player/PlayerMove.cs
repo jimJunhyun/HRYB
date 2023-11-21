@@ -49,6 +49,8 @@ public class PlayerMove : MoveModule
 
 	Vector3 ropeNormal = Vector3.zero;
 
+	Vector3 initPos;
+
 	Quaternion to;
 	Camera mainCam;
 
@@ -147,6 +149,7 @@ public class PlayerMove : MoveModule
 		ctrl = GetComponent<CharacterController>();
 		mainCam = Camera.main;
 		middle = transform.Find("Middle");
+		initPos = transform.position;
 	}
 
 	private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -584,7 +587,7 @@ public class PlayerMove : MoveModule
 	public override void ResetStatus()
 	{
 		base.ResetStatus();
-
+		transform.position = initPos;
 		GameManager.instance.pinp.ActivateInput();
 		already.Clear();
 		ctrl.height = 2;

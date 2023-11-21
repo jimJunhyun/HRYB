@@ -58,7 +58,7 @@ public class Item // #################
 			GameManager.instance.pinven.ObtainWeapon();
 			return true;
 		}, Mathf.Infinity), false) },
-		{"버섯".GetHashCode(), new Item("버섯", "아무거나 먹으면 금방 선계간다.", ItemType.Solid, 5, null, false) },
+		{"삼".GetHashCode(), new Item("삼", "이걸 10개 모아오면?", ItemType.Solid, 10, null, false) },
 		{"녹제".GetHashCode(), new YinyangItem("녹제", "사슴의 발굽이다.", ItemType.Solid, 5, null, false, new YinyangWuXing(0)) },
 		{"녹각".GetHashCode(), new YinyangItem("녹각", "사슴의 뿔이다.", ItemType.Solid, 5, null, false, new YinyangWuXing(0)) },
 		{"녹용".GetHashCode(), new YinyangItem("녹용", "사슴의 뿔을 손질했다.", ItemType.Solid, 5, null, false, new YinyangWuXing(0)) },
