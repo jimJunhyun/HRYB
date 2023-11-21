@@ -15,7 +15,7 @@ public class PlayerInter : SightModule
 	Ray r;
 	RaycastHit[] hits;
 
-	[HideInInspector]
+	//[HideInInspector]
 	public int curSel = 0;
 
 	bool holding = false;
@@ -59,11 +59,11 @@ public class PlayerInter : SightModule
 		{
 			checkeds = hits.OrderByDescending(item => (transform.position - item.point).sqrMagnitude).Select(item => item.collider.GetComponent<IInterable>()).ToList();
 			curSel %= checkeds.Count;
-			checkeds[curSel].GlowOn();
-			if (checkeds[curSel].IsInterable)
+			curFocused.GlowOn();
+			if (curFocused.IsInterable)
 			{
 				GameManager.instance.uiManager.preInterUI.On();
-				switch (checkeds[curSel].interType)
+				switch (curFocused.interType)
 				{
 					case InterType.Insert:
 						GameManager.instance.uiManager.preInterUI.SetDescTxt("넣기");
@@ -78,10 +78,10 @@ public class PlayerInter : SightModule
 				GameManager.instance.uiManager.preInterUI.SetDescTxt("");
 
 			}
-			if (checkeds[curSel].AltInterable)
+			if (curFocused.AltInterable)
 			{
 				GameManager.instance.uiManager.preInterUI.On();
-				switch (checkeds[curSel].altInterType)
+				switch (curFocused.altInterType)
 				{
 					case AltInterType.Process:
 						GameManager.instance.uiManager.preInterUI.SetDescAltTxt("작동");

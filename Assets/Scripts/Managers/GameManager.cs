@@ -202,6 +202,14 @@ public class GameManager : MonoBehaviour
 		craftManager.crafter.CraftWith( uiManager.crafterUI.curRecipe);
 	}
 
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.P))
+		{
+			pinven.ObtainWeapon();
+		}
+	}
+
 	public void SwitchTo(CamStatus stat)
 	{
 		curCamStat = stat;

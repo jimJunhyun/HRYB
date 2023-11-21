@@ -49,7 +49,6 @@ public class Item // #################
 		{"나뭇가지".GetHashCode(), new Item("나뭇가지","나무에서 열리는 가지를 나뭇가지라고 부르더라", ItemType.Solid, 10, null, false) },
 		{"인삼".GetHashCode(), new YinyangItem("인삼", "사실 인삼이나 산삼이나 거기서 거기다", ItemType.Solid, 5, null, false, new YinyangWuXing(0), "삼") },
 		{"물".GetHashCode(), new YinyangItem("물", "물로 보지 말랜다", ItemType.Liquid,  5, null, false, new YinyangWuXing(0), "수")},
-		
 		{"활".GetHashCode(), new Item("활", "적당한 나무활이다. 사용해서 장착해볼까?", ItemType.Solid, 1, new Specials(()=>{
 			GameManager.instance.pinven.ObtainWeapon();
 			return true;
