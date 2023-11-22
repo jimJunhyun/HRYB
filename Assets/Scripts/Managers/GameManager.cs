@@ -63,6 +63,8 @@ public class GameManager : MonoBehaviour
 
 	public bool lockMouse;
 
+	public Transform outCaveTmp;
+
 	public CamStatus curCamStat;
 
 	public WaitForSeconds waitSec = new WaitForSeconds(1.0f);
@@ -202,6 +204,11 @@ public class GameManager : MonoBehaviour
 		craftManager.crafter.CraftWith( uiManager.crafterUI.curRecipe);
 	}
 
+	public void TPToOutCave()
+	{
+		player.transform.position = outCaveTmp.position;
+	}
+
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.P))
@@ -239,7 +246,9 @@ public class GameManager : MonoBehaviour
 	public IEnumerator DelInputCtrl(float sec)
 	{
 		pinp.DeactivateInput();
+		Debug.Log("DEACT");
 		yield return new WaitForSeconds(sec);
+		Debug.Log("ACT");
 		pinp.ActivateInput();
 	}
 

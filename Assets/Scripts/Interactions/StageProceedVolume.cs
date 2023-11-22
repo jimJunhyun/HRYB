@@ -10,7 +10,7 @@ public class StageProceedVolume : MonoBehaviour
 		if(other.gameObject.layer == GameManager.PLAYERLAYER)
 		{
 			GameManager.instance.sManager.ProceedTo(to);
-			
+			Debug.Log("PROCEEDTO" + to.ToString());
 		}
 	}
 }
