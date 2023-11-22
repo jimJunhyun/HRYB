@@ -14,6 +14,16 @@ public class SectionManager : MonoBehaviour
     public GameState curState = GameState.InCave;
 	GameState prevState = GameState.InCave;
 
+	public GameObject sections;
+
+	public List<StageProceedVolume> allSections; 
+
+	private void Awake()
+	{
+		sections = GameObject.Find("StageSections");
+		sections.GetComponentsInChildren<StageProceedVolume>(allSections);
+	}
+
 	public void ProceedTo(GameState state)
 	{
 		if(curState != state)
@@ -23,6 +33,7 @@ public class SectionManager : MonoBehaviour
 			GameManager.instance.audioPlayer.PlayBgm($"{state}Bgm");
 			if (state == GameState.OutCave)
 			{
+				Debug.Log("TIMELINED");
 				GameManager.instance.timeliner2.Play();
 				StartCoroutine(GameManager.instance.DelInputCtrl((float)GameManager.instance.timeliner2.duration));
 				GameManager.instance.qManager.NextIf(Quests.ESCAPECAVE);

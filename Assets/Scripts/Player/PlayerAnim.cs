@@ -22,8 +22,8 @@ public class PlayerAnim : AnimModule
 
 	public override void Awake()
 	{
-		anim = GetComponentInChildren<Animator>();
-		
+		Animator[] anims = GetComponentsInChildren<Animator>();
+		anim = anims[1];
 	}
 
 	private void Start()
