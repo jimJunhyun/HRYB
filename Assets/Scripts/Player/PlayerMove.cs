@@ -179,6 +179,14 @@ public class PlayerMove : MoveModule
 		
 	}
 
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Slash))
+		{
+			jumpable = true;
+		}
+	}
+
 	private void FixedUpdate()
 	{
 		Move();
