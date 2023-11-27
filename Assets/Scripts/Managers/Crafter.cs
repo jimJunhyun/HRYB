@@ -100,7 +100,8 @@ public struct Recipe
 		{
 			sb.Append($" [{item}] , ");
 		}
-		sb.Append(')');
+		sb.Append("), ->");
+		sb.Append(category);
 		return sb.ToString();
 	}
 

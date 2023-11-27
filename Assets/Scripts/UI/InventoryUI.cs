@@ -60,11 +60,13 @@ public class InventoryUI : MonoBehaviour,IDropHandler, IPointerClickHandler
 		{
 			Debug.Log("YESITEM");
 			GameManager.instance.uiManager.infoUI.OnWithInfo(items.info);
+			GameManager.instance.uiManager.crafterUI.Off();
 		}
 		else
 		{
 
 			GameManager.instance.uiManager.infoUI.Off();
+			GameManager.instance.uiManager.crafterUI.On();
 			Debug.Log("NOITEM");
 		}
 	}

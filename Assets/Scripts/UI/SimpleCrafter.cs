@@ -12,7 +12,7 @@ public class SimpleCrafter : MonoBehaviour
 	public Recipe curRecipe;
 	public int curShowingRecipe;
 
-	public CategoryImages categoryImgPair;
+	public CategoryNameDictionary categoryImgPair;
 
 	public Transform categories;
 
@@ -31,14 +31,28 @@ public class SimpleCrafter : MonoBehaviour
 
 	private void Awake()
 	{
-		categories = transform.Find("Categories");
+		categoryImgPair = Resources.Load<CategoryNameDictionary>("CategoryImagePair");
+	}
 
-		recipes = transform.Find("Recipes");
-		craft = transform.Find("Craft").GetComponent<CraftUI>();
 
-		categoryNameDisplay = GameObject.Find("CatgName").GetComponent<TextMeshProUGUI>();
-		categoryIconDisplay = GameObject.Find("CatgImg").GetComponent<Image>();
+	public void On()
+	{
+		gameObject.SetActive(true);
 
+		if (categories == null)
+			categories = transform.Find("Categories");
+
+		if(recipes == null)
+			recipes = transform.Find("Recipes");
+
+		if(craft == null)
+			craft = transform.Find("Craft").GetComponent<CraftUI>();
+
+		if(categoryNameDisplay == null)
+			categoryNameDisplay = GameObject.Find("CatgName").GetComponent<TextMeshProUGUI>();
+
+		if(categoryIconDisplay == null)
+			categoryIconDisplay = GameObject.Find("CatgImg").GetComponent<Image>();
 
 		foreach (var item in Crafter.recipeItemTable.Keys)
 		{
@@ -46,31 +60,28 @@ public class SimpleCrafter : MonoBehaviour
 			{
 				if (!categoryRecipesPair.ContainsKey(((Recipe)item).category))
 				{
-					categoryRecipesPair[((Recipe)item).category] = new List<KeyValuePair<Recipe, ItemAmountPair>>();
-					GameObject g = new GameObject($"Category{++categoryId}");
-					Image i = g.AddComponent<Image>();
-					Button b = g.AddComponent<Button>();
-					i.sprite = categoryImgPair.info[((Recipe)item).category];
-					b.targetGraphic = i;
-					string catName = ((Recipe)item).category;
-					b.onClick.AddListener(() => { CategoryOn(catName); });
-					g.transform.SetParent(categories);
-					categoryImages.Add(i);
-					Debug.Log("NEW CATEGORY : " + catName);
+						categoryRecipesPair[((Recipe)item).category] = new List<KeyValuePair<Recipe, ItemAmountPair>>();
+						GameObject g = new GameObject($"Category{++categoryId}");
+						Image i = g.AddComponent<Image>();
+						Button b = g.AddComponent<Button>();
+						
+						i.sprite = categoryImgPair.info[((Recipe)item).category]; //$######
+						b.targetGraphic = i;
+						string catName = ((Recipe)item).category;
+						b.onClick.AddListener(() => { CategoryOn(catName); });
+						g.transform.SetParent(categories);
+						categoryImages.Add(i);
 				}
-				categoryRecipesPair[((Recipe)item).category].Add(new KeyValuePair<Recipe, ItemAmountPair>((Recipe)item, (ItemAmountPair)Crafter.recipeItemTable[item]));
+				KeyValuePair<Recipe, ItemAmountPair> pair = new KeyValuePair<Recipe, ItemAmountPair>((Recipe)item, (ItemAmountPair)Crafter.recipeItemTable[item]);
+				if (!categoryRecipesPair[((Recipe)item).category].Contains(pair))
+					categoryRecipesPair[((Recipe)item).category].Add(pair);
 			}
-
 		}
-	}
 
-
-	public void On()
-	{
-		gameObject.SetActive(true);
+		Debug.Log("Init Comp");
+		
 		CategoryOn("무기");
 		CraftOff();
-		Debug.Log("CROn");
 	}
 
 	public void Off()

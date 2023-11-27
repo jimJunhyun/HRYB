@@ -47,7 +47,7 @@ public class SerializedNameSpritePairs : Dictionary<string, Sprite>, ISerializat
 }
 
 [CreateAssetMenu()]
-public class CategoryImages : ScriptableObject
+public class CategoryNameDictionary : ScriptableObject
 {
     public SerializedNameSpritePairs info;
 }

@@ -27,6 +27,8 @@ public class UIManager : MonoBehaviour
     public RectTransform CursorPos;
     public Image Cursor;
 
+	
+
     public int DragPoint;
     public int DropPoint;
 
@@ -62,7 +64,12 @@ public class UIManager : MonoBehaviour
 		interingUI.SetGaugeValue(0);
 		interingUI.Off();
 		preInterUI.Off();
-		invenPanel.SetActive(false);
+		infoUI.Off();
+		crafterUI.On();
+
+		OffInven();
+
+		
 	}
 
 	public void OnInven(InputAction.CallbackContext context)
@@ -71,18 +78,11 @@ public class UIManager : MonoBehaviour
 		{
 			if (!isOn)
 			{
-				invenPanel.SetActive(true);
-				isOn = true;
-				GameManager.instance.UnLockCursor();
-
-				UnityEngine.Cursor.visible = true;
-				UnityEngine.Cursor.lockState = CursorLockMode.None;
+				OnInven();
 			}
 			else
 			{
-				invenPanel.SetActive(false);
-				isOn = false;
-				GameManager.instance.LockCursor();
+				OffInven();
 			}
 		}
 		
@@ -103,6 +103,20 @@ public class UIManager : MonoBehaviour
 		{
 			uis[i].UpdateItem();
 		}
+	}
+
+	public void OnInven()
+	{
+		invenPanel.SetActive(true);
+		isOn = true;
+		GameManager.instance.UnLockCursor();
+	}
+
+	public void OffInven()
+	{
+		invenPanel.SetActive(false);
+		isOn = false;
+		GameManager.instance.LockCursor();
 	}
 
 	public void OffOption()

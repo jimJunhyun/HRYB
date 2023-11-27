@@ -18,11 +18,6 @@ public class InfoCtrl : MonoBehaviour
 		itemDesc = iteminfoP.Find("Desc").GetComponent<TextMeshProUGUI>();
 	}
 
-	private void Start()
-	{
-		Off();
-	}
-
 
 	public void OnWithInfo(Item item)
 	{
@@ -30,12 +25,10 @@ public class InfoCtrl : MonoBehaviour
 		itemImg.sprite= item.icon;
 		itemName.text = item.MyName;
 		itemDesc.text = item.desc;
-		GameManager.instance.uiManager.crafterUI.Off();
 	}
 
 	public void Off()
 	{
-		GameManager.instance.uiManager.crafterUI.On();
 		gameObject.SetActive(false);
 	}
 }
