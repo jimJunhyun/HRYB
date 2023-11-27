@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
 	public UIManager uiManager;
 	public QuestManager qManager;
 	public SectionManager sManager;
+	public PrefabManager pManager;
 
 	public PlayableDirector timeliner;
 	public PlayableDirector timeliner2;
@@ -103,6 +104,7 @@ public class GameManager : MonoBehaviour
 		sManager = GameObject.Find("SectionManager").GetComponent<SectionManager>();
 		timeliner = GameObject.Find("Timeliner").GetComponent<PlayableDirector>(); //////////#####타임라인매니저
 		timeliner2 = GameObject.Find("Timeliner2").GetComponent<PlayableDirector>();
+		pManager = GameObject.Find("PrefabManager").GetComponent<PrefabManager>();
 		statEff = new StatusEffects();
 		SwitchTo(CamStatus.Freelook);
 

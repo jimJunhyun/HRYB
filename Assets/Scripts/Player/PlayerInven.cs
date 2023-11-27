@@ -79,7 +79,7 @@ public class Inventory
 	}
 
 	List<InventoryItem> data;
-	int quickSize = 4;
+	int quickSize = 5;
 
 	public InventoryItem this[int idx]
 	{ 
@@ -165,7 +165,7 @@ public class Inventory
 public class PlayerInven : MonoBehaviour
 {
     public Inventory inven;
-    public int cap = 20;
+    public int cap = 21;
 
 	bool havingBow = false;
 

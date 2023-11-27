@@ -1,73 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using UnityEngine.EventSystems;
 
-
-public class InventoryUI : MonoBehaviour,IDropHandler, IPointerClickHandler
+public class InventoryUI : MonoBehaviour
 {
-    public InventoryItem items;
-    public Image Iconimg;
-    public TMPro.TMP_Text text;
+	public int quickInven;
+	private SlotUI[] slotUI;
+	private DragHandler[] dragHandler;
 
-    int dropPoint;
-
-    private void Awake()
-    {
-        Iconimg = transform.GetComponentInChildren<Image>();
-        text = GetComponentInChildren<TMP_Text>();
-    }
- 
-    public void UpdateItem()
-    {
-        items = GameManager.instance.pinven.inven[int.Parse(transform.parent.name)];
-
-        if(items.isEmpty())
-        {
-            Iconimg.sprite = null;
-			Iconimg.color = Color.clear;
-            text.text = "";
-            return;
-        }
-        else
-        {
-            Iconimg.sprite = items.info.icon;
-			Iconimg.color = Color.white;
-			text.text = items.number.ToString();
-        }
-    }
-
-    public void OnDrop(PointerEventData eventData)
-    {
-        Debug.Log("부모 이름" + transform.parent.name);
-        if (int.TryParse(transform.parent.name, out dropPoint))
-		{
-			GameManager.instance.uiManager.DropPoint = dropPoint;
-			Debug.Log("드롭" + GameManager.instance.uiManager.DropPoint);
-
-
-			GameManager.instance.pinven.Move(GameManager.instance.uiManager.DragPoint, GameManager.instance.uiManager.DropPoint, GameManager.instance.pinven.inven[GameManager.instance.uiManager.DragPoint].number);
-		}
-
-		
-    }
-
-	public void OnPointerClick(PointerEventData eventData)
+	private void Start()
 	{
-		if(items.info != null)
+		if(this.name == "InventoryGroup")
 		{
-			Debug.Log("YESITEM");
-			GameManager.instance.uiManager.infoUI.OnWithInfo(items.info);
-			GameManager.instance.uiManager.crafterUI.Off();
-		}
-		else
-		{
+			for (int i = 0; i <= GameManager.instance.pinven.cap - quickInven; i++)
+			{
+				Instantiate(GameManager.instance.pManager.invenSlot, this.transform);
+				Debug.Log($"{i} : {GameManager.instance.pManager.invenSlot}");
+			}
 
-			GameManager.instance.uiManager.infoUI.Off();
-			GameManager.instance.uiManager.crafterUI.On();
-			Debug.Log("NOITEM");
+			slotUI = GetComponentsInChildren<SlotUI>();
+			dragHandler = GetComponentsInChildren<DragHandler>();
+
+			for (int i = 0; i < GameManager.instance.pinven.cap - quickInven; i++)
+			{
+				slotUI[i].value = quickInven + i;
+				dragHandler[i].value = quickInven + i;
+			}
 		}
+		else if(this.name == "Quick InventoryGroup")
+		{
+			for (int i = 0; i < quickInven; i++)
+			{
+				Instantiate(GameManager.instance.pManager.invenSlot, this.transform);
+				Debug.Log($"{i} : {GameManager.instance.pManager.invenSlot}");
+			}
+
+			slotUI = GetComponentsInChildren<SlotUI>();
+			dragHandler = GetComponentsInChildren<DragHandler>();
+
+			for (int i = 0; i < quickInven; i++)
+			{
+				slotUI[i].value = i;
+				dragHandler[i].value = i;
+			}
+		}
+		
 	}
 }

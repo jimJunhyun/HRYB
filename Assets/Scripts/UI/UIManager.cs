@@ -35,7 +35,7 @@ public class UIManager : MonoBehaviour
     public bool isOn = false;
     public bool isOptionOn = false;
 
-	List<InventoryUI> uis = new List<InventoryUI>();
+	List<SlotUI> uis = new List<SlotUI>();
 
 	private void Awake()
 	{
@@ -56,7 +56,7 @@ public class UIManager : MonoBehaviour
 
 	private void Start()
 	{
-		uis.AddRange(GameObject.FindObjectsOfType<InventoryUI>());
+		uis.AddRange(GameObject.FindObjectsOfType<SlotUI>());
 		
 		interingUI.SetGaugeValue(0);
 		interingUI.Off();
