@@ -10,7 +10,7 @@ public enum AttackStates
 
 }
 
-public class AttackModule : Module
+public class AttackModule : Module, IAnimationEvent
 {
 	public float initEffSpeed;
 	public bool initIsDirect;
@@ -75,5 +75,25 @@ public class AttackModule : Module
 		fixedPrepMod = null;
 		fixedAtkGap = null;
 		damage = initDamage;
+	}
+
+	public virtual void SetAttackRange(int idx)
+	{
+		// SetRange
+	}
+
+	public virtual void ResetAttackRange(int idx)
+	{
+		// ResetRange
+	}
+
+	public virtual void OnAnimationEvent()
+	{
+		// AnimEvent == SetRange
+	}
+
+	public virtual void OnAnimationEnd()
+	{
+		// AnimEnd == ResetRange
 	}
 }

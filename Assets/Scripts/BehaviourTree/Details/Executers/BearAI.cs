@@ -51,7 +51,6 @@ public class BearAI : MonoBehaviour
 		waitPass.connected = passedWait;
 
 		Sequencer waitActivate =  new Sequencer();
-		
 		waitActivate.connecteds.Add(waitDuration);
 		waitActivate.connecteds.Add(onWakeUp);
 		

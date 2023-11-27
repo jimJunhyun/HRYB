@@ -74,7 +74,7 @@ public class BearAttack : AttackModule
 		GetActor().anim.SetAttackTrigger();
 	}
 
-	public void SetAttackRange(int idx)
+	public override void SetAttackRange(int idx)
 	{
 		ranges[idx].SetActive(true);
 		if(idx == 0)
@@ -88,7 +88,7 @@ public class BearAttack : AttackModule
 		}
 	}
 
-	public void ResetAttackRange(int idx)
+	public override void ResetAttackRange(int idx)
 	{
 		ranges[idx].SetActive(false);
 	}
