@@ -44,11 +44,12 @@ public class Specials
 [System.Serializable]
 public class Item // #################
 {
+	public static Specials removeOnComp  = new Specials(() => true, Mathf.Infinity);
     public static Hashtable nameDataHashT = new Hashtable()
 	{
 		{"나뭇가지".GetHashCode(), new Item("나뭇가지","나무에서 열리는 가지를 나뭇가지라고 부르더라", ItemType.Solid, 10, null, false) },
-		{"인삼".GetHashCode(), new YinyangItem("인삼", "사실 인삼이나 산삼이나 거기서 거기다", ItemType.Solid, 5, null, false, new YinyangWuXing(0), "삼") },
-		{"물".GetHashCode(), new YinyangItem("물", "물로 보지 말랜다", ItemType.Liquid,  5, null, false, new YinyangWuXing(0), "수")},
+		{"인삼".GetHashCode(), new YinyangItem("인삼", "사실 인삼이나 산삼이나 거기서 거기다", ItemType.Solid, 5, Item.removeOnComp, false, new YinyangWuXing(0), "삼") },
+		{"물".GetHashCode(), new YinyangItem("물", "물로 보지 말랜다", ItemType.Liquid,  5, Item.removeOnComp, false, new YinyangWuXing(0), "수")},
 		{"활".GetHashCode(), new Item("활", "적당한 나무활이다. 사용해서 장착해볼까?", ItemType.Solid, 1, new Specials(()=>{
 			GameManager.instance.pinven.ObtainWeapon();
 			return true;
@@ -59,12 +60,14 @@ public class Item // #################
 		}, Mathf.Infinity), false) },
 		{"섬유".GetHashCode(), new Item("섬유", "튼튼한 섬유이다.", ItemType.Solid, 10, null, false) },
 		{"삼".GetHashCode(), new Item("삼", "이걸 10개 모아오면?", ItemType.Solid, 10, null, false) },
-		{"녹제".GetHashCode(), new YinyangItem("녹제", "사슴의 발굽이다.", ItemType.Solid, 5, null, false, new YinyangWuXing(0)) },
-		{"녹각".GetHashCode(), new YinyangItem("녹각", "사슴의 뿔이다.", ItemType.Solid, 5, null, false, new YinyangWuXing(0)) },
-		{"녹용".GetHashCode(), new YinyangItem("녹용", "사슴의 뿔을 손질했다.", ItemType.Solid, 5, null, false, new YinyangWuXing(0)) },
+		{"녹제".GetHashCode(), new YinyangItem("녹제", "사슴의 발굽이다.", ItemType.Solid, 5, Item.removeOnComp, false, new YinyangWuXing(0)) },
+		{"녹각".GetHashCode(), new YinyangItem("녹각", "사슴의 뿔이다.", ItemType.Solid, 5, Item.removeOnComp, false, new YinyangWuXing(0)) },
+		{"녹용".GetHashCode(), new YinyangItem("녹용", "사슴의 뿔을 손질했다.", ItemType.Solid, 5, Item.removeOnComp, false, new YinyangWuXing(0)) },
 		{"도약탕".GetHashCode(), new Medicines("도약탕", "다리의 힘을 비약적으로 상승시켜 땅을 박차고 공중으로 도약할 수 있게 해준다.", ItemType.Liquid, 1, new Specials(()=>{ (GameManager.instance.pActor.move as PlayerMove).jumpable = true; return true; }, Mathf.Infinity), false, new YinyangWuXing(0, 0, 0, 25, 0, 0, 0)) },
 	}; //같은 이름의 아이템을 같은 물건으로 취급하기 위해 사용.
-    public int Id {get => MyName.GetHashCode();}
+
+
+	public int Id {get => MyName.GetHashCode();}
     protected string myName;
 	public virtual string MyName
 	{
@@ -162,10 +165,16 @@ public class Item // #################
 
 	public virtual void Use()
 	{
-		if (onUse != null && onUse.onActivated != null && onUse.onActivated.Invoke())
+		bool res = false;
+		if (onUse?.onActivated != null && (res = onUse.onActivated.Invoke()))
 		{
-
+			Debug.Log("ITEM REMOVED");
 			GameManager.instance.pinven.RemoveItem(this);
+		}
+		else
+		{
+			Debug.Log($"{onUse}");
+			Debug.Log($"{onUse?.onActivated != null} && {res}");
 		}
 	}
 

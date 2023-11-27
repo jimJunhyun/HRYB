@@ -59,6 +59,7 @@ public class CastModule : Module
 		p.onPrepComp?.Invoke(transform);
 		ongoing = null;
 		curName = null;
+		
 	}
 
 	public override void ResetStatus()

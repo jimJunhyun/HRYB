@@ -112,16 +112,16 @@ public struct Recipe
 
 	public override int GetHashCode()
 	{
-		long hash1 = 19;
+		long hash1 = 17;
 		foreach (var item in recipe)
 		{
-			hash1 = hash1 * 31 + HashCode.Combine(item.info.MyName, item.num);
+			hash1 += 31 * HashCode.Combine(item.info.MyName, item.num);
 		}
 
 		long hash2 = 31;
 		foreach (var item in requirement)
 		{
-			hash2 = hash2 * 19 + HashCode.Combine(item.ToString());
+			hash2 += 17 * HashCode.Combine(item.ToString());
 		}
 		return HashCode.Combine(hash1, hash2);
 	}

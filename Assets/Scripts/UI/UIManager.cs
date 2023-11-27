@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour
     public RectTransform CursorPos;
     public Image Cursor;
 
-	
+	public TMPro.TextMeshProUGUI debugText;
 
     public int DragPoint;
     public int DropPoint;
@@ -56,11 +56,8 @@ public class UIManager : MonoBehaviour
 
 	private void Start()
 	{
-		for (int i = 0; i < GameManager.instance.pinven.cap; i++)
-		{
-			//Debug.Log(GameObject.);
-			uis.Add(GameObject.Find(i.ToString()).GetComponentInChildren<InventoryUI>());
-		}
+		uis.AddRange(GameObject.FindObjectsOfType<InventoryUI>());
+		
 		interingUI.SetGaugeValue(0);
 		interingUI.Off();
 		preInterUI.Off();

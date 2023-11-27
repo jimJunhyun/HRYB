@@ -104,16 +104,18 @@ public class BrewPoint : CraftPoint
 
 		foreach (Recipe item in Crafter.recipeItemTable.Keys)
 		{
-			Debug.Log($"{myRecipe} == {item} --> {myRecipe == item}");
+			Debug.Log($"{myRecipe.GetHashCode()} == {item.GetHashCode()} --> {myRecipe.Equals(item)}");
 		}
 
 		if (Crafter.recipeItemTable.ContainsKey(myRecipe))
 		{
+			Debug.Log("FounD!");
 			result.Add((ItemAmountPair)Crafter.recipeItemTable[myRecipe]);
 		}
 		else
 		{
-			resultItem = new Medicines(GetMedicineName(), "약이다.", ItemType.Liquid, 1, null, true, YinyangWuXing.Zero);
+			Debug.Log("NO");
+			resultItem = new Medicines(GetMedicineName(), "약이다.", ItemType.Liquid, 1, Item.removeOnComp, true, YinyangWuXing.Zero);
 			ongoing = StartCoroutine(DelAddStat());
 		}
 	}

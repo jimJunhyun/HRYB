@@ -11,8 +11,10 @@ public class PlayerCast : CastModule
 		{
 			if((GetActor().sight as PlayerInter).curFocused != null)
 			{
+				//GameManager.instance.uiManager.debugText.text += $"  FUNC EXECUTING {(GetActor().sight as PlayerInter).curFocused}...  ";
 				(GetActor().sight as PlayerInter).curFocused.InteractWith();
 				(GetActor().sight as PlayerInter).Check();
+				
 			}
 		},
 		() =>
