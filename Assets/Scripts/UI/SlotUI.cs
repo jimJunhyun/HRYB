@@ -24,7 +24,6 @@ public class SlotUI : MonoBehaviour,IDropHandler, IPointerClickHandler
     {
 		try
 		{
-
 			items = GameManager.instance.pinven.inven[value];
 
 
@@ -44,7 +43,6 @@ public class SlotUI : MonoBehaviour,IDropHandler, IPointerClickHandler
 		}
 		catch
 		{
-
 			Debug.LogWarning($"{value} Is 없는 번호임");
 		}
 
@@ -54,7 +52,7 @@ public class SlotUI : MonoBehaviour,IDropHandler, IPointerClickHandler
     public void OnDrop(PointerEventData eventData)
     {
         Debug.Log("부모 이름" + transform.parent.name);
-        if (int.TryParse(transform.parent.name, out dropPoint))
+        if (int.TryParse(value.ToString(), out dropPoint))
 		{
 			GameManager.instance.uiManager.DropPoint = dropPoint;
 			Debug.Log("드롭" + GameManager.instance.uiManager.DropPoint);
@@ -76,7 +74,6 @@ public class SlotUI : MonoBehaviour,IDropHandler, IPointerClickHandler
 		}
 		else
 		{
-
 			GameManager.instance.uiManager.infoUI.Off();
 			GameManager.instance.uiManager.crafterUI.On();
 			Debug.Log("NOITEM");

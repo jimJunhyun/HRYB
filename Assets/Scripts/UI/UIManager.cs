@@ -36,6 +36,7 @@ public class UIManager : MonoBehaviour
     public bool isOptionOn = false;
 
 	List<SlotUI> uis = new List<SlotUI>();
+	List<QuickSlot> quickSlot = new List<QuickSlot>();
 
 	private void Awake()
 	{
@@ -57,6 +58,7 @@ public class UIManager : MonoBehaviour
 	private void Start()
 	{
 		uis.AddRange(GameObject.FindObjectsOfType<SlotUI>());
+		quickSlot.AddRange(GameObject.FindObjectsOfType<QuickSlot>());
 		
 		interingUI.SetGaugeValue(0);
 		interingUI.Off();
@@ -123,8 +125,7 @@ public class UIManager : MonoBehaviour
 			isOptionOn = false;
 			optionPanel.SetActive(false);
 			GameManager.instance.LockCursor();
-		}
-		
+		}		
 	}
 
 	public void OnOption()
@@ -148,8 +149,4 @@ public class UIManager : MonoBehaviour
 			OnOption();
 		}
 	}
-
-
-
-    
 }
