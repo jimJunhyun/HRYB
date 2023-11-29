@@ -50,7 +50,7 @@ public class YYCtrl : MonoBehaviour
 	public void RefreshValues()
 	{
 		spirit = GameManager.instance.pActor.life.maxSoul;
-		yy = GameManager.instance.pActor.life.yywx.yy;
+		yy = GameManager.instance.pActor.life.yy;
 
 		diff = yy.yinAmt > yy.yangAmt ? yy.yangAmt / yy.yinAmt : yy.yinAmt / yy.yangAmt;
 
@@ -59,7 +59,7 @@ public class YYCtrl : MonoBehaviour
 		blk.rectTransform.sizeDelta = Vector2.one * (UICIRCUM * yy.yinAmt / sum);
 		wht.rectTransform.sizeDelta = Vector2.one * (UICIRCUM * yy.yangAmt / sum);
 
-		blkGauge.value = GameManager.instance.pActor.life.yywx.yy.yinAmt / GameManager.instance.pActor.life.maxSoul;
-		whtGauge.value = GameManager.instance.pActor.life.yywx.yy.yangAmt / GameManager.instance.pActor.life.maxSoul;
+		blkGauge.value = GameManager.instance.pActor.life.yy.yinAmt / GameManager.instance.pActor.life.maxSoul;
+		whtGauge.value = GameManager.instance.pActor.life.yy.yangAmt / GameManager.instance.pActor.life.maxSoul;
 	}
 }

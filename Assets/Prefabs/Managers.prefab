@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   yinYangUI: {fileID: 0}
-  wuXingUI: {fileID: 0}
   aimUI: {fileID: 0}
   infoUI: {fileID: 0}
   crafterUI: {fileID: 0}
@@ -53,11 +52,12 @@ MonoBehaviour:
   preInterUI: {fileID: 0}
   interingUI: {fileID: 0}
   invenPanel: {fileID: 0}
+  optionPanel: {fileID: 0}
   CursorPos: {fileID: 0}
   Cursor: {fileID: 0}
+  debugText: {fileID: 0}
   DragPoint: 0
   DropPoint: 0
-  isOn: 0
 --- !u!1 &1060935344740715271
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,6 +241,7 @@ MonoBehaviour:
   ampGain: 0.7
   frqGain: 1
   lockMouse: 1
+  outCaveTmp: {fileID: 0}
   curCamStat: 0
   curVFov: 55
 --- !u!114 &2385463462588017491
@@ -415,7 +416,7 @@ Transform:
   - {fileID: 8845440755275567644}
   - {fileID: 7137334930028887462}
   m_Father: {fileID: 0}
-  m_RootOrder: 31
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8156742070859110798
 GameObject:
@@ -462,6 +463,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curState: 0
+  sections: {fileID: 0}
+  allSections: []
 --- !u!1 &8296596479178176036
 GameObject:
   m_ObjectHideFlags: 0

@@ -62,9 +62,9 @@ public class PreProcess
 
 public class Roast : PreProcess
 {
-	public YinyangWuXing Decreased
+	public YinYang Decreased
 	{
-		get => new YinyangWuXing((info.info as YinyangItem).initDec + (effSec - 1) * (info.info as YinyangItem).decPerSec);
+		get => new YinYang((info.info as YinyangItem).initDec + (effSec - 1) * (info.info as YinyangItem).decPerSec);
 	}
 
 
@@ -106,7 +106,7 @@ public class Roast : PreProcess
 	{
 		GameManager.instance.StopCoroutine(ongoing);
 		ongoing = null;
-		(info.info as YinyangItem).yywx -= Decreased;
+		(info.info as YinyangItem).yy -= Decreased;
 		if (info.info.onUse != null && effSec > info.info.onUse.removeTime)
 		{
 			info.info.onUse.DeleteSpecial();

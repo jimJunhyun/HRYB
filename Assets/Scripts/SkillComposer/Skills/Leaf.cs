@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[CreateAssetMenu(menuName = "New Skill Leaf")]
-[System.Serializable]
-public class Leaf : Compose
+public abstract class  Leaf : Compose
 {
 	//public UnityAction act;
 
-	public override sealed void Operate()
+	public override void Operate(Actor self)
 	{
-		MyOperation();
+		MyOperation(self);
 	}
 
-	protected override void MyOperation()
+	public override void Disoperate(Actor self)
 	{
-		
+		MyDisoperation(self);
 	}
+
+	protected abstract override void MyOperation(Actor self);
+	protected abstract override void MyDisoperation(Actor self);
 }

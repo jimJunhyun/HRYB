@@ -508,7 +508,14 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (context.performed)
 		{
-			Hold(HandStat.Item, 0);
+			if (stat == HandStat.Weapon)
+			{
+				(GameManager.instance.pActor.cast as PlayerCast).Cast(WXSkillSlots.WOODSKILL);
+			}
+			else if (stat == HandStat.Item)
+			{
+				Hold(HandStat.Item, 0);
+			}
 		}
 	}
 
@@ -516,7 +523,15 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (context.performed)
 		{
-			Hold(HandStat.Item, 1);
+			if(stat == HandStat.Weapon)
+			{
+				(GameManager.instance.pActor.cast as PlayerCast).Cast(WXSkillSlots.FIRESKILL);
+			}
+			else if(stat == HandStat.Item)
+			{
+				Hold(HandStat.Item, 1);
+			}
+			
 		}
 	}
 
@@ -524,7 +539,14 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (context.performed)
 		{
-			Hold(HandStat.Item, 2);
+			if (stat == HandStat.Weapon)
+			{
+				(GameManager.instance.pActor.cast as PlayerCast).Cast(WXSkillSlots.EARTHSKILL);
+			}
+			else if (stat == HandStat.Item)
+			{
+				Hold(HandStat.Item, 2);
+			}
 		}
 	}
 
@@ -532,7 +554,29 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (context.performed)
 		{
-			Hold(HandStat.Item, 3);
+			if (stat == HandStat.Weapon)
+			{
+				(GameManager.instance.pActor.cast as PlayerCast).Cast(WXSkillSlots.METALSKILL);
+			}
+			else if (stat == HandStat.Item)
+			{
+				Hold(HandStat.Item, 3);
+			}
+		}
+	}
+
+	public void OnPressFive(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			if (stat == HandStat.Weapon)
+			{
+				(GameManager.instance.pActor.cast as PlayerCast).Cast(WXSkillSlots.WATERSKILL);
+			}
+			else if (stat == HandStat.Item)
+			{
+				Hold(HandStat.Item, 4);
+			}
 		}
 	}
 }

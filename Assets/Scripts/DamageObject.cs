@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DamageObject : MonoBehaviour
 {
-    public YinyangWuXing yywx ;
+    public YinYang yy ;
     public float effS;
 	public bool isDirect ;
 
@@ -19,9 +19,9 @@ public class DamageObject : MonoBehaviour
 		}
 	}
 
-	public virtual void SetInfo(YinyangWuXing y, float time, bool isDrt)
+	public virtual void SetInfo(YinYang y, float time, bool isDrt)
 	{
-		yywx = y;
+		yy = y;
 		effS = time;
 		isDirect = isDrt;
 	}
@@ -30,11 +30,11 @@ public class DamageObject : MonoBehaviour
 	{
 		if (isDirect)
 		{
-			to.AddYYWX(yywx, true);
+			to.AddYY(yy, true);
 		}
 		else
 		{
-			to.AddYYWX(yywx, effS, true);
+			to.AddYY(yy, effS, true);
 		}
 	}
 }

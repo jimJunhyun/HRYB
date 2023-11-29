@@ -115,7 +115,7 @@ public class PlayerAttack : AttackModule
 		}
 		else if(GameManager.instance.pinven.stat == HandStat.Item)
 		{
-			if (context.started)
+			if (context.started && !GameManager.instance.uiManager.isWholeScreenUIOn)
 			{
 				GameManager.instance.pinven.CurHoldingItem.info?.Use();
 			}

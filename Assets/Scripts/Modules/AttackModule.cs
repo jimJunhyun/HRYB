@@ -16,9 +16,9 @@ public class AttackModule : Module
 	public bool initIsDirect;
 	public float initAtkDist;
 	public float initAtkGap;
-	public YinyangWuXing initDamage;
+	public YinYang initDamage;
 
-	protected YinyangWuXing damage;
+	protected YinYang damage;
 	protected float effSpeed;
 	public float effSpeedMod = 1f;
 	public float EffSpeed { get => effSpeed * effSpeedMod;}

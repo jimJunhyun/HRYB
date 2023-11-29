@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
 	public UIManager uiManager;
 	public QuestManager qManager;
 	public SectionManager sManager;
+	public SkillLoader skillLoader;
 
 	public PlayableDirector timeliner;
 	public PlayableDirector timeliner2;
@@ -104,6 +105,7 @@ public class GameManager : MonoBehaviour
 		timeliner = GameObject.Find("Timeliner").GetComponent<PlayableDirector>(); //////////#####타임라인매니저
 		timeliner2 = GameObject.Find("Timeliner2").GetComponent<PlayableDirector>();
 		statEff = new StatusEffects();
+		skillLoader = new SkillLoader();
 		SwitchTo(CamStatus.Freelook);
 
 		

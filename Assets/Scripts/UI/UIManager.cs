@@ -14,7 +14,6 @@ public class UIManager : MonoBehaviour
 	Canvas canvas;
 
 	public YYCtrl yinYangUI;
-	public WXCtrl wuXingUI;
 	public AimPointCtrl aimUI;
 	public InfoCtrl infoUI;
 	public SimpleCrafter crafterUI;
@@ -32,8 +31,13 @@ public class UIManager : MonoBehaviour
     public int DragPoint;
     public int DropPoint;
 
-    public bool isOn = false;
-    public bool isOptionOn = false;
+	public bool isWholeScreenUIOn
+	{
+		get=>isOn || isOptionOn;
+	}
+
+    bool isOn = false;
+    bool isOptionOn = false;
 
 	List<InventoryUI> uis = new List<InventoryUI>();
 
@@ -43,7 +47,6 @@ public class UIManager : MonoBehaviour
 		invenPanel = canvas.transform.Find("InventoryPanel").gameObject;
 		optionPanel = canvas.transform.Find("OptonUI").gameObject;
 		yinYangUI = canvas.GetComponentInChildren<YYCtrl>();
-		wuXingUI = canvas.GetComponentInChildren<WXCtrl>();
 		aimUI = canvas.GetComponentInChildren<AimPointCtrl>();
 		infoUI = canvas.GetComponentInChildren<InfoCtrl>();
 		crafterUI = canvas.GetComponentInChildren<SimpleCrafter>();

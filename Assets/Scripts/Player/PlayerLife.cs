@@ -13,11 +13,10 @@ public class PlayerLife : LifeModule
 		}
 	}
 
-	public override void AddYYWXBase(YinyangWuXing data)
+	public override void AddYYBase(YinYang data)
 	{
-		base.AddYYWXBase(data);
+		base.AddYYBase(data);
 		GameManager.instance.uiManager.yinYangUI.RefreshValues();
-		GameManager.instance.uiManager.wuXingUI.RefreshValues();
 	}
 
 

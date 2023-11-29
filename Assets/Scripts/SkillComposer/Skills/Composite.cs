@@ -3,39 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[CreateAssetMenu(menuName = "New Skill Composite")]
+[CreateAssetMenu(menuName = "Skills/Composite")]
 
-public class Composite : Compose
+public class Composite : Compose, IComposer
 {
 	public List<Compose> childs;
-	public OperateType operateType = OperateType.Pre;
-	//public UnityAction act;
 
 	public void AddChild(Compose comp)
 	{
 		childs.Add(comp);
 	}
 
-	public override sealed void Operate()
+	public override void Disoperate(Actor self)
 	{
-		if(operateType == OperateType.Pre || operateType == OperateType.Both)
-		{
-			MyOperation();
-		}
-
 		for (int i = 0; i < childs.Count; i++)
 		{
-			childs[i].Operate();
-		}
-
-		if(operateType == OperateType.Post || operateType == OperateType.Both)
-		{
-			MyOperation();
+			childs[i].Disoperate(self);
 		}
 	}
 
-	protected override void MyOperation()
+	public override void Operate(Actor self)
 	{
-		
+		for (int i = 0; i < childs.Count; i++)
+		{
+			childs[i].Operate(self);
+		}
+	}
+
+	protected override void MyDisoperation(Actor self)
+	{
+		//Do nothing?
+	}
+
+	protected override void MyOperation(Actor self)
+	{
+		//Do nothing?
 	}
 }
