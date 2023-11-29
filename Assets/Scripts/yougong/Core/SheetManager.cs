@@ -12,12 +12,12 @@ public class SheetData
 public class SheetItemTable
 {
 	public int index;
-	public string name = "Error";
-	public string description = "Error"; // 이건 안쓴다네요
-	public string itemInfoTxt = "Error";
+	public string name = "none";
+	public string description = "none"; // 이건 안쓴다네요
+	public string itemInfoTxt = "none";
 	public ItemType type = ItemType.None;
-	public int YinYang = -1;
-	public int MaxItem = -1;
+	public int YinYang = -1; // 클레스화
+	public int MaxItem = -1; // 0이면 최대
 
 }
 
@@ -26,15 +26,18 @@ public class SheetManager : MonoBehaviour
 	private List<SheetItemTable> items = new();
 
 	const string adress = "https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/";
+	//https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/
+	//https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/
+	//https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/edit?usp=sharing
 	const string plus = "B4:H11";
 
 
 	public void Start()
 	{
-		StartCoroutine(GetSheetData());
+		StartCoroutine(GetItemSheetData());
 	}
 
-	IEnumerator GetSheetData()
+	IEnumerator GetItemSheetData()
 	{
 		string data;
 		string ad = adress + "export?format=tsv&range=" + plus;
@@ -47,14 +50,18 @@ public class SheetManager : MonoBehaviour
 		    {
 			    data = www.downloadHandler.text;
 			    
-			    DisplayText(data);
+			    ItemDisplay(data);
 			    
 		    }
 	    }
-
     }
 
-    void DisplayText(string sheetData)
+	IEnumerator GetYinYangShhetData()
+	{
+		
+	}
+
+    void ItemDisplay(string sheetData)
     {
 	    Debug.Log(sheetData);
 	    string[] row = sheetData.Split('\n');
@@ -70,13 +77,13 @@ public class SheetManager : MonoBehaviour
 			    items.description = colum[k++];
 			    items.itemInfoTxt = colum[k++];
 			    items.type = (ItemType)int.Parse(colum[k++]);
-			    items.YinYang = int.Parse(colum[k++]);
+			    items.YinYang = int.Parse(colum[k++]); // 바뀔 예정
 			    items.MaxItem = int.Parse(colum[k++]);
 		    }
 		    catch
 		    {
-			    Debug.Log(k);
-			    Debug.Log(colum[k++]);
+			    Debug.LogWarning(k);
+			    Debug.LogWarning(colum[k++]);
 		    }
 
 		    
