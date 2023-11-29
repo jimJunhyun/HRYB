@@ -115,7 +115,7 @@ public class BrewPoint : CraftPoint
 		else
 		{
 			Debug.Log("NO");
-			resultItem = new Medicines(GetMedicineName(), "약이다.", ItemType.Liquid, 1, Item.removeOnComp, true, YinyangWuXing.Zero);
+			resultItem = new Medicines(GetMedicineName(), "약이다.", ItemType.Liquid, 1, Item.removeOnComp, true, YinYang.Zero);
 			ongoing = StartCoroutine(DelAddStat());
 		}
 	}
@@ -132,7 +132,7 @@ public class BrewPoint : CraftPoint
 			foreach (var item in result)
 			{
 				GameManager.instance.pinven.AddItem(item.info, item.num);
-				Debug.Log($"{item.info.MyName} 획득, {(item.info as YinyangItem).yywx.ToString()}");
+				Debug.Log($"{item.info.MyName} 획득, {(item.info as YinyangItem).yy.ToString()}");
 			}
 		}
 		else
@@ -140,7 +140,7 @@ public class BrewPoint : CraftPoint
 			if (!GameManager.instance.pinven.isFull)
 			{
 				GameManager.instance.pinven.AddItem(resultItem, 1);
-				Debug.Log($"{resultItem.MyName} 획득, {(resultItem).yywx.ToString()}");
+				Debug.Log($"{resultItem.MyName} 획득, {(resultItem).yy.ToString()}");
 			}
 		}
 		Initialize();
@@ -203,8 +203,8 @@ public class BrewPoint : CraftPoint
 				{
 					multDecMod += 1 / i;
 				}
-				YinyangWuXing brewed = (item.info as YinyangItem).yywx * (1 / brewMaxSec) * multDecMod * varModifier; //추출 공식은 어떻게 되는가?
-				resultItem.yywx += brewed;
+				YinYang brewed = (item.info as YinyangItem).yy * (1 / brewMaxSec) * multDecMod * varModifier; //추출 공식은 어떻게 되는가?
+				resultItem.yy += brewed;
 				//언제 능력이 더해지는가?
 			}
 		}

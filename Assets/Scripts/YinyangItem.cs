@@ -8,8 +8,8 @@ using UnityEngine;
 [System.Serializable]
 public class YinyangItem : Item
 {
-	YinyangWuXing data;
-	public YinyangWuXing yywx
+	YinYang data;
+	public YinYang yy
 	{
 		get
 		{
@@ -41,7 +41,6 @@ public class YinyangItem : Item
 	public YinyangItem(YinyangItem item) : base(item)
 	{
 		data = item.data;
-		data.isClampedZero = true;
 		if (item.nameAsChar == "")
 		{
 			nameAsChar = MyName[UnityEngine.Random.Range(0, MyName.Length)].ToString();
@@ -52,10 +51,9 @@ public class YinyangItem : Item
 		}
 	}
 
-    public YinyangItem(string name, string desc, ItemType iType, int max, Specials used, bool isNewItem, YinyangWuXing yyData, string ch = "") : base(name, desc, iType, max, used, isNewItem)
+    public YinyangItem(string name, string desc, ItemType iType, int max, Specials used, bool isNewItem, YinYang yyData, string ch = "") : base(name, desc, iType, max, used, isNewItem)
 	{
 		data = yyData;
-		data.isClampedZero = true;
 		if(ch == "")
 		{
 			nameAsChar = MyName[UnityEngine.Random.Range(0, MyName.Length)].ToString();
@@ -68,7 +66,7 @@ public class YinyangItem : Item
 
 	public override void Use()
 	{
-		GameManager.instance.pActor.life.AddYYWX(yywx, ApplySpeed);
+		GameManager.instance.pActor.life.AddYY(yy, ApplySpeed);
 		base.Use();
 	}
 
