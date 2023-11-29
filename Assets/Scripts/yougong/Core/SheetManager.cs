@@ -1,3 +1,4 @@
+using GSpawn;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ public class YinYangSheetData
 public class SheetManager : MonoBehaviour
 {
 	private Dictionary<int, SheetItemTable> _items = new();
-	
+
 	private Dictionary<int, YinYangSheetData> _yinYangData = new();
 
 
@@ -47,18 +48,34 @@ public class SheetManager : MonoBehaviour
 
 	[SerializeField] private int textIdx = 1;
 
-	//[ContextMenu("ItemLog")]
-	public SheetItemTable GetItems()
+	private bool _isDone = false;
+	public bool IsDone => _isDone;
+
+	[ContextMenu("ItemLog")]
+	public void DebugItem()
 	{
-		//Debug.Log($"Return {_items[textIdx].name}");
-		return _items[textIdx];
+		
+		Debug.Log($"Return {_items[textIdx].name}");
+	}
+	public SheetItemTable GetItems(int idx)
+	{
+		if (_isDone == false)
+		{
+			Debug.LogWarning("Is Not Load Sheet");
+			return null;
+		}
+		return _items[idx];
 	}
 	
 
 	public IEnumerator Start()
 	{
+		
+		_isDone = false;
 		yield return StartCoroutine(GetYinYangSheetData());
 		yield return StartCoroutine(GetItemSheetData());
+
+		_isDone = true;
 	}
 
 	IEnumerator GetItemSheetData()

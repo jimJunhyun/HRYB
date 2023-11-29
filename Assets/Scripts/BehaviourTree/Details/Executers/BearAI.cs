@@ -2,25 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BearAI : MonoBehaviour
+public class BearAI : AISetter
 {
-    Actor self;
-	Actor player;
-
-	Selecter head;
-
 	public Transform targetPo1;
 	public Transform targetPo2;
 	public Transform targetPo3;
-
-	bool stopped = false;
-
-	private void Start()
+	protected override void StartInvoke()
 	{
-		player = GameManager.instance.pActor;
-
-		self = GetComponent<Actor>();
-		head = new Selecter();
 
 		IsFirstTime firstFound = new IsFirstTime();
 		Waiter waitDuration = new Waiter((float)GameManager.instance.timeliner.duration, false, NodeStatus.Run);
@@ -202,22 +190,8 @@ public class BearAI : MonoBehaviour
 		head.connecteds.Add(idler);
 	}
 
-	private void Update()
+	protected override void UpdateInvoke()
 	{
-		if (!stopped)
-		{
-			head.Examine();
-		}
+		
 	}
-
-	public void StopExamine()
-	{
-		stopped = true;
-	}
-
-	public void StartExamine()
-	{
-		stopped = false;
-	}
-
 }
