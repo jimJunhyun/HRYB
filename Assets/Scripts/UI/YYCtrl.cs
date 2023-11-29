@@ -40,12 +40,12 @@ public class YYCtrl : MonoBehaviour
 		RefreshValues();
 	}
 
-	private void Update()
-	{
+	//private void Update()
+	//{
 		
-		bgnd.eulerAngles += Vector3.back * spinSpeed * Time.deltaTime * (1 + (1 - diff) * emerSpeed);
+	//	bgnd.eulerAngles += Vector3.back * spinSpeed * Time.deltaTime * (1 + (1 - diff) * emerSpeed);
 
-	}
+	//}
 
 	public void RefreshValues()
 	{

@@ -13,7 +13,7 @@ public class LifeModule : Module
 	public YinYang initAdequity;
 	public float initSoul;
 
-	[HideInInspector]
+	//[HideInInspector]
 	public YinYang yy;
 
 	protected YinYang adequity;

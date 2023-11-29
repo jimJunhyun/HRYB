@@ -12,7 +12,7 @@ public class HealYang : Leaf
 
 	protected override void MyOperation(Actor self)
 	{
-		self.life.AddYY(amt, YYInfo.Yin);
+		self.life.AddYY(amt, YYInfo.Yang);
 		Debug.Log("양더함");
 	}
 	protected override void MyDisoperation(Actor self)

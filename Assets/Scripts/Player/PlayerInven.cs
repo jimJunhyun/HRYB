@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -66,6 +67,58 @@ public struct InventoryItem
 		return new ItemAmountPair(info, number);
 	}
 }
+
+public struct InvenSkill
+{
+	public SkillRoot info;
+	public int number;
+
+	public bool isEmpty()
+	{
+		return info == null || number == 0;
+	}
+
+	public override bool Equals(object obj)
+	{
+		return obj is InvenSkill skill &&
+			   EqualityComparer<SkillRoot>.Default.Equals(info, skill.info);
+	}
+
+	public override int GetHashCode()
+	{
+		return HashCode.Combine(info);
+	}
+
+	public InvenSkill(SkillRoot info, int num)
+	{
+		this.info = info;
+		number = num;
+	}
+
+	public static InvenSkill Empty
+	{
+		get=>new InvenSkill(null, 0);
+	}
+
+	public static bool operator ==(InvenSkill lft, InvenSkill rht)
+	{
+		if(lft.info == null)
+			return rht.info == null;
+		if(rht.info == null)
+			return lft.info == null;
+		return lft.info == rht.info;
+	}
+
+	public static bool operator !=(InvenSkill lft, InvenSkill rht)
+	{
+		if (lft.info == null)
+			return rht.info != null;
+		if (rht.info == null)
+			return lft.info != null;
+		return lft.info != rht.info;
+	}
+}
+
 
 public class Inventory
 {
@@ -162,9 +215,52 @@ public class Inventory
 	}
 }
 
+public class SkillInventory
+{
+	public SkillInventory()
+	{
+		data = new HashSet<InvenSkill>();
+	}
+	HashSet<InvenSkill> data;
+
+	public void AddSkill(SkillRoot info, int cnt = 1)
+	{
+		foreach (var item in data)
+		{
+			if(item.info == info)
+			{
+				InvenSkill sk = item;
+				data.Remove(item);
+				sk.number += cnt;
+				data.Add(sk);
+				break;
+			}
+		}
+	}
+
+	public void RemoveSkill(SkillRoot info, int cnt = 1)
+	{
+		foreach (var item in data)
+		{
+			if (item.info == info)
+			{
+				InvenSkill sk = item;
+				data.Remove(item);
+				if(sk.number > cnt)
+				{
+					sk.number -= cnt;
+					data.Add(sk);
+				}
+				break;
+			}
+		}
+	}
+}
+
 public class PlayerInven : MonoBehaviour
 {
     public Inventory inven;
+	public SkillInventory skInven = new SkillInventory();
     public int cap = 20;
 
 	bool havingBow = false;
@@ -497,6 +593,16 @@ public class PlayerInven : MonoBehaviour
 		
 	}
 
+	public void AddSkill(SkillRoot info, int cnt = 1)
+	{
+		skInven.AddSkill(info, cnt);
+	}
+
+	public void RemoveSkill(SkillRoot info, int cnt = 1)
+	{
+		skInven.RemoveSkill(info, cnt);
+	}
+
 	void Swap(int a, int b)
 	{
 		InventoryItem slotItem = inven[a];
@@ -510,7 +616,7 @@ public class PlayerInven : MonoBehaviour
 		{
 			if (stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).Cast(WXSkillSlots.WOODSKILL);
+				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(WXInfo.Wood);
 			}
 			else if (stat == HandStat.Item)
 			{
@@ -525,7 +631,7 @@ public class PlayerInven : MonoBehaviour
 		{
 			if(stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).Cast(WXSkillSlots.FIRESKILL);
+				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(WXInfo.Fire);
 			}
 			else if(stat == HandStat.Item)
 			{
@@ -541,7 +647,7 @@ public class PlayerInven : MonoBehaviour
 		{
 			if (stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).Cast(WXSkillSlots.EARTHSKILL);
+				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(WXInfo.Earth);
 			}
 			else if (stat == HandStat.Item)
 			{
@@ -556,7 +662,7 @@ public class PlayerInven : MonoBehaviour
 		{
 			if (stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).Cast(WXSkillSlots.METALSKILL);
+				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(WXInfo.Metal);
 			}
 			else if (stat == HandStat.Item)
 			{
@@ -571,7 +677,7 @@ public class PlayerInven : MonoBehaviour
 		{
 			if (stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).Cast(WXSkillSlots.WATERSKILL);
+				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(WXInfo.Water);
 			}
 			else if (stat == HandStat.Item)
 			{

@@ -2,11 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SkillUseType
+{
+	Active,
+	ActiveConsumable,
+	Passive,
+}
+
 
 [CreateAssetMenu(menuName = "Skills/Root")]
 public class SkillRoot : Compose
 {
 	public Compose act;
+	public SkillUseType useType;
 	public float castTime;
 	public float cooldown;
 
@@ -16,11 +24,6 @@ public class SkillRoot : Compose
 	public override void Operate(Actor self)
 	{
 		act.Operate(self);
-	}
-
-	public float GetCastTime()
-	{
-		return castTime;
 	}
 
 	protected override void MyOperation(Actor self)
