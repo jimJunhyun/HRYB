@@ -86,6 +86,13 @@ public class MoveModule : Module
 			forceDir = Vector3.zero;
 		}
 	}
+	
+	public void LookAt(Transform t)
+	{
+		Vector3 lookPos = t.position - transform.position;
+		lookPos.y = transform.position.y;
+		transform.rotation = Quaternion.LookRotation(lookPos);
+	}
 
 	public override void ResetStatus()
 	{

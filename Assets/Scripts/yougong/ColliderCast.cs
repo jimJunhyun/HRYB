@@ -5,12 +5,22 @@ using UnityEngine;
 
 public abstract class ColliderCast : MonoBehaviour
 {
+
+	[Header("Collider Name")] [SerializeField]
+	private string _name;
+
+	public string Name => _name;
+	
 	[Header("Enemy Layer")]
 	[SerializeField] private LayerMask _layer;
 
 	public LayerMask Layer => _layer;
 	
 	[Header("Already Get Object")][SerializeField] public Dictionary<Collider, bool> CheckDic = new();
+
+
+	private bool _isRunning = false;
+	
 	
 	public abstract Collider[] ReturnColliders();
 	
@@ -24,6 +34,9 @@ public abstract class ColliderCast : MonoBehaviour
 
 	protected void Update()
 	{
+		if (_isRunning == false)
+			return;
+		
 		// 생각해 봤는데 어차피 col있는 만큼만 돌아가기 때문에 큰 문제 없음
 		foreach (var col in ReturnColliders())
 		{
@@ -36,5 +49,15 @@ public abstract class ColliderCast : MonoBehaviour
 			//Debug.Log($"{col.name} 맞음");
 
 		}
+	}
+
+	public void Now()
+	{
+		_isRunning = true;
+	}
+
+	public void End()
+	{
+		_isRunning = false;
 	}
 }

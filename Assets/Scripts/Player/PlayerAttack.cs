@@ -124,17 +124,21 @@ public class PlayerAttack : AttackModule
 
 	public override void Attack()
 	{
-		Debug.Log($"{curCharge} 파워로 발사.");
-		attackState = AttackStates.Trigger;
+		
+		// 이거 자체가 공격
+		{
+			Debug.Log($"{curCharge} 파워로 발사.");
+			attackState = AttackStates.Trigger;
 
-		Arrow r = PoolManager.GetObject("ArrowTemp", shootPos.position, shootPos.forward).GetComponent<Arrow>();
-		r.SetInfo(damage, EffSpeed, isDirect);
-		r.Shoot(curCharge);
+			Arrow r = PoolManager.GetObject("ArrowTemp", shootPos.position, shootPos.forward).GetComponent<Arrow>();
+			r.SetInfo(damage, EffSpeed, isDirect);
+			r.Shoot(curCharge);
 
-		attackState = AttackStates.Prepare;
-		(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
-		ResetBowStat();
-		atked = false;
+			attackState = AttackStates.Prepare;
+			(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
+			ResetBowStat();
+			atked = false;
+		}
 	}
 
 	public bool ThrowRope()

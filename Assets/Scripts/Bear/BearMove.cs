@@ -34,12 +34,7 @@ public class BearMove : MoveModule
 		agent.SetDestination(hit.position);
 	}
 
-	public void LookAt(Transform t)
-	{
-		Vector3 lookPos = t.position - transform.position;
-		lookPos.y = transform.position.y;
-		transform.rotation = Quaternion.LookRotation(lookPos);
-	}
+
 
 	public void SetTarget(Transform t)
 	{

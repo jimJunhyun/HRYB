@@ -133,6 +133,7 @@ public class LifeModule : Module
 
 	public virtual void OnDead()
 	{
+		Debug.LogError(maxSoul);
 		StopAllCoroutines();
 		GetActor().anim.SetDieTrigger();
 		//PoolManager.ReturnObject(gameObject);

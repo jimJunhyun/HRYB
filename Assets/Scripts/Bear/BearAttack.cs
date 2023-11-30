@@ -12,7 +12,7 @@ public enum AttackType
 }
 
 
-public class BearAttack : AttackModule
+public class BearAttack : EnemyAttackModule
 {
 	public float atkDist2;
 	public float atkDist3;
@@ -34,7 +34,6 @@ public class BearAttack : AttackModule
 
 	public AttackType nextAttackCall = AttackType.HandAttack;
 
-	Actor target;
 
 	public void Awake()
 	{
@@ -46,10 +45,6 @@ public class BearAttack : AttackModule
 		ResetAttackRange(1);
 	}
 
-	public void SetTarget(Actor a)
-	{
-		target = a;
-	}
 
     public void SetAttackType(AttackType type)
 	{
@@ -64,8 +59,8 @@ public class BearAttack : AttackModule
 
 				break;
 			case AttackType.MouthAttack:
-				target.life.AddYY(damage, EffSpeed, true);
-				PoolManager.GetObject("DamagedEffect", target.transform.position + (Vector3.up * target.transform.localScale.magnitude * 0.5f), Quaternion.LookRotation(target.transform.forward));
+				Target.life.AddYY(damage, EffSpeed, true);
+				PoolManager.GetObject("DamagedEffect", Target.transform.position + (Vector3.up * Target.transform.localScale.magnitude * 0.5f), Quaternion.LookRotation(Target.transform.forward));
 				break;
 			case AttackType.SpecialAttack:
 				
@@ -93,5 +88,7 @@ public class BearAttack : AttackModule
 		ranges[idx].SetActive(false);
 	}
 
-	
+	public override void OnAnimationEvent() { }
+
+	public override void OnAnimationEnd() { }
 }

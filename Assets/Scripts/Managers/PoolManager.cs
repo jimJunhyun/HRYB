@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class StackWithName<T>{
@@ -44,6 +45,21 @@ public class PoolManager : MonoBehaviour
 			res.SetActive(true);
 			res.transform.position = pos;
 			res.transform.rotation = rot;
+			return res;
+		}
+		Debug.LogError($"Item named {name} doesn't exist!");
+		return null;
+	}
+	
+	public static GameObject GetObject(string name, Transform parent)
+	{
+		StackWithName<GameObject> st;
+		if ((st = pooleds.Find(item => item.name == name)) != null)
+		{
+			GameObject res = st.data.Pop();
+			res.SetActive(true);
+			res.transform.position = parent.position;
+			res.transform.rotation = parent.rotation;
 			return res;
 		}
 		Debug.LogError($"Item named {name} doesn't exist!");
