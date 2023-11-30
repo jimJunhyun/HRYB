@@ -200,6 +200,7 @@ public class PlayerMove : MoveModule
 			ctrl.center = Vector3.up;
 		}
 	}
+	
 
 	private void FixedUpdate()
 	{
