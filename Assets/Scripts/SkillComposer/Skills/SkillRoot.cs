@@ -11,9 +11,8 @@ public enum SkillUseType
 
 
 [CreateAssetMenu(menuName = "Skills/Root")]
-public class SkillRoot : Compose
+public class SkillRoot : Composite
 {
-	public Compose act;
 	public SkillUseType useType;
 	public float castTime;
 	public float cooldown;
@@ -23,21 +22,11 @@ public class SkillRoot : Compose
 
 	public override void Operate(Actor self)
 	{
-		act.Operate(self);
-	}
-
-	protected override void MyOperation(Actor self)
-	{
-		//Do Nothing
+		base.Operate(self);
 	}
 
 	public override void Disoperate(Actor self)
 	{
-		act.Disoperate(self);
-	}
-
-	protected override void MyDisoperation(Actor self)
-	{
-		//Do Nothing
+		base.Disoperate(self);
 	}
 }

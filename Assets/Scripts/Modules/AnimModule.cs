@@ -57,4 +57,8 @@ public class AnimModule : Module
 		anim.SetTrigger(respawnHash);
 	}
 
+	public void SetTrigger(int hash)
+	{
+		anim.SetTrigger(hash);
+	}
 }

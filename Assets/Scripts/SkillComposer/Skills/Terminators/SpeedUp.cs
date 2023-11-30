@@ -13,9 +13,16 @@ public class SpeedUp : Leaf
 	{
 		self.move.speedMod += 0.5f;
 		Debug.Log("이속증가");
+		GameManager.instance.StartCoroutine(DelDisoperate(self));
 	}
 	protected override void MyDisoperation(Actor self)
 	{
 		self.move.speedMod -= 0.5f;
+	}
+
+	IEnumerator DelDisoperate(Actor self)
+	{
+		yield return new WaitForSeconds(duration);
+		MyDisoperation(self);
 	}
 }

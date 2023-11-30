@@ -24,4 +24,9 @@ public class SkillLoader
 			Debug.LogError("Skill Database Load Failed.");
 		}
 	}
+
+	public SkillRoot this[string name]
+	{
+		get=>skillDb.info[name];
+	}
 }

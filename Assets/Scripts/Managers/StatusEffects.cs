@@ -7,6 +7,7 @@ public enum StatEffID
 {
 	Knockback,
 	Immune,
+	Blind,
 }
 
 public struct StatusEffect
@@ -36,6 +37,7 @@ public class StatusEffects
 	{
 		idStatEffPairs.Add(((int)StatEffID.Knockback), new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", OnKnockbackActivated, OnKnockbackDebuffUpdated, OnKnockbackDebuffEnded));
 		idStatEffPairs.Add(((int)StatEffID.Immune), new StatusEffect("무적", "어머니의 비호를 받고 있습니다.", OnImmuneActivated, OnImmuneUpdated, OnImmuneEnded));
+		idStatEffPairs.Add(((int)StatEffID.Blind), new StatusEffect("실명", "눈 앞이 어두워집니다.", OnBlindActivated, OnBlindUpdated, OnBlindEnded));
 	}
 
 	void OnKnockbackActivated(Actor self, Actor inflicter)
@@ -60,6 +62,19 @@ public class StatusEffects
 		
 	}
 	void OnImmuneEnded(Actor self)
+	{
+		self.life.isImmune = false;
+	}
+
+	void OnBlindActivated(Actor self, Actor inflicter)
+	{
+		self.sight.sightRange *= 0.5f;
+	}
+	void OnBlindUpdated(Actor self)
+	{
+
+	}
+	void OnBlindEnded(Actor self)
 	{
 		self.life.isImmune = false;
 	}

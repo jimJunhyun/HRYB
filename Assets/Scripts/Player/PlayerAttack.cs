@@ -4,34 +4,25 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
 
+public enum AttackStates
+{
+	None,
+	Charge,
+
+}
+
 public class PlayerAttack : AttackModule
 {
-	protected float chargePerSec;
-	public float initChargePerSec;
+	protected float secPerCharge;
+	public float initSecPerCharge;
 
-	public float ChargePerSec { get => chargePerSec;}
-	public override float prepMod 
-	{
-		get => base.prepMod; 
-		set
-		{
-			base.prepMod = value;
-			(GetActor().anim as PlayerAnim).SetAimSpeed(base.prepMod);
-		}
-	}
-
-	public float shakeFrom;
-	public float maxChargeTime;
+	public float SecPerCharge { get => secPerCharge; }
 
 	Transform shootPos;
-	VisualEffect eff;
+	VisualEffect chargeEff;
 	Ray camRay;
 	public Transform ShootPos { get; protected set;}
-	float curCharge;
-
-	bool shaking = false;
-
-	bool atked = false;
+	int curCharge;
 
 
 	float AimTime { get => Time.time - aimStart;}
@@ -51,8 +42,8 @@ public class PlayerAttack : AttackModule
 		animActions = GetComponentInChildren<PlayerAnimActions>();
 		curCharge = 0;
 
-		eff = shootPos.GetComponentInChildren<VisualEffect>();
-		eff.Stop();
+		chargeEff = shootPos.GetComponentInChildren<VisualEffect>();
+		chargeEff.Stop();
 	}
 
 	private void Start()
@@ -62,15 +53,9 @@ public class PlayerAttack : AttackModule
 
 	private void Update()
 	{
-		if (loaded && attackState == AttackStates.Prepare)
+		if (loaded && attackState == AttackStates.Charge)
 		{
-			
 			Charge();
-		}
-		else if (shaking)
-		{
-			shaking = false;
-			GameManager.instance.UnShakeCam();
 		}
 	}
 
@@ -81,24 +66,16 @@ public class PlayerAttack : AttackModule
 			if (context.performed && !loaded)
 			{
 				GameManager.instance.SwitchTo(CamStatus.Aim);
-				attackState = AttackStates.Prepare;
+				attackState = AttackStates.Charge;
 				(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
 				GameManager.instance.uiManager.aimUI.On();
+				chargeEff.Play();
 			}
 			if (context.canceled)
 			{
-				if (atked)
-				{
-					if (ongoingResetter == null)
-					{
-						ongoingResetter = StartCoroutine(DelayResetCam());
-					}
-				}
-				else
-				{
-					BowDown();
-
-				}
+				Attack();
+				BowDown();
+				
 			}
 		}
 	}
@@ -107,9 +84,8 @@ public class PlayerAttack : AttackModule
 	{
 		if(GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
-			if (context.started && loaded && curCharge > 0.1f)
+			if (context.started && loaded && attackState == AttackStates.None)
 			{
-				atked = true;
 				GetActor().anim.SetAttackTrigger();
 			}
 		}
@@ -124,17 +100,9 @@ public class PlayerAttack : AttackModule
 
 	public override void Attack()
 	{
-		Debug.Log($"{curCharge} 파워로 발사.");
-		attackState = AttackStates.Trigger;
-
-		Arrow r = PoolManager.GetObject("ArrowTemp", shootPos.position, shootPos.forward).GetComponent<Arrow>();
-		r.SetInfo(damage, EffSpeed, isDirect);
-		r.Shoot(curCharge);
-
-		attackState = AttackStates.Prepare;
-		(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
-		ResetBowStat();
-		atked = false;
+		Debug.Log("공격입력됨");
+		(GetActor().cast as PlayerCast).UseMainSkill();
+		(GetActor().cast as PlayerCast).ResetComboMain();
 	}
 
 	public bool ThrowRope()
@@ -155,25 +123,11 @@ public class PlayerAttack : AttackModule
 
 	void Charge()
 	{
-		
-		curCharge += chargePerSec / atkGap * Time.deltaTime;
-		
-		curCharge = Mathf.Clamp(curCharge, 0, atkDist);
-
-		if (AimTime >= maxChargeTime && !atked)
+		if(curCharge != (int)(AimTime / secPerCharge))
 		{
-			atked = true;
-			GetActor().anim.SetAttackTrigger();
-		}
-
-		if (curCharge == atkDist && AimTime >= shakeFrom)
-		{
-			if (!shaking)
-			{
-				shaking = true;
-				GameManager.instance.ShakeCam();
-			}
-			
+			curCharge = (int)(AimTime / secPerCharge);
+			(GetActor().cast as PlayerCast).NextComboMain(false);
+			Debug.Log("Combo Proceeded");
 		}
 	}
 
@@ -181,8 +135,8 @@ public class PlayerAttack : AttackModule
 
 	void ResetBowStat()
 	{
-		eff.Reinit();
-		eff.Stop();
+		chargeEff.Reinit();
+		chargeEff.Stop();
 		curCharge = 0;
 		loaded = false;
 	}
@@ -199,7 +153,6 @@ public class PlayerAttack : AttackModule
 
 	public void SetBowStat()
 	{
-		eff.Play();
 		loaded = true;
 		aimStart = Time.time;
 	}
@@ -211,7 +164,6 @@ public class PlayerAttack : AttackModule
 
 	IEnumerator DelayResetCam()
 	{
-		yield return new WaitUntil(()=> !atked);
 		yield return GameManager.instance.waitSec;
 		ResetBowStat();
 		GameManager.instance.SwitchTo(CamStatus.Freelook);
@@ -224,6 +176,6 @@ public class PlayerAttack : AttackModule
 	public override void ResetStatus()
 	{
 		base.ResetStatus();
-		chargePerSec = initChargePerSec;
+		secPerCharge = initSecPerCharge;
 	}
 }

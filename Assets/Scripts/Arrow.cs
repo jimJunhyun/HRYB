@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Arrow : DamageObject
 {
@@ -8,14 +10,29 @@ public class Arrow : DamageObject
 
 	public Vector3 massCenter;
 
+	public float power = 60f;
+
 	WaitForSeconds waitTillDisappear;
 
     Rigidbody rig;
 
 	public override void OnTriggerEnter(Collider other)
 	{
-		base.OnTriggerEnter(other);
-		Returner();
+		if(!other.isTrigger)
+		{
+			if (other.TryGetComponent<LifeModule>(out LifeModule hit))
+			{
+				if(hit != GameManager.instance.pActor.life)
+				{
+					(GameManager.instance.pActor.cast as PlayerCast).NextComboMain(false);
+
+				}
+			}
+			Debug.Log(other.name);
+			base.OnTriggerEnter(other);
+			Returner();
+		}
+		
 	}
 
 	private void Awake()
@@ -38,9 +55,9 @@ public class Arrow : DamageObject
 		StartCoroutine(DelReturn());
 	}
 
-	public void Shoot(float val)
+	public void Shoot()
 	{
-		rig.AddForce(val * transform.forward, ForceMode.Impulse);
+		rig.AddForce(power * transform.forward, ForceMode.Impulse);
 
 	}
 
@@ -53,6 +70,7 @@ public class Arrow : DamageObject
 
 	void Returner()
 	{
+		Debug.Log("RETURN");
 		rig.velocity = Vector3.zero;
 		StopAllCoroutines();
 		PoolManager.ReturnObject(gameObject);
