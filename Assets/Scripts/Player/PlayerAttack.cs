@@ -1,15 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
 
-public enum AttackStates
-{
-	None,
-	Charge,
-
-}
 
 public class PlayerAttack : AttackModule
 {
@@ -19,17 +14,16 @@ public class PlayerAttack : AttackModule
 	public float SecPerCharge { get => secPerCharge; }
 
 	Transform shootPos;
-	VisualEffect chargeEff;
+	//VisualEffect chargeEff;
 	Ray camRay;
 	public Transform ShootPos { get; protected set;}
 	int curCharge;
 
+	UnityAction updateActs;
 
 	float AimTime { get => Time.time - aimStart;}
 
 	float aimStart = 0;
-
-	bool loaded = false;
 
 	Coroutine ongoingResetter;
 
@@ -42,8 +36,8 @@ public class PlayerAttack : AttackModule
 		animActions = GetComponentInChildren<PlayerAnimActions>();
 		curCharge = 0;
 
-		chargeEff = shootPos.GetComponentInChildren<VisualEffect>();
-		chargeEff.Stop();
+		//chargeEff = shootPos.GetComponentInChildren<VisualEffect>();
+		//chargeEff.Stop();
 	}
 
 	private void Start()
@@ -53,27 +47,24 @@ public class PlayerAttack : AttackModule
 
 	private void Update()
 	{
-		if (loaded && attackState == AttackStates.Charge)
-		{
-			Charge();
-		}
+		updateActs?.Invoke();
 	}
 
 	public void OnAim(InputAction.CallbackContext context)
 	{
 		if(GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
-			if (context.performed && !loaded)
+			if (context.performed)
 			{
 				GameManager.instance.SwitchTo(CamStatus.Aim);
-				attackState = AttackStates.Charge;
 				(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
 				GameManager.instance.uiManager.aimUI.On();
-				chargeEff.Play();
+				//chargeEff.Play();
 			}
 			if (context.canceled)
 			{
 				Attack();
+				Disoperater(SkillSlotInfo.RClick);
 				BowDown();
 				
 			}
@@ -82,27 +73,38 @@ public class PlayerAttack : AttackModule
 
 	public void OnAttack(InputAction.CallbackContext context)
 	{
-		if(GameManager.instance.pinven.stat == HandStat.Weapon)
+		if (context.performed)
 		{
-			if (context.started && loaded && attackState == AttackStates.None)
+			Debug.Log("공격입력됨");
+			if (GameManager.instance.pinven.stat == HandStat.Weapon)
 			{
-				GetActor().anim.SetAttackTrigger();
+				Attack();
+				NextCombo(SkillSlotInfo.LClick); //###
+			}
+			else if (GameManager.instance.pinven.stat == HandStat.Item)
+			{
+				if (!GameManager.instance.uiManager.isWholeScreenUIOn)
+				{
+					GameManager.instance.pinven.CurHoldingItem.info?.Use();
+				}
 			}
 		}
-		else if(GameManager.instance.pinven.stat == HandStat.Item)
-		{
-			if (context.started && !GameManager.instance.uiManager.isWholeScreenUIOn)
-			{
-				GameManager.instance.pinven.CurHoldingItem.info?.Use();
-			}
-		}
+		
+	}
+
+	public void Disoperater(SkillSlotInfo at)
+	{
+		(GetActor().cast as PlayerCast).DisoperateAt(at);
+	}
+
+	public void NextCombo(SkillSlotInfo at)
+	{
+		(GetActor().cast as PlayerCast).NextComboAt(at);
 	}
 
 	public override void Attack()
 	{
-		Debug.Log("공격입력됨");
-		(GetActor().cast as PlayerCast).UseMainSkill();
-		(GetActor().cast as PlayerCast).ResetComboMain();
+		(GetActor().cast as PlayerCast).UseSkillAt(SkillSlotInfo.LClick);
 	}
 
 	public bool ThrowRope()
@@ -119,33 +121,19 @@ public class PlayerAttack : AttackModule
 		}
 		return false;
 	}
-
-
-	void Charge()
-	{
-		if(curCharge != (int)(AimTime / secPerCharge))
-		{
-			curCharge = (int)(AimTime / secPerCharge);
-			(GetActor().cast as PlayerCast).NextComboMain(false);
-			Debug.Log("Combo Proceeded");
-		}
-	}
-
 	
-
 	void ResetBowStat()
 	{
-		chargeEff.Reinit();
-		chargeEff.Stop();
+		//chargeEff.Reinit();
+		//chargeEff.Stop();
 		curCharge = 0;
-		loaded = false;
+		//loaded = false;
 	}
 
 	void BowDown()
 	{
 		ResetBowStat();
 		GameManager.instance.SwitchTo(CamStatus.Freelook);
-		attackState = AttackStates.None;
 		(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
 		GameManager.instance.uiManager.aimUI.Off();
 		animActions.ResetBowAimState();
@@ -153,7 +141,7 @@ public class PlayerAttack : AttackModule
 
 	public void SetBowStat()
 	{
-		loaded = true;
+		//loaded = true;
 		aimStart = Time.time;
 	}
 
@@ -167,7 +155,6 @@ public class PlayerAttack : AttackModule
 		yield return GameManager.instance.waitSec;
 		ResetBowStat();
 		GameManager.instance.SwitchTo(CamStatus.Freelook);
-		attackState = AttackStates.None;
 		(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
 		GameManager.instance.uiManager.aimUI.On();
 		ongoingResetter = null;

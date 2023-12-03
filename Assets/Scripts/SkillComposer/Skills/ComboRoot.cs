@@ -11,27 +11,32 @@ public class ComboRoot : SkillRoot
 
 	int curCombo = 0;
 	float prevComboSec;
+	float prevOperateSec;
 
 	public override void Disoperate(Actor self)
 	{
+		ResetCombo();
 		base.Disoperate(self);
 	}
 
 	public override void Operate(Actor self)
 	{
-		if (curCombo >= childs.Count)
+		if(Time.time - prevOperateSec >= composeDel)
 		{
-			ResetCombo();
-			Debug.Log("콤보 최대, 초기화");
+			if (curCombo >= childs.Count)
+			{
+				ResetCombo();
+				Debug.Log("콤보 최대, 초기화");
+			}
+			Debug.Log($"콤보 {curCombo + 1}/{childs.Count}");
+			childs[curCombo].Operate(self);
+			prevOperateSec = Time.time;
 		}
-		prevComboSec = Time.time;
-		Debug.Log($"콤보 {curCombo}/{childs.Count}");
-		childs[curCombo].Operate(self);
 	}
 
-	public void UpdateStatus()
+	public override void UpdateStatus()
 	{
-		if(resetSec	> resetThreshold && Time.time - prevComboSec >= resetSec && curCombo != 0)
+		if(curCombo	> resetThreshold && Time.time - prevComboSec >= resetSec && curCombo != 0)
 		{
 			Debug.Log("콤보유지시간초과");
 			ResetCombo();
@@ -62,7 +67,7 @@ public class ComboRoot : SkillRoot
 			curCombo += 1;
 			curCombo %= childs.Count;
 		}
-		else if(curCombo < childs.Count)
+		else if(curCombo < childs.Count - 1)
 		{
 			prevComboSec = Time.time;
 			Debug.Log("다음콤보");

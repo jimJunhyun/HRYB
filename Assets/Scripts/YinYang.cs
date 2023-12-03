@@ -9,6 +9,7 @@ public enum WXInfo
     Earth,
     Metal,
     Water,
+
     Max
 }
 

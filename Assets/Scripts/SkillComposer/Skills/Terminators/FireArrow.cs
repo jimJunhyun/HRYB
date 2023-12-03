@@ -8,7 +8,7 @@ public class FireArrow : Leaf
 {
 	public YinYang damage;
 	public string shootPosName;
-	VisualEffect eff;
+	//VisualEffect eff;
 	Transform shootPos;
 
 	private void OnValidate()
@@ -17,7 +17,7 @@ public class FireArrow : Leaf
 		if(shootPos != null)
 		{
 			Debug.Log("FOUND!");
-			eff = shootPos.GetComponentInChildren<VisualEffect>();
+			//eff = shootPos.GetComponentInChildren<VisualEffect>();
 		}
 	}
 
@@ -28,7 +28,7 @@ public class FireArrow : Leaf
 
 	protected override void MyOperation(Actor self)
 	{
-		eff.Play();
+		//eff.Play();
 		Debug.Log($"화살발사, {shootPos.position} : {shootPos.forward}");
 		Arrow r = PoolManager.GetObject("ArrowTemp", shootPos.position, shootPos.forward).GetComponent<Arrow>();
 		//UnityEditor.EditorApplication.isPaused = true;

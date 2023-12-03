@@ -41,12 +41,6 @@ public class AttackModule : Module
 		return atkDist;
 	}
 
-	public AttackStates attackState
-	{
-		get;
-		protected set;
-	} = AttackStates.None;
-
 	public virtual void Attack()
 	{
 

@@ -28,7 +28,7 @@ public class Arrow : DamageObject
 
 				}
 			}
-			Debug.Log(other.name);
+			//Debug.Log(other.name);
 			base.OnTriggerEnter(other);
 			Returner();
 		}
@@ -70,7 +70,7 @@ public class Arrow : DamageObject
 
 	void Returner()
 	{
-		Debug.Log("RETURN");
+		//Debug.Log("RETURN");
 		rig.velocity = Vector3.zero;
 		StopAllCoroutines();
 		PoolManager.ReturnObject(gameObject);

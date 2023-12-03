@@ -17,8 +17,8 @@ public class SkillRoot : Composite
 	public float castTime;
 	public float cooldown;
 
-	WXInfo mySlotInfo;
-	public WXInfo MySlotInfo { private get => mySlotInfo; set => mySlotInfo = value;}
+	SkillSlotInfo mySlotInfo;
+	public SkillSlotInfo MySlotInfo { private get => mySlotInfo; set => mySlotInfo = value;}
 
 	public override void Operate(Actor self)
 	{
@@ -29,4 +29,6 @@ public class SkillRoot : Composite
 	{
 		base.Disoperate(self);
 	}
+
+	
 }

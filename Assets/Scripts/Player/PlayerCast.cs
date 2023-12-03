@@ -2,9 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SkillSlotInfo
+{
+	Wood,
+	Fire,
+	Earth,
+	Metal,
+	Water,
+
+	LClick,
+	RClick,
+
+
+	Max
+}
+
 public class SkillSlots
 {
-	WXInfo? info;
+	SkillSlotInfo? info;
 	float curCooledTime;
 	public float CurCooledTime
 	{
@@ -37,6 +52,11 @@ public class SkillSlots
 			Debug.Log("SKILL IS EMPTY");
 	}
 
+	public void Disoperate(Actor self)
+	{
+
+	}
+
 	public void Equip(SkillRoot exec, Actor from)
 	{
 		skInfo = exec;
@@ -55,7 +75,7 @@ public class SkillSlots
 		skInfo = null;
 	}
 
-	public SkillSlots(SkillRoot exec, Actor from, WXInfo? info = null)
+	public SkillSlots(SkillRoot exec, Actor from, SkillSlotInfo? info = null)
 	{
 		skInfo = exec;
 		this.info = info;
@@ -102,7 +122,7 @@ public class WXSkillSlots
 	{
 		for (int i = 0; i < ((int)WXInfo.Max); i++)
 		{
-			slots[i] = new SkillSlots(null, attatched, (WXInfo)i);
+			slots[i] = new SkillSlots(null, attatched, (SkillSlotInfo)i);
 		}
 	}
 	public SkillSlots this[int i]
@@ -121,18 +141,48 @@ public class WXSkillSlots
 public class PlayerCast : CastModule
 {
 	public WXSkillSlots slots;
-	public SkillSlots mainSlot;
-	public const string MAINSKILL = "mainSkill";
+	public SkillSlots lClickSlot;
+	public SkillSlots rClickSlot;
+	public const string LCLICKSKILL = "lClickSkill";
+	public const string RCLICKSKILL = "rClickSkill";
+
+	public SkillSlots this[int at]
+	{
+		get
+		{
+			if(at < ((int)WXInfo.Max))
+			{
+				return slots[at];
+			}
+			else
+			{
+				if(at == ((int)SkillSlotInfo.LClick))
+				{
+					return lClickSlot;
+				}
+				else if(at == ((int)SkillSlotInfo.RClick))
+				{
+					return rClickSlot;
+				}
+				else
+				{
+					return null;
+				}
+			}
+		}
+	}
+
+
 	private void Awake()
 	{
 		slots = new WXSkillSlots(GetActor());
-		mainSlot = new SkillSlots(null, GetActor());
-		
+		lClickSlot = new SkillSlots(null, GetActor());
+		rClickSlot = new SkillSlots(null, GetActor());	
 	}
 
 	private void Start()
 	{
-		ConnectSkillDataMain(GameManager.instance.skillLoader["DemoSkill"]);
+		ConnectSkillDataTo(GameManager.instance.skillLoader["DemoSkill"], SkillSlotInfo.LClick);
 
 		nameCastPair.Add("interact" , new Preparation(
 		(self)=>
@@ -274,22 +324,42 @@ public class PlayerCast : CastModule
 			return 0;
 		}));
 
-		nameCastPair.Add(MAINSKILL, new Preparation(
+		nameCastPair.Add(LCLICKSKILL, new Preparation(
 		(self) =>
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				if (mainSlot.IsUsable)
+				if (lClickSlot.IsUsable)
 				{
-					mainSlot.Execute(a);
+					lClickSlot.Execute(a);
 				}
 			}
 		},
 		() =>
 		{
-			if (!mainSlot.IsEmpty)
+			if (!lClickSlot.IsEmpty)
 			{
-				return mainSlot.skInfo.castTime;
+				return lClickSlot.skInfo.castTime;
+			}
+			return 0;
+		}));
+
+		nameCastPair.Add(RCLICKSKILL, new Preparation(
+		(self) =>
+		{
+			if (self.TryGetComponent<Actor>(out Actor a))
+			{
+				if (rClickSlot.IsUsable)
+				{
+					rClickSlot.Execute(a);
+				}
+			}
+		},
+		() =>
+		{
+			if (!rClickSlot.IsEmpty)
+			{
+				return rClickSlot.skInfo.castTime;
 			}
 			return 0;
 		}));
@@ -324,124 +394,97 @@ public class PlayerCast : CastModule
 	private void Update()
 	{
 		slots.Update();
-		UpdateMainSlot();
+		UpdateClickSlots();
+
+		///
 		if (Input.GetKeyDown(KeyCode.Y))
 		{
-			ConnectSkillDataTo(GameManager.instance.skillLoader["DemoSkill"], WXInfo.Wood);
+			ConnectSkillDataTo(GameManager.instance.skillLoader["DemoSkill"], SkillSlotInfo.Wood);
 		}
 		if (Input.GetKeyDown(KeyCode.H))
 		{
-			DisconnectSkillDataFrom(WXInfo.Wood);
+			DisconnectSkillDataFrom(SkillSlotInfo.Wood);
 		}
+		///
 	}
 
-	void UpdateMainSlot()
+	void UpdateClickSlots()
 	{
-		if(mainSlot.skInfo is ComboRoot c)
-		{
-			c.UpdateStatus();
-		}
+		lClickSlot.skInfo.UpdateStatus();
+		rClickSlot.skInfo.UpdateStatus();
 	}
 
-	public SkillRoot ConnectSkillDataTo(SkillRoot root, WXInfo to)
+	public SkillRoot ConnectSkillDataTo(SkillRoot root, SkillSlotInfo to)
 	{
-		SkillRoot original = slots[((int)to)].skInfo;
+		SkillRoot original = this[((int)to)].skInfo;
 		if(original != null)
 			original.Disoperate(GetActor());
-		slots[((int)to)].Equip(root, GetActor());
+		this[((int)to)].Equip(root, GetActor());
 		Debug.Log($"스킬 장착 : {to}, {root.name}");
 		return original;
 	}
 
-	public SkillRoot ConnectSkillDataMain(SkillRoot root)
+	public SkillRoot DisconnectSkillDataFrom(SkillSlotInfo from)
 	{
-		SkillRoot original = mainSlot.skInfo;
-		if (original != null)
-			original.Disoperate(GetActor());
-		mainSlot.Equip(root, GetActor());
-		Debug.Log($"스킬 장착 : lclick, {root.name}");
-		return original;
-	}
-
-	public SkillRoot DisconnectSkillDataFrom(WXInfo from)
-	{
-		SkillRoot data = slots[((int)from)].skInfo;
+		SkillRoot data = this[((int)from)].skInfo;
 		if(data == null)
 			return data;
-		slots[((int)from)].UnEquip(GetActor());
+		this[((int)from)].UnEquip(GetActor());
 		Debug.Log($"스킬 해제 : {from}, {data.name}");
 		return data;
 	}
 	public SkillRoot DisconnectSkillDataMain()
 	{
-		SkillRoot data = mainSlot.skInfo;
+		SkillRoot data = lClickSlot.skInfo;
 		if (data == null)
 			return data;
-		mainSlot.UnEquip(GetActor());
+		lClickSlot.UnEquip(GetActor());
 		Debug.Log($"스킬 해제 : lClick, {data.name}");
 		return data;
 	}
 
-	public void UseSkillAt(WXInfo at)
+	public void UseSkillAt(SkillSlotInfo at)
 	{
 		if (slots[((int)at)].IsUsable)
 		{
 			switch (at)
 			{
-				case WXInfo.Wood:
+				case SkillSlotInfo.Wood:
 					Cast(WXSkillSlots.WOODSKILL);
 					break;
-				case WXInfo.Fire:
+				case SkillSlotInfo.Fire:
 					Cast(WXSkillSlots.FIRESKILL);
 					break;
-				case WXInfo.Earth:
+				case SkillSlotInfo.Earth:
 					Cast(WXSkillSlots.EARTHSKILL);
 					break;
-				case WXInfo.Metal:
+				case SkillSlotInfo.Metal:
 					Cast(WXSkillSlots.METALSKILL);
 					break;
-				case WXInfo.Water:
+				case SkillSlotInfo.Water:
 					Cast(WXSkillSlots.WATERSKILL);
+					break;
+				case SkillSlotInfo.LClick:
+					Cast(LCLICKSKILL);
+					break;
+				case SkillSlotInfo.RClick:
+					Cast(RCLICKSKILL);
 					break;
 			}
 		}
 	}
 
-	public void UseMainSkill()
+	public void NextComboAt(SkillSlotInfo at, bool circular = true, bool isDisoperate = false)
 	{
-		Cast(MAINSKILL);
-	}
-
-	public void NextComboAt(WXInfo at, bool circular = true, bool isDisoperate = false)
-	{
-		if (slots[((int)at)].skInfo is ComboRoot c)
+		if (this[((int)at)].skInfo is ComboRoot c)
 		{
 			c.NextCombo(circular, isDisoperate ? GetActor() : null);
 		}
 	}
 
-	public void NextComboMain(bool circular = true, bool isDisoperate = false)
+	public void DisoperateAt(SkillSlotInfo at)
 	{
-		if(mainSlot.skInfo is ComboRoot c)
-		{
-			c.NextCombo(circular, isDisoperate ? GetActor() : null);
-		}
-	}
-
-	public void ResetComboAt(WXInfo at)
-	{
-		if (slots[((int)at)].skInfo is ComboRoot c)
-		{
-			c.ResetCombo();
-		}
-	}
-
-	public void ResetComboMain()
-	{
-		if (mainSlot.skInfo is ComboRoot c)
-		{
-			c.ResetCombo();
-		}
+		this[((int)at)].skInfo.Disoperate(GetActor());
 	}
 
 }
