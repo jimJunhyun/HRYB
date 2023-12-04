@@ -17,7 +17,7 @@ public class FeetIK : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    		if (animator)
+    		if (false)
     		{
     			// Left Foot
     			// Position 과 Rotation weight 설정

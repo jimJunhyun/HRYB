@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class BearAI : AISetter
 {
-	public bool _isStoryBear = false;
-	
 	public Transform targetPo1;
 	public Transform targetPo2;
 	public Transform targetPo3;
 	protected override void StartInvoke()
 	{
-		
+
 		IsFirstTime firstFound = new IsFirstTime();
 		Waiter waitDuration = new Waiter((float)GameManager.instance.timeliner.duration, false, NodeStatus.Run);
 		IsInRange inWakeUp = new IsInRange(self, player.transform, self.sight.GetSightRange, (player.move as PlayerMove).GetSneakDist, ()=>
