@@ -36,4 +36,9 @@ public class FireArrow : Leaf
 		r.Shoot();
 		self.anim.SetAttackTrigger();
 	}
+
+	public override void UpdateStatus()
+	{
+		
+	}
 }

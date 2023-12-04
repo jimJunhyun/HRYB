@@ -13,6 +13,7 @@ public class Arrow : DamageObject
 	public float power = 60f;
 
 	WaitForSeconds waitTillDisappear;
+	Coroutine c;
 
     Rigidbody rig;
 
@@ -24,7 +25,7 @@ public class Arrow : DamageObject
 			{
 				if(hit != GameManager.instance.pActor.life)
 				{
-					(GameManager.instance.pActor.cast as PlayerCast).NextComboMain(false);
+					(GameManager.instance.pActor.cast as PlayerCast).NextComboAt(SkillSlotInfo.LClick, false);
 
 				}
 			}
@@ -52,11 +53,30 @@ public class Arrow : DamageObject
 
 	private void OnEnable()
 	{
-		StartCoroutine(DelReturn());
+		
+	}
+
+	public void SetDisappearTimer()
+	{
+		if(c == null && gameObject.activeInHierarchy)
+		{
+			c = StartCoroutine(DelReturn());
+
+		}
+	}
+
+	public void StopDisappearTimer()
+	{
+		if(c != null)
+		{
+			StopCoroutine(c);
+		}
 	}
 
 	public void Shoot()
 	{
+
+		
 		rig.AddForce(power * transform.forward, ForceMode.Impulse);
 
 	}
@@ -65,7 +85,7 @@ public class Arrow : DamageObject
 	{
 		yield return waitTillDisappear;
 		Returner();
-		
+		c = null;
 	}
 
 	void Returner()

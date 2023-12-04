@@ -17,10 +17,7 @@ public class Composite : Compose, IComposer
 
 	public override void Disoperate(Actor self)
 	{
-		for (int i = 0; i < childs.Count; i++)
-		{
-			childs[i].Disoperate(self);
-		}
+		GameManager.instance.StartCoroutine(DelDisoperate(self));
 	}
 
 	public override void Operate(Actor self)
@@ -38,9 +35,12 @@ public class Composite : Compose, IComposer
 		//Do nothing?
 	}
 
-	public virtual void UpdateStatus()
+	public override void UpdateStatus()
 	{
-
+		for (int i = 0; i < childs.Count; i++)
+		{
+			childs[i].UpdateStatus();
+		}
 	}
 
 	IEnumerator DelOperate(Actor self)
@@ -48,6 +48,15 @@ public class Composite : Compose, IComposer
 		for (int i = 0; i < childs.Count; i++)
 		{
 			childs[i].Operate(self);
+			yield return new WaitForSeconds(composeDel);
+		}
+	}
+
+	IEnumerator DelDisoperate(Actor self)
+	{
+		for (int i = 0; i < childs.Count; i++)
+		{
+			childs[i].Disoperate(self);
 			yield return new WaitForSeconds(composeDel);
 		}
 	}

@@ -19,4 +19,9 @@ public class HealYang : Leaf
 	{
 		
 	}
+
+	public override void UpdateStatus()
+	{
+		throw new System.NotImplementedException();
+	}
 }

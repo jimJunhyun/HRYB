@@ -13,7 +13,7 @@ public abstract class  Leaf : Compose
 	{
 		if(myVarHash == null)
 			myVarHash = Animator.StringToHash(animVarName);
-		self.anim.SetTrigger((int)myVarHash);
+		self?.anim.SetTrigger((int)myVarHash);
 		MyOperation(self);
 	}
 

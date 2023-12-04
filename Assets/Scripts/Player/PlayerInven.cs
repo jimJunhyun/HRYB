@@ -616,7 +616,7 @@ public class PlayerInven : MonoBehaviour
 		{
 			if (stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(WXInfo.Wood);
+				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(SkillSlotInfo.Wood);
 			}
 			else if (stat == HandStat.Item)
 			{
@@ -631,7 +631,7 @@ public class PlayerInven : MonoBehaviour
 		{
 			if(stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(WXInfo.Fire);
+				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(SkillSlotInfo.Fire);
 			}
 			else if(stat == HandStat.Item)
 			{
@@ -647,7 +647,7 @@ public class PlayerInven : MonoBehaviour
 		{
 			if (stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(WXInfo.Earth);
+				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(SkillSlotInfo.Earth);
 			}
 			else if (stat == HandStat.Item)
 			{
@@ -662,7 +662,7 @@ public class PlayerInven : MonoBehaviour
 		{
 			if (stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(WXInfo.Metal);
+				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(SkillSlotInfo.Metal);
 			}
 			else if (stat == HandStat.Item)
 			{
@@ -677,7 +677,7 @@ public class PlayerInven : MonoBehaviour
 		{
 			if (stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(WXInfo.Water);
+				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(SkillSlotInfo.Water);
 			}
 			else if (stat == HandStat.Item)
 			{

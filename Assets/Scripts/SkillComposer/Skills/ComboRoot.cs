@@ -31,6 +31,7 @@ public class ComboRoot : SkillRoot
 			Debug.Log($"콤보 {curCombo + 1}/{childs.Count}");
 			childs[curCombo].Operate(self);
 			prevOperateSec = Time.time;
+			NextCombo(false, self);
 		}
 	}
 
@@ -42,6 +43,7 @@ public class ComboRoot : SkillRoot
 			ResetCombo();
 			prevComboSec = Time.time;
 		}
+		base.UpdateStatus();
 	}
 
 	protected override void MyDisoperation(Actor self)

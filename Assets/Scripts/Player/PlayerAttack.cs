@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.VFX;
 
 
@@ -17,7 +18,6 @@ public class PlayerAttack : AttackModule
 	//VisualEffect chargeEff;
 	Ray camRay;
 	public Transform ShootPos { get; protected set;}
-	int curCharge;
 
 	UnityAction updateActs;
 
@@ -27,6 +27,8 @@ public class PlayerAttack : AttackModule
 
 	Coroutine ongoingResetter;
 
+	bool charges = false;
+
 	PlayerAnimActions animActions;
 
 	private void Awake()
@@ -34,7 +36,6 @@ public class PlayerAttack : AttackModule
 		shootPos = GameObject.Find("ShootPos").transform;
 
 		animActions = GetComponentInChildren<PlayerAnimActions>();
-		curCharge = 0;
 
 		//chargeEff = shootPos.GetComponentInChildren<VisualEffect>();
 		//chargeEff.Stop();
@@ -54,20 +55,22 @@ public class PlayerAttack : AttackModule
 	{
 		if(GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
-			if (context.performed)
+			if (context.started && !charges)
 			{
-				GameManager.instance.SwitchTo(CamStatus.Aim);
-				(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
-				GameManager.instance.uiManager.aimUI.On();
-				//chargeEff.Play();
+				Debug.Log("CHGStart");
+				(GetActor().cast as PlayerCast).UseSkillAt(SkillSlotInfo.RClick);
+				charges = true;
 			}
-			if (context.canceled)
+			if (context.canceled && charges)
 			{
-				Attack();
-				Disoperater(SkillSlotInfo.RClick);
+				//(GetActor().cast as PlayerCast).UseSkillAt(SkillSlotInfo.RClick);
+				Debug.Log("CHGStop");
+				(GetActor().cast as PlayerCast).DisoperateAt(SkillSlotInfo.RClick);
 				BowDown();
-				
+				charges = false;
 			}
+			
+			
 		}
 	}
 
@@ -75,11 +78,10 @@ public class PlayerAttack : AttackModule
 	{
 		if (context.performed)
 		{
-			Debug.Log("공격입력됨");
+			//Debug.Log("공격입력됨");
 			if (GameManager.instance.pinven.stat == HandStat.Weapon)
 			{
 				Attack();
-				NextCombo(SkillSlotInfo.LClick); //###
 			}
 			else if (GameManager.instance.pinven.stat == HandStat.Item)
 			{
@@ -90,16 +92,6 @@ public class PlayerAttack : AttackModule
 			}
 		}
 		
-	}
-
-	public void Disoperater(SkillSlotInfo at)
-	{
-		(GetActor().cast as PlayerCast).DisoperateAt(at);
-	}
-
-	public void NextCombo(SkillSlotInfo at)
-	{
-		(GetActor().cast as PlayerCast).NextComboAt(at);
 	}
 
 	public override void Attack()
@@ -126,7 +118,6 @@ public class PlayerAttack : AttackModule
 	{
 		//chargeEff.Reinit();
 		//chargeEff.Stop();
-		curCharge = 0;
 		//loaded = false;
 	}
 
@@ -134,7 +125,7 @@ public class PlayerAttack : AttackModule
 	{
 		ResetBowStat();
 		GameManager.instance.SwitchTo(CamStatus.Freelook);
-		(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
+		//(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
 		GameManager.instance.uiManager.aimUI.Off();
 		animActions.ResetBowAimState();
 	}
@@ -155,7 +146,7 @@ public class PlayerAttack : AttackModule
 		yield return GameManager.instance.waitSec;
 		ResetBowStat();
 		GameManager.instance.SwitchTo(CamStatus.Freelook);
-		(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
+		//(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
 		GameManager.instance.uiManager.aimUI.On();
 		ongoingResetter = null;
 	}

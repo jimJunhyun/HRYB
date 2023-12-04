@@ -20,6 +20,12 @@ public class SpeedUp : Leaf
 		self.move.speedMod -= 0.5f;
 	}
 
+	
+	public override void UpdateStatus()
+	{
+		throw new System.NotImplementedException();
+	}
+	
 	IEnumerator DelDisoperate(Actor self)
 	{
 		yield return new WaitForSeconds(duration);

@@ -16,4 +16,5 @@ public abstract class Compose : ScriptableObject, IComposer
 
 	protected abstract void MyOperation(Actor self);
 	protected abstract void MyDisoperation(Actor self);
+	public abstract void UpdateStatus();
 }

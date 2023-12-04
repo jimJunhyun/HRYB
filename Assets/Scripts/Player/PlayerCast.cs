@@ -42,7 +42,7 @@ public class SkillSlots
 		{
 			curCooledTime = 0;
 			skInfo.Operate(self);
-			Debug.Log("SKILL USED");
+			//Debug.Log("SKILL USED");
 			if(skInfo.useType == SkillUseType.ActiveConsumable)
 			{
 				//GameManager.instance.pinven.RemoveSkill(skInfo);
@@ -182,7 +182,8 @@ public class PlayerCast : CastModule
 
 	private void Start()
 	{
-		ConnectSkillDataTo(GameManager.instance.skillLoader["DemoSkill"], SkillSlotInfo.LClick);
+		ConnectSkillDataTo(GameManager.instance.skillLoader["NormalBowAttack"], SkillSlotInfo.LClick);
+		ConnectSkillDataTo(GameManager.instance.skillLoader["ChargeBowAttack"], SkillSlotInfo.RClick);
 
 		nameCastPair.Add("interact" , new Preparation(
 		(self)=>
@@ -232,14 +233,14 @@ public class PlayerCast : CastModule
 		{
 			if(self.TryGetComponent<Actor>(out Actor a))
 			{
-				slots[((int)WXInfo.Wood)].Execute(a);
+				slots[((int)SkillSlotInfo.Wood)].Execute(a);
 			}
 		},
 		() =>
 		{
-			if (!slots[((int)WXInfo.Wood)].IsEmpty)
+			if (!slots[((int)SkillSlotInfo.Wood)].IsEmpty)
 			{
-				return slots[((int)WXInfo.Wood)].skInfo.castTime;
+				return slots[((int)SkillSlotInfo.Wood)].skInfo.castTime;
 			}
 			return 0;
 		}));
@@ -249,17 +250,17 @@ public class PlayerCast : CastModule
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				if (slots[((int)WXInfo.Fire)].IsUsable)
+				if (slots[((int)SkillSlotInfo.Fire)].IsUsable)
 				{
-					slots[((int)WXInfo.Fire)].Execute(a);
+					slots[((int)SkillSlotInfo.Fire)].Execute(a);
 				}
 			}
 		},
 		() =>
 		{
-			if (!slots[((int)WXInfo.Fire)].IsEmpty)
+			if (!slots[((int)SkillSlotInfo.Fire)].IsEmpty)
 			{
-				return slots[((int)WXInfo.Fire)].skInfo.castTime;
+				return slots[((int)SkillSlotInfo.Fire)].skInfo.castTime;
 			}
 			return 0;
 		}));
@@ -269,17 +270,17 @@ public class PlayerCast : CastModule
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				if (slots[((int)WXInfo.Earth)].IsUsable)
+				if (slots[((int)SkillSlotInfo.Earth)].IsUsable)
 				{
-					slots[((int)WXInfo.Earth)].Execute(a);
+					slots[((int)SkillSlotInfo.Earth)].Execute(a);
 				}
 			}
 		},
 		() =>
 		{
-			if (!slots[((int)WXInfo.Earth)].IsEmpty)
+			if (!slots[((int)SkillSlotInfo.Earth)].IsEmpty)
 			{
-				return slots[((int)WXInfo.Earth)].skInfo.castTime;
+				return slots[((int)SkillSlotInfo.Earth)].skInfo.castTime;
 			}
 			return 0;
 		}));
@@ -289,17 +290,17 @@ public class PlayerCast : CastModule
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				if (slots[((int)WXInfo.Metal)].IsUsable)
+				if (slots[((int)SkillSlotInfo.Metal)].IsUsable)
 				{
-					slots[((int)WXInfo.Metal)].Execute(a);
+					slots[((int)SkillSlotInfo.Metal)].Execute(a);
 				}	
 			}
 		},
 		() =>
 		{
-			if (!slots[((int)WXInfo.Metal)].IsEmpty)
+			if (!slots[((int)SkillSlotInfo.Metal)].IsEmpty)
 			{
-				return slots[((int)WXInfo.Metal)].skInfo.castTime;
+				return slots[((int)SkillSlotInfo.Metal)].skInfo.castTime;
 			}
 			return 0;
 		}));
@@ -309,17 +310,17 @@ public class PlayerCast : CastModule
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				if (slots[((int)WXInfo.Water)].IsUsable)
+				if (slots[((int)SkillSlotInfo.Water)].IsUsable)
 				{
-					slots[((int)WXInfo.Water)].Execute(a);
+					slots[((int)SkillSlotInfo.Water)].Execute(a);
 				}
 			}
 		},
 		() =>
 		{
-			if (!slots[((int)WXInfo.Water)].IsEmpty)
+			if (!slots[((int)SkillSlotInfo.Water)].IsEmpty)
 			{
-				return slots[((int)WXInfo.Water)].skInfo.castTime;
+				return slots[((int)SkillSlotInfo.Water)].skInfo.castTime;
 			}
 			return 0;
 		}));
@@ -410,8 +411,8 @@ public class PlayerCast : CastModule
 
 	void UpdateClickSlots()
 	{
-		lClickSlot.skInfo.UpdateStatus();
-		rClickSlot.skInfo.UpdateStatus();
+		lClickSlot.skInfo?.UpdateStatus();
+		rClickSlot.skInfo?.UpdateStatus();
 	}
 
 	public SkillRoot ConnectSkillDataTo(SkillRoot root, SkillSlotInfo to)
@@ -445,7 +446,7 @@ public class PlayerCast : CastModule
 
 	public void UseSkillAt(SkillSlotInfo at)
 	{
-		if (slots[((int)at)].IsUsable)
+		if (this[((int)at)].IsUsable)
 		{
 			switch (at)
 			{
