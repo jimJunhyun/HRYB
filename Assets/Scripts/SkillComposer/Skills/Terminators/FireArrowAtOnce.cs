@@ -32,6 +32,7 @@ public class FireArrowAtOnce : Leaf
 			Debug.Log($"화살발사, {arrow.transform.position} : {arrow.transform.forward}");
 			arrow.Shoot();
 			arrow.SetDisappearTimer();
+			arrow.ResumeCheck();
 			arrow = null;
 		}
 	}
@@ -44,6 +45,7 @@ public class FireArrowAtOnce : Leaf
 		arrow = PoolManager.GetObject("ArrowTemp", pos, shootPos.forward).GetComponent<Arrow>();
 		arrow.SetInfo(damage);
 		arrow.StopDisappearTimer();
+		arrow.StopCheck();
 	}
 
 	public override void UpdateStatus()
@@ -51,8 +53,8 @@ public class FireArrowAtOnce : Leaf
 		if(arrow != null)
 		{
 			Vector3 pos = GameManager.instance.player.transform.position + Vector3.up;
-			pos.x += Mathf.Cos(circularAngle * Mathf.Deg2Rad) * circularRad;
-			pos.y += Mathf.Sin(circularAngle * Mathf.Deg2Rad) * circularRad;
+			Vector3 posDiff = (shootPos.right * (Mathf.Cos(circularAngle * Mathf.Deg2Rad) * circularRad)) + (shootPos.up * (Mathf.Sin(circularAngle * Mathf.Deg2Rad) * circularRad));
+			pos += posDiff;
 
 			arrow.transform.position = pos;
 			arrow.transform.forward = shootPos.forward;

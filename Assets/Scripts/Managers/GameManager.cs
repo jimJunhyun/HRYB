@@ -61,6 +61,8 @@ public class GameManager : MonoBehaviour
 
 	public StatusEffects statEff;
 
+	public float forceResistance = 3f;
+
 	CinemachineBasicMultiChannelPerlin aimCamShaker;
 
 	public bool lockMouse;

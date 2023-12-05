@@ -76,18 +76,40 @@ public class LifeModule : Module
 		}
 	}
 
-	public void ApplyStatus(StatusEffect eff)
+	public Action<Actor> ApplyStatus(StatusEffect eff, Actor applier, float power)
 	{
-		appliedDebuff.Add(eff);
-		eff.onApplied.Invoke(GetActor(), GetActor());
-		GetActor().updateActs += eff.onUpdated;
+		Debug.Log($"Status {eff.name} on");
+
+		string app = "Current Status : ";
+		foreach (var item in appliedDebuff)
+		{
+			app += item.name + " , ";
+		}
+		Debug.Log(app);
+		if (appliedDebuff.Add(eff))
+		{
+			eff.onApplied.Invoke(GetActor(), applier, power);
+			Action<Actor> updAct = (self) => { eff.onUpdated(self, power);};
+			GetActor().updateActs += updAct;
+			return updAct;
+		}
+		return null;
 	}
 
-	public void EndStaus(StatusEffect eff)
+	public void EndStaus(StatusEffect eff, Action<Actor> myUpdateAct, float power)
 	{
-		appliedDebuff.Remove(eff);
-		eff.onEnded.Invoke(GetActor());
-		GetActor().updateActs -= eff.onUpdated;
+		Debug.Log($"Status {eff.name} off");
+
+		Debug.Log($"update act count : {GetActor().updateActs.GetInvocationList().Length}");
+
+		if (appliedDebuff.Remove(eff))
+		{
+			GetActor().updateActs -= myUpdateAct;
+
+			eff.onEnded.Invoke(GetActor(), power);
+		}
+
+		
 	}
 
 	public virtual void AddYYBase(YinYang data)
@@ -102,7 +124,7 @@ public class LifeModule : Module
 		{
 			AddYYBase(data);
 			GetActor().anim.SetHitTrigger();
-			StatusEffects.ApplyStat(GetActor(), StatEffID.Immune, IMMUNETIME);
+			StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 		}
 	}
 
@@ -112,7 +134,7 @@ public class LifeModule : Module
 		{ 
 			StartCoroutine(DelAddYYWX(data, (spd * TotalApplySpeed)));
 			GetActor().anim.SetHitTrigger();
-			StatusEffects.ApplyStat(GetActor(), StatEffID.Immune, IMMUNETIME);
+			StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 		}
 	}
 

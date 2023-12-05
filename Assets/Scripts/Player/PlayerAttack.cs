@@ -57,17 +57,11 @@ public class PlayerAttack : AttackModule
 		{
 			if (context.started && !charges)
 			{
-				Debug.Log("CHGStart");
-				(GetActor().cast as PlayerCast).UseSkillAt(SkillSlotInfo.RClick);
-				charges = true;
+				SetCharge();
 			}
 			if (context.canceled && charges)
 			{
-				//(GetActor().cast as PlayerCast).UseSkillAt(SkillSlotInfo.RClick);
-				Debug.Log("CHGStop");
-				(GetActor().cast as PlayerCast).DisoperateAt(SkillSlotInfo.RClick);
-				BowDown();
-				charges = false;
+				ResetCharge();
 			}
 			
 			
@@ -78,7 +72,7 @@ public class PlayerAttack : AttackModule
 	{
 		if (context.performed)
 		{
-			//Debug.Log("공격입력됨");
+			ResetCharge();
 			if (GameManager.instance.pinven.stat == HandStat.Weapon)
 			{
 				Attack();
@@ -119,6 +113,19 @@ public class PlayerAttack : AttackModule
 		//chargeEff.Reinit();
 		//chargeEff.Stop();
 		//loaded = false;
+	}
+
+	internal void ResetCharge()
+	{
+		(GetActor().cast as PlayerCast).DisoperateAt(SkillSlotInfo.RClick);
+		BowDown();
+		charges = false;
+	}
+
+	void SetCharge()
+	{
+		(GetActor().cast as PlayerCast).UseSkillAt(SkillSlotInfo.RClick);
+		charges = true;
 	}
 
 	void BowDown()

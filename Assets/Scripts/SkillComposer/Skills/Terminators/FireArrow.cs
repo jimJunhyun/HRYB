@@ -8,6 +8,7 @@ public class FireArrow : Leaf
 {
 	public YinYang damage;
 	public string shootPosName;
+	public float angleY;
 	//VisualEffect eff;
 	Transform shootPos;
 
@@ -31,6 +32,9 @@ public class FireArrow : Leaf
 		//eff.Play();
 		Debug.Log($"화살발사, {shootPos.position} : {shootPos.forward}");
 		Arrow r = PoolManager.GetObject("ArrowTemp", shootPos.position, shootPos.forward).GetComponent<Arrow>();
+		Vector3 localRot = r.transform.localEulerAngles;
+		localRot.y += angleY;
+		r.transform.localEulerAngles = localRot;
 		//UnityEditor.EditorApplication.isPaused = true;
 		r.SetInfo(damage);
 		r.Shoot();

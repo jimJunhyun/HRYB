@@ -12,6 +12,8 @@ public class Arrow : DamageObject
 
 	public float power = 60f;
 
+	bool detectOn = true;
+
 	WaitForSeconds waitTillDisappear;
 	Coroutine c;
 
@@ -19,7 +21,7 @@ public class Arrow : DamageObject
 
 	public override void OnTriggerEnter(Collider other)
 	{
-		if(!other.isTrigger)
+		if(!other.isTrigger && detectOn)
 		{
 			if (other.TryGetComponent<LifeModule>(out LifeModule hit))
 			{
@@ -71,6 +73,16 @@ public class Arrow : DamageObject
 		{
 			StopCoroutine(c);
 		}
+	}
+
+	public void StopCheck()
+	{
+		detectOn = false;
+	}
+
+	public void ResumeCheck()
+	{
+		detectOn = true;
 	}
 
 	public void Shoot()

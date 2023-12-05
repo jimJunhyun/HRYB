@@ -527,8 +527,10 @@ public class PlayerInven : MonoBehaviour
 					
 					break;
 				case HandStat.Weapon:
+
 					stat = HandStat.Item;
 					(GameManager.instance.pActor.anim as PlayerAnim).SetUnequipTrigger();
+					(GameManager.instance.pActor.atk as PlayerAttack).ResetCharge();
 					break;
 				default:
 					break;
