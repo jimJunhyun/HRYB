@@ -59,7 +59,7 @@ public class BearAttack : EnemyAttackModule
 
 				break;
 			case AttackType.MouthAttack:
-				Target.life.AddYY(damage, EffSpeed, true);
+				Target.life.AddYY(damage, true);
 				PoolManager.GetObject("DamagedEffect", Target.transform.position + (Vector3.up * Target.transform.localScale.magnitude * 0.5f), Quaternion.LookRotation(Target.transform.forward));
 				break;
 			case AttackType.SpecialAttack:
