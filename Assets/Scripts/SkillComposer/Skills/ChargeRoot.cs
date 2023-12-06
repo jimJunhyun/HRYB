@@ -7,6 +7,8 @@ public class ChargeRoot : SkillRoot
 {
 	public float secPerCharge;
 
+	public bool isAimMode = false;
+
 	int curCharge = 0;
 	float chargeStartSec;
 
@@ -22,6 +24,11 @@ public class ChargeRoot : SkillRoot
 			charging = false;
 			base.Disoperate(self);
 			owner = null;
+			if (isAimMode)
+			{
+				GameManager.instance.SwitchTo(CamStatus.Freelook);
+				GameManager.instance.uiManager.aimUI.Off();
+			}
 		}
 		
 	}
@@ -36,6 +43,11 @@ public class ChargeRoot : SkillRoot
 			Debug.Log($"Charge Started, 1/{childs.Count}");
 			childs[curCharge].Operate(owner);
 			owner = self;
+			if (isAimMode)
+			{
+				GameManager.instance.SwitchTo(CamStatus.Aim);
+				GameManager.instance.uiManager.aimUI.On();
+			}
 		}
 	}
 

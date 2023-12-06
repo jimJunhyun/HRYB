@@ -37,6 +37,7 @@ public class FireArrow : Leaf
 		r.transform.localEulerAngles = localRot;
 		//UnityEditor.EditorApplication.isPaused = true;
 		r.SetInfo(damage);
+		r.SetOwner(self);
 		r.Shoot();
 		self.anim.SetAttackTrigger();
 	}

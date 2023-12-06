@@ -15,7 +15,6 @@ public class ComboRoot : SkillRoot
 
 	public override void Disoperate(Actor self)
 	{
-		ResetCombo();
 		base.Disoperate(self);
 	}
 
@@ -31,7 +30,7 @@ public class ComboRoot : SkillRoot
 			Debug.Log($"콤보 {curCombo + 1}/{childs.Count}");
 			childs[curCombo].Operate(self);
 			prevOperateSec = Time.time;
-			NextCombo(false, self);
+			NextCombo(true, self);
 		}
 	}
 

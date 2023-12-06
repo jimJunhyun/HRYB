@@ -265,6 +265,12 @@ public class PlayerInven : MonoBehaviour
 
 	bool havingBow = false;
 
+	bool clickWood = false;
+	bool clickFire = false;
+	bool clickEarth = false;
+	bool clickMetal = false;
+	bool clickWater = false;
+
 	public HandStat stat = HandStat.Item;
 	public int curHolding = 0;
 	public ItemAmountPair CurHoldingItem 
@@ -530,7 +536,8 @@ public class PlayerInven : MonoBehaviour
 
 					stat = HandStat.Item;
 					(GameManager.instance.pActor.anim as PlayerAnim).SetUnequipTrigger();
-					(GameManager.instance.pActor.atk as PlayerAttack).ResetCharge();
+					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
+					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.LClick);
 					break;
 				default:
 					break;
@@ -618,7 +625,16 @@ public class PlayerInven : MonoBehaviour
 		{
 			if (stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(SkillSlotInfo.Wood);
+				if (context.started && !clickWood)
+				{
+					clickWood = true;
+					(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Wood);
+				}
+				else if (context.canceled && clickWood)
+				{
+					clickWood = false;
+					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Wood);
+				}
 			}
 			else if (stat == HandStat.Item)
 			{
@@ -633,7 +649,16 @@ public class PlayerInven : MonoBehaviour
 		{
 			if(stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(SkillSlotInfo.Fire);
+				if (context.started && !clickFire)
+				{
+					clickFire = true;
+					(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Fire);
+				}
+				else if (context.canceled && clickFire)
+				{
+					clickFire = false;
+					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Fire);
+				}
 			}
 			else if(stat == HandStat.Item)
 			{
@@ -649,7 +674,16 @@ public class PlayerInven : MonoBehaviour
 		{
 			if (stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(SkillSlotInfo.Earth);
+				if (context.started && !clickEarth)
+				{
+					clickEarth = true;
+					(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Earth);
+				}
+				else if (context.canceled && clickEarth)
+				{
+					clickEarth = false;
+					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Earth);
+				}
 			}
 			else if (stat == HandStat.Item)
 			{
@@ -664,7 +698,16 @@ public class PlayerInven : MonoBehaviour
 		{
 			if (stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(SkillSlotInfo.Metal);
+				if (context.started && !clickMetal)
+				{
+					clickMetal = true;
+					(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Metal);
+				}
+				else if (context.canceled && clickMetal)
+				{
+					clickMetal = false;
+					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Metal);
+				}
 			}
 			else if (stat == HandStat.Item)
 			{
@@ -679,7 +722,16 @@ public class PlayerInven : MonoBehaviour
 		{
 			if (stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).UseSkillAt(SkillSlotInfo.Water);
+				if (context.started && !clickWater)
+				{
+					clickWater = true;
+					(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Water);
+				}
+				else if (context.canceled && clickWater)
+				{
+					clickWater = false;
+					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Water);
+				}
 			}
 			else if (stat == HandStat.Item)
 			{

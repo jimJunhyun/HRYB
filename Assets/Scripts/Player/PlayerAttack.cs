@@ -14,7 +14,6 @@ public class PlayerAttack : AttackModule
 
 	public float SecPerCharge { get => secPerCharge; }
 
-	Transform shootPos;
 	//VisualEffect chargeEff;
 	Ray camRay;
 	public Transform ShootPos { get; protected set;}
@@ -27,13 +26,14 @@ public class PlayerAttack : AttackModule
 
 	Coroutine ongoingResetter;
 
-	bool charges = false;
+	bool clickL = false;
+	bool clickR = false;
 
 	PlayerAnimActions animActions;
 
 	private void Awake()
 	{
-		shootPos = GameObject.Find("ShootPos").transform;
+		ShootPos = GameObject.Find("ShootPos").transform;
 
 		animActions = GetComponentInChildren<PlayerAnimActions>();
 
@@ -55,43 +55,60 @@ public class PlayerAttack : AttackModule
 	{
 		if(GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
-			if (context.started && !charges)
+			if (!clickL)
 			{
-				SetCharge();
+				if (context.started && !clickR)
+				{
+					clickR = true;
+					Debug.Log("AIM START");
+					(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.RClick);
+				}
+				else if (context.canceled && clickR)
+				{
+					clickR = false;
+					(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
+				}
 			}
-			if (context.canceled && charges)
-			{
-				ResetCharge();
-			}
-			
 			
 		}
 	}
 
 	public void OnAttack(InputAction.CallbackContext context)
 	{
-		if (context.performed)
+		//(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
+		
+		if (GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
-			ResetCharge();
-			if (GameManager.instance.pinven.stat == HandStat.Weapon)
+			if (!clickR)
 			{
-				Attack();
-			}
-			else if (GameManager.instance.pinven.stat == HandStat.Item)
-			{
-				if (!GameManager.instance.uiManager.isWholeScreenUIOn)
+				if (context.started && !clickL)
 				{
-					GameManager.instance.pinven.CurHoldingItem.info?.Use();
+					clickL = true;
+					Debug.Log("NORMALLTLR");
+					(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.LClick);
+				}
+				else if (context.canceled && clickL)
+				{
+					clickL = false;
+					Debug.Log("LClick Cancel");
+					(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.LClick);
 				}
 			}
+				
 		}
-		
+		else if (GameManager.instance.pinven.stat == HandStat.Item && context.performed)
+		{
+			if (!GameManager.instance.uiManager.isWholeScreenUIOn)
+			{
+				GameManager.instance.pinven.CurHoldingItem.info?.Use();
+			}
+		}
 	}
 
-	public override void Attack()
-	{
-		(GetActor().cast as PlayerCast).UseSkillAt(SkillSlotInfo.LClick);
-	}
+	//public override void Attack()
+	//{
+	//	//(GetActor().cast as PlayerCast).UseSkillAt(SkillSlotInfo.LClick);
+	//}
 
 	public bool ThrowRope()
 	{
@@ -115,26 +132,14 @@ public class PlayerAttack : AttackModule
 		//loaded = false;
 	}
 
-	internal void ResetCharge()
-	{
-		(GetActor().cast as PlayerCast).DisoperateAt(SkillSlotInfo.RClick);
-		BowDown();
-		charges = false;
-	}
-
-	void SetCharge()
-	{
-		(GetActor().cast as PlayerCast).UseSkillAt(SkillSlotInfo.RClick);
-		charges = true;
-	}
+	
 
 	void BowDown()
 	{
-		ResetBowStat();
-		GameManager.instance.SwitchTo(CamStatus.Freelook);
+		//ResetBowStat();
 		//(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
-		GameManager.instance.uiManager.aimUI.Off();
-		animActions.ResetBowAimState();
+		
+		//animActions.ResetBowAimState();
 	}
 
 	public void SetBowStat()

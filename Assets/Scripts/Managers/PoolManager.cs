@@ -40,11 +40,14 @@ public class PoolManager : MonoBehaviour
 		StackWithName<GameObject> st;
 		if ((st = pooleds.Find(item => item.name == name)) != null)
 		{
-			GameObject res = st.data.Pop();
-			res.SetActive(true);
-			res.transform.position = pos;
-			res.transform.rotation = rot;
-			return res;
+			if(st.data.Count > 0)
+			{
+				GameObject res = st.data.Pop();
+				res.SetActive(true);
+				res.transform.position = pos;
+				res.transform.rotation = rot;
+				return res;
+			}
 		}
 		Debug.LogError($"Item named {name} doesn't exist!");
 		return null;
@@ -55,11 +58,14 @@ public class PoolManager : MonoBehaviour
 		StackWithName<GameObject> st;
 		if ((st = pooleds.Find(item => item.name == name)) != null)
 		{
-			GameObject res = st.data.Pop();
-			res.SetActive(true);
-			res.transform.position = pos;
-			res.transform.forward = forward;
-			return res;
+			if(st.data.Count > 0)
+			{
+				GameObject res = st.data.Pop();
+				res.SetActive(true);
+				res.transform.position = pos;
+				res.transform.forward = forward;
+				return res;
+			}
 		}
 		Debug.LogError($"Item named {name} doesn't exist!");
 		return null;
@@ -74,6 +80,7 @@ public class PoolManager : MonoBehaviour
 			
 			obj.transform.position = Vector3.zero;
 			obj.transform.rotation = Quaternion.identity;
+			obj.transform.localScale = Vector3.one;
 			st.data.Push(obj);
 		}
 		else

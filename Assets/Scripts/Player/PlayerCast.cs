@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum SkillSlotInfo
 {
@@ -38,7 +39,7 @@ public class SkillSlots
 	}
 	public void Execute(Actor self)
 	{
-		if(!IsEmpty)
+		if(!IsEmpty && IsUsable)
 		{
 			curCooledTime = 0;
 			skInfo.Operate(self);
@@ -54,7 +55,10 @@ public class SkillSlots
 
 	public void Disoperate(Actor self)
 	{
-
+		if(!IsEmpty && skInfo.useType != SkillUseType.Passive)
+		{
+			skInfo.Disoperate(self);
+		}
 	}
 
 	public void Equip(SkillRoot exec, Actor from)
@@ -70,7 +74,10 @@ public class SkillSlots
 
 	public void UnEquip(Actor from)
 	{
-		skInfo.Disoperate(from);
+		if(skInfo.useType == SkillUseType.Passive)
+		{
+			skInfo.Disoperate(from);
+		}
 		curCooledTime = 0;
 		skInfo = null;
 	}
@@ -109,12 +116,9 @@ public class WXSkillSlots
 	{
 		for (int i = 0; i < ((int)WXInfo.Max); i++)
 		{
-			if(!slots[i].IsEmpty && !slots[i].IsUsable)
+			if(!slots[i].IsEmpty && slots[i].skInfo.useType != SkillUseType.Passive && !slots[i].IsUsable)
 				slots[i].CurCooledTime += Time.deltaTime;
-			if((slots[i].skInfo is ComboRoot c))
-			{
-				c.UpdateStatus();
-			}
+			slots[i].skInfo?.UpdateStatus();
 		}
 	}
 
@@ -145,6 +149,8 @@ public class PlayerCast : CastModule
 	public SkillSlots rClickSlot;
 	public const string LCLICKSKILL = "lClickSkill";
 	public const string RCLICKSKILL = "rClickSkill";
+
+	public const string DISOPERATE = "disop";
 
 	public SkillSlots this[int at]
 	{
@@ -245,6 +251,19 @@ public class PlayerCast : CastModule
 			return 0;
 		}));
 
+		nameCastPair.Add(WXSkillSlots.WOODSKILL+DISOPERATE, new Preparation(
+		(self) =>
+		{
+			if (self.TryGetComponent<Actor>(out Actor a))
+			{
+				slots[((int)SkillSlotInfo.Wood)].Disoperate(a);
+			}
+		},
+		() =>
+		{
+			return 0;
+		}));
+
 		nameCastPair.Add(WXSkillSlots.FIRESKILL, new Preparation(
 		(self) =>
 		{
@@ -262,6 +281,19 @@ public class PlayerCast : CastModule
 			{
 				return slots[((int)SkillSlotInfo.Fire)].skInfo.castTime;
 			}
+			return 0;
+		}));
+
+		nameCastPair.Add(WXSkillSlots.FIRESKILL + DISOPERATE, new Preparation(
+		(self) =>
+		{
+			if (self.TryGetComponent<Actor>(out Actor a))
+			{
+				slots[((int)SkillSlotInfo.Fire)].Disoperate(a);
+			}
+		},
+		() =>
+		{
 			return 0;
 		}));
 
@@ -285,6 +317,19 @@ public class PlayerCast : CastModule
 			return 0;
 		}));
 
+		nameCastPair.Add(WXSkillSlots.EARTHSKILL + DISOPERATE, new Preparation(
+		(self) =>
+		{
+			if (self.TryGetComponent<Actor>(out Actor a))
+			{
+				slots[((int)SkillSlotInfo.Earth)].Disoperate(a);
+			}
+		},
+		() =>
+		{
+			return 0;
+		}));
+
 		nameCastPair.Add(WXSkillSlots.METALSKILL, new Preparation(
 		(self) =>
 		{
@@ -302,6 +347,19 @@ public class PlayerCast : CastModule
 			{
 				return slots[((int)SkillSlotInfo.Metal)].skInfo.castTime;
 			}
+			return 0;
+		}));
+
+		nameCastPair.Add(WXSkillSlots.METALSKILL + DISOPERATE, new Preparation(
+		(self) =>
+		{
+			if (self.TryGetComponent<Actor>(out Actor a))
+			{
+				slots[((int)SkillSlotInfo.Metal)].Disoperate(a);
+			}
+		},
+		() =>
+		{
 			return 0;
 		}));
 
@@ -325,15 +383,25 @@ public class PlayerCast : CastModule
 			return 0;
 		}));
 
+		nameCastPair.Add(WXSkillSlots.WATERSKILL + DISOPERATE, new Preparation(
+		(self) =>
+		{
+			if (self.TryGetComponent<Actor>(out Actor a))
+			{
+				slots[((int)SkillSlotInfo.Water)].Disoperate(a);
+			}
+		},
+		() =>
+		{
+			return 0;
+		}));
+
 		nameCastPair.Add(LCLICKSKILL, new Preparation(
 		(self) =>
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				if (lClickSlot.IsUsable)
-				{
-					lClickSlot.Execute(a);
-				}
+				lClickSlot.Execute(a);
 			}
 		},
 		() =>
@@ -345,15 +413,25 @@ public class PlayerCast : CastModule
 			return 0;
 		}));
 
-		nameCastPair.Add(RCLICKSKILL, new Preparation(
+		nameCastPair.Add(LCLICKSKILL + DISOPERATE, new Preparation(
 		(self) =>
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				if (rClickSlot.IsUsable)
-				{
-					rClickSlot.Execute(a);
-				}
+				lClickSlot.Disoperate(a);
+			}
+		},
+		() =>
+		{
+			return 0;
+		}));
+
+		nameCastPair.Add(RCLICKSKILL, new Preparation(
+		(self) =>
+		{
+			if (self.TryGetComponent<Actor>(out Actor a))
+			{ 
+				rClickSlot.Execute(a);
 			}
 		},
 		() =>
@@ -362,6 +440,19 @@ public class PlayerCast : CastModule
 			{
 				return rClickSlot.skInfo.castTime;
 			}
+			return 0;
+		}));
+
+		nameCastPair.Add(RCLICKSKILL + DISOPERATE, new Preparation(
+		(self) =>
+		{
+			if (self.TryGetComponent<Actor>(out Actor a))
+			{
+				rClickSlot.Disoperate(a);
+			}
+		},
+		() =>
+		{
 			return 0;
 		}));
 	}
@@ -411,7 +502,13 @@ public class PlayerCast : CastModule
 
 	void UpdateClickSlots()
 	{
+		
+		if (!lClickSlot.IsEmpty && lClickSlot.skInfo.useType != SkillUseType.Passive && !lClickSlot.IsUsable)
+			lClickSlot.CurCooledTime += Time.deltaTime;
 		lClickSlot.skInfo?.UpdateStatus();
+
+		if (!rClickSlot.IsEmpty && rClickSlot.skInfo.useType != SkillUseType.Passive && !rClickSlot.IsUsable)
+			rClickSlot.CurCooledTime += Time.deltaTime;
 		rClickSlot.skInfo?.UpdateStatus();
 	}
 
@@ -444,7 +541,19 @@ public class PlayerCast : CastModule
 		return data;
 	}
 
-	public void UseSkillAt(SkillSlotInfo at)
+	internal void ResetSkillUse(SkillSlotInfo at)
+	{
+		DisoperateAt(at);
+
+
+	}
+
+	internal void SetSkillUse(SkillSlotInfo at)
+	{
+		UseSkillAt(at);
+	}
+
+	void UseSkillAt(SkillSlotInfo at)
 	{
 		if (this[((int)at)].IsUsable)
 		{
@@ -466,9 +575,11 @@ public class PlayerCast : CastModule
 					Cast(WXSkillSlots.WATERSKILL);
 					break;
 				case SkillSlotInfo.LClick:
+					Debug.Log("좌스킬 사용");
 					Cast(LCLICKSKILL);
 					break;
 				case SkillSlotInfo.RClick:
+					Debug.Log("우스킬 사용");
 					Cast(RCLICKSKILL);
 					break;
 			}
@@ -485,7 +596,32 @@ public class PlayerCast : CastModule
 
 	public void DisoperateAt(SkillSlotInfo at)
 	{
-		this[((int)at)].skInfo.Disoperate(GetActor());
+		switch (at)
+		{
+			case SkillSlotInfo.Wood:
+				Cast(WXSkillSlots.WOODSKILL+DISOPERATE);
+				break;
+			case SkillSlotInfo.Fire:
+				Cast(WXSkillSlots.FIRESKILL + DISOPERATE);
+				break;
+			case SkillSlotInfo.Earth:
+				Cast(WXSkillSlots.EARTHSKILL + DISOPERATE);
+				break;
+			case SkillSlotInfo.Metal:
+				Cast(WXSkillSlots.METALSKILL + DISOPERATE);
+				break;
+			case SkillSlotInfo.Water:
+				Cast(WXSkillSlots.WATERSKILL + DISOPERATE);
+				break;
+			case SkillSlotInfo.LClick:
+				Debug.Log("좌스킬 해제");
+				Cast(LCLICKSKILL + DISOPERATE);
+				break;
+			case SkillSlotInfo.RClick:
+				Debug.Log("우스킬 해제");
+				Cast(RCLICKSKILL + DISOPERATE);
+				break;
+		}
 	}
 
 }

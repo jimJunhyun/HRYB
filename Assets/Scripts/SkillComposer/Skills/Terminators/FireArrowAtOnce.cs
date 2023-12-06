@@ -46,6 +46,7 @@ public class FireArrowAtOnce : Leaf
 		arrow.SetInfo(damage);
 		arrow.StopDisappearTimer();
 		arrow.StopCheck();
+		arrow.SetOwner(self);
 	}
 
 	public override void UpdateStatus()

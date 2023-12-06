@@ -1,8 +1,38 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
+
+
+[System.Serializable]
+public struct StatusEffectApplyData
+{
+	public StatEffID id;
+	public float power;
+	public float duration;
+	public StatusEffectApplyData(StatEffID eff, float pow, float dur)
+	{
+		id = eff;
+		power = pow;
+		duration = dur;
+	}
+
+	public override bool Equals(object obj)
+	{
+		if(obj != null && obj is StatusEffectApplyData d)
+		{
+			return d.id == id;
+		}
+		return false;
+	}
+
+	public override int GetHashCode()
+	{
+		return HashCode.Combine(id);
+	}
+}
 
 public class Arrow : DamageObject
 {
@@ -14,10 +44,14 @@ public class Arrow : DamageObject
 
 	bool detectOn = true;
 
+	Actor owner;
+
 	WaitForSeconds waitTillDisappear;
 	Coroutine c;
 
     Rigidbody rig;
+
+	HashSet<StatusEffectApplyData> statData = new HashSet<StatusEffectApplyData>();
 
 	public override void OnTriggerEnter(Collider other)
 	{
@@ -25,10 +59,9 @@ public class Arrow : DamageObject
 		{
 			if (other.TryGetComponent<LifeModule>(out LifeModule hit))
 			{
-				if(hit != GameManager.instance.pActor.life)
+				foreach (var item in statData)
 				{
-					(GameManager.instance.pActor.cast as PlayerCast).NextComboAt(SkillSlotInfo.LClick, false);
-
+					StatusEffects.ApplyStat(hit.GetActor(), owner, item.id, item.duration, item.power);
 				}
 			}
 			//Debug.Log(other.name);
@@ -85,12 +118,32 @@ public class Arrow : DamageObject
 		detectOn = true;
 	}
 
+	public void SetOwner(Actor a)
+	{
+		owner = a;
+	}
+
+	public void ResetOwner()
+	{
+		owner = null;
+	}
+
 	public void Shoot()
 	{
 
 		
 		rig.AddForce(power * transform.forward, ForceMode.Impulse);
 
+	}
+
+	public void AddStatusEffect(StatusEffectApplyData data)
+	{
+		statData.Add(data);
+	}
+
+	public void RemoveStatusEffect(StatEffID id)
+	{
+		statData.Remove(new StatusEffectApplyData(id, 0, 0));
 	}
 
 	IEnumerator DelReturn()
@@ -105,6 +158,8 @@ public class Arrow : DamageObject
 		//Debug.Log("RETURN");
 		rig.velocity = Vector3.zero;
 		StopAllCoroutines();
+		ResetOwner();
+		statData.Clear();
 		PoolManager.ReturnObject(gameObject);
 	}
 }
