@@ -78,7 +78,7 @@ public class MoveModule : Module
 		if(forceDir.sqrMagnitude > 0.001f)
 		{
 			
-			Vector3 antiForce = -(forceDir) * 3f * Time.deltaTime;
+			Vector3 antiForce = -(forceDir) * GameManager.instance.forceResistance * Time.deltaTime;
 			forceDir += antiForce;
 		}
 		else

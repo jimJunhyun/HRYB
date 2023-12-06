@@ -2,27 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum AttackStates
-{
-	None,
-	Prepare,
-	Trigger,
 
-}
 
 public class AttackModule : Module, IAnimationEvent
 {
-	public float initEffSpeed;
-	public bool initIsDirect;
 	public float initAtkDist;
 	public float initAtkGap;
 	public YinYang initDamage;
 
 	protected YinYang damage;
-	protected float effSpeed;
-	public float effSpeedMod = 1f;
-	public float EffSpeed { get => effSpeed * effSpeedMod;}
-	public bool isDirect;
 
 	protected float atkDist;
 
@@ -55,12 +43,6 @@ public class AttackModule : Module, IAnimationEvent
 		return atkDist;
 	}
 
-	public AttackStates attackState
-	{
-		get;
-		protected set;
-	} = AttackStates.None;
-
 	public virtual void Attack()
 	{
 
@@ -68,11 +50,8 @@ public class AttackModule : Module, IAnimationEvent
 	public override void ResetStatus()
 	{
 		base.ResetStatus();
-		effSpeed = initEffSpeed;
-		isDirect = initIsDirect;
 		atkDist = initAtkDist;
 		curPrepMod = 1;
-		effSpeedMod = 1;
 		curAtkGap = initAtkGap;
 		fixedPrepMod = null;
 		fixedAtkGap = null;
