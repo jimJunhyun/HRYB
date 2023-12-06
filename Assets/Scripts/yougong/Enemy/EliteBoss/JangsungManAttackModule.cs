@@ -5,26 +5,34 @@ using UnityEngine;
 
 public class JangsungManAttackModule : EnemyAttackModule
 {
-	[SerializeField] float JumpAttackDist;
+	[Header("Range")]
+	[SerializeField] float DownAttackDist;
 	[SerializeField] float FallDownAttackDist;
 	[SerializeField] private float MoveAttackDist;
+	
 
 	private ColliderCast _curCols;
 
-	public void Awake()
-	{
-
-	}
-
 	public float JumpDist()
 	{
-		return JumpAttackDist;
+		return FallDownAttackDist;
 	}
 
+	public float MoveAttack()
+	{
+		return MoveAttackDist;
+	}
+
+	public float DownAttack()
+	{
+		return DownAttackDist;
+	}
 
 	public override void Attack()
 	{
+		
 		GameObject obj = PoolManager.GetObject(AttackStd, transform);
+		
 		if (obj.TryGetComponent(out ColliderCast cols))
 		{
 			_curCols = cols;
@@ -32,16 +40,26 @@ public class JangsungManAttackModule : EnemyAttackModule
 		else
 		{
 			Debug.LogWarning($"{obj.name} is Not  ColliderCast!!!!!");
+			self.ai.StartExamine();
 			return;
 		}
+		GetActor().anim.SetAttackTrigger();
 	}
 
 	public override void SetAttackRange(int idx)
 	{
+		
 	}
 
 	public override void ResetAttackRange(int idx)
 	{
+		
+	}
+
+	public override void OnAnimationStop()
+	{
+		self.ai.StartExamine();	
+		PoolManager.ReturnObject(_curCols.gameObject);
 	}
 
 	public override void OnAnimationEvent()
@@ -60,4 +78,6 @@ public class JangsungManAttackModule : EnemyAttackModule
 			_curCols.End();
 		}
 	}
+
+
 }

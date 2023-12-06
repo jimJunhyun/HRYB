@@ -7,6 +7,7 @@ public abstract class EnemyAttackModule : AttackModule
 	Actor _target;
 
 	public Actor Target => _target;
+
 	
 	protected string AttackStd;
 	public abstract void Attack();
@@ -16,13 +17,17 @@ public abstract class EnemyAttackModule : AttackModule
 		_target = a;
 	}
 
-	public void SetAttackType(string atd)
+	public void SetAttackType(string AttackName)
 	{
-		AttackStd = atd;
+		AttackStd = AttackName;
 	}
 
 	public abstract void SetAttackRange(int idx);
 	public abstract void ResetAttackRange(int idx);
+
+	public abstract void OnAnimationStop();
 	public abstract void OnAnimationEvent();
 	public abstract void OnAnimationEnd();
+
+
 }

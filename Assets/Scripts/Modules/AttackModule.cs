@@ -27,6 +27,8 @@ public class AttackModule : Module, IAnimationEvent
 	protected float atkDist;
 
 	protected float curPrepMod = 1;
+
+	
 	public virtual float prepMod
 	{
 		get
@@ -90,6 +92,11 @@ public class AttackModule : Module, IAnimationEvent
 	public virtual void OnAnimationEvent()
 	{
 		// AnimEvent == SetRange
+	}
+
+	public virtual void OnAnimationStop()
+	{
+		
 	}
 
 	public virtual void OnAnimationEnd()

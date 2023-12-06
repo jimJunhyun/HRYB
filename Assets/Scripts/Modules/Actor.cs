@@ -19,7 +19,7 @@ public class Actor : MonoBehaviour
 	public CastModule cast;
 	public AnimModule anim;
 	public Action<Actor> updateActs;
-
+	public AISetter ai;
 	private void Awake()
 	{
 		atk = GetComponent<AttackModule>();
@@ -28,6 +28,10 @@ public class Actor : MonoBehaviour
 		sight = GetComponent<SightModule>();
 		cast = GetComponent<CastModule>();
 		anim = GetComponent<AnimModule>();
+		if (TryGetComponent<AISetter>(out ai))
+		{
+			Debug.Log("This is Monster");
+		}
 	}
 	void Start()
 	{

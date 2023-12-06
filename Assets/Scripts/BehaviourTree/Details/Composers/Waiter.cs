@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Waiter : INode
@@ -12,9 +14,10 @@ public class Waiter : INode
 	NodeStatus defaultStat;
 
 	Coroutine ongoing;
+	private Action _waiting;
 
 
-	public Waiter(float time, bool isResetReady = true, NodeStatus defStat = NodeStatus.Fail, bool countFromStart = false)
+	public Waiter(float time, bool isResetReady = true, NodeStatus defStat = NodeStatus.Fail, bool countFromStart = false, Action _act = null)
 	{
 		delTime = time;
 		readyResets = isResetReady;
@@ -24,6 +27,8 @@ public class Waiter : INode
 			StartReady();
 
 		}
+
+		_waiting = _act;
 	}
 
 	public void StartReady()
@@ -65,6 +70,7 @@ public class Waiter : INode
 			yield return null;
 		}
 		Debug.Log("Load complete");
+		_waiting?.Invoke();
 		ready = true;
 		ongoing = null;
 	}

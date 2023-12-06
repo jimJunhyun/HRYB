@@ -58,8 +58,9 @@ public class PoolManager : MonoBehaviour
 		{
 			GameObject res = st.data.Pop();
 			res.SetActive(true);
-			res.transform.position = parent.position;
-			res.transform.rotation = parent.rotation;
+			res.transform.SetParent(parent);
+			res.transform.localPosition = Vector3.zero;
+			res.transform.localRotation = Quaternion.identity;
 			return res;
 		}
 		Debug.LogError($"Item named {name} doesn't exist!");

@@ -40,7 +40,7 @@ public class AnimModule : Module
 		anim.SetTrigger(dieHash);
 	}
 
-	public virtual void SetMoveState(int val)
+	public virtual void SetMoveState(int val = 0)
 	{
 		anim.SetInteger(moveHash, val);
 	}

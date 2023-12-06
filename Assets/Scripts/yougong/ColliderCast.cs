@@ -25,13 +25,7 @@ public abstract class ColliderCast : MonoBehaviour
 	public abstract Collider[] ReturnColliders();
 	
 	public Action<LifeModule> CastAct;
-
-	private void OnEnable()
-	{
-		CheckDic.Clear();
-		CastAct = null;
-	}
-
+	
 	protected void Update()
 	{
 		if (_isRunning == false)
@@ -51,13 +45,17 @@ public abstract class ColliderCast : MonoBehaviour
 		}
 	}
 
-	public void Now()
+	public void Now(Action<LifeModule> act = null)
 	{
 		_isRunning = true;
+		CastAct = act;
 	}
 
 	public void End()
 	{
 		_isRunning = false;
+		
+		CheckDic.Clear();
+		CastAct = null;
 	}
 }

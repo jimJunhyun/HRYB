@@ -48,7 +48,7 @@ public abstract class AISetter : MonoBehaviour
 	    stopped = true;
     }
 
-    public void StartExamine()
+    public virtual void StartExamine()
     {
 	    stopped = false;
     }
