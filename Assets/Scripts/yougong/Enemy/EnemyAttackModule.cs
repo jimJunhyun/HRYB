@@ -10,8 +10,8 @@ public abstract class EnemyAttackModule : AttackModule
 
 	
 	protected string AttackStd;
-	public abstract void Attack();
-	
+	public override void Attack() { }
+
 	public virtual void SetTarget(Actor a)
 	{
 		_target = a;

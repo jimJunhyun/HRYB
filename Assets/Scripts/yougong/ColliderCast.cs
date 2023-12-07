@@ -6,10 +6,10 @@ using UnityEngine;
 public abstract class ColliderCast : MonoBehaviour
 {
 
-	[Header("Collider Name")] [SerializeField]
-	private string _name;
-
-	public string Name => _name;
+	//[Header("Collider Name")] [SerializeField]
+	//private string _name;
+//
+	//public string Name => _name;
 	
 	[Header("Enemy Layer")]
 	[SerializeField] private LayerMask _layer;
@@ -40,7 +40,7 @@ public abstract class ColliderCast : MonoBehaviour
 				CheckDic.Add(col, false);
 			
 			CastAct?.Invoke(col.GetComponent<LifeModule>());
-			//Debug.Log($"{col.name} 맞음");
+			Debug.Log($"{col.name} 맞음");
 
 		}
 	}

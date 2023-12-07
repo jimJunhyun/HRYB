@@ -18,7 +18,7 @@ public class AnimModule : Module
 
 
 	protected Animator anim;
-
+	public Animator Animators => anim;
 	public virtual void Awake()
 	{
 		anim = GetComponent<Animator>();

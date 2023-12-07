@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class JangSungMoveModule : MoveModule
 {
-	Transform target;
+	Actor _target;
 	UnityEngine.AI.NavMeshAgent agent;
 
 	[Header("fIND")] [SerializeField] private float _findPlayerRange = 30;
@@ -26,6 +26,11 @@ public class JangSungMoveModule : MoveModule
 		
 	}
 
+	public void SetTarget(Actor _target)
+	{
+		this._target = _target;
+	}
+
 	public void PowerUp()
 	{
 		_normalSpeed *= 2;
@@ -39,32 +44,36 @@ public class JangSungMoveModule : MoveModule
 
 	public void FallDownAttack()
 	{
-		if(target != null)
+		
+		Debug.LogWarning("AAAAAAZAAAAAA");
+		if(_target != null)
 		{
-			Vector3 vec = target.position;
-			UnityEngine.AI.NavMesh.SamplePosition( vec, out UnityEngine.AI.NavMeshHit hit, 5f, UnityEngine.AI.NavMesh.AllAreas);
+			Vector3 vec = _target.transform.position;
+			UnityEngine.AI.NavMesh.SamplePosition( _target.transform.position, out UnityEngine.AI.NavMeshHit hit, 5f, UnityEngine.AI.NavMesh.AllAreas);
 			agent.speed = _fallDownMoveSpeed;
 			agent.SetDestination(hit.position);
+			
+			Debug.LogWarning(_target.transform.position);
 			//GetActor().anim.SetMoveState();
 		}
 	}
 
 	public void NormalMoveAttack()
 	{
-		if(target != null)
+		if(_target != null)
 		{
 			UnityEngine.AI.NavMeshHit hit;
 			
-			Vector3 vec = (transform.position - target.position);
+			Vector3 vec = (_target.transform.position - transform.position);
 			vec.y = 0;
 			
 			
 			vec = vec.normalized * 15 + transform.position;
 
-			if (Vector3.Distance(vec, target.position) < 5)
+			if (Vector3.Distance(vec, _target.transform.position) < 5)
 			{
 				
-				UnityEngine.AI.NavMesh.SamplePosition(target.position, out  hit, 5f, UnityEngine.AI.NavMesh.AllAreas);
+				UnityEngine.AI.NavMesh.SamplePosition(_target.transform.position, out  hit, 5f, UnityEngine.AI.NavMesh.AllAreas);
 			}
 			else
 			{

@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 public class JangsungManAI : AISetter
 {
-	public Actor _friend = new();
+	public Actor _friend;
 	
 	private const string DownAttackHash = "DownAttack";
 	
@@ -18,51 +18,54 @@ public class JangsungManAI : AISetter
 	    
 	    JangsungManAttackModule _jsAttckModule = self.atk as JangsungManAttackModule;
 	    JangSungMoveModule _jsMoveModule = self.move as JangSungMoveModule;
-
-
+	    _jsAttckModule.SetTarget(player);
+	    _jsMoveModule.SetTarget(player);
 	    #region 조우
 
-	    IsFirstTime firstFound = new IsFirstTime();
-	    Waiter waitDuration = new Waiter((float)GameManager.instance.timeliner.duration, false, NodeStatus.Run);
-	    IsInRange isAwake = new IsInRange(self, player.transform, self.sight.GetSightRange, _jsMoveModule.FindPlayer,
-		    () =>
-		    {
-			    GameManager.instance.timeliner.Play();
-			    GameManager.instance.pinp.DeactivateInput();
-			    firstFound.Invalidate();
-			    waitDuration.StartReady();
-		    });
-	    Inverter passed = new Inverter();
-	    passed.connected = firstFound;
-	    Selecter wakeUper = new Selecter();
-	    wakeUper.connecteds.Add(passed);
-	    wakeUper.connecteds.Add(isAwake);
-
+	    //IsFirstTime firstFound = new IsFirstTime();
+	    //Waiter waitDuration = new Waiter((float)GameManager.instance.timeliner.duration, false, NodeStatus.Run);
+	    //IsInRange isAwake = new IsInRange(self, player.transform, self.sight.GetSightRange, _jsMoveModule.FindPlayer,
+		//    () =>
+		//    {
+		//	    GameManager.instance.timeliner.Play();
+		//	    GameManager.instance.pinp.DeactivateInput();
+		//	    firstFound.Invalidate();
+		//	    waitDuration.StartReady();
+		//    });
+	    //Inverter passed = new Inverter();
+	    //passed.connected = firstFound;
+	    //Selecter wakeUper = new Selecter();
+	    //wakeUper.connecteds.Add(passed);
+	    //wakeUper.connecteds.Add(isAwake);
+//
 	    #endregion
 
 	    
 	    
 	    
-	    IsTargetDead pairDead = new IsTargetDead(_friend);
-	    IsFirstTime _Powered = new IsFirstTime();
-	    Waiter powerWait = new Waiter(2f, true, NodeStatus.Fail, false, ()=>
-	    {
-		    // 여기서 스텟조정
-		    _jsMoveModule.PowerUp();
-	    });
+	    //IsTargetDead pairDead = new IsTargetDead(_friend);
+	    //IsFirstTime _Powered = new IsFirstTime();
+	    //Waiter powerWait = new Waiter(2f, true, NodeStatus.Fail, false, ()=>
+	    //{
+		//    // 여기서 스텟조정
+		//    _jsMoveModule.PowerUp();
+	    //});
 
 	    #region 점프 공격
-	    Waiter waitJump = new Waiter(5f);
+	    Waiter waitJump = new Waiter(8f);
 	    IsInRange isJumpAtk = new IsInRange(self, player.transform, _jsAttckModule.JumpDist, null, () =>
 	    {
 		    _jsAttckModule.SetAttackType(FallDownAttackHash);
+		    _jsAttckModule.SetTarget(player);
 		    waitJump.StartReady();
 	    });
 	    Attacker JumpAttack = new Attacker(self, () =>
 	    {
+		    waitJump.ResetReady();
+		    _jsMoveModule.SetTarget(player);
 		    _jsMoveModule.LookAt(player.transform);
 		    _jsMoveModule.FallDownAttack();
-		    _jsMoveModule.ResetDest();
+		    //_jsMoveModule.ResetDest();
 		    
 		    StopExamine();
 	    });
@@ -84,56 +87,71 @@ public class JangsungManAI : AISetter
 	    
 	    IsInRange isMoveAttack = new IsInRange(self, player.transform, _jsAttckModule.MoveAttack, null, () =>
 	    {
+		    Debug.LogWarning($"이동 : 거리재기");
+
 		    _jsAttckModule.SetAttackType(MoveAttackHash);
-		    waitJump.StartReady();
+		    _jsAttckModule.SetTarget(player);
+		    waitMove.StartReady();
 	    });
 	    
-	    Inverter moveSerch = new Inverter();
-	    moveSerch.connected = isMoveAttack;
+	    //Inverter moveSerch = new Inverter();
+	    //moveSerch.connected = isMoveAttack;
 	    
 	    Attacker MoveAttack = new Attacker(self, () =>
-	    {
+	    {		    
+		    Debug.LogWarning($"이동 : 공격시작");
 
+		    
+		    _jsMoveModule.ResetDest();
+		    waitMove.ResetReady();
+		    _jsMoveModule.SetTarget(player);
 		    _jsMoveModule.LookAt(player.transform);
 		    _jsMoveModule.NormalMoveAttack();
-		    _jsMoveModule.ResetDest();
+		    
 		    
 		    StopExamine();
 	    });
 	    
 	    Sequencer MoveATK = new Sequencer();
 	    
+	    MoveATK.connecteds.Add(isMoveAttack);
 	    MoveATK.connecteds.Add(waitMove);
-	    MoveATK.connecteds.Add(moveSerch);
 	    MoveATK.connecteds.Add(MoveAttack);
 	    #endregion
 
 	    #region WaitDown
-	    Waiter DownWait = new Waiter(2f);
+	    Waiter DownWait = new Waiter(4f);
 	    IsInRange isRangeDown = new IsInRange(self, player.transform, _jsAttckModule.DownAttack, null, () =>
 	    {
-		    
+		    _jsAttckModule.SetTarget(player);
 		    _jsAttckModule.SetAttackType(DownAttackHash);
-		    waitJump.StartReady();
+		    DownWait.StartReady();
 	    });
 
 	    Attacker DownAttack = new Attacker(self, () =>
 	    {
+		    DownWait.ResetReady();
+		    _jsMoveModule.SetTarget(player);
 		    _jsMoveModule.LookAt(player.transform);
 		    _jsMoveModule.ResetDest();
 		    StopExamine();
 	    });
 
 	    Sequencer DownATK = new Sequencer();
-	    DownATK.connecteds.Add(DownWait);
 	    DownATK.connecteds.Add(isRangeDown);
+	    DownATK.connecteds.Add(DownWait);
 	    DownATK.connecteds.Add(DownAttack);
 
 
 	    #endregion
-		head.connecteds.Add(MoveATK);
+	    
+	    
+
 		head.connecteds.Add(JumpATK);
 		head.connecteds.Add(DownATK);
+		head.connecteds.Add(MoveATK);
+
+		StartExamine();
 		
     }
 

@@ -17,7 +17,7 @@ public class Waiter : INode
 	private Action _waiting;
 
 
-	public Waiter(float time, bool isResetReady = true, NodeStatus defStat = NodeStatus.Fail, bool countFromStart = false, Action _act = null)
+	public Waiter(float time, bool isResetReady = false, NodeStatus defStat = NodeStatus.Fail, bool countFromStart = false, Action _act = null)
 	{
 		delTime = time;
 		readyResets = isResetReady;
@@ -33,13 +33,17 @@ public class Waiter : INode
 
 	public void StartReady()
 	{
-		GameManager.instance.StartCoroutine(Delayer());
+		if (ongoing == null)
+		{
+			ongoing = GameManager.instance.StartCoroutine(Delayer());
+		}
 	}
 
 	public void ResetReady()
 	{
+		
 		ready =false;
-		GameManager.instance.StartCoroutine(Delayer());
+		StartReady();
 	}
 
 

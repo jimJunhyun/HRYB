@@ -350,38 +350,51 @@ public class PlayerMove : MoveModule
 
 	public void PlayerControllerMove(Vector3 dir)
 	{
-		if (dir.sqrMagnitude > 0.1f && !ctrl.isGrounded)
+		try
 		{
-			switch (moveStat)
+			if (dir.sqrMagnitude > 0.1f && !ctrl.isGrounded)
 			{
-				case MoveStates.Run:
-					if(GameManager.GetLayerName(transform.position, GameManager.instance.terrain).Contains("Grass")){
-						GameManager.instance.audioPlayer.PlayGlobal("GrassRun");
-					}
-					else
-					{
-						GameManager.instance.audioPlayer.PlayGlobal("StoneRun");
-					}
-					break;
-				case MoveStates.Walk:
-				case MoveStates.Sit:
-					if (GameManager.GetLayerName(transform.position, GameManager.instance.terrain).Contains("Grass"))
-					{
-						GameManager.instance.audioPlayer.PlayGlobal("GrassWalk");
-					}
-					else
-					{
-						GameManager.instance.audioPlayer.PlayGlobal("StoneWalk");
-					}
-					break;
-				case MoveStates.Climb:
-					break;
+				switch (moveStat)
+				{
+					case MoveStates.Run:
+						if (GameManager.GetLayerName(transform.position, GameManager.instance.terrain)
+						    .Contains("Grass"))
+						{
+							GameManager.instance.audioPlayer.PlayGlobal("GrassRun");
+						}
+						else
+						{
+							GameManager.instance.audioPlayer.PlayGlobal("StoneRun");
+						}
+
+						break;
+					case MoveStates.Walk:
+					case MoveStates.Sit:
+						if (GameManager.GetLayerName(transform.position, GameManager.instance.terrain)
+						    .Contains("Grass"))
+						{
+							GameManager.instance.audioPlayer.PlayGlobal("GrassWalk");
+						}
+						else
+						{
+							GameManager.instance.audioPlayer.PlayGlobal("StoneWalk");
+						}
+
+						break;
+					case MoveStates.Climb:
+						break;
+				}
+			}
+			else if (GameManager.instance.audioPlayer.IsPlaying)
+			{
+				GameManager.instance.audioPlayer.StopGlobal();
 			}
 		}
-		else if (GameManager.instance.audioPlayer.IsPlaying)
+		catch
 		{
-			GameManager.instance.audioPlayer.StopGlobal();
+			Debug.Log("사운드 혐오");
 		}
+
 
 
 		if (moveStat != MoveStates.Climb)
