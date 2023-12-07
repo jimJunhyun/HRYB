@@ -24,6 +24,10 @@ public class ChargeRoot : SkillRoot
 			charging = false;
 			base.Disoperate(self);
 			owner = null;
+			if(self.anim is PlayerAnim pa)
+			{
+				pa.SetAttackTrigger(curCharge);
+			}
 			if (isAimMode)
 			{
 				GameManager.instance.SwitchTo(CamStatus.Freelook);
@@ -63,12 +67,12 @@ public class ChargeRoot : SkillRoot
 		base.UpdateStatus();
 	}
 
-	protected override void MyDisoperation(Actor self)
+	internal override void MyDisoperation(Actor self)
 	{
 		//Do nothing
 	}
 
-	protected override void MyOperation(Actor self)
+	internal override void MyOperation(Actor self)
 	{
 		//Do nothing
 	}

@@ -9,6 +9,7 @@ public class Composite : Compose, IComposer
 {
 	public List<Compose> childs;
 	public float composeDel;
+	public bool isPlayAnim = false;
 
 	public void AddChild(Compose comp)
 	{
@@ -25,12 +26,12 @@ public class Composite : Compose, IComposer
 		GameManager.instance.StartCoroutine(DelOperate(self));
 	}
 
-	protected override void MyDisoperation(Actor self)
+	internal override void MyDisoperation(Actor self)
 	{
 		//Do nothing?
 	}
 
-	protected override void MyOperation(Actor self)
+	internal override void MyOperation(Actor self)
 	{
 		//Do nothing?
 	}
@@ -43,11 +44,31 @@ public class Composite : Compose, IComposer
 		}
 	}
 
+	public void SetAnimations(Actor to)
+	{
+		if((to.anim as PlayerAnim).curEquipped != this)
+		{
+			List<AnimationClip> clips = new List<AnimationClip>();
+			for (int i = 0; i < childs.Count; i++)
+			{
+				clips.Add(childs[i].animClip);
+				Debug.Log($"New Clip : {childs[i].animClip}");
+			}
+			to.anim.SetAnimationOverrides(new List<string>() { "Zero", "One", "Two", "Three", "Four" }, clips);
+			(to.anim as PlayerAnim).curEquipped = this;
+		}
+		
+	}
+
 	IEnumerator DelOperate(Actor self)
 	{
 		for (int i = 0; i < childs.Count; i++)
 		{
 			childs[i].Operate(self);
+			if (isPlayAnim)
+			{
+				(GameManager.instance.pActor.anim as PlayerAnim).SetAttackTrigger(i);
+			}
 			yield return new WaitForSeconds(composeDel);
 		}
 	}

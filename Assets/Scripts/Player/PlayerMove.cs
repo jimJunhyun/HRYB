@@ -7,7 +7,7 @@ using System;
 
 public class PlayerMove : MoveModule
 {
-	public const float GRAVITY = 9.8f;
+	
 	
 
 	internal CharacterController ctrl;
@@ -202,9 +202,9 @@ public class PlayerMove : MoveModule
 	}
 	
 
-	private void FixedUpdate()
+	public override void FixedUpdate()
 	{
-		Move();
+		base.FixedUpdate();
 		if (moveStat == MoveStates.Climb)
 		{
 			CalcClimbState();
@@ -320,14 +320,6 @@ public class PlayerMove : MoveModule
 		}
 	}
 
-	void GravityCalc()
-	{
-		if (!ctrl.isGrounded)
-		{
-			forceDir.y -= GRAVITY * Time.deltaTime;
-		}
-	}
-
 	Vector3 GetDir(Transform to)
 	{
 		Vector3 v = to.position - transform.position;
@@ -386,7 +378,7 @@ public class PlayerMove : MoveModule
 
 		if (moveStat != MoveStates.Climb)
 		{
-			dir -= Vector3.up * GRAVITY;
+			dir -= Vector3.up * GameManager.GRAVITY; //최초중력
 			dir += forceDir;
 		}
 		ctrl.Move( (dir) * Time.deltaTime);
@@ -552,7 +544,7 @@ public class PlayerMove : MoveModule
 
 	public void Roll(InputAction.CallbackContext context)
 	{
-		if (context.started && moveStat != MoveStates.Climb)
+		if (context.started && moveStat != MoveStates.Climb && rollable)
 		{
 			GetActor().life.isImmune = true;
 			GameManager.instance.pinp.DeactivateInput();

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AnimModule : Module
 {
+	public string hitClipName;
+
 	protected readonly int moveHash = Animator.StringToHash("Move");
 	protected readonly int idleHash = Animator.StringToHash("Idle");
 	
@@ -33,6 +35,7 @@ public class AnimModule : Module
 	public virtual void SetHitTrigger()
 	{
 		anim.SetTrigger(hitHash);
+		GameManager.instance.audioPlayer.PlayPoint(hitClipName, transform.position);
 	}
 
 	public virtual void SetDieTrigger()
@@ -60,5 +63,24 @@ public class AnimModule : Module
 	public void SetTrigger(int hash)
 	{
 		anim.SetTrigger(hash);
+	}
+
+	public virtual void SetAnimationOverrides(List<string> from, List<AnimationClip> to)
+	{
+		AnimatorOverrideController ctrl = new AnimatorOverrideController(anim.runtimeAnimatorController);
+		List<KeyValuePair<AnimationClip, AnimationClip>> apply = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+		
+		for (int i = 0; i < ctrl.animationClips.Length; i++)
+		{
+			//Debug.Log($"Examining : {ctrl.animationClips[i].name}");
+			int idx = from.FindIndex(n => n == ctrl.animationClips[i].name);
+			if (idx != -1)
+			{
+				//Debug.Log($"New Animation For : {ctrl.animationClips[i].name}");
+				apply.Add(new KeyValuePair<AnimationClip, AnimationClip> (ctrl.animationClips[i], to[idx]));
+			}
+		}
+		ctrl.ApplyOverrides(apply);
+		anim.runtimeAnimatorController = ctrl;
 	}
 }

@@ -34,13 +34,15 @@ public class PlayerAnimActions : MonoBehaviour
 	{
 		(self.atk as PlayerAttack).SetBowStat();
 	}
+
 	public void FireArrow()
 	{
-		(self.atk as PlayerAttack).Attack();
+		(self.cast as PlayerCast).ActualSkillOperate(SkillSlotInfo.LClick);
 	}
 
 	public void DisableInput()
 	{
+		Debug.Log("!@!@!@!@!@");
 		GameManager.instance.pinp.DeactivateInput();
 		self.move.moveDir = Vector3.zero;
 		self.move.forceDir = Vector3.zero;
@@ -48,6 +50,7 @@ public class PlayerAnimActions : MonoBehaviour
 
 	public void EnableInput()
 	{
+		Debug.Log("^&^^&^&^&");
 		GameManager.instance.pinp.ActivateInput();
 	}
 

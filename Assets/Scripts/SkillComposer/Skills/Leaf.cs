@@ -11,9 +11,6 @@ public abstract class  Leaf : Compose
 
 	public override void Operate(Actor self)
 	{
-		if(myVarHash == null)
-			myVarHash = Animator.StringToHash(animVarName);
-		self?.anim.SetTrigger((int)myVarHash);
 		MyOperation(self);
 	}
 
@@ -22,6 +19,6 @@ public abstract class  Leaf : Compose
 		MyDisoperation(self);
 	}
 
-	protected abstract override void MyOperation(Actor self);
-	protected abstract override void MyDisoperation(Actor self);
+	internal abstract override void MyOperation(Actor self);
+	internal abstract override void MyDisoperation(Actor self);
 }

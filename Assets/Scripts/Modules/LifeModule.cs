@@ -44,6 +44,10 @@ public class LifeModule : Module
 	protected bool regenOn = false;
 	float diff;
 
+	public virtual void Awake()
+	{
+		maxSoul = initSoul;
+	}
 
 	public virtual void Update()
 	{
@@ -155,7 +159,7 @@ public class LifeModule : Module
 
 	public virtual void OnDead()
 	{
-		Debug.LogError(maxSoul);
+		Debug.Log(maxSoul);
 		StopAllCoroutines();
 		GetActor().anim.SetDieTrigger();
 		//PoolManager.ReturnObject(gameObject);

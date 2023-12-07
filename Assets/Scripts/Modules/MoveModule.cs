@@ -36,6 +36,14 @@ public class MoveModule : Module
 	public float speedMod = 1.0f;
 	public float? fixedSpeedMod = null;
 
+	public bool gravity = false;
+	public float groundThreshold = 0.5f;
+
+	public virtual bool isGrounded
+	{
+		get=>Physics.Raycast(transform.position, Vector3.down, groundThreshold, 1<< GameManager.GROUNDLAYER);
+	}
+
 	protected MoveStates curStat;
 	public virtual MoveStates moveStat
 	{
@@ -70,7 +78,22 @@ public class MoveModule : Module
 
 	public virtual void Move()
 	{
-		
+		ForceCalc();
+		GravityCalc();
+		transform.Translate(forceDir * Time.deltaTime, Space.World);
+	}
+
+	public virtual void FixedUpdate()
+	{
+		Move();
+	}
+
+	public virtual void GravityCalc()
+	{
+		if (gravity && !isGrounded)
+		{
+			forceDir.y -= GameManager.GRAVITY * Time.deltaTime;
+		}
 	}
 
 	public virtual void ForceCalc()
@@ -103,4 +126,6 @@ public class MoveModule : Module
 		moveDir = Vector3.zero;
 		forceDir = Vector3.zero;
 	}
+
+	
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerAnim : AnimModule
 {
 	
+	
 	protected readonly int camStatHash = Animator.StringToHash("CamStat");
 	protected readonly int atkStatHash = Animator.StringToHash("AtkStat");
 	protected readonly int jumpHash = Animator.StringToHash("Jump");
@@ -18,7 +19,15 @@ public class PlayerAnim : AnimModule
 	protected readonly int unequipHash = Animator.StringToHash("Unequip");
 	protected readonly int rollHash = Animator.StringToHash("Roll");
 
+	protected readonly int attack0Hash = Animator.StringToHash("Attack0");
+	protected readonly int attack1Hash = Animator.StringToHash("Attack1");
+	protected readonly int attack2Hash = Animator.StringToHash("Attack2");
+	protected readonly int attack3Hash = Animator.StringToHash("Attack3");
+	protected readonly int attack4Hash = Animator.StringToHash("Attack4");
+
 	PlayerMove pmove;
+
+	internal Composite curEquipped;
 
 	public override void Awake()
 	{
@@ -69,6 +78,29 @@ public class PlayerAnim : AnimModule
 
 		anim.SetBool(onAirHash, pmove.onAir);
 		anim.SetFloat(vertPowerHash, pmove.MoveDirUncalced.y);
+	}
+
+	public void SetAttackTrigger(int idx)
+	{
+		switch (idx)
+		{
+			case 0:
+				anim.SetTrigger(attack0Hash);
+				break;
+			case 1:
+				anim.SetTrigger(attack1Hash);
+				break;
+			case 2:
+				anim.SetTrigger(attack2Hash);
+				break;
+			case 3:
+				anim.SetTrigger(attack3Hash);
+				break;
+			case 4:
+				anim.SetTrigger(attack4Hash);
+				break;
+		}
+
 	}
 
 	public void SetJumpTrigger()
