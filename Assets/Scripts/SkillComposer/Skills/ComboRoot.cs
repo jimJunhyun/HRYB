@@ -65,6 +65,37 @@ public class ComboRoot : SkillRoot
 		NextCombo(true, self);
 	}
 
+	public override void SetAnimations(Actor to)
+	{
+		if ((to.anim as PlayerAnim).curEquipped != this)
+		{
+			List<AnimationClip> clips = new List<AnimationClip>();
+			for (int i = 0; i < childs.Count; i++)
+			{
+				if (childs[i].animClip != null)
+				{
+					clips.Add(childs[i].animClip);
+					Debug.Log($"New Clip : {childs[i].animClip}");
+				}
+			}
+			to.anim.SetAnimationOverrides(new List<string>() { "Zero", "One", "Two", "Three", "Four" }, clips);
+
+			clips.Clear();
+			for (int i = 0; i < childs.Count; i++)
+			{
+				if (childs[i].animClipDisop != null)
+				{
+					clips.Add(childs[i].animClipDisop);
+					Debug.Log($"New Clip : {childs[i].animClipDisop}");
+				}
+
+			}
+			to.anim.SetAnimationOverrides(new List<string>() { "Zero" + PlayerCast.DISOPERATE, "One" + PlayerCast.DISOPERATE, "Two" + PlayerCast.DISOPERATE, "Three" + PlayerCast.DISOPERATE, "Four" + PlayerCast.DISOPERATE }, clips);
+
+			(to.anim as PlayerAnim).curEquipped = this;
+		}
+	}
+
 	public void NextCombo(bool circular = true, Actor self = null)
 	{
 		

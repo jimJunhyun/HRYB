@@ -19,11 +19,18 @@ public class PlayerAnim : AnimModule
 	protected readonly int unequipHash = Animator.StringToHash("Unequip");
 	protected readonly int rollHash = Animator.StringToHash("Roll");
 
+	protected readonly int skillAtomCountHash = Animator.StringToHash("SkillAtomCount");
+
 	protected readonly int attack0Hash = Animator.StringToHash("Attack0");
 	protected readonly int attack1Hash = Animator.StringToHash("Attack1");
 	protected readonly int attack2Hash = Animator.StringToHash("Attack2");
 	protected readonly int attack3Hash = Animator.StringToHash("Attack3");
 	protected readonly int attack4Hash = Animator.StringToHash("Attack4");
+	protected readonly int disop0Hash = Animator.StringToHash("Disop0");
+	protected readonly int disop1Hash = Animator.StringToHash("Disop1");
+	protected readonly int disop2Hash = Animator.StringToHash("Disop2");
+	protected readonly int disop3Hash = Animator.StringToHash("Disop3");
+	protected readonly int disop4Hash = Animator.StringToHash("Disop4");
 
 	PlayerMove pmove;
 
@@ -100,7 +107,28 @@ public class PlayerAnim : AnimModule
 				anim.SetTrigger(attack4Hash);
 				break;
 		}
+	}
 
+	public void SetDisopTrigger(int idx)
+	{
+		switch (idx)
+		{
+			case 0:
+				anim.SetTrigger(disop0Hash);
+				break;
+			case 1:
+				anim.SetTrigger(disop1Hash);
+				break;
+			case 2:
+				anim.SetTrigger(disop2Hash);
+				break;
+			case 3:
+				anim.SetTrigger(disop3Hash);
+				break;
+			case 4:
+				anim.SetTrigger(disop4Hash);
+				break;
+		}
 	}
 
 	public void SetJumpTrigger()
@@ -116,6 +144,11 @@ public class PlayerAnim : AnimModule
 	public void SetAttackState(int val)
 	{
 		anim.SetInteger(atkStatHash, val);
+	}
+
+	public void SetSkillAtomCount(int val)
+	{
+		anim.SetInteger(skillAtomCountHash, val);
 	}
 
 	public void SetAimSpeed(float val)

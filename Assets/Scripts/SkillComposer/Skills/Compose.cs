@@ -8,6 +8,7 @@ using UnityEngine;
 public abstract class Compose : ScriptableObject, IComposer
 {
 	public AnimationClip animClip;
+	public AnimationClip animClipDisop;
 	public string audioClipName;
 
 	public abstract void Disoperate(Actor self);

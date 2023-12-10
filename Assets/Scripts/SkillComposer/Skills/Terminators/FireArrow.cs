@@ -40,7 +40,7 @@ public class FireArrow : Leaf
 		r.SetOwner(self);
 		r.Shoot();
 		GameManager.instance.audioPlayer.PlayPoint(audioClipName, self.transform.position);
-		self.anim.SetAttackTrigger();
+		//self.anim.SetAttackTrigger();
 	}
 
 	public override void UpdateStatus()

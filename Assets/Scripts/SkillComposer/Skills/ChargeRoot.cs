@@ -26,7 +26,7 @@ public class ChargeRoot : SkillRoot
 			owner = null;
 			if(self.anim is PlayerAnim pa)
 			{
-				pa.SetAttackTrigger(curCharge);
+				pa.SetDisopTrigger(curCharge);
 			}
 			if (isAimMode)
 			{
@@ -34,7 +34,6 @@ public class ChargeRoot : SkillRoot
 				GameManager.instance.uiManager.aimUI.Off();
 			}
 		}
-		
 	}
 
 	public override void Operate(Actor self)
@@ -65,6 +64,37 @@ public class ChargeRoot : SkillRoot
 			chargeStartSec = Time.time;
 		}
 		base.UpdateStatus();
+	}
+
+	public override void SetAnimations(Actor to)
+	{
+		if ((to.anim as PlayerAnim).curEquipped != this)
+		{
+			List<AnimationClip> clips = new List<AnimationClip>();
+			for (int i = 0; i < childs.Count; i++)
+			{
+				if (childs[i].animClip != null)
+				{
+					clips.Add(childs[i].animClip);
+					Debug.Log($"New Clip : {childs[i].animClip}");
+				}
+			}
+			to.anim.SetAnimationOverrides(new List<string>() { "Zero", "One", "Two", "Three", "Four" }, clips);
+
+			clips.Clear();
+			for (int i = 0; i < childs.Count; i++)
+			{
+				if (childs[i].animClipDisop != null)
+				{
+					clips.Add(childs[i].animClipDisop);
+					Debug.Log($"New Clip : {childs[i].animClipDisop}");
+				}
+
+			}
+			to.anim.SetAnimationOverrides(new List<string>() { "Zero" + PlayerCast.DISOPERATE, "One" + PlayerCast.DISOPERATE, "Two" + PlayerCast.DISOPERATE, "Three" + PlayerCast.DISOPERATE, "Four" + PlayerCast.DISOPERATE }, clips);
+
+			(to.anim as PlayerAnim).curEquipped = this;
+		}
 	}
 
 	internal override void MyDisoperation(Actor self)

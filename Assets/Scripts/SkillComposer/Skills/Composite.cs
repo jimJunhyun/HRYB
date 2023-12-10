@@ -10,6 +10,7 @@ public class Composite : Compose, IComposer
 	public List<Compose> childs;
 	public float composeDel;
 	public bool isPlayAnim = false;
+	public bool isPlayDisopAnim = false;
 
 	public void AddChild(Compose comp)
 	{
@@ -44,20 +45,22 @@ public class Composite : Compose, IComposer
 		}
 	}
 
-	public void SetAnimations(Actor to)
+	public virtual void SetAnimations(Actor to)
 	{
 		if((to.anim as PlayerAnim).curEquipped != this)
 		{
-			List<AnimationClip> clips = new List<AnimationClip>();
+			List<AnimationClip> atoms = new List<AnimationClip>();
 			for (int i = 0; i < childs.Count; i++)
 			{
-				clips.Add(childs[i].animClip);
-				Debug.Log($"New Clip : {childs[i].animClip}");
+				AnimationClip clip;
+				clip = childs[i].animClip;
+				clip.name += i;
+				atoms.Add(clip);
 			}
-			to.anim.SetAnimationOverrides(new List<string>() { "Zero", "One", "Two", "Three", "Four" }, clips);
+
+			to.anim.SetAnimationOverrides(new List<string>() { "SkillAtom0", "SkillAtom1", "SkillAtom2", "SkillAtom3", "SkillAtom4" }, atoms);
 			(to.anim as PlayerAnim).curEquipped = this;
 		}
-		
 	}
 
 	IEnumerator DelOperate(Actor self)
@@ -67,7 +70,8 @@ public class Composite : Compose, IComposer
 			childs[i].Operate(self);
 			if (isPlayAnim)
 			{
-				(GameManager.instance.pActor.anim as PlayerAnim).SetAttackTrigger(i);
+				(GameManager.instance.pActor.anim as PlayerAnim).SetSkillAtomCount(childs.Count - 1);
+				(GameManager.instance.pActor.anim as PlayerAnim).SetAttackTrigger();
 			}
 			yield return new WaitForSeconds(composeDel);
 		}
@@ -78,6 +82,10 @@ public class Composite : Compose, IComposer
 		for (int i = 0; i < childs.Count; i++)
 		{
 			childs[i].Disoperate(self);
+			if (isPlayDisopAnim)
+			{
+				(GameManager.instance.pActor.anim as PlayerAnim).SetDisopTrigger(i);
+			}
 			yield return new WaitForSeconds(composeDel);
 		}
 	}
