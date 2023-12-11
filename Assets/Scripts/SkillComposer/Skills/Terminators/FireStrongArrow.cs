@@ -54,6 +54,5 @@ public class FireStrongArrow : Leaf
 			r.AddStatusEffect(statEff[i]);
 		}
 		GameManager.instance.audioPlayer.PlayPoint(audioClipName, self.transform.position);
-		self.anim.SetAttackTrigger();
 	}
 }

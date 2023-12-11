@@ -492,9 +492,13 @@ public class PlayerCast : CastModule
 		///
 		if (Input.GetKeyDown(KeyCode.Y))
 		{
-			ConnectSkillDataTo(GameManager.instance.skillLoader["DemoSkill"], SkillSlotInfo.Wood);
+			ConnectSkillDataTo(GameManager.instance.skillLoader["BackKick"], SkillSlotInfo.Wood);
 		}
 		if (Input.GetKeyDown(KeyCode.H))
+		{
+			DisconnectSkillDataFrom(SkillSlotInfo.Wood);
+		}
+		if (Input.GetKeyDown(KeyCode.N))
 		{
 			DisconnectSkillDataFrom(SkillSlotInfo.Wood);
 		}
@@ -544,9 +548,14 @@ public class PlayerCast : CastModule
 		this[((int)at)].skInfo.MyOperation(GetActor());
 	}
 
+	internal void ActualSkillOperate(SkillSlotInfo at, int idx)
+	{
+		this[((int)at)].skInfo.ActualOperateAt(GetActor(), idx);
+	}
+
 	internal void SetSkillUse(SkillSlotInfo at)
 	{
-		this[((int)at)].skInfo.SetAnimations(GetActor());
+		this[((int)at)].skInfo.SetAnimations(GetActor(), at);
 		UseSkillAt(at);
 	}
 
@@ -557,6 +566,7 @@ public class PlayerCast : CastModule
 			switch (at)
 			{
 				case SkillSlotInfo.Wood:
+					Debug.Log("START CASING");
 					Cast(WXSkillSlots.WOODSKILL);
 					break;
 				case SkillSlotInfo.Fire:

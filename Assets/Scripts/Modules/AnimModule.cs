@@ -69,18 +69,21 @@ public class AnimModule : Module
 	{
 		AnimatorOverrideController ctrl = new AnimatorOverrideController(anim.runtimeAnimatorController);
 		List<KeyValuePair<AnimationClip, AnimationClip>> apply = new List<KeyValuePair<AnimationClip, AnimationClip>>();
-		
-		for (int i = 0; i < ctrl.animationClips.Length; i++)
+		for (int i = 0; i < to.Count; i++)
 		{
-			//Debug.Log($"Examining : {ctrl.animationClips[i].name}");
-			int idx = from.FindIndex(n => n == ctrl.animationClips[i].name);
-			if (idx != -1)
-			{
-				//Debug.Log($"New Animation For : {ctrl.animationClips[i].name}");
-				apply.Add(new KeyValuePair<AnimationClip, AnimationClip> (ctrl.animationClips[i], to[idx]));
-			}
+			ctrl[from[i]] = to[i];
 		}
-		ctrl.ApplyOverrides(apply);
+		//for (int i = 0; i < ctrl.animationClips.Length; i++)
+		//{
+		//	Debug.Log($"Examining : {ctrl.animationClips[i].name}");
+		//	int idx = from.FindIndex(n => n == ctrl.animationClips[i].name);
+		//	if (idx != -1 && idx < to.Count)
+		//	{
+		//		Debug.Log($"New Animation To : {to[idx].GetInstanceID()}");
+		//		apply.Add(new KeyValuePair<AnimationClip, AnimationClip>(ctrl.animationClips[i], to[idx]));
+		//	}
+		//}
+		ctrl.ApplyOverrides(apply); // ???????????????
 		anim.runtimeAnimatorController = ctrl;
 	}
 }

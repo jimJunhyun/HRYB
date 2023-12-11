@@ -40,6 +40,19 @@ public class PlayerAnimActions : MonoBehaviour
 		(self.cast as PlayerCast).ActualSkillOperate(SkillSlotInfo.LClick);
 	}
 
+	public void SetAttackRange(AnimationEvent evt)
+	{
+		Debug.Log(evt.animatorClipInfo.clip.name + " : " + evt.stringParameter);
+		SkillSlotInfo info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter);
+		(self.cast as PlayerCast).ActualSkillOperate(info, evt.intParameter);
+	}
+
+	public void ResetAttackRange(AnimationEvent evt)
+	{
+		SkillSlotInfo info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter);
+		(self.cast as PlayerCast).DisoperateAt(info);
+	}
+
 	public void DisableInput()
 	{
 		GameManager.instance.pinp.DeactivateInput();

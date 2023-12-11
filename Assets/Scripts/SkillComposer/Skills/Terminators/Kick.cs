@@ -16,6 +16,11 @@ public class Kick : Leaf
 		caster = GameObject.Find("KickCaster").GetComponent<BoxColliderCast>();
 	}
 
+	public override void Operate(Actor self)
+	{
+
+	}
+
 	public override void UpdateStatus()
 	{
 		
@@ -28,10 +33,15 @@ public class Kick : Leaf
 
 	internal override void MyOperation(Actor self)
 	{
+		Debug.Log("KICKED");
 		caster.Now(life =>
 		{
-			life.AddYY(damage);
-			StatusEffects.ApplyStat(life.GetActor(), self, StatEffID.Knockback, 0.2f, knockbackPow);
+			if(life != null)
+			{
+				life.AddYY(damage);
+				StatusEffects.ApplyStat(life.GetActor(), self, StatEffID.Knockback, 0.2f, knockbackPow);
+			}
+			
 		});
 	}
 }

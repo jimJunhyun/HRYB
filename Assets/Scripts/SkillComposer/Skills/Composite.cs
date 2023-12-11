@@ -27,6 +27,26 @@ public class Composite : Compose, IComposer
 		GameManager.instance.StartCoroutine(DelOperate(self));
 	}
 
+	public void OperateAt(Actor self, int idx)
+	{
+		childs[idx].Operate(self);
+	}
+
+	public void ActualOperateAt(Actor self, int idx)
+	{
+		childs[idx].MyOperation(self);
+	}
+
+	public void DisoperateAt(Actor self, int idx)
+	{
+		childs[idx].Disoperate(self);
+	}
+
+	public void ActualDisoperateAt(Actor self, int idx)
+	{
+		childs[idx].MyDisoperation(self);
+	}
+
 	internal override void MyDisoperation(Actor self)
 	{
 		//Do nothing?
@@ -45,7 +65,7 @@ public class Composite : Compose, IComposer
 		}
 	}
 
-	public virtual void SetAnimations(Actor to)
+	public virtual void SetAnimations(Actor to, SkillSlotInfo info)
 	{
 		if((to.anim as PlayerAnim).curEquipped != this)
 		{
@@ -54,10 +74,21 @@ public class Composite : Compose, IComposer
 			{
 				AnimationClip clip;
 				clip = childs[i].animClip;
-				clip.name += i;
-				atoms.Add(clip);
+				if(clip != null)
+				{
+					clip.name += i;
+					AnimationEvent[] events = clip.events;
+					events[1].intParameter = i;
+					events[1].stringParameter = info.ToString();
+					events[2].intParameter = i;
+					events[2].stringParameter = info.ToString();
+					clip.events = events;
+					
+					atoms.Add(clip);
+					Debug.Log($"{clip.name} : {clip.events[1].intParameter}-{clip.events[1].stringParameter}, {events[2].intParameter}-{clip.events[2].stringParameter}");
+				}
+				
 			}
-
 			to.anim.SetAnimationOverrides(new List<string>() { "SkillAtom0", "SkillAtom1", "SkillAtom2", "SkillAtom3", "SkillAtom4" }, atoms);
 			(to.anim as PlayerAnim).curEquipped = this;
 		}

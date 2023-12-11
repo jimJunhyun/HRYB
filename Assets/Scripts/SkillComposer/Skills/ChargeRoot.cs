@@ -66,7 +66,7 @@ public class ChargeRoot : SkillRoot
 		base.UpdateStatus();
 	}
 
-	public override void SetAnimations(Actor to)
+	public override void SetAnimations(Actor to, SkillSlotInfo info)
 	{
 		if ((to.anim as PlayerAnim).curEquipped != this)
 		{
@@ -75,6 +75,10 @@ public class ChargeRoot : SkillRoot
 			{
 				if (childs[i].animClip != null)
 				{
+					AnimationEvent[] events = childs[i].animClip.events;
+					events[1].intParameter = ((int)info);
+					events[2].intParameter = ((int)info);
+					childs[i].animClip.events = events;
 					clips.Add(childs[i].animClip);
 					Debug.Log($"New Clip : {childs[i].animClip}");
 				}
@@ -86,6 +90,10 @@ public class ChargeRoot : SkillRoot
 			{
 				if (childs[i].animClipDisop != null)
 				{
+					AnimationEvent[] events = childs[i].animClipDisop.events;
+					events[1].intParameter = ((int)info);
+					events[2].intParameter = ((int)info);
+					childs[i].animClipDisop.events = events;
 					clips.Add(childs[i].animClipDisop);
 					Debug.Log($"New Clip : {childs[i].animClipDisop}");
 				}
