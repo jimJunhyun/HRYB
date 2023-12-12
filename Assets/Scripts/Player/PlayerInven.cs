@@ -621,122 +621,108 @@ public class PlayerInven : MonoBehaviour
 
 	public void OnPressOne(InputAction.CallbackContext context)
 	{
-		if (context.performed)
+		if (stat == HandStat.Weapon)
 		{
-			if (stat == HandStat.Weapon)
+			if (context.started && !clickWood)
 			{
-				if (context.started && !clickWood)
-				{
-					clickWood = true;
-					(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Wood);
-				}
-				else if (context.canceled && clickWood)
-				{
-					clickWood = false;
-					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Wood);
-				}
+				clickWood = true;
+				(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Wood);
 			}
-			else if (stat == HandStat.Item)
+			else if (context.canceled && clickWood)
 			{
-				Hold(HandStat.Item, 0);
+				clickWood = false;
+				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Wood);
 			}
 		}
+		else if (context.started && stat == HandStat.Item)
+		{
+			Hold(HandStat.Item, 0);
+		}
+		
 	}
 
 	public void OnPressTwo(InputAction.CallbackContext context)
 	{
-		if (context.performed)
+		if (stat == HandStat.Weapon)
 		{
-			if(stat == HandStat.Weapon)
+			if (context.started && !clickFire)
 			{
-				if (context.started && !clickFire)
-				{
-					clickFire = true;
-					(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Fire);
-				}
-				else if (context.canceled && clickFire)
-				{
-					clickFire = false;
-					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Fire);
-				}
+				clickFire = true;
+				(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Fire);
 			}
-			else if(stat == HandStat.Item)
+			else if (context.canceled && clickFire)
 			{
-				Hold(HandStat.Item, 1);
+				clickFire = false;
+				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Fire);
 			}
-			
 		}
+		else if (stat == HandStat.Item && context.started)
+		{
+			Hold(HandStat.Item, 1);
+		}
+
 	}
 
 	public void OnPressThree(InputAction.CallbackContext context)
 	{
-		if (context.performed)
+		if (stat == HandStat.Weapon)
 		{
-			if (stat == HandStat.Weapon)
+			if (context.started && !clickEarth)
 			{
-				if (context.started && !clickEarth)
-				{
-					clickEarth = true;
-					(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Earth);
-				}
-				else if (context.canceled && clickEarth)
-				{
-					clickEarth = false;
-					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Earth);
-				}
+				clickEarth = true;
+				(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Earth);
 			}
-			else if (stat == HandStat.Item)
+			else if (context.canceled && clickEarth)
 			{
-				Hold(HandStat.Item, 2);
+				clickEarth = false;
+				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Earth);
 			}
+		}
+		else if (stat == HandStat.Item && context.started)
+		{
+			Hold(HandStat.Item, 2);
 		}
 	}
 
 	public void OnPressFour(InputAction.CallbackContext context)
 	{
-		if (context.performed)
+		if (stat == HandStat.Weapon)
 		{
-			if (stat == HandStat.Weapon)
+			if (context.started && !clickMetal)
 			{
-				if (context.started && !clickMetal)
-				{
-					clickMetal = true;
-					(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Metal);
-				}
-				else if (context.canceled && clickMetal)
-				{
-					clickMetal = false;
-					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Metal);
-				}
+				clickMetal = true;
+				(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Metal);
 			}
-			else if (stat == HandStat.Item)
+			else if (context.canceled && clickMetal)
 			{
-				Hold(HandStat.Item, 3);
+				clickMetal = false;
+				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Metal);
 			}
+		}
+		else if (stat == HandStat.Item && context.started)
+		{
+			Hold(HandStat.Item, 3);
 		}
 	}
 
 	public void OnPressFive(InputAction.CallbackContext context)
 	{
-		if (context.performed)
+		if (stat == HandStat.Weapon)
 		{
-			if (stat == HandStat.Weapon)
+			if (context.started && !clickWater)
 			{
-				if (context.started && !clickWater)
-				{
-					clickWater = true;
-					(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Water);
-				}
-				else if (context.canceled && clickWater)
-				{
-					clickWater = false;
-					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Water);
-				}
+				clickWater = true;
+				(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Water);
 			}
-			else if (stat == HandStat.Item)
+			else if (context.canceled && clickWater)
 			{
-				Hold(HandStat.Item, 4);
+				clickWater = false;
+				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Water);
 			}
+		}
+		else if (stat == HandStat.Item && context.started)
+		{
+			Hold(HandStat.Item, 4);
 		}
 	}
 }

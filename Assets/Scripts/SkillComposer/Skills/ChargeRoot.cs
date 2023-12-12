@@ -24,13 +24,16 @@ public class ChargeRoot : SkillRoot
 			charging = false;
 			base.Disoperate(self);
 			owner = null;
+			if(self.anim is PlayerAnim pa)
+			{
+				pa.SetDisopTrigger(curCharge);
+			}
 			if (isAimMode)
 			{
 				GameManager.instance.SwitchTo(CamStatus.Freelook);
 				GameManager.instance.uiManager.aimUI.Off();
 			}
 		}
-		
 	}
 
 	public override void Operate(Actor self)
@@ -63,12 +66,51 @@ public class ChargeRoot : SkillRoot
 		base.UpdateStatus();
 	}
 
-	protected override void MyDisoperation(Actor self)
+	public override void SetAnimations(Actor to, SkillSlotInfo info)
+	{
+		if ((to.anim as PlayerAnim).curEquipped != this)
+		{
+			List<AnimationClip> clips = new List<AnimationClip>();
+			for (int i = 0; i < childs.Count; i++)
+			{
+				if (childs[i].animClip != null)
+				{
+					AnimationEvent[] events = childs[i].animClip.events;
+					events[1].intParameter = ((int)info);
+					events[2].intParameter = ((int)info);
+					childs[i].animClip.events = events;
+					clips.Add(childs[i].animClip);
+					Debug.Log($"New Clip : {childs[i].animClip}");
+				}
+			}
+			to.anim.SetAnimationOverrides(new List<string>() { "Zero", "One", "Two", "Three", "Four" }, clips);
+
+			clips.Clear();
+			for (int i = 0; i < childs.Count; i++)
+			{
+				if (childs[i].animClipDisop != null)
+				{
+					AnimationEvent[] events = childs[i].animClipDisop.events;
+					events[1].intParameter = ((int)info);
+					events[2].intParameter = ((int)info);
+					childs[i].animClipDisop.events = events;
+					clips.Add(childs[i].animClipDisop);
+					Debug.Log($"New Clip : {childs[i].animClipDisop}");
+				}
+
+			}
+			to.anim.SetAnimationOverrides(new List<string>() { "Zero" + PlayerCast.DISOPERATE, "One" + PlayerCast.DISOPERATE, "Two" + PlayerCast.DISOPERATE, "Three" + PlayerCast.DISOPERATE, "Four" + PlayerCast.DISOPERATE }, clips);
+
+			(to.anim as PlayerAnim).curEquipped = this;
+		}
+	}
+
+	internal override void MyDisoperation(Actor self)
 	{
 		//Do nothing
 	}
 
-	protected override void MyOperation(Actor self)
+	internal override void MyOperation(Actor self)
 	{
 		//Do nothing
 	}

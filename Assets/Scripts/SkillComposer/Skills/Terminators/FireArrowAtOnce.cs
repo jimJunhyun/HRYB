@@ -23,13 +23,14 @@ public class FireArrowAtOnce : Leaf
 		}
 	}
 
-	protected override void MyDisoperation(Actor self)
+	internal override void MyDisoperation(Actor self)
 	{
 
 		//UnityEditor.EditorApplication.isPaused = true;
 		if(arrow != null)
 		{
-			Debug.Log($"화살발사, {arrow.transform.position} : {arrow.transform.forward}");
+			//Debug.Log($"화살발사, {arrow.transform.position} : {arrow.transform.forward}");
+			GameManager.instance.audioPlayer.PlayPoint(audioClipName, self.transform.position);
 			arrow.Shoot();
 			arrow.SetDisappearTimer();
 			arrow.ResumeCheck();
@@ -37,7 +38,7 @@ public class FireArrowAtOnce : Leaf
 		}
 	}
 
-	protected override void MyOperation(Actor self)
+	internal override void MyOperation(Actor self)
 	{
 		Vector3 pos = GameManager.instance.player.transform.position + Vector3.up;
 		pos.x += Mathf.Cos(circularAngle * Mathf.Deg2Rad) * circularRad;
@@ -47,6 +48,7 @@ public class FireArrowAtOnce : Leaf
 		arrow.StopDisappearTimer();
 		arrow.StopCheck();
 		arrow.SetOwner(self);
+
 	}
 
 	public override void UpdateStatus()

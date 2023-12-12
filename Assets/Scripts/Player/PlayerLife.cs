@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PlayerLife : LifeModule 
 {
+	public override void Awake()
+	{
+		base.Awake();
+	}
 
 	public override void Update()
 	{

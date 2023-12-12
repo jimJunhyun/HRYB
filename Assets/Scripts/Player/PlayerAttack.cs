@@ -84,13 +84,11 @@ public class PlayerAttack : AttackModule
 				if (context.started && !clickL)
 				{
 					clickL = true;
-					Debug.Log("NORMALLTLR");
 					(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.LClick);
 				}
 				else if (context.canceled && clickL)
 				{
 					clickL = false;
-					Debug.Log("LClick Cancel");
 					(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.LClick);
 				}
 			}

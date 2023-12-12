@@ -47,7 +47,7 @@ public abstract class ColliderCast : MonoBehaviour
 
 	public void Now(Action<LifeModule> act = null)
 	{
-		_isRunning = true;
+		_isRunning = true; CheckDic.Clear();
 		CastAct = act;
 	}
 

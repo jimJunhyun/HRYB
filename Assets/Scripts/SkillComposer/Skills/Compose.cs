@@ -7,14 +7,16 @@ using UnityEngine;
 
 public abstract class Compose : ScriptableObject, IComposer
 {
-	public string animVarName;
+	public AnimationClip animClip;
+	public AnimationClip animClipDisop;
+	public string audioClipName;
 
 	public abstract void Disoperate(Actor self);
 
 	public abstract void Operate(Actor self);
 
 
-	protected abstract void MyOperation(Actor self);
-	protected abstract void MyDisoperation(Actor self);
+	internal abstract void MyOperation(Actor self);
+	internal abstract void MyDisoperation(Actor self);
 	public abstract void UpdateStatus();
 }

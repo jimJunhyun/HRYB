@@ -22,15 +22,15 @@ public class FireArrow : Leaf
 		}
 	}
 
-	protected override void MyDisoperation(Actor self)
+	internal override void MyDisoperation(Actor self)
 	{
 
 	}
 
-	protected override void MyOperation(Actor self)
+	internal override void MyOperation(Actor self)
 	{
 		//eff.Play();
-		Debug.Log($"화살발사, {shootPos.position} : {shootPos.forward}");
+		//Debug.Log($"화살발사, {shootPos.position} : {shootPos.forward}");
 		Arrow r = PoolManager.GetObject("ArrowTemp", shootPos.position, shootPos.forward).GetComponent<Arrow>();
 		Vector3 localRot = r.transform.localEulerAngles;
 		localRot.y += angleY;
@@ -39,7 +39,8 @@ public class FireArrow : Leaf
 		r.SetInfo(damage);
 		r.SetOwner(self);
 		r.Shoot();
-		self.anim.SetAttackTrigger();
+		GameManager.instance.audioPlayer.PlayPoint(audioClipName, self.transform.position);
+		//self.anim.SetAttackTrigger();
 	}
 
 	public override void UpdateStatus()

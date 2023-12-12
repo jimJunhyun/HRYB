@@ -63,6 +63,7 @@ public class Arrow : DamageObject
 				{
 					StatusEffects.ApplyStat(hit.GetActor(), owner, item.id, item.duration, item.power);
 				}
+				GameManager.instance.ShakeCamFor(0.1f);
 			}
 			//Debug.Log(other.name);
 			base.OnTriggerEnter(other);
@@ -131,7 +132,7 @@ public class Arrow : DamageObject
 	public void Shoot()
 	{
 
-		
+		SetDisappearTimer();
 		rig.AddForce(power * transform.forward, ForceMode.Impulse);
 
 	}

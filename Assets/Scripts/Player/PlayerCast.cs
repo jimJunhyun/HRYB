@@ -41,6 +41,7 @@ public class SkillSlots
 	{
 		if(!IsEmpty && IsUsable)
 		{
+			Debug.Log($"curCool : {curCooledTime}");
 			curCooledTime = 0;
 			skInfo.Operate(self);
 			//Debug.Log("SKILL USED");
@@ -50,7 +51,7 @@ public class SkillSlots
 			}
 		}
 		else
-			Debug.Log("SKILL IS EMPTY");
+			Debug.Log($"CurCool : {curCooledTime}");
 	}
 
 	public void Disoperate(Actor self)
@@ -491,9 +492,13 @@ public class PlayerCast : CastModule
 		///
 		if (Input.GetKeyDown(KeyCode.Y))
 		{
-			ConnectSkillDataTo(GameManager.instance.skillLoader["DemoSkill"], SkillSlotInfo.Wood);
+			ConnectSkillDataTo(GameManager.instance.skillLoader["BackKick"], SkillSlotInfo.Wood);
 		}
 		if (Input.GetKeyDown(KeyCode.H))
+		{
+			DisconnectSkillDataFrom(SkillSlotInfo.Wood);
+		}
+		if (Input.GetKeyDown(KeyCode.N))
 		{
 			DisconnectSkillDataFrom(SkillSlotInfo.Wood);
 		}
@@ -519,6 +524,7 @@ public class PlayerCast : CastModule
 			original.Disoperate(GetActor());
 		this[((int)to)].Equip(root, GetActor());
 		Debug.Log($"스킬 장착 : {to}, {root.name}");
+		
 		return original;
 	}
 
@@ -531,25 +537,25 @@ public class PlayerCast : CastModule
 		Debug.Log($"스킬 해제 : {from}, {data.name}");
 		return data;
 	}
-	public SkillRoot DisconnectSkillDataMain()
-	{
-		SkillRoot data = lClickSlot.skInfo;
-		if (data == null)
-			return data;
-		lClickSlot.UnEquip(GetActor());
-		Debug.Log($"스킬 해제 : lClick, {data.name}");
-		return data;
-	}
 
 	internal void ResetSkillUse(SkillSlotInfo at)
 	{
 		DisoperateAt(at);
+	}
 
+	internal void ActualSkillOperate(SkillSlotInfo at)
+	{
+		this[((int)at)].skInfo.MyOperation(GetActor());
+	}
 
+	internal void ActualSkillOperate(SkillSlotInfo at, int idx)
+	{
+		this[((int)at)].skInfo.ActualOperateAt(GetActor(), idx);
 	}
 
 	internal void SetSkillUse(SkillSlotInfo at)
 	{
+		this[((int)at)].skInfo.SetAnimations(GetActor(), at);
 		UseSkillAt(at);
 	}
 
@@ -560,6 +566,7 @@ public class PlayerCast : CastModule
 			switch (at)
 			{
 				case SkillSlotInfo.Wood:
+					Debug.Log("START CASING");
 					Cast(WXSkillSlots.WOODSKILL);
 					break;
 				case SkillSlotInfo.Fire:
@@ -575,11 +582,9 @@ public class PlayerCast : CastModule
 					Cast(WXSkillSlots.WATERSKILL);
 					break;
 				case SkillSlotInfo.LClick:
-					Debug.Log("좌스킬 사용");
 					Cast(LCLICKSKILL);
 					break;
 				case SkillSlotInfo.RClick:
-					Debug.Log("우스킬 사용");
 					Cast(RCLICKSKILL);
 					break;
 			}
@@ -614,11 +619,9 @@ public class PlayerCast : CastModule
 				Cast(WXSkillSlots.WATERSKILL + DISOPERATE);
 				break;
 			case SkillSlotInfo.LClick:
-				Debug.Log("좌스킬 해제");
 				Cast(LCLICKSKILL + DISOPERATE);
 				break;
 			case SkillSlotInfo.RClick:
-				Debug.Log("우스킬 해제");
 				Cast(RCLICKSKILL + DISOPERATE);
 				break;
 		}

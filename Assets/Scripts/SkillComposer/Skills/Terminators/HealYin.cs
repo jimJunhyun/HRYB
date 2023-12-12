@@ -8,12 +8,12 @@ public class HealYin : Leaf
     
 	public float amt;
 
-	protected override void MyDisoperation(Actor self)
+	internal override void MyDisoperation(Actor self)
 	{
 
 	}
 
-	protected override void MyOperation(Actor self)
+	internal override void MyOperation(Actor self)
 	{
 		self.life.AddYY(amt, YYInfo.Yin);
 		Debug.Log("음더함");

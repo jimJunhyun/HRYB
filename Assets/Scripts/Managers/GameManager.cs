@@ -15,6 +15,8 @@ public enum CamStatus
 
 public class GameManager : MonoBehaviour
 {
+	public const float GRAVITY = 9.8f;
+
 	public const int FORWARDCAM = 20;
 	public const int BACKWARDCAM = 10;
 
@@ -63,7 +65,7 @@ public class GameManager : MonoBehaviour
 
 	public float forceResistance = 3f;
 
-	CinemachineBasicMultiChannelPerlin aimCamShaker;
+	List<CinemachineBasicMultiChannelPerlin> camShakers = new List<CinemachineBasicMultiChannelPerlin>();
 
 	public bool lockMouse;
 
@@ -95,7 +97,11 @@ public class GameManager : MonoBehaviour
 		pActor = player.GetComponent<Actor>();
 		pCam = GameObject.Find("PCam").GetComponent<CinemachineFreeLook>();
 		aimCam = GameObject.Find("AimCam").GetComponent<CinemachineVirtualCamera>();
-		aimCamShaker = aimCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+		for (int i = 0; i < 3; i++)
+		{
+			camShakers.Add(pCam.GetRig(i).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>());
+		}
+		
 		craftManager = GameObject.Find("CraftManager").GetComponent<CraftManager>();
 		imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
 		uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
@@ -143,37 +149,59 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	public void ShakeCamFor(float dur)
+	{
+		StartCoroutine(DelShakeCam(dur));
+	}
+
+	IEnumerator DelShakeCam(float dur)
+	{
+		ShakeCam();
+		yield return new WaitForSeconds(dur);
+		UnShakeCam();
+	}
+
 	public void ShakeCam()
 	{
-		switch (curCamStat)
+		//switch (curCamStat)
+		//{
+		//	case CamStatus.Freelook:
+		//	case CamStatus.Locked:
+		//		break;
+		//	case CamStatus.Aim:
+		//		camShaker.m_AmplitudeGain = ampGain;
+		//		camShaker.m_FrequencyGain = frqGain;
+		//		break;
+
+		//	default:
+		//		break;
+		//}
+		for (int i = 0; i < camShakers.Count; i++)
 		{
-			case CamStatus.Freelook:
-			case CamStatus.Locked:
-				break;
-			case CamStatus.Aim:
-				aimCamShaker.m_AmplitudeGain = ampGain;
-				aimCamShaker.m_FrequencyGain = frqGain;
-				break;
-			
-			default:
-				break;
+			camShakers[i].m_AmplitudeGain += ampGain;
+			camShakers[i].m_FrequencyGain += frqGain;
 		}
 	}
 
 	public void UnShakeCam()
 	{
-		switch (curCamStat)
-		{
-			case CamStatus.Freelook:
-			case CamStatus.Locked:
-				break;
-			case CamStatus.Aim:
-				aimCamShaker.m_AmplitudeGain = 0;
-				aimCamShaker.m_FrequencyGain = 0;
-				break;
+		//switch (curCamStat)
+		//{
+		//	case CamStatus.Freelook:
+		//	case CamStatus.Locked:
+		//		break;
+		//	case CamStatus.Aim:
+		//		camShaker.m_AmplitudeGain = 0;
+		//		camShaker.m_FrequencyGain = 0;
+		//		break;
 
-			default:
-				break;
+		//	default:
+		//		break;
+		//}
+		for (int i = 0; i < camShakers.Count; i++)
+		{
+			camShakers[i].m_AmplitudeGain -= ampGain;
+			camShakers[i].m_FrequencyGain -= frqGain;
 		}
 	}
 
