@@ -10,6 +10,7 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public static GameObject itemBeingDragged;
     public int isDragged = 1;
     private Vector3 startPosition;
+	public int value;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -17,7 +18,7 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 		itemBeingDragged.GetComponent<Image>().raycastTarget = false;
         startPosition = transform.position;
 
-        GameManager.instance.uiManager.DragPoint = int.Parse(transform.parent.name);
+        GameManager.instance.uiManager.DragPoint = value;
         //GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 

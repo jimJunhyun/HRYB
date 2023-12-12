@@ -1,19 +1,68 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class QuickSlot : MonoBehaviour
 {
-	public Image img;
-	public TMP_Text count;
+	public int value;
+	Image quickImage;
+	TMP_Text quickText;
 
+	public InventoryItem items;
+
+	private void Start()
+	{
+		quickImage = GetComponent<Image>();
+		quickText = GetComponentInChildren<TMP_Text>();
+	}
 
 	private void Update()
 	{
-		GetComponent<Image>().sprite = img.sprite;
-		GetComponentInChildren<TMP_Text>().text = count.text;
+		items = GameManager.instance.pinven.inven[value];
+
+		if (items.isEmpty())
+		{
+			quickImage.sprite = null;
+			quickImage.color = Color.clear;
+			quickText.text = "";
+			return;
+		}
+		else
+		{
+			quickImage.sprite = items.info.icon;
+			quickImage.color = Color.white;
+			quickText.text = items.number.ToString();
+		}
 	}
+
+	//public void UpdateItem()
+	//{
+	//	try
+	//	{
+	//		items = GameManager.instance.pinven.inven[value];
+
+
+	//		if (items.isEmpty())
+	//		{
+	//			quickImage.sprite = null;
+	//			quickImage.color = Color.clear;
+	//			quickText.text = "";
+	//			return;
+	//		}
+	//		else
+	//		{
+	//			quickImage.sprite = items.info.icon;
+	//			quickImage.color = Color.white;
+	//			quickText.text = items.number.ToString();
+	//		}
+	//	}
+	//	catch
+	//	{
+	//		Debug.LogWarning($"{value} Is 없는 번호임");
+	//	}
+
+
+	//}
 }
