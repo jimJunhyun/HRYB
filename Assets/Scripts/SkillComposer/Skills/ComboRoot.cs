@@ -74,30 +74,32 @@ public class ComboRoot : SkillRoot
 			{
 				if (childs[i].animClip != null)
 				{
-					AnimationEvent[] events = childs[i].animClip.events;
+					AnimationClip clip = childs[i].animClip;
+					AnimationEvent[] events = clip.events;
 					events[1].intParameter = ((int)info);
 					events[2].intParameter = ((int)info);
-					childs[i].animClip.events = events;
-					clips.Add(childs[i].animClip);
+					clip.events = events;
+					clips.Add(clip);
 				}
 			}
-			to.anim.SetAnimationOverrides(new List<string>() { "Zero", "One", "Two", "Three", "Four" }, clips);
 
-			clips.Clear();
 			for (int i = 0; i < childs.Count; i++)
 			{
 				if (childs[i].animClipDisop != null)
 				{
-					AnimationEvent[] events = childs[i].animClipDisop.events;
+					AnimationClip clip = childs[i].animClipDisop;
+					AnimationEvent[] events = clip.events;
 					events[1].intParameter = ((int)info);
 					events[2].intParameter = ((int)info);
-					childs[i].animClipDisop.events = events;
-					clips.Add(childs[i].animClipDisop);
-					Debug.Log($"New Clip : {childs[i].animClipDisop}");
+					clip.events = events;
+					clips.Add(clip);
+					Debug.Log($"New Clip : {clip}");
 				}
 
 			}
-			to.anim.SetAnimationOverrides(new List<string>() { "Zero" + PlayerCast.DISOPERATE, "One" + PlayerCast.DISOPERATE, "Two" + PlayerCast.DISOPERATE, "Three" + PlayerCast.DISOPERATE, "Four" + PlayerCast.DISOPERATE }, clips);
+			to.anim.SetAnimationOverrides(
+				new List<string>() { "Zero", "One", "Two", "Three", "Four", "Zero" + PlayerCast.DISOPERATE, "One" + PlayerCast.DISOPERATE, "Two" + PlayerCast.DISOPERATE, "Three" + PlayerCast.DISOPERATE, "Four" + PlayerCast.DISOPERATE },
+				clips);
 
 			(to.anim as PlayerAnim).curEquipped = this;
 		}
