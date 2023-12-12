@@ -31,17 +31,17 @@ public class JangsungManAttackModule : EnemyAttackModule
 	public override void Attack()
 	{
 
-		GameObject obj = PoolManager.GetObject("Jangsung" + AttackStd, transform);
-		if (obj.TryGetComponent(out ColliderCast cols))
-		{
-			_curCols = cols;
-		}
-		else
-		{
-			Debug.LogWarning($"{obj.name} is Not  ColliderCast!!!!!");
-			self.ai.StartExamine();
-			return;
-		}
+		//GameObject obj = PoolManager.GetObject("Jangsung" + AttackStd, transform);
+		//if (obj.TryGetComponent(out ColliderCast cols))
+		//{
+		//	_curCols = cols;
+		//}
+		//else
+		//{
+		//	Debug.LogWarning($"{obj.name} is Not  ColliderCast!!!!!");
+		//	self.ai.StartExamine();
+		//	return;
+		//}
 		Debug.LogWarning(AttackStd);
 		GetActor().anim.SetAttackTrigger();
 		GetActor().anim.Animators.SetBool(AttackStd, true);
@@ -62,7 +62,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 		self.ai.StartExamine();	
 		Debug.LogWarning("Anim Stop!!!!");
 		GetActor().anim.Animators.SetBool(AttackStd, false); 
-		PoolManager.ReturnObject(_curCols.gameObject);
+		//PoolManager.ReturnObject(_curCols.gameObject);
 	}
 
 	public override void OnAnimationEvent()
