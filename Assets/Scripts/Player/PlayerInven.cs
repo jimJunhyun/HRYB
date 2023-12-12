@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -66,6 +67,58 @@ public struct InventoryItem
 		return new ItemAmountPair(info, number);
 	}
 }
+
+public struct InvenSkill
+{
+	public SkillRoot info;
+	public int number;
+
+	public bool isEmpty()
+	{
+		return info == null || number == 0;
+	}
+
+	public override bool Equals(object obj)
+	{
+		return obj is InvenSkill skill &&
+			   EqualityComparer<SkillRoot>.Default.Equals(info, skill.info);
+	}
+
+	public override int GetHashCode()
+	{
+		return HashCode.Combine(info);
+	}
+
+	public InvenSkill(SkillRoot info, int num)
+	{
+		this.info = info;
+		number = num;
+	}
+
+	public static InvenSkill Empty
+	{
+		get=>new InvenSkill(null, 0);
+	}
+
+	public static bool operator ==(InvenSkill lft, InvenSkill rht)
+	{
+		if(lft.info == null)
+			return rht.info == null;
+		if(rht.info == null)
+			return lft.info == null;
+		return lft.info == rht.info;
+	}
+
+	public static bool operator !=(InvenSkill lft, InvenSkill rht)
+	{
+		if (lft.info == null)
+			return rht.info != null;
+		if (rht.info == null)
+			return lft.info != null;
+		return lft.info != rht.info;
+	}
+}
+
 
 public class Inventory
 {
@@ -162,12 +215,61 @@ public class Inventory
 	}
 }
 
+public class SkillInventory
+{
+	public SkillInventory()
+	{
+		data = new HashSet<InvenSkill>();
+	}
+	HashSet<InvenSkill> data;
+
+	public void AddSkill(SkillRoot info, int cnt = 1)
+	{
+		foreach (var item in data)
+		{
+			if(item.info == info)
+			{
+				InvenSkill sk = item;
+				data.Remove(item);
+				sk.number += cnt;
+				data.Add(sk);
+				break;
+			}
+		}
+	}
+
+	public void RemoveSkill(SkillRoot info, int cnt = 1)
+	{
+		foreach (var item in data)
+		{
+			if (item.info == info)
+			{
+				InvenSkill sk = item;
+				data.Remove(item);
+				if(sk.number > cnt)
+				{
+					sk.number -= cnt;
+					data.Add(sk);
+				}
+				break;
+			}
+		}
+	}
+}
+
 public class PlayerInven : MonoBehaviour
 {
     public Inventory inven;
+	public SkillInventory skInven = new SkillInventory();
     public int cap = 20;
 
 	bool havingBow = false;
+
+	bool clickWood = false;
+	bool clickFire = false;
+	bool clickEarth = false;
+	bool clickMetal = false;
+	bool clickWater = false;
 
 	public HandStat stat = HandStat.Item;
 	public int curHolding = 0;
@@ -431,8 +533,11 @@ public class PlayerInven : MonoBehaviour
 					
 					break;
 				case HandStat.Weapon:
+
 					stat = HandStat.Item;
 					(GameManager.instance.pActor.anim as PlayerAnim).SetUnequipTrigger();
+					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
+					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.LClick);
 					break;
 				default:
 					break;
@@ -497,6 +602,16 @@ public class PlayerInven : MonoBehaviour
 		
 	}
 
+	public void AddSkill(SkillRoot info, int cnt = 1)
+	{
+		skInven.AddSkill(info, cnt);
+	}
+
+	public void RemoveSkill(SkillRoot info, int cnt = 1)
+	{
+		skInven.RemoveSkill(info, cnt);
+	}
+
 	void Swap(int a, int b)
 	{
 		InventoryItem slotItem = inven[a];
@@ -510,7 +625,16 @@ public class PlayerInven : MonoBehaviour
 		{
 			if (stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).Cast(WXSkillSlots.WOODSKILL);
+				if (context.started && !clickWood)
+				{
+					clickWood = true;
+					(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Wood);
+				}
+				else if (context.canceled && clickWood)
+				{
+					clickWood = false;
+					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Wood);
+				}
 			}
 			else if (stat == HandStat.Item)
 			{
@@ -525,7 +649,16 @@ public class PlayerInven : MonoBehaviour
 		{
 			if(stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).Cast(WXSkillSlots.FIRESKILL);
+				if (context.started && !clickFire)
+				{
+					clickFire = true;
+					(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Fire);
+				}
+				else if (context.canceled && clickFire)
+				{
+					clickFire = false;
+					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Fire);
+				}
 			}
 			else if(stat == HandStat.Item)
 			{
@@ -541,7 +674,16 @@ public class PlayerInven : MonoBehaviour
 		{
 			if (stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).Cast(WXSkillSlots.EARTHSKILL);
+				if (context.started && !clickEarth)
+				{
+					clickEarth = true;
+					(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Earth);
+				}
+				else if (context.canceled && clickEarth)
+				{
+					clickEarth = false;
+					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Earth);
+				}
 			}
 			else if (stat == HandStat.Item)
 			{
@@ -556,7 +698,16 @@ public class PlayerInven : MonoBehaviour
 		{
 			if (stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).Cast(WXSkillSlots.METALSKILL);
+				if (context.started && !clickMetal)
+				{
+					clickMetal = true;
+					(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Metal);
+				}
+				else if (context.canceled && clickMetal)
+				{
+					clickMetal = false;
+					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Metal);
+				}
 			}
 			else if (stat == HandStat.Item)
 			{
@@ -571,7 +722,16 @@ public class PlayerInven : MonoBehaviour
 		{
 			if (stat == HandStat.Weapon)
 			{
-				(GameManager.instance.pActor.cast as PlayerCast).Cast(WXSkillSlots.WATERSKILL);
+				if (context.started && !clickWater)
+				{
+					clickWater = true;
+					(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Water);
+				}
+				else if (context.canceled && clickWater)
+				{
+					clickWater = false;
+					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Water);
+				}
 			}
 			else if (stat == HandStat.Item)
 			{

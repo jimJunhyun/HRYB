@@ -18,4 +18,8 @@ public class HealYin : Leaf
 		self.life.AddYY(amt, YYInfo.Yin);
 		Debug.Log("음더함");
 	}
+	public override void UpdateStatus()
+	{
+		throw new System.NotImplementedException();
+	}
 }

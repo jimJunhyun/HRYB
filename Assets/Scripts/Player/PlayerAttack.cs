@@ -1,58 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.VFX;
+
 
 public class PlayerAttack : AttackModule
 {
-	protected float chargePerSec;
-	public float initChargePerSec;
+	protected float secPerCharge;
+	public float initSecPerCharge;
 
-	public float ChargePerSec { get => chargePerSec;}
-	public override float prepMod 
-	{
-		get => base.prepMod; 
-		set
-		{
-			base.prepMod = value;
-			(GetActor().anim as PlayerAnim).SetAimSpeed(base.prepMod);
-		}
-	}
+	public float SecPerCharge { get => secPerCharge; }
 
-	public float shakeFrom;
-	public float maxChargeTime;
-
-	Transform shootPos;
-	VisualEffect eff;
+	//VisualEffect chargeEff;
 	Ray camRay;
 	public Transform ShootPos { get; protected set;}
-	float curCharge;
 
-	bool shaking = false;
-
-	bool atked = false;
-
+	UnityAction updateActs;
 
 	float AimTime { get => Time.time - aimStart;}
 
 	float aimStart = 0;
 
-	bool loaded = false;
-
 	Coroutine ongoingResetter;
+
+	bool clickL = false;
+	bool clickR = false;
 
 	PlayerAnimActions animActions;
 
 	private void Awake()
 	{
-		shootPos = GameObject.Find("ShootPos").transform;
+		ShootPos = GameObject.Find("ShootPos").transform;
 
 		animActions = GetComponentInChildren<PlayerAnimActions>();
-		curCharge = 0;
 
-		eff = shootPos.GetComponentInChildren<VisualEffect>();
-		eff.Stop();
+		//chargeEff = shootPos.GetComponentInChildren<VisualEffect>();
+		//chargeEff.Stop();
 	}
 
 	private void Start()
@@ -62,84 +48,67 @@ public class PlayerAttack : AttackModule
 
 	private void Update()
 	{
-		if (loaded && attackState == AttackStates.Prepare)
-		{
-			
-			Charge();
-		}
-		else if (shaking)
-		{
-			shaking = false;
-			GameManager.instance.UnShakeCam();
-		}
+		updateActs?.Invoke();
 	}
 
 	public void OnAim(InputAction.CallbackContext context)
 	{
 		if(GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
-			if (context.performed && !loaded)
+			if (!clickL)
 			{
-				GameManager.instance.SwitchTo(CamStatus.Aim);
-				attackState = AttackStates.Prepare;
-				(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
-				GameManager.instance.uiManager.aimUI.On();
-			}
-			if (context.canceled)
-			{
-				if (atked)
+				if (context.started && !clickR)
 				{
-					if (ongoingResetter == null)
-					{
-						ongoingResetter = StartCoroutine(DelayResetCam());
-					}
+					clickR = true;
+					Debug.Log("AIM START");
+					(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.RClick);
 				}
-				else
+				else if (context.canceled && clickR)
 				{
-					BowDown();
-
+					clickR = false;
+					(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
 				}
 			}
+			
 		}
 	}
 
 	public void OnAttack(InputAction.CallbackContext context)
 	{
-		if(GameManager.instance.pinven.stat == HandStat.Weapon)
+		//(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
+		
+		if (GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
-			if (context.started && loaded && curCharge > 0.1f)
+			if (!clickR)
 			{
-				atked = true;
-				GetActor().anim.SetAttackTrigger();
+				if (context.started && !clickL)
+				{
+					clickL = true;
+					Debug.Log("NORMALLTLR");
+					(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.LClick);
+				}
+				else if (context.canceled && clickL)
+				{
+					clickL = false;
+					Debug.Log("LClick Cancel");
+					(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.LClick);
+				}
 			}
+				
 		}
-		else if(GameManager.instance.pinven.stat == HandStat.Item)
+		else if (GameManager.instance.pinven.stat == HandStat.Item && context.performed)
 		{
-			if (context.started && !GameManager.instance.uiManager.isWholeScreenUIOn)
+			if (!GameManager.instance.uiManager.isWholeScreenUIOn)
 			{
 				GameManager.instance.pinven.CurHoldingItem.info?.Use();
 			}
 		}
 	}
 
-	public override void Attack()
-	{
-		
-		// 이거 자체가 공격
-		{
-			Debug.Log($"{curCharge} 파워로 발사.");
-			attackState = AttackStates.Trigger;
-
-			Arrow r = PoolManager.GetObject("ArrowTemp", shootPos.position, shootPos.forward).GetComponent<Arrow>();
-			r.SetInfo(damage, EffSpeed, isDirect);
-			r.Shoot(curCharge);
-
-			attackState = AttackStates.Prepare;
-			(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
-			ResetBowStat();
-			atked = false;
-		}
-	}
+	//public override void Attack()
+	//{
+	//	//(GetActor().cast as PlayerCast).UseSkillAt(SkillSlotInfo.LClick);
+	//}
 
 	public bool ThrowRope()
 	{
@@ -155,56 +124,27 @@ public class PlayerAttack : AttackModule
 		}
 		return false;
 	}
-
-
-	void Charge()
+	
+	void ResetBowStat()
 	{
-		
-		curCharge += chargePerSec / atkGap * Time.deltaTime;
-		
-		curCharge = Mathf.Clamp(curCharge, 0, atkDist);
-
-		if (AimTime >= maxChargeTime && !atked)
-		{
-			atked = true;
-			GetActor().anim.SetAttackTrigger();
-		}
-
-		if (curCharge == atkDist && AimTime >= shakeFrom)
-		{
-			if (!shaking)
-			{
-				shaking = true;
-				GameManager.instance.ShakeCam();
-			}
-			
-		}
+		//chargeEff.Reinit();
+		//chargeEff.Stop();
+		//loaded = false;
 	}
 
 	
 
-	void ResetBowStat()
-	{
-		eff.Reinit();
-		eff.Stop();
-		curCharge = 0;
-		loaded = false;
-	}
-
 	void BowDown()
 	{
-		ResetBowStat();
-		GameManager.instance.SwitchTo(CamStatus.Freelook);
-		attackState = AttackStates.None;
-		(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
-		GameManager.instance.uiManager.aimUI.Off();
-		animActions.ResetBowAimState();
+		//ResetBowStat();
+		//(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
+		
+		//animActions.ResetBowAimState();
 	}
 
 	public void SetBowStat()
 	{
-		eff.Play();
-		loaded = true;
+		//loaded = true;
 		aimStart = Time.time;
 	}
 
@@ -215,12 +155,10 @@ public class PlayerAttack : AttackModule
 
 	IEnumerator DelayResetCam()
 	{
-		yield return new WaitUntil(()=> !atked);
 		yield return GameManager.instance.waitSec;
 		ResetBowStat();
 		GameManager.instance.SwitchTo(CamStatus.Freelook);
-		attackState = AttackStates.None;
-		(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
+		//(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
 		GameManager.instance.uiManager.aimUI.On();
 		ongoingResetter = null;
 	}
@@ -228,6 +166,6 @@ public class PlayerAttack : AttackModule
 	public override void ResetStatus()
 	{
 		base.ResetStatus();
-		chargePerSec = initChargePerSec;
+		secPerCharge = initSecPerCharge;
 	}
 }

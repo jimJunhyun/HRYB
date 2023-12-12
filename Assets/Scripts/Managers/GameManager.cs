@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
 	public PlayableDirector timeliner2;
 
 	public ImageManager imageManager;
+	public CameraManager camManager;
 
 	public Arrow arrow;
 
@@ -60,6 +61,8 @@ public class GameManager : MonoBehaviour
 
 	public StatusEffects statEff;
 
+	public float forceResistance = 3f;
+
 	CinemachineBasicMultiChannelPerlin aimCamShaker;
 
 	public bool lockMouse;
@@ -69,9 +72,6 @@ public class GameManager : MonoBehaviour
 	public CamStatus curCamStat;
 
 	public WaitForSeconds waitSec = new WaitForSeconds(1.0f);
-
-	public float curVFov = CAMVFOV;
-	public float? fixedCamVFov = null;
 
 	private void Awake()
 	{
@@ -102,8 +102,9 @@ public class GameManager : MonoBehaviour
 		terrain = GameObject.Find("Terrain").GetComponentInChildren<Terrain>();
 		audioPlayer = GameObject.Find("AudioManager").GetComponent<AudioPlayer>();
 		sManager = GameObject.Find("SectionManager").GetComponent<SectionManager>();
-//		timeliner = GameObject.Find("Timeliner").GetComponent<PlayableDirector>(); //////////#####타임라인매니저
-//		timeliner2 = GameObject.Find("Timeliner2").GetComponent<PlayableDirector>();
+		timeliner = GameObject.Find("Timeliner").GetComponent<PlayableDirector>(); //////////#####타임라인매니저
+		timeliner2 = GameObject.Find("Timeliner2").GetComponent<PlayableDirector>();
+		//camManager = GameObject.Find("CameraManager").GetComponent<CameraManager>();
 		statEff = new StatusEffects();
 		skillLoader = new SkillLoader();
 		SwitchTo(CamStatus.Freelook);
@@ -176,30 +177,6 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-
-	public void SetCamVFov(float val)
-	{
-		if(fixedCamVFov == null)
-		{
-			curVFov = val;
-			pCam.m_Lens.FieldOfView = curVFov;
-		}
-		else
-		{
-			pCam.m_Lens.FieldOfView = (float)fixedCamVFov;
-		}
-	}
-
-	public void SetFixedCamFov(float val)
-	{
-		fixedCamVFov = val;
-	}
-
-	public void ResetFixedCamFov()
-	{
-		fixedCamVFov = null;
-		pCam.m_Lens.FieldOfView = curVFov;
-	}
 
 	public void CraftWithUI()
 	{

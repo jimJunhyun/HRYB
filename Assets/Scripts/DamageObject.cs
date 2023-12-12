@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class DamageObject : MonoBehaviour
 {
-    public YinYang yy ;
-    public float effS;
-	public bool isDirect ;
+    public YinYang yy;
 
 	public virtual void OnTriggerEnter(Collider other)
 	{
@@ -19,22 +17,13 @@ public class DamageObject : MonoBehaviour
 		}
 	}
 
-	public virtual void SetInfo(YinYang y, float time, bool isDrt)
+	public virtual void SetInfo(YinYang y)
 	{
 		yy = y;
-		effS = time;
-		isDirect = isDrt;
 	}
 
 	public virtual void Damage(LifeModule to)
 	{
-		if (isDirect)
-		{
-			to.AddYY(yy, true);
-		}
-		else
-		{
-			to.AddYY(yy, effS, true);
-		}
+		to.AddYY(yy, true);
 	}
 }
