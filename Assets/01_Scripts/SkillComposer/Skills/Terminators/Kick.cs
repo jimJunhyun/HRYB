@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Skills/Infos/Kick")]
-public class Kick : Leaf
+public class Kick : AttackBase
 {
-	public YinYang damage;
-	public string casterName;
-	public float knockbackPow;
-
 	BoxColliderCast caster;
 
-	private void OnValidate()
+	protected override void OnValidate()
 	{
-		caster = GameObject.Find("KickCaster").GetComponent<BoxColliderCast>();
+		base.OnValidate();
+		caster = relatedTransform.GetComponent<BoxColliderCast>();
+		if(caster == null)
+		{
+			Debug.Log($"NO BOXCOLLIDERCAST FOUND IN : {relatedTransform.name}");
+		}
 	}
 
 	public override void Operate(Actor self)
@@ -33,13 +34,11 @@ public class Kick : Leaf
 
 	internal override void MyOperation(Actor self)
 	{
-		Debug.Log("KICKED");
 		caster.Now(life =>
 		{
 			if(life != null)
 			{
-				life.AddYY(damage);
-				StatusEffects.ApplyStat(life.GetActor(), self, StatEffID.Knockback, 0.2f, knockbackPow);
+				DoDamage(life.GetActor(), self);
 			}
 			
 		});

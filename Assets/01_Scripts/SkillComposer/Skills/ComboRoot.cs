@@ -27,7 +27,6 @@ public class ComboRoot : SkillRoot
 				pa.SetAttackTrigger(curCombo); 
 				prevOperateSec = Time.time;
 			}
-			
 		}
 	}
 
@@ -60,7 +59,10 @@ public class ComboRoot : SkillRoot
 			Debug.Log("콤보 최대, 초기화");
 		}
 		Debug.Log($"콤보 {curCombo + 1}/{childs.Count}");
+
+		//childs[curCombo].onOperateSelf += onOperateSelf;
 		childs[curCombo].Operate(self);
+		
 
 		NextCombo(true, self);
 	}

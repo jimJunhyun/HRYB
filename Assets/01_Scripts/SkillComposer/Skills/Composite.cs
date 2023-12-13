@@ -76,7 +76,6 @@ public class Composite : Compose, IComposer
 				clip = childs[i].animClip;
 				if(clip != null)
 				{
-					clip.name += i;
 					AnimationEvent[] events = clip.events;
 					events[1].intParameter = i;
 					events[1].stringParameter = info.ToString();
@@ -106,6 +105,7 @@ public class Composite : Compose, IComposer
 			}
 			yield return new WaitForSeconds(composeDel);
 		}
+		//onOperateSelf = null;
 	}
 
 	IEnumerator DelDisoperate(Actor self)
