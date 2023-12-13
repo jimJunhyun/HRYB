@@ -60,6 +60,7 @@ public class BearAttack : EnemyAttackModule
 				break;
 			case AttackType.MouthAttack:
 				Target.life.AddYY(damage, EffSpeed, true);
+				Debug.LogError("BearAttack 알수없는 문제임 ( 유공이 한거 아님 )");
 				PoolManager.GetObject("DamagedEffect", Target.transform.position + (Vector3.up * Target.transform.localScale.magnitude * 0.5f), Quaternion.LookRotation(Target.transform.forward));
 				break;
 			case AttackType.SpecialAttack:
@@ -68,6 +69,8 @@ public class BearAttack : EnemyAttackModule
 		}
 		GetActor().anim.SetAttackTrigger();
 	}
+
+	public bool EffSpeed { get; set; }
 
 	public override void SetAttackRange(int idx)
 	{
