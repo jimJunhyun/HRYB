@@ -40,6 +40,12 @@ public class PlayerAnimActions : MonoBehaviour
 		(self.cast as PlayerCast).ActualSkillOperate(SkillSlotInfo.LClick);
 	}
 
+	public void SetAllAttackRange(string at)
+	{
+		SkillSlotInfo info = System.Enum.Parse<SkillSlotInfo>(at);
+		(self.cast as PlayerCast).ActualSkillOperate(info);
+	}
+
 	public void SetAttackRange(AnimationEvent evt)
 	{
 		Debug.Log(evt.animatorClipInfo.clip.name + " : " + evt.stringParameter);

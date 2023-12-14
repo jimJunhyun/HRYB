@@ -39,6 +39,8 @@ public class Kick : AttackBase
 			if(life != null)
 			{
 				DoDamage(life.GetActor(), self);
+				GameManager.instance.ShakeCamFor(0.1f);
+				PoolManager.GetObject("Hit 26", life.transform.position + (Vector3.up * life.transform.localScale.magnitude * 0.5f), Quaternion.LookRotation(life.transform.forward));
 			}
 			
 		});

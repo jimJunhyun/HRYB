@@ -24,6 +24,7 @@ public class Composite : Compose, IComposer
 
 	public override void Operate(Actor self)
 	{
+		Debug.Log("OPERATING : " + name);
 		GameManager.instance.StartCoroutine(DelOperate(self));
 	}
 
@@ -54,7 +55,10 @@ public class Composite : Compose, IComposer
 
 	internal override void MyOperation(Actor self)
 	{
-		//Do nothing?
+		for (int i = 0; i < childs.Count; i++)
+		{
+			childs[i].MyOperation(self);
+		}
 	}
 
 	public override void UpdateStatus()
@@ -77,6 +81,7 @@ public class Composite : Compose, IComposer
 				if(clip != null)
 				{
 					AnimationEvent[] events = clip.events;
+
 					events[1].intParameter = i;
 					events[1].stringParameter = info.ToString();
 					events[2].intParameter = i;
@@ -86,7 +91,6 @@ public class Composite : Compose, IComposer
 					atoms.Add(clip);
 					Debug.Log($"{clip.name} : {clip.events[1].intParameter}-{clip.events[1].stringParameter}, {events[2].intParameter}-{clip.events[2].stringParameter}");
 				}
-				
 			}
 			to.anim.SetAnimationOverrides(new List<string>() { "SkillAtom0", "SkillAtom1", "SkillAtom2", "SkillAtom3", "SkillAtom4" }, atoms);
 			(to.anim as PlayerAnim).curEquipped = this;
@@ -97,11 +101,15 @@ public class Composite : Compose, IComposer
 	{
 		for (int i = 0; i < childs.Count; i++)
 		{
-			childs[i].Operate(self);
+			Debug.Log("ARROW SHOOT : " + childs[i].name);
 			if (isPlayAnim)
 			{
 				(GameManager.instance.pActor.anim as PlayerAnim).SetSkillAtomCount(childs.Count - 1);
 				(GameManager.instance.pActor.anim as PlayerAnim).SetAttackTrigger();
+			}
+			else
+			{
+				childs[i].Operate(self);
 			}
 			yield return new WaitForSeconds(composeDel);
 		}

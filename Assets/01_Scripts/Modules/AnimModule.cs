@@ -88,6 +88,7 @@ public class AnimModule : Module
 		{
 			if(i < to.Count)
 			{
+				Debug.Log("Setting Anum : " + to[i].name);
 				ctrl[$"{from[i]}"] = to[i];
 			}
 		}

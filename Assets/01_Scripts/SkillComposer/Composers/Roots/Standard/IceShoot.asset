@@ -9,19 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 695d2838aef5f394286eefee40269a5c, type: 3}
-  m_Name: FireSlowArrow
+  m_Script: {fileID: 11500000, guid: 23adbf644a197874e9ff9787ef8b221a, type: 3}
+  m_Name: IceShoot
   m_EditorClassIdentifier: 
   animClip: {fileID: 0}
   animClipDisop: {fileID: 0}
-  audioClipName: NormalArrow
-  damage:
-    yinAmt: 5
-    yangAmt: 5
-  relateTrmName: ShootPos
-  statEff:
-  - id: 3
-    power: 20
-    duration: 2
-  arrowPrefabName: IceArrow
-  angleY: 0
+  audioClipName: 
+  childs:
+  - {fileID: 11400000, guid: a183f0800478e6749ba3e61472c9a916, type: 2}
+  composeDel: 0
+  isPlayAnim: 1
+  isPlayDisopAnim: 0
+  useType: 0
+  castTime: 0.5
+  cooldown: 5

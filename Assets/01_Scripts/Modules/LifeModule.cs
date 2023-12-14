@@ -34,7 +34,7 @@ public class LifeModule : Module
 	public float TotalApplySpeed { get => baseApplySpeed * applyMod;}
 
 
-	Dictionary<StatusEffect, float> appliedDebuff = new Dictionary<StatusEffect, float>();
+	internal Dictionary<StatusEffect, float> appliedDebuff = new Dictionary<StatusEffect, float>();
 
 	public virtual bool isDead
 	{
@@ -82,7 +82,6 @@ public class LifeModule : Module
 
 	public Action<Actor> ApplyStatus(StatusEffect eff, Actor applier, float power, float dur)
 	{
-		//if eff != knockback
 		if (!appliedDebuff.ContainsKey(eff))
 		{
 			appliedDebuff.Add(eff, dur);

@@ -496,7 +496,7 @@ public class PlayerCast : CastModule
 		}
 		if (Input.GetKeyDown(KeyCode.H))
 		{
-			DisconnectSkillDataFrom(SkillSlotInfo.Wood);
+			ConnectSkillDataTo(GameManager.instance.skillLoader["IceMultishot"], SkillSlotInfo.Fire);
 		}
 		if (Input.GetKeyDown(KeyCode.N))
 		{
@@ -545,6 +545,7 @@ public class PlayerCast : CastModule
 
 	internal void ActualSkillOperate(SkillSlotInfo at)
 	{
+		
 		this[((int)at)].skInfo.MyOperation(GetActor());
 	}
 

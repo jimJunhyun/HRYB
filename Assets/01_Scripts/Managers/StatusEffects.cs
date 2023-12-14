@@ -119,7 +119,7 @@ public class StatusEffects
 		if(updateAct != null)
 		{
 			float t = 0;
-			while(t < dur)
+			while(t < to.life.appliedDebuff[(StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]])
 			{
 				yield return null;
 				t += Time.deltaTime;
