@@ -88,6 +88,17 @@ public class BearAttack : EnemyAttackModule
 		ranges[idx].SetActive(false);
 	}
 
+	public override void OnAnimationStart()
+	{
+		
+	}
+
+	public override void OnAnimationMove()
+	{
+		throw new System.NotImplementedException();
+	}
+	
+
 	public override void OnAnimationStop()
 	{
 		

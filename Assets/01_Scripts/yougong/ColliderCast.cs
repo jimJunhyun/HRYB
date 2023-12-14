@@ -28,9 +28,10 @@ public abstract class ColliderCast : MonoBehaviour
 	
 	protected void Update()
 	{
+		Debug.LogError("업데이트 돌긴함");
 		if (_isRunning == false)
 			return;
-		
+		Debug.LogError("업데이트 들어옴");
 		// 생각해 봤는데 어차피 col있는 만큼만 돌아가기 때문에 큰 문제 없음
 		foreach (var col in ReturnColliders())
 		{
@@ -38,17 +39,22 @@ public abstract class ColliderCast : MonoBehaviour
 				return;
 			else
 				CheckDic.Add(col, false);
-			
-			CastAct?.Invoke(col.GetComponent<LifeModule>());
-			Debug.Log($"{col.name} 맞음");
+			if (col.TryGetComponent<LifeModule>(out LifeModule lf))
+			{
+				CastAct?.Invoke(lf);
+			}
+			Debug.LogWarning($"{col.name} 맞음");
 
 		}
 	}
 
 	public void Now(Action<LifeModule> act = null)
 	{
-		_isRunning = true; CheckDic.Clear();
-		CastAct = act;
+		CheckDic.Clear();
+		Debug.Log("시작");
+		_isRunning = true; 
+		if(act != null)
+			CastAct = act;
 	}
 
 	public void End()

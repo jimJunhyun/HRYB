@@ -68,6 +68,16 @@ public class AttackModule : Module, IAnimationEvent
 		// ResetRange
 	}
 
+	public virtual void OnAnimationStart()
+	{
+		//
+	}
+
+	public virtual void OnAnimationMove()
+	{
+		//
+	}
+
 	public virtual void OnAnimationEvent()
 	{
 		// AnimEvent == SetRange
