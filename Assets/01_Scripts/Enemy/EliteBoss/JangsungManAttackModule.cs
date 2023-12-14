@@ -9,7 +9,8 @@ public class JangsungManAttackModule : EnemyAttackModule
 	[SerializeField] float DownAttackDist;
 	[SerializeField] float FallDownAttackDist;
 	[SerializeField] private float MoveAttackDist;
-
+	
+	
 	private JangSungMoveModule _jsMoveModule;
 	private ColliderCast _curCols;
 
@@ -47,6 +48,25 @@ public class JangsungManAttackModule : EnemyAttackModule
 			self.ai.StartExamine();
 			return;
 		}
+
+		EffectObject ef;
+		switch (AttackStd)
+		{
+			case "DownAttack":
+				ef = EffectManager.GetObject("JangsungEffect1", transform);
+				ef.Begin();
+				break;
+			case "FallDownAttack":
+				ef = EffectManager.GetObject("JangsungEffect1", transform);
+				ef.Begin();
+				break;
+			case "MoveAttack":
+				
+				ef = EffectManager.GetObject("JangsungEffect1", transform);
+				ef.Begin();
+				break;
+		}
+
 		
 		Debug.LogWarning(AttackStd);
 		GetActor().anim.SetAttackTrigger();
@@ -86,6 +106,22 @@ public class JangsungManAttackModule : EnemyAttackModule
 		Debug.Log("실행ㅇㅇㅇ");
 	}
 
+	public override void OnAnimationSound()
+	{
+		switch (AttackStd)
+		{
+			case "DownAttack":
+				GameManager.instance.audioPlayer.PlayPoint("JangsungDown", transform);
+				break;
+			case "FallDownAttack":
+				GameManager.instance.audioPlayer.PlayPoint("JangsungFallDown", transform);
+				break;
+			case "MoveAttack":
+				GameManager.instance.audioPlayer.PlayPoint("JangsungMove", transform);
+				break;
+		}
+	}
+
 	public override void OnAnimationStop()
 	{
 		self.ai.StartExamine();	
@@ -96,23 +132,72 @@ public class JangsungManAttackModule : EnemyAttackModule
 
 	public override void OnAnimationEvent()
 	{
-		if (_curCols != null)
-			
+		
+		EffectObject ef;
+		switch (AttackStd)
 		{
+			case "DownAttack":
+
+				break;
+			case "FallDownAttack":
+				ef = EffectManager.GetObject("JangsungEffect1", transform);
+				ef.Begin();
+				break;
+			case "MoveAttack":
+				
+				ef = EffectManager.GetObject("JangsungEffect1", transform);
+				ef.Begin();
+				break;
+		}
+
+
 			switch (AttackStd)
 			{
 				case "DownAttack":
-					_curCols.CastAct += (player) => { player.AddYY(new YinYang(50, 0)); };
+					if (_curCols != null)
+					{
+						_curCols.Now((player) =>
+						{
+							player.AddYY(new YinYang(5, 0));
+							GameManager.instance.ShakeCamFor(0.5f);
+						});
+					_curCols.Now();
+					}
+					ef = EffectManager.GetObject("JangsungEffect2", transform);
+					ef.Begin();
+					
+					
 					break;
 				case "FallDownAttack":
-					_curCols.CastAct += (player) => { player.AddYY(new YinYang(100, 0)); };
+					if (_curCols != null)
+					{
+						_curCols.Now((player) =>
+						{
+							player.AddYY(new YinYang(10, 0)); 
+							GameManager.instance.ShakeCamFor(0.8f);
+						});
+					_curCols.Now();
+					}
+					ef = EffectManager.GetObject("JangsungEffect2", transform);
+					ef.Begin();
 					break;
 				case "MoveAttack":
-					_curCols.CastAct += (player) => { player.AddYY(new YinYang(10, 0)); };
+					if (_curCols != null)
+					{
+						_curCols.Now((player) =>
+						{
+							player.AddYY(new YinYang(4, 0));
+							GameManager.instance.ShakeCamFor(0.3f);
+						});
+						_curCols.Now();
+					}
+					
+					ef = EffectManager.GetObject("JangsungEffect2", transform);
+					ef.Begin();
 					break;
 			}
-		}
-		_curCols.Now();
+		
+
 		
 	}
 

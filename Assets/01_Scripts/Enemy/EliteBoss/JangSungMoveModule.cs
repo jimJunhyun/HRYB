@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class JangSungMoveModule : MoveModule
 {
+
 	Actor _target;
 	UnityEngine.AI.NavMeshAgent agent;
 

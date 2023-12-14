@@ -38,7 +38,7 @@ public class AudioPlayer : MonoBehaviour
 
 	public void PlayGlobal(string clipName, bool isInterrupt = true, bool loop = true)
 	{
-		if(curClip != clipName)
+		if (curClip != clipName)
 		{
 			if (dict.ContainsKey(clipName))
 			{
@@ -53,7 +53,7 @@ public class AudioPlayer : MonoBehaviour
 
 			}
 		}
-		
+
 	}
 	
 	public void PlayGlobalAdditive(string clipName)
@@ -83,6 +83,26 @@ public class AudioPlayer : MonoBehaviour
 			if (duration != -1)
 				delT = duration;
 			StartCoroutine(DelReturnAudioPoint(delT, audioPt));
+		}
+		
+	}
+	
+	public void PlayPoint(string clipName, Transform point, float duration = -1)
+	{
+		GameObject audioPt = PoolManager.GetObject("AudioPoint", point);
+		AudioSource audioPoint= audioPt.GetComponent<AudioSource>();
+		if (dict.ContainsKey(clipName))
+		{
+			audioPoint.clip = dict[clipName];
+			audioPoint.Play();
+			float delT = audioPoint.clip.length;
+			if (duration != -1)
+				delT = duration;
+			StartCoroutine(DelReturnAudioPoint(delT, audioPt));
+		}
+		else
+		{
+			Debug.LogError(clipName);
 		}
 		
 	}

@@ -97,7 +97,12 @@ public class BearAttack : EnemyAttackModule
 	{
 		throw new System.NotImplementedException();
 	}
-	
+
+	public override void OnAnimationSound()
+	{
+		throw new System.NotImplementedException();
+	}
+
 
 	public override void OnAnimationStop()
 	{

@@ -29,6 +29,8 @@ public abstract class EnemyAttackModule : AttackModule
 
 	public abstract void OnAnimationStart();
 	public abstract void OnAnimationMove();
+
+	public abstract void OnAnimationSound();
 	public abstract void OnAnimationStop();
 	public abstract void OnAnimationEvent();
 	public abstract void OnAnimationEnd();
