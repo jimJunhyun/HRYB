@@ -40,7 +40,9 @@ public class Kick : AttackBase
 			{
 				DoDamage(life.GetActor(), self);
 				GameManager.instance.ShakeCamFor(0.1f);
-				PoolManager.GetObject("Hit 26", life.transform.position + (Vector3.up * life.transform.localScale.magnitude * 0.5f), Quaternion.LookRotation(life.transform.forward));
+
+				Vector3 effPos = life.transform.GetComponent<Collider>().ClosestPointOnBounds(caster.transform.position);
+				PoolManager.GetObject("Hit 26", effPos, -caster.transform.forward, 2.5f);
 			}
 			
 		});

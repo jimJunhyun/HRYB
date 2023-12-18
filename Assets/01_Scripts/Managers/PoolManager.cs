@@ -53,7 +53,26 @@ public class PoolManager : MonoBehaviour
 		Debug.LogError($"Item named {name} doesn't exist!");
 		return null;
 	}
-	
+
+	public static GameObject GetObject(string name, Vector3 pos, Quaternion rot, float lifetime)
+	{
+		StackWithName<GameObject> st;
+		if ((st = pooleds.Find(item => item.name == name)) != null)
+		{
+			if (st.data.Count > 0)
+			{
+				GameObject res = st.data.Pop();
+				res.SetActive(true);
+				res.transform.position = pos;
+				res.transform.rotation = rot;
+				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
+				return res;
+			}
+		}
+		Debug.LogError($"Item named {name} doesn't exist!");
+		return null;
+	}
+
 	public static GameObject GetObject(string name, Transform parent)
 	{
 		StackWithName<GameObject> st;
@@ -88,6 +107,25 @@ public class PoolManager : MonoBehaviour
 		return null;
 	}
 
+	public static GameObject GetObject(string name, Vector3 pos, Vector3 forward, float lifetime)
+	{
+		StackWithName<GameObject> st;
+		if ((st = pooleds.Find(item => item.name == name)) != null)
+		{
+			if (st.data.Count > 0)
+			{
+				GameObject res = st.data.Pop();
+				res.SetActive(true);
+				res.transform.position = pos;
+				res.transform.forward = forward;
+				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
+				return res;
+			}
+		}
+		Debug.LogError($"Item named {name} doesn't exist!");
+		return null;
+	}
+
 	public static void ReturnObject(GameObject obj)
 	{
 		StackWithName<GameObject> st;
@@ -104,5 +142,11 @@ public class PoolManager : MonoBehaviour
 		{
 			Debug.LogError($"{obj.name} doesn't exist in pool!");
 		}
+	}
+
+	static IEnumerator DelReturner(GameObject obj, float t)
+	{
+		yield return new WaitForSeconds(t);
+		ReturnObject(obj);
 	}
 }

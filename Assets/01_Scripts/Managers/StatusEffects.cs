@@ -45,7 +45,10 @@ public class StatusEffects
 
 	void OnKnockbackActivated(Actor self, Actor inflicter, float power)
 	{
-		self.move.forceDir += (self.transform.position - inflicter.transform.position).normalized * power;
+		Vector3 force = (self.transform.position - inflicter.transform.position);
+		force.y = 0;
+		self.move.forceDir += force.normalized * power;
+		Debug.Log($"{self.name} knockback");
 		if(self.anim is PlayerAnim panim)
 		{
 			GameManager.instance.pinp.DeactivateInput();

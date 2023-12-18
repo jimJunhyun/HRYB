@@ -44,6 +44,18 @@ public class MoveModule : Module
 		get=>Physics.Raycast(transform.position, Vector3.down, groundThreshold, 1<< GameManager.GROUNDLAYER);
 	}
 
+	public virtual bool isClipped
+	{
+		get
+		{
+			if(Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, groundThreshold, 1 << GameManager.GROUNDLAYER))
+			{
+				return hit.point.y < transform.position.y;
+			}
+			return false;
+		}
+	}
+
 	protected MoveStates curStat;
 	public virtual MoveStates moveStat
 	{
@@ -94,13 +106,16 @@ public class MoveModule : Module
 		{
 			forceDir.y -= GameManager.GRAVITY * Time.deltaTime;
 		}
+		else if (isGrounded)
+		{
+			forceDir.y = 0;
+		}
 	}
 
 	public virtual void ForceCalc()
 	{
 		if(forceDir.sqrMagnitude > 0.001f)
 		{
-			
 			Vector3 antiForce = -(forceDir) * GameManager.instance.forceResistance * Time.deltaTime;
 			forceDir += antiForce;
 		}
