@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.VFX;
 
 public enum StatEffID
 {
@@ -34,6 +35,14 @@ public struct StatusEffect
 public class StatusEffects
 {
     public Hashtable idStatEffPairs = new Hashtable();
+
+	public Dictionary<StatEffID, string> idEffDict = new Dictionary<StatEffID, string>()
+	{
+		{StatEffID.Knockback, "" },
+		{StatEffID.Immune, "" },
+		{StatEffID.Blind, "" },
+		{StatEffID.Slow, "SlowEffect" },
+	};
 
 	public StatusEffects()
 	{
@@ -121,6 +130,13 @@ public class StatusEffects
 		Action<Actor> updateAct = to.life.ApplyStatus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], by, power, dur);
 		if(updateAct != null)
 		{
+			GameObject eff = PoolManager.GetObject(GameManager.instance.statEff.idEffDict[id], to.transform);
+			if (eff)
+			{
+				VisualEffect vfx = eff.GetComponent<VisualEffect>();
+				vfx.Reinit();
+				vfx.Play();
+			}
 			float t = 0;
 			while(t < to.life.appliedDebuff[(StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]])
 			{
@@ -128,6 +144,10 @@ public class StatusEffects
 				t += Time.deltaTime;
 			}
 			to.life.EndStaus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], updateAct, power);
+			if (eff)
+			{
+				PoolManager.ReturnObject(eff);
+			}
 		}
 		else
 		{

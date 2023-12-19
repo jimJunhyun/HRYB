@@ -78,9 +78,12 @@ public class ComboRoot : SkillRoot
 				{
 					AnimationClip clip = childs[i].animClip;
 					AnimationEvent[] events = clip.events;
-					events[1].intParameter = ((int)info);
-					events[2].intParameter = ((int)info);
+					events[1].stringParameter = info.ToString();
+					events[1].intParameter = i;
+					events[2].stringParameter = info.ToString();
+					events[2].intParameter = i;
 					clip.events = events;
+					Debug.Log($"{clip.name} : {clip.events[1].intParameter}-{clip.events[1].stringParameter}");
 					clips.Add(clip);
 				}
 			}
@@ -91,11 +94,13 @@ public class ComboRoot : SkillRoot
 				{
 					AnimationClip clip = childs[i].animClipDisop;
 					AnimationEvent[] events = clip.events;
-					events[1].intParameter = ((int)info);
-					events[2].intParameter = ((int)info);
+					events[1].stringParameter = info.ToString();
+					events[1].intParameter = i;
+					events[2].stringParameter = info.ToString();
+					events[2].intParameter = i;
 					clip.events = events;
+					Debug.Log($"{clip.name} : {clip.events[1].intParameter}-{clip.events[1].stringParameter}");
 					clips.Add(clip);
-					Debug.Log($"New Clip : {clip}");
 				}
 
 			}

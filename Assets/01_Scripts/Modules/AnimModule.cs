@@ -88,18 +88,9 @@ public class AnimModule : Module
 		{
 			if(i < to.Count)
 			{
-				Debug.Log("Setting Anum : " + to[i].name);
 				ctrl[$"{from[i]}"] = to[i];
 			}
 		}
-
-		ctrl.GetOverrides(apply);
-		for (int i = 0; i < apply.Count; i++)
-		{
-			Debug.Log($"{apply[i].Key} : {apply[i].Value}");
-		}
-
-		//ctrl.ApplyOverrides(apply);
 		anim.runtimeAnimatorController = ctrl;
 		
 	}

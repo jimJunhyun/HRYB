@@ -19,8 +19,12 @@ public class PoolManager : MonoBehaviour
 	PoolList list;
 	static List<StackWithName<GameObject>> pooleds = new List<StackWithName<GameObject>>();
 
+	static Transform self;
+
 	public void Awake()
 	{
+		self = transform;
+
 		list = Resources.Load<PoolList>("PoolList");
 
 		for (int i = 0; i < list.poolList.Count; i++)
@@ -41,10 +45,18 @@ public class PoolManager : MonoBehaviour
 		StackWithName<GameObject> st;
 		if ((st = pooleds.Find(item => item.name == name)) != null)
 		{
-			if(st.data.Count > 0)
+			if(st.data.Count > 1)
 			{
 				GameObject res = st.data.Pop();
 				res.SetActive(true);
+				res.transform.position = pos;
+				res.transform.rotation = rot;
+				return res;
+			}
+			else
+			{
+				GameObject res = Instantiate(st.data.Peek(), Vector3.zero, Quaternion.identity, self);
+				res.name = name;
 				res.transform.position = pos;
 				res.transform.rotation = rot;
 				return res;
@@ -59,10 +71,19 @@ public class PoolManager : MonoBehaviour
 		StackWithName<GameObject> st;
 		if ((st = pooleds.Find(item => item.name == name)) != null)
 		{
-			if (st.data.Count > 0)
+			if (st.data.Count > 1)
 			{
 				GameObject res = st.data.Pop();
 				res.SetActive(true);
+				res.transform.position = pos;
+				res.transform.rotation = rot;
+				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
+				return res;
+			}
+			else
+			{
+				GameObject res = Instantiate(st.data.Peek(), Vector3.zero, Quaternion.identity, self);
+				res.name = name;
 				res.transform.position = pos;
 				res.transform.rotation = rot;
 				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
@@ -78,12 +99,53 @@ public class PoolManager : MonoBehaviour
 		StackWithName<GameObject> st;
 		if ((st = pooleds.Find(item => item.name == name)) != null)
 		{
-			GameObject res = st.data.Pop();
-			res.SetActive(true);
-			res.transform.SetParent(parent);
-			res.transform.localPosition = Vector3.zero;
-			res.transform.localRotation = Quaternion.identity;
-			return res;
+			if(st.data.Count > 1)
+			{
+				GameObject res = st.data.Pop();
+				res.SetActive(true);
+				res.transform.SetParent(parent);
+				res.transform.localPosition = Vector3.zero;
+				res.transform.localRotation = Quaternion.identity;
+				return res;
+			}
+			else
+			{
+				GameObject res = Instantiate(st.data.Peek(), Vector3.zero, Quaternion.identity, parent);
+				res.name = name;
+				res.transform.localPosition = Vector3.zero;
+				res.transform.localRotation = Quaternion.identity;
+				return res;
+			}
+
+		}
+		Debug.LogError($"Item named {name} doesn't exist!");
+		return null;
+	}
+
+	public static GameObject GetObject(string name, Transform parent, float lifetime)
+	{
+		StackWithName<GameObject> st;
+		if ((st = pooleds.Find(item => item.name == name)) != null)
+		{
+			if(st.data.Count > 1)
+			{
+				GameObject res = st.data.Pop();
+				res.SetActive(true);
+				res.transform.SetParent(parent);
+				res.transform.localPosition = Vector3.zero;
+				res.transform.localRotation = Quaternion.identity;
+				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
+				return res;
+			}
+			else
+			{
+				GameObject res = Instantiate(st.data.Peek(), Vector3.zero, Quaternion.identity, parent);
+				res.name = name;
+				res.transform.localPosition = Vector3.zero;
+				res.transform.localRotation = Quaternion.identity;
+				return res;
+			}
+			
 		}
 		Debug.LogError($"Item named {name} doesn't exist!");
 		return null;
@@ -94,10 +156,18 @@ public class PoolManager : MonoBehaviour
 		StackWithName<GameObject> st;
 		if ((st = pooleds.Find(item => item.name == name)) != null)
 		{
-			if(st.data.Count > 0)
+			if(st.data.Count > 1)
 			{
 				GameObject res = st.data.Pop();
 				res.SetActive(true);
+				res.transform.position = pos;
+				res.transform.forward = forward;
+				return res;
+			}
+			else
+			{
+				GameObject res = Instantiate(st.data.Peek(), Vector3.zero, Quaternion.identity, self);
+				res.name = name;
 				res.transform.position = pos;
 				res.transform.forward = forward;
 				return res;
@@ -121,6 +191,15 @@ public class PoolManager : MonoBehaviour
 				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
 				return res;
 			}
+			else
+			{
+				GameObject res = Instantiate(st.data.Peek(), Vector3.zero, Quaternion.identity, self);
+				res.name = name;
+				res.transform.position = pos;
+				res.transform.forward = forward;
+				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
+				return res;
+			}
 		}
 		Debug.LogError($"Item named {name} doesn't exist!");
 		return null;
@@ -129,10 +208,11 @@ public class PoolManager : MonoBehaviour
 	public static void ReturnObject(GameObject obj)
 	{
 		StackWithName<GameObject> st;
+		
 		if ((st = pooleds.Find(item => item.name == obj.name)) != null)
 		{
 			obj.SetActive(false);
-			
+			obj.transform.SetParent(self);
 			obj.transform.position = Vector3.zero;
 			obj.transform.rotation = Quaternion.identity;
 			obj.transform.localScale = Vector3.one;
