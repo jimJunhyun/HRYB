@@ -38,20 +38,7 @@ public class ChargeRoot : SkillRoot
 
 	public override void Operate(Actor self)
 	{
-		if (!charging)
-		{
-			charging = true;
-			chargeStartSec = Time.time;
-			curCharge = 0;
-			Debug.Log($"Charge Started, 1/{childs.Count}");
-			childs[curCharge].Operate(owner);
-			owner = self;
-			if (isAimMode)
-			{
-				GameManager.instance.SwitchTo(CamStatus.Aim);
-				GameManager.instance.uiManager.aimUI.On();
-			}
-		}
+		
 	}
 
 	public override void UpdateStatus()
@@ -76,8 +63,8 @@ public class ChargeRoot : SkillRoot
 				if (childs[i].animClip != null)
 				{
 					AnimationEvent[] events = childs[i].animClip.events;
-					events[1].intParameter = ((int)info);
-					events[2].intParameter = ((int)info);
+					events[1].stringParameter = info.ToString();
+					events[2].stringParameter = info.ToString();
 					childs[i].animClip.events = events;
 					clips.Add(childs[i].animClip);
 					Debug.Log($"New Clip : {childs[i].animClip}");
@@ -112,6 +99,19 @@ public class ChargeRoot : SkillRoot
 
 	internal override void MyOperation(Actor self)
 	{
-		//Do nothing
+		if (!charging)
+		{
+			charging = true;
+			chargeStartSec = Time.time;
+			curCharge = 0;
+			Debug.Log($"Charge Started, 1/{childs.Count}");
+			childs[curCharge].Operate(owner);
+			owner = self;
+			if (isAimMode)
+			{
+				GameManager.instance.SwitchTo(CamStatus.Aim);
+				GameManager.instance.uiManager.aimUI.On();
+			}
+		}
 	}
 }
