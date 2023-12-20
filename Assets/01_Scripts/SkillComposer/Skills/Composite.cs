@@ -78,6 +78,7 @@ public class Composite : Compose, IComposer
 			{
 				AnimationClip clip;
 				clip = childs[i].animClip;
+				Debug.Log("??????????");
 				if(clip != null)
 				{
 					AnimationEvent[] events = clip.events;
@@ -123,6 +124,7 @@ public class Composite : Compose, IComposer
 			childs[i].Disoperate(self);
 			if (isPlayDisopAnim)
 			{
+				Debug.Log("!@#!$!%!$!%");
 				(GameManager.instance.pActor.anim as PlayerAnim).SetDisopTrigger(i);
 			}
 			yield return new WaitForSeconds(composeDel);

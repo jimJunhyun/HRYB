@@ -44,17 +44,7 @@ public class MoveModule : Module
 		get=>Physics.Raycast(transform.position, Vector3.down, groundThreshold, 1<< GameManager.GROUNDLAYER);
 	}
 
-	public virtual bool isClipped
-	{
-		get
-		{
-			if(Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, groundThreshold, 1 << GameManager.GROUNDLAYER))
-			{
-				return hit.point.y < transform.position.y;
-			}
-			return false;
-		}
-	}
+	public bool immovable = false;
 
 	protected MoveStates curStat;
 	public virtual MoveStates moveStat
@@ -90,9 +80,13 @@ public class MoveModule : Module
 
 	public virtual void Move()
 	{
-		ForceCalc();
-		GravityCalc();
-		transform.Translate(forceDir * Time.deltaTime, Space.World);
+		if (!immovable)
+		{
+			ForceCalc();
+			GravityCalc();
+			transform.Translate(forceDir * Time.deltaTime, Space.World);
+
+		}
 	}
 
 	public virtual void FixedUpdate()

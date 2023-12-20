@@ -41,7 +41,7 @@ public class SkillSlots
 	{
 		if(!IsEmpty && IsUsable)
 		{
-			Debug.Log($"curCool : {curCooledTime}");
+			//Debug.Log($"curCool : {curCooledTime}");
 			curCooledTime = 0;
 			skInfo.Operate(self);
 			//Debug.Log("SKILL USED");
@@ -51,7 +51,7 @@ public class SkillSlots
 			}
 		}
 		else
-			Debug.Log($"CurCool : {curCooledTime}");
+			Debug.Log($"CurCool : {curCooledTime} / {skInfo.cooldown}");
 	}
 
 	public void Disoperate(Actor self)
@@ -545,13 +545,22 @@ public class PlayerCast : CastModule
 
 	internal void ActualSkillOperate(SkillSlotInfo at)
 	{
-		
 		this[((int)at)].skInfo.MyOperation(GetActor());
+	}
+
+	internal void ActualSkillDisoperate(SkillSlotInfo at)
+	{
+		this[((int)at)].skInfo.MyDisoperation(GetActor());
 	}
 
 	internal void ActualSkillOperate(SkillSlotInfo at, int idx)
 	{
 		this[((int)at)].skInfo.ActualOperateAt(GetActor(), idx);
+	}
+
+	internal void ActualSkillDisoperate(SkillSlotInfo at, int idx)
+	{
+		this[((int)at)].skInfo.ActualDisoperateAt(GetActor(), idx);
 	}
 
 	internal void SetSkillUse(SkillSlotInfo at)
@@ -589,14 +598,6 @@ public class PlayerCast : CastModule
 					Cast(RCLICKSKILL);
 					break;
 			}
-		}
-	}
-
-	public void NextComboAt(SkillSlotInfo at, bool circular = true, bool isDisoperate = false)
-	{
-		if (this[((int)at)].skInfo is ComboRoot c)
-		{
-			c.NextCombo(circular, isDisoperate ? GetActor() : null);
 		}
 	}
 

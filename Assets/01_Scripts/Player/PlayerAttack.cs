@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,24 +50,40 @@ public class PlayerAttack : AttackModule
 	private void Update()
 	{
 		updateActs?.Invoke();
+		if (Mouse.current.rightButton.wasPressedThisFrame)
+		{
+			clickR = true;
+			Debug.Log("AIM START");
+			(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.RClick);
+		}
+		if (Mouse.current.rightButton.wasReleasedThisFrame)
+		{
+			clickR = false;
+			(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
+		}
 	}
 
 	public void OnAim(InputAction.CallbackContext context)
 	{
-		if(GameManager.instance.pinven.stat == HandStat.Weapon)
+		if (GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
 			if (!clickL)
 			{
-				if (context.started && !clickR)
+				if (!clickR)
 				{
-					clickR = true;
-					Debug.Log("AIM START");
-					(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.RClick);
+					if (context.started)
+					{
+						
+					}
+					
 				}
-				else if (context.canceled && clickR)
+				else
 				{
-					clickR = false;
-					(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
+					if (context.canceled)
+					{
+						
+					}
+					
 				}
 			}
 			

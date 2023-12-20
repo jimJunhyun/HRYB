@@ -78,14 +78,23 @@ public class ComboRoot : SkillRoot
 				{
 					AnimationClip clip = childs[i].animClip;
 					AnimationEvent[] events = clip.events;
-					events[1].stringParameter = info.ToString();
-					events[1].intParameter = i;
-					events[2].stringParameter = info.ToString();
-					events[2].intParameter = i;
-					clip.events = events;
-					Debug.Log($"{clip.name} : {clip.events[1].intParameter}-{clip.events[1].stringParameter}");
+					if(events.Length > 0)
+					{
+						for (int j = 0; j < events.Length; j++)
+						{
+							events[j].stringParameter = info.ToString();
+							events[j].intParameter = i;
+						}
+						clip.events = events;
+						Debug.Log($"{clip.name} : {clip.events[0].intParameter}-{clip.events[0].stringParameter}");
+					}
+					
 					clips.Add(clip);
 				}
+			}
+			for (int i = 0; i < 5 - childs.Count; i++)
+			{
+				clips.Add(null);
 			}
 
 			for (int i = 0; i < childs.Count; i++)
@@ -94,15 +103,24 @@ public class ComboRoot : SkillRoot
 				{
 					AnimationClip clip = childs[i].animClipDisop;
 					AnimationEvent[] events = clip.events;
-					events[1].stringParameter = info.ToString();
-					events[1].intParameter = i;
-					events[2].stringParameter = info.ToString();
-					events[2].intParameter = i;
-					clip.events = events;
-					Debug.Log($"{clip.name} : {clip.events[1].intParameter}-{clip.events[1].stringParameter}");
+					if(events.Length > 0)
+					{
+						for (int j = 0; j < events.Length; j++)
+						{
+							events[j].stringParameter = info.ToString();
+							events[j].intParameter = i;
+						}
+						clip.events = events;
+						Debug.Log($"{clip.name} : {clip.events[0].intParameter}-{clip.events[0].stringParameter}");
+					}
+					
 					clips.Add(clip);
 				}
 
+			}
+			for (int i = 0; i < 5 - childs.Count; i++)
+			{
+				clips.Add(null);
 			}
 			to.anim.SetAnimationOverrides(
 				new List<string>() { "Zero", "One", "Two", "Three", "Four", "Zero" + PlayerCast.DISOPERATE, "One" + PlayerCast.DISOPERATE, "Two" + PlayerCast.DISOPERATE, "Three" + PlayerCast.DISOPERATE, "Four" + PlayerCast.DISOPERATE },
