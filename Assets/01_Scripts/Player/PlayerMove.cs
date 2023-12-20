@@ -77,7 +77,7 @@ public class PlayerMove : MoveModule
 			}
 			else
 			{
-				switch (GameManager.instance.curCamStat)
+				switch (CameraManager.instance.curCamStat)
 				{
 					case CamStatus.Aim:
 					case CamStatus.Freelook:
@@ -102,7 +102,7 @@ public class PlayerMove : MoveModule
 			}
 			else
 			{
-				switch (GameManager.instance.curCamStat)
+				switch (CameraManager.instance.curCamStat)
 				{
 					case CamStatus.Aim:
 					case CamStatus.Freelook:
@@ -231,7 +231,7 @@ public class PlayerMove : MoveModule
 			{
 				ResetTargets();
 			}
-			switch (GameManager.instance.curCamStat)
+			switch (CameraManager.instance.curCamStat)
 			{
 				case CamStatus.Freelook:
 					{
@@ -329,7 +329,7 @@ public class PlayerMove : MoveModule
 
 	Vector3 ConvertToCamFront(Vector3 original)
 	{
-		Vector3 rot = mainCam.transform.eulerAngles;
+		Vector3 rot = CameraManager.instance.MainCam.transform.eulerAngles;
 		rot.x = 0;
 		Vector3 v = Quaternion.Euler(rot) * original;
 		return v;
@@ -489,12 +489,14 @@ public class PlayerMove : MoveModule
 
 	public void Turn(InputAction.CallbackContext context)
 	{
-		if(GameManager.instance.curCamStat == CamStatus.Aim)
+		if(CameraManager.instance.curCamStat == CamStatus.Aim)
 		{
 			Vector2 inp = context.ReadValue<Vector2>();
 			transform.Rotate(Vector3.up * inp.x * spinSpd * Time.deltaTime);
-			GameManager.instance.aimCam.transform.Rotate(Vector3.left * inp.y * spinSpd * Time.deltaTime);
-			GameManager.instance.aimCam.transform.eulerAngles = new Vector3(GameManager.ClampAngle(GameManager.instance.aimCam.transform.eulerAngles.x, angleXMin, angleXMax), GameManager.instance.aimCam.transform.eulerAngles.y, GameManager.instance.aimCam.transform.eulerAngles.z);
+			CameraManager.instance.aimCam.transform.Rotate(Vector3.left * inp.y * spinSpd * Time.deltaTime);
+			CameraManager.instance.aimCam.transform.eulerAngles = new Vector3(GameManager.ClampAngle(CameraManager.instance.aimCam.transform.eulerAngles.x, angleXMin, angleXMax)
+				, CameraManager.instance.aimCam.transform.eulerAngles.y
+				, CameraManager.instance.aimCam.transform.eulerAngles.z);
 		}
 	}
 
@@ -536,7 +538,7 @@ public class PlayerMove : MoveModule
 					{
 						target = targets[i];
 
-						GameManager.instance.SwitchTo(CamStatus.Locked);
+						CameraManager.instance.SwitchTo(CamStatus.Locked);
 						
 						isLocked = true;
 						found = true;
@@ -591,7 +593,7 @@ public class PlayerMove : MoveModule
 		target = null;
 		already.Clear();
 
-		GameManager.instance.SwitchTo(CamStatus.Freelook);
+		CameraManager.instance.SwitchTo(CamStatus.Freelook);
 
 		isLocked = false;
 	}

@@ -30,7 +30,7 @@ public class ChargeRoot : SkillRoot
 			}
 			if (isAimMode)
 			{
-				GameManager.instance.SwitchTo(CamStatus.Freelook);
+				//CameraManager.instance.SwitchTo(CamStatus.Freelook);
 				GameManager.instance.uiManager.aimUI.Off();
 			}
 		}
@@ -48,7 +48,7 @@ public class ChargeRoot : SkillRoot
 			owner = self;
 			if (isAimMode)
 			{
-				GameManager.instance.SwitchTo(CamStatus.Aim);
+				//CameraManager.instance.SwitchTo(CamStatus.Aim);
 				GameManager.instance.uiManager.aimUI.On();
 			}
 		}

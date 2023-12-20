@@ -36,8 +36,10 @@ public class JangsungManAttackModule : EnemyAttackModule
 
 	public override void Attack()
 	{
-		//Debug.LogWarning();
+		//Debug.LogWarning("1");
 		GameObject obj = PoolManager.GetObject("Jangsung" + AttackStd, transform);
+
+		//Debug.LogWarning(obj);
 		if (obj.TryGetComponent(out ColliderCast cols))
 		{
 			_curCols = cols;
@@ -86,6 +88,15 @@ public class JangsungManAttackModule : EnemyAttackModule
 	public override void OnAnimationStart()
 	{
 		_jsMoveModule.ResetDest();
+
+		if (AttackStd == "DownAttack")
+		{
+			if (PoolManager.GetObject("ForwardBoxDecal", transform).TryGetComponent<BoxDecal>(out BoxDecal _decal))
+			{
+				_decal.SetUpDecal(new Vector3(0,0,5), transform.rotation, new Vector3(0.3f,0.2f,1.1f), new Vector3(1,0,1), new Vector3(1,1,1));
+				_decal.StartDecal(0.8f);
+			}
+		}
 	}
 
 	public override void OnAnimationMove()
@@ -158,8 +169,8 @@ public class JangsungManAttackModule : EnemyAttackModule
 					{
 						_curCols.Now((player) =>
 						{
-							player.AddYY(new YinYang(5, 0));
-							GameManager.instance.ShakeCamFor(0.5f);
+							player.AddYY(new YinYang(5, 0), true);
+							CameraManager.instance.ShakeCamFor(0.5f);
 						});
 					_curCols.Now();
 					}
@@ -173,8 +184,8 @@ public class JangsungManAttackModule : EnemyAttackModule
 					{
 						_curCols.Now((player) =>
 						{
-							player.AddYY(new YinYang(10, 0)); 
-							GameManager.instance.ShakeCamFor(0.8f);
+							player.AddYY(new YinYang(10, 0), true); 
+							CameraManager.instance.ShakeCamFor(0.8f);
 						});
 					_curCols.Now();
 					}
@@ -186,8 +197,8 @@ public class JangsungManAttackModule : EnemyAttackModule
 					{
 						_curCols.Now((player) =>
 						{
-							player.AddYY(new YinYang(4, 0));
-							GameManager.instance.ShakeCamFor(0.3f);
+							player.AddYY(new YinYang(4, 0), true);
+							CameraManager.instance.ShakeCamFor(0.3f);
 						});
 						_curCols.Now();
 					}

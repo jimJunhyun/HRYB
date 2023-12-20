@@ -51,7 +51,7 @@ public class PlayerAnim : AnimModule
 	{
 		if(!GetActor().move.idling)
 		{
-			switch (GameManager.instance.curCamStat)
+			switch (CameraManager.instance.curCamStat)
 			{
 				case CamStatus.Freelook:
 					anim.SetFloat(moveXHash, 0);

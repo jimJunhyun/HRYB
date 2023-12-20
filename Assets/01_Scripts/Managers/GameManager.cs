@@ -16,10 +16,6 @@ public enum CamStatus
 public class GameManager : MonoBehaviour
 {
 	public const float GRAVITY = 9.8f;
-
-	public const int FORWARDCAM = 20;
-	public const int BACKWARDCAM = 10;
-
 	public const int PLAYERLAYER = 7;
 	public const int INTERABLELAYER = 8;
 	public const int GROUNDLAYER = 11;
@@ -34,8 +30,7 @@ public class GameManager : MonoBehaviour
 	public PlayerInput pinp;
 	public PlayerInven pinven;
 	public Actor pActor;
-	public CinemachineFreeLook pCam;
-	public CinemachineVirtualCamera aimCam;
+
 	public CraftManager craftManager;
 	public UIManager uiManager;
 	public QuestManager qManager;
@@ -66,13 +61,11 @@ public class GameManager : MonoBehaviour
 
 	public float forceResistance = 3f;
 
-	List<CinemachineBasicMultiChannelPerlin> camShakers = new List<CinemachineBasicMultiChannelPerlin>();
-
 	public bool lockMouse;
 
 	public Transform outCaveTmp;
 
-	public CamStatus curCamStat;
+
 
 	public WaitForSeconds waitSec = new WaitForSeconds(1.0f);
 
@@ -96,12 +89,8 @@ public class GameManager : MonoBehaviour
 		pinp = player.GetComponent<PlayerInput>();
 		pinven = player.GetComponent<PlayerInven>();
 		pActor = player.GetComponent<Actor>();
-		pCam = GameObject.Find("PCam").GetComponent<CinemachineFreeLook>();
-		aimCam = GameObject.Find("AimCam").GetComponent<CinemachineVirtualCamera>();
-		for (int i = 0; i < 3; i++)
-		{
-			camShakers.Add(pCam.GetRig(i).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>());
-		}
+
+
 		
 		craftManager = GameObject.Find("CraftManager").GetComponent<CraftManager>();
 		imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
@@ -111,11 +100,11 @@ public class GameManager : MonoBehaviour
 		sManager = GameObject.Find("SectionManager").GetComponent<SectionManager>();
 		timeliner = GameObject.Find("Timeliner").GetComponent<PlayableDirector>(); //////////#####타임라인매니저
 		timeliner2 = GameObject.Find("Timeliner2").GetComponent<PlayableDirector>();
-		//camManager = GameObject.Find("CameraManager").GetComponent<CameraManager>();
+		camManager = GameObject.Find("PCam").GetComponent<CameraManager>();
 		pManager = GameObject.Find("PrefabManager").GetComponent<PrefabManager>();
 		statEff = new StatusEffects();
 		skillLoader = new SkillLoader();
-		SwitchTo(CamStatus.Freelook);
+
 
 		
 	}
@@ -151,61 +140,13 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public void ShakeCamFor(float dur)
-	{
-		StartCoroutine(DelShakeCam(dur));
-	}
 
-	IEnumerator DelShakeCam(float dur)
-	{
-		ShakeCam();
-		yield return new WaitForSeconds(dur);
-		UnShakeCam();
-	}
 
-	public void ShakeCam()
-	{
-		//switch (curCamStat)
-		//{
-		//	case CamStatus.Freelook:
-		//	case CamStatus.Locked:
-		//		break;
-		//	case CamStatus.Aim:
-		//		camShaker.m_AmplitudeGain = ampGain;
-		//		camShaker.m_FrequencyGain = frqGain;
-		//		break;
 
-		//	default:
-		//		break;
-		//}
-		for (int i = 0; i < camShakers.Count; i++)
-		{
-			camShakers[i].m_AmplitudeGain += ampGain;
-			camShakers[i].m_FrequencyGain += frqGain;
-		}
-	}
 
-	public void UnShakeCam()
-	{
-		//switch (curCamStat)
-		//{
-		//	case CamStatus.Freelook:
-		//	case CamStatus.Locked:
-		//		break;
-		//	case CamStatus.Aim:
-		//		camShaker.m_AmplitudeGain = 0;
-		//		camShaker.m_FrequencyGain = 0;
-		//		break;
 
-		//	default:
-		//		break;
-		//}
-		for (int i = 0; i < camShakers.Count; i++)
-		{
-			camShakers[i].m_AmplitudeGain -= ampGain;
-			camShakers[i].m_FrequencyGain -= frqGain;
-		}
-	}
+
+
 
 
 	public void CraftWithUI()
@@ -226,31 +167,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public void SwitchTo(CamStatus stat)
-	{
-		curCamStat = stat;
-		switch (stat)
-		{
-			case CamStatus.Freelook:
-				pCam.m_BindingMode = CinemachineTransposer.BindingMode.WorldSpace;
-				pCam.m_XAxis.m_Wrap = true;
-				pCam.Priority = FORWARDCAM;
-				aimCam.Priority = BACKWARDCAM;
-				break;
-			case CamStatus.Aim:
-				aimCam.Priority = FORWARDCAM;
-				pCam.Priority = BACKWARDCAM;
-				break;
-			case CamStatus.Locked:
-				pCam.m_BindingMode = CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
-				pCam.m_XAxis.m_Wrap = false;
-				pCam.Priority = FORWARDCAM;
-				aimCam.Priority = BACKWARDCAM;
-				break;
-			default:
-				break;
-		}
-	}
+
 
 	public IEnumerator DelInputCtrl(float sec)
 	{

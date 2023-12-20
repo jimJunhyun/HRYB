@@ -16,6 +16,7 @@ public class JangSungMoveModule : MoveModule
 	[SerializeField] private float _fallDownMoveSpeed = 9f;
 
 	private bool _isMove = false;
+	private bool _moveDecalOnShot = false;
 	public override float Speed { get => base.Speed; set{ base.Speed = value; agent.speed = base.Speed; } }
 
 	private void Awake()
@@ -50,21 +51,39 @@ public class JangSungMoveModule : MoveModule
 	{
 		if (_isMove)
 		{
+
 			if(_target != null)
 			{
 				UnityEngine.AI.NavMesh.SamplePosition( _target.transform.position, out UnityEngine.AI.NavMeshHit hit, 15f, UnityEngine.AI.NavMesh.AllAreas);
 				agent.speed = _fallDownMoveSpeed;
 				agent.SetDestination(hit.position);
 			
+
 //			Debug.LogWarning(_target.transform.position);
 				//GetActor().anim.SetMoveState();
 			}
 		}
 	}
 
+	//private GameObject decal;
+
 	public void FallDownAttack()
 	{
 		_isMove = true;
+		_moveDecalOnShot = true;
+		if(_moveDecalOnShot)
+		{
+			_moveDecalOnShot = false;
+			GameObject obj = PoolManager.GetObject("MiddleBoxDecal", transform);
+			Debug.LogError("1111");
+
+			if (obj.TryGetComponent<BoxDecal>(out BoxDecal box))
+			{
+				box.SetUpDecal(transform, new Vector3(0,0,0), new Vector3(1,1,1));
+				box.StartDecal(1.4f);
+			}
+		}
+		
 //		Debug.LogWarning("AAAAAAZAAAAAA");
 
 		//Debug.LogError("실행됨11");
@@ -93,6 +112,19 @@ public class JangSungMoveModule : MoveModule
 				UnityEngine.AI.NavMesh.SamplePosition(vec, out hit, 8, UnityEngine.AI.NavMesh.AllAreas);
 				
 			}
+			
+			GameObject obj = PoolManager.GetObject("MiddleBoxDecal", transform);
+
+			if (obj.TryGetComponent<BoxDecal>(out BoxDecal box))
+			{
+				box.SetUpDecal(new Vector3(0, 0, 5), transform.rotation, new Vector3(0.55f,0.55f,0.55f), Vector3.zero, Vector3.one );
+				box.StartDecal(1f);
+			}
+			else
+			{
+				Debug.LogError("프리팹 없음?");
+			}
+			
 			//Debug.LogError("실행됨22");
 			agent.speed = _normalSpeed;
 			agent.SetDestination(hit.position);

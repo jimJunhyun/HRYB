@@ -155,7 +155,7 @@ public class PlayerAttack : AttackModule
 	{
 		yield return GameManager.instance.waitSec;
 		ResetBowStat();
-		GameManager.instance.SwitchTo(CamStatus.Freelook);
+		CameraManager.instance.SwitchTo(CamStatus.Freelook);
 		//(GetActor().anim as PlayerAnim).SetAttackState(((int)attackState));
 		GameManager.instance.uiManager.aimUI.On();
 		ongoingResetter = null;
