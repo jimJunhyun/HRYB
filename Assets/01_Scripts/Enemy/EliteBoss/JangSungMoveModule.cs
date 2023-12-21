@@ -79,7 +79,7 @@ public class JangSungMoveModule : MoveModule
 			if (obj.TryGetComponent<BoxDecal>(out BoxDecal box))
 			{
 				box.SetUpDecal(transform, new Vector3(0,0,0), new Vector3(1,1,1));
-				box.StartDecal(3f);
+				box.StartDecal(2f);
 			}
 		}
 		
@@ -133,8 +133,10 @@ public class JangSungMoveModule : MoveModule
 
 	public void ResetDest()
 	{
-		UnityEngine.AI.NavMesh.SamplePosition(transform.position, out UnityEngine.AI.NavMeshHit hit, 5f, UnityEngine.AI.NavMesh.AllAreas);
-		agent.SetDestination(hit.position);
 		_isMove = false;
+		agent.speed = 0;
+		agent.velocity = new Vector3(0, 0, 0);
+		UnityEngine.AI.NavMesh.SamplePosition(transform.position, out UnityEngine.AI.NavMeshHit hit, 15f, UnityEngine.AI.NavMesh.AllAreas);
+		agent.SetDestination(hit.position);
 	}
 }
