@@ -34,7 +34,7 @@ public class LifeModule : Module
 	public float TotalApplySpeed { get => baseApplySpeed * applyMod;}
 
 
-	HashSet<StatusEffect> appliedDebuff = new HashSet<StatusEffect>();
+	internal Dictionary<StatusEffect, float> appliedDebuff = new Dictionary<StatusEffect, float>();
 
 	public virtual bool isDead
 	{
@@ -80,24 +80,21 @@ public class LifeModule : Module
 		}
 	}
 
-	public Action<Actor> ApplyStatus(StatusEffect eff, Actor applier, float power)
+	public Action<Actor> ApplyStatus(StatusEffect eff, Actor applier, float power, float dur)
 	{
-		Debug.Log($"Status {eff.name} on");
-
-		string app = "Current Status : ";
-		foreach (var item in appliedDebuff)
+		if (!appliedDebuff.ContainsKey(eff))
 		{
-			app += item.name + " , ";
-		}
-		Debug.Log(app);
-		if (appliedDebuff.Add(eff))
-		{
+			appliedDebuff.Add(eff, dur);
 			eff.onApplied.Invoke(GetActor(), applier, power);
 			Action<Actor> updAct = (self) => { eff.onUpdated(self, power);};
 			GetActor().updateActs += updAct;
 			return updAct;
 		}
-		return null;
+		else
+		{
+			appliedDebuff[eff] += dur;
+			return null;
+		}
 	}
 
 	public void EndStaus(StatusEffect eff, Action<Actor> myUpdateAct, float power)

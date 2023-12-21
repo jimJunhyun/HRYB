@@ -73,7 +73,7 @@ public class Waiter : INode
 			t += Time.deltaTime;
 			yield return null;
 		}
-		Debug.Log("Load complete");
+		//Debug.Log("Load complete");
 		_waiting?.Invoke();
 		ready = true;
 		ongoing = null;

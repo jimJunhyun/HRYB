@@ -3,25 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Skills/Infos/FireArrowAtOnce")]
-public class FireArrowAtOnce : Leaf
+public class FireArrowAtOnce : AttackBase
 {
-	public YinYang damage;
-	public string shootPosName;
+	public string arrowPrefabName;
+
 	public float circularRad;
 	public float circularAngle;
-	//VisualEffect eff;
-	Transform shootPos;
-	Arrow arrow;
 
-	private void OnValidate()
-	{
-		shootPos = GameObject.Find(shootPosName).transform;
-		if (shootPos != null)
-		{
-			Debug.Log("FOUND!");
-			//eff = shootPos.GetComponentInChildren<VisualEffect>();
-		}
-	}
+	Arrow arrow;
 
 	internal override void MyDisoperation(Actor self)
 	{
@@ -43,8 +32,12 @@ public class FireArrowAtOnce : Leaf
 		Vector3 pos = GameManager.instance.player.transform.position + Vector3.up;
 		pos.x += Mathf.Cos(circularAngle * Mathf.Deg2Rad) * circularRad;
 		pos.y += Mathf.Sin(circularAngle * Mathf.Deg2Rad) * circularRad;
-		arrow = PoolManager.GetObject("ArrowTemp", pos, shootPos.forward).GetComponent<Arrow>();
+		arrow = PoolManager.GetObject(arrowPrefabName, pos, relatedTransform.forward).GetComponent<Arrow>();
 		arrow.SetInfo(damage);
+		for (int i = 0; i < statEff.Count; i++)
+		{
+			arrow.AddStatusEffect(statEff[i]);
+		}
 		arrow.StopDisappearTimer();
 		arrow.StopCheck();
 		arrow.SetOwner(self);
@@ -56,11 +49,11 @@ public class FireArrowAtOnce : Leaf
 		if(arrow != null)
 		{
 			Vector3 pos = GameManager.instance.player.transform.position + Vector3.up;
-			Vector3 posDiff = (shootPos.right * (Mathf.Cos(circularAngle * Mathf.Deg2Rad) * circularRad)) + (shootPos.up * (Mathf.Sin(circularAngle * Mathf.Deg2Rad) * circularRad));
+			Vector3 posDiff = (relatedTransform.right * (Mathf.Cos(circularAngle * Mathf.Deg2Rad) * circularRad)) + (relatedTransform.up * (Mathf.Sin(circularAngle * Mathf.Deg2Rad) * circularRad));
 			pos += posDiff;
 
 			arrow.transform.position = pos;
-			arrow.transform.forward = shootPos.forward;
+			arrow.transform.forward = relatedTransform.forward;
 		}
 		
 	}

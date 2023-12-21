@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.VFX;
 
 public enum StatEffID
 {
 	Knockback,
 	Immune,
 	Blind,
+	Slow,
+
 }
 
 public struct StatusEffect
@@ -33,16 +36,28 @@ public class StatusEffects
 {
     public Hashtable idStatEffPairs = new Hashtable();
 
+	public Dictionary<StatEffID, string> idEffDict = new Dictionary<StatEffID, string>()
+	{
+		{StatEffID.Knockback, "" },
+		{StatEffID.Immune, "" },
+		{StatEffID.Blind, "" },
+		{StatEffID.Slow, "SlowEffect" },
+	};
+
 	public StatusEffects()
 	{
 		idStatEffPairs.Add(((int)StatEffID.Knockback), new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", OnKnockbackActivated, OnKnockbackDebuffUpdated, OnKnockbackDebuffEnded));
 		idStatEffPairs.Add(((int)StatEffID.Immune), new StatusEffect("무적", "어머니의 비호를 받고 있습니다.", OnImmuneActivated, OnImmuneUpdated, OnImmuneEnded));
 		idStatEffPairs.Add(((int)StatEffID.Blind), new StatusEffect("실명", "눈 앞이 어두워집니다.", OnBlindActivated, OnBlindUpdated, OnBlindEnded));
+		idStatEffPairs.Add(((int)StatEffID.Slow), new StatusEffect("둔화", "움직임이 느려집니다.", OnSlowActivated, OnSlowUpdated, OnSlowEnded));
 	}
 
 	void OnKnockbackActivated(Actor self, Actor inflicter, float power)
 	{
-		self.move.forceDir += (self.transform.position - inflicter.transform.position).normalized * power;
+		Vector3 force = (self.transform.position - inflicter.transform.position);
+		force.y = 0;
+		self.move.forceDir += force.normalized * power;
+		Debug.Log($"{self.name} knockback");
 		if(self.anim is PlayerAnim panim)
 		{
 			GameManager.instance.pinp.DeactivateInput();
@@ -86,6 +101,20 @@ public class StatusEffects
 		self.sight.sightRange /= power;
 	}
 
+	void OnSlowActivated(Actor self, Actor inflicter, float power)
+	{
+		self.move.speedMod -= power;
+	}
+	void OnSlowUpdated(Actor self, float power)
+	{
+
+	}
+	void OnSlowEnded(Actor self, float power)
+	{
+		self.move.speedMod += power;
+	}
+
+
 	public static void ApplyStat(Actor to, Actor by, StatEffID id, float dur, float pow = 1)
 	{
 		GameManager.instance.StartCoroutine(DelApplier(to, by, id, dur, pow));
@@ -98,14 +127,33 @@ public class StatusEffects
 			power /= dur;
 			power *= GameManager.instance.forceResistance;
 		}
-		Action<Actor> updateAct = to.life.ApplyStatus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], by, power);
+		Action<Actor> updateAct = to.life.ApplyStatus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], by, power, dur);
 		if(updateAct != null)
 		{
-			yield return new WaitForSeconds(dur);
+			GameObject eff = PoolManager.GetObject(GameManager.instance.statEff.idEffDict[id], to.transform);
+			if (eff)
+			{
+				VisualEffect vfx = eff.GetComponent<VisualEffect>();
+				vfx.Reinit();
+				vfx.Play();
+			}
+			float t = 0;
+			while(t < to.life.appliedDebuff[(StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]])
+			{
+				yield return null;
+				t += Time.deltaTime;
+			}
 			to.life.EndStaus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], updateAct, power);
+			if (eff)
+			{
+				PoolManager.ReturnObject(eff);
+			}
 		}
 		else
+		{
+			
 			yield return null;
+		}
 	}
 
 }

@@ -4,23 +4,10 @@ using UnityEngine;
 using UnityEngine.VFX;
 
 [CreateAssetMenu(menuName = "Skills/Infos/FireArrow")]
-public class FireArrow : Leaf
+public class FireArrow : AttackBase
 {
-	public YinYang damage;
-	public string shootPosName;
+	public string arrowPrefabName;
 	public float angleY;
-	//VisualEffect eff;
-	Transform shootPos;
-
-	private void OnValidate()
-	{
-		shootPos = GameObject.Find(shootPosName).transform;
-		if(shootPos != null)
-		{
-			Debug.Log("FOUND!");
-			//eff = shootPos.GetComponentInChildren<VisualEffect>();
-		}
-	}
 
 	internal override void MyDisoperation(Actor self)
 	{
@@ -31,13 +18,18 @@ public class FireArrow : Leaf
 	{
 		//eff.Play();
 		//Debug.Log($"화살발사, {shootPos.position} : {shootPos.forward}");
-		Arrow r = PoolManager.GetObject("ArrowTemp", shootPos.position, shootPos.forward).GetComponent<Arrow>();
+		Arrow r = PoolManager.GetObject(arrowPrefabName, relatedTransform.position, relatedTransform.forward).GetComponent<Arrow>();
 		Vector3 localRot = r.transform.localEulerAngles;
 		localRot.y += angleY;
 		r.transform.localEulerAngles = localRot;
 		//UnityEditor.EditorApplication.isPaused = true;
 		r.SetInfo(damage);
 		r.SetOwner(self);
+		for (int i = 0; i < statEff.Count; i++)
+		{
+			r.AddStatusEffect(statEff[i]);
+		}
+
 		r.Shoot();
 		GameManager.instance.audioPlayer.PlayPoint(audioClipName, self.transform.position);
 		//self.anim.SetAttackTrigger();
