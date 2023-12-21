@@ -233,7 +233,7 @@ public class PlayerMove : MoveModule
 				{
 					ResetTargets();
 				}
-				switch (GameManager.instance.curCamStat)
+				switch (CameraManager.instance.curCamStat)
 				{
 					case CamStatus.Freelook:
 						{

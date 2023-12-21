@@ -28,10 +28,10 @@ public abstract class ColliderCast : MonoBehaviour
 	
 	protected void Update()
 	{
-		Debug.LogError("업데이트 돌긴함");
+		//Debug.LogError("업데이트 돌긴함");
 		if (_isRunning == false)
 			return;
-		Debug.LogError("업데이트 들어옴");
+		//Debug.LogError("업데이트 들어옴");
 		// 생각해 봤는데 어차피 col있는 만큼만 돌아가기 때문에 큰 문제 없음
 		foreach (var col in ReturnColliders())
 		{

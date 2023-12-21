@@ -122,13 +122,13 @@ public class JangsungManAttackModule : EnemyAttackModule
 		switch (AttackStd)
 		{
 			case "DownAttack":
-				GameManager.instance.audioPlayer.PlayPoint("JangsungDown", transform);
+				GameManager.instance.audioPlayer.PlayPoint("JangsungDown", transform.position);
 				break;
 			case "FallDownAttack":
-				GameManager.instance.audioPlayer.PlayPoint("JangsungFallDown", transform);
+				GameManager.instance.audioPlayer.PlayPoint("JangsungFallDown", transform.position);
 				break;
 			case "MoveAttack":
-				GameManager.instance.audioPlayer.PlayPoint("JangsungMove", transform);
+				GameManager.instance.audioPlayer.PlayPoint("JangsungMove", transform.position);
 				break;
 		}
 	}
