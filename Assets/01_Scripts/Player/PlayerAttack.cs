@@ -52,13 +52,13 @@ public class PlayerAttack : AttackModule
 		updateActs?.Invoke();
 		if (Mouse.current.rightButton.wasPressedThisFrame)
 		{
-			clickR = true;
+			//clickR = true;
 			Debug.Log("AIM START");
 			(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.RClick);
 		}
 		if (Mouse.current.rightButton.wasReleasedThisFrame)
 		{
-			clickR = false;
+			//clickR = false;
 			(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
 		}
 	}
@@ -67,24 +67,10 @@ public class PlayerAttack : AttackModule
 	{
 		if (GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
+			//Debug.Log(context.);
 			if (!clickL)
 			{
-				if (!clickR)
-				{
-					if (context.started)
-					{
-						
-					}
-					
-				}
-				else
-				{
-					if (context.canceled)
-					{
-						
-					}
-					
-				}
+				
 			}
 			
 		}

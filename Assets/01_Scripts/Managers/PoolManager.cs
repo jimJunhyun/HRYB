@@ -62,7 +62,7 @@ public class PoolManager : MonoBehaviour
 				return res;
 			}
 		}
-		Debug.LogError($"Item named {name} doesn't exist!");
+		Debug.LogWarning($"Item named {name} doesn't exist!");
 		return null;
 	}
 
@@ -90,7 +90,7 @@ public class PoolManager : MonoBehaviour
 				return res;
 			}
 		}
-		Debug.LogError($"Item named {name} doesn't exist!");
+		Debug.LogWarning($"Item named {name} doesn't exist!");
 		return null;
 	}
 
@@ -118,7 +118,7 @@ public class PoolManager : MonoBehaviour
 			}
 
 		}
-		Debug.LogError($"Item named {name} doesn't exist!");
+		Debug.LogWarning($"Item named {name} doesn't exist!");
 		return null;
 	}
 
@@ -147,7 +147,7 @@ public class PoolManager : MonoBehaviour
 			}
 			
 		}
-		Debug.LogError($"Item named {name} doesn't exist!");
+		Debug.LogWarning($"Item named {name} doesn't exist!");
 		return null;
 	}
 
@@ -173,7 +173,7 @@ public class PoolManager : MonoBehaviour
 				return res;
 			}
 		}
-		Debug.LogError($"Item named {name} doesn't exist!");
+		Debug.LogWarning($"Item named {name} doesn't exist!");
 		return null;
 	}
 
@@ -201,7 +201,7 @@ public class PoolManager : MonoBehaviour
 				return res;
 			}
 		}
-		Debug.LogError($"Item named {name} doesn't exist!");
+		Debug.LogWarning($"Item named {name} doesn't exist!");
 		return null;
 	}
 
@@ -220,7 +220,7 @@ public class PoolManager : MonoBehaviour
 		}
 		else
 		{
-			Debug.LogError($"{obj.name} doesn't exist in pool!");
+			Debug.LogWarning($"{obj.name} doesn't exist in pool!");
 		}
 	}
 
