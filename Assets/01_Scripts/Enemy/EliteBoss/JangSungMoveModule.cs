@@ -57,8 +57,7 @@ public class JangSungMoveModule : MoveModule
 				UnityEngine.AI.NavMesh.SamplePosition( _target.transform.position, out UnityEngine.AI.NavMeshHit hit, 15f, UnityEngine.AI.NavMesh.AllAreas);
 				agent.speed = _fallDownMoveSpeed;
 				agent.SetDestination(hit.position);
-			
-
+				Debug.LogError(hit.position);
 //			Debug.LogWarning(_target.transform.position);
 				//GetActor().anim.SetMoveState();
 			}
@@ -80,7 +79,7 @@ public class JangSungMoveModule : MoveModule
 			if (obj.TryGetComponent<BoxDecal>(out BoxDecal box))
 			{
 				box.SetUpDecal(transform, new Vector3(0,0,0), new Vector3(1,1,1));
-				box.StartDecal(1.4f);
+				box.StartDecal(3f);
 			}
 		}
 		
