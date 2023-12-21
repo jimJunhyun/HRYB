@@ -4,11 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum EffectEnum
-{
-	
-}
-
 public class EffectManager : MonoBehaviour
 {
 	PoolList list;
