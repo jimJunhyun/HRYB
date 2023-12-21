@@ -53,12 +53,13 @@ public class PlayerAttack : AttackModule
 		if (Mouse.current.rightButton.wasPressedThisFrame)
 		{
 			//clickR = true;
-			Debug.Log("AIM START");
+			
 			(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.RClick);
 		}
 		if (Mouse.current.rightButton.wasReleasedThisFrame)
 		{
 			//clickR = false;
+			
 			(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
 		}
 	}
@@ -70,6 +71,19 @@ public class PlayerAttack : AttackModule
 			//Debug.Log(context.);
 			if (!clickL)
 			{
+				Single val = context.ReadValue<Single>();
+				Debug.Log("val : " + val);
+				if (!clickR && val > 0.8f)
+				{
+					clickR = true;
+					Debug.Log("HOLDSTART");
+				}
+
+				else if (clickR && val < 0.2f)
+				{
+					clickR = false;
+					Debug.Log("HOLDEND");
+				}
 				
 			}
 			
