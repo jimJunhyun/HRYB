@@ -576,7 +576,6 @@ public class PlayerCast : CastModule
 			switch (at)
 			{
 				case SkillSlotInfo.Wood:
-					Debug.Log("START CASING");
 					Cast(WXSkillSlots.WOODSKILL);
 					break;
 				case SkillSlotInfo.Fire:

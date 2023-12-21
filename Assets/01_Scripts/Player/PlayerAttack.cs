@@ -54,13 +54,13 @@ public class PlayerAttack : AttackModule
 		{
 			//clickR = true;
 			
-			(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.RClick);
+			//
 		}
 		if (Mouse.current.rightButton.wasReleasedThisFrame)
 		{
 			//clickR = false;
 			
-			(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
+			//
 		}
 	}
 
@@ -68,21 +68,18 @@ public class PlayerAttack : AttackModule
 	{
 		if (GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
-			//Debug.Log(context.);
 			if (!clickL)
 			{
-				Single val = context.ReadValue<Single>();
-				Debug.Log("val : " + val);
-				if (!clickR && val > 0.8f)
+				Debug.LogWarning("phase : " +context.phase  + " : " + context.started + " : " + context.canceled);
+				if (!clickR && context.started)
 				{
 					clickR = true;
-					Debug.Log("HOLDSTART");
+					(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.RClick); // ?????????????????????
 				}
-
-				else if (clickR && val < 0.2f)
+				else if (clickR && context.canceled)
 				{
 					clickR = false;
-					Debug.Log("HOLDEND");
+					(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
 				}
 				
 			}
