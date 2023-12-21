@@ -27,7 +27,6 @@ public class ComboRoot : SkillRoot
 				pa.SetAttackTrigger(curCombo); 
 				prevOperateSec = Time.time;
 			}
-			
 		}
 	}
 
@@ -60,7 +59,10 @@ public class ComboRoot : SkillRoot
 			Debug.Log("콤보 최대, 초기화");
 		}
 		Debug.Log($"콤보 {curCombo + 1}/{childs.Count}");
+
+		//childs[curCombo].onOperateSelf += onOperateSelf;
 		childs[curCombo].Operate(self);
+		
 
 		NextCombo(true, self);
 	}
@@ -76,11 +78,23 @@ public class ComboRoot : SkillRoot
 				{
 					AnimationClip clip = childs[i].animClip;
 					AnimationEvent[] events = clip.events;
-					events[1].intParameter = ((int)info);
-					events[2].intParameter = ((int)info);
-					clip.events = events;
+					if(events.Length > 0)
+					{
+						for (int j = 0; j < events.Length; j++)
+						{
+							events[j].stringParameter = info.ToString();
+							events[j].intParameter = i;
+						}
+						clip.events = events;
+						Debug.Log($"{clip.name} : {clip.events[0].intParameter}-{clip.events[0].stringParameter}");
+					}
+					
 					clips.Add(clip);
 				}
+			}
+			for (int i = 0; i < 5 - childs.Count; i++)
+			{
+				clips.Add(null);
 			}
 
 			for (int i = 0; i < childs.Count; i++)
@@ -89,13 +103,24 @@ public class ComboRoot : SkillRoot
 				{
 					AnimationClip clip = childs[i].animClipDisop;
 					AnimationEvent[] events = clip.events;
-					events[1].intParameter = ((int)info);
-					events[2].intParameter = ((int)info);
-					clip.events = events;
+					if(events.Length > 0)
+					{
+						for (int j = 0; j < events.Length; j++)
+						{
+							events[j].stringParameter = info.ToString();
+							events[j].intParameter = i;
+						}
+						clip.events = events;
+						Debug.Log($"{clip.name} : {clip.events[0].intParameter}-{clip.events[0].stringParameter}");
+					}
+					
 					clips.Add(clip);
-					Debug.Log($"New Clip : {clip}");
 				}
 
+			}
+			for (int i = 0; i < 5 - childs.Count; i++)
+			{
+				clips.Add(null);
 			}
 			to.anim.SetAnimationOverrides(
 				new List<string>() { "Zero", "One", "Two", "Three", "Four", "Zero" + PlayerCast.DISOPERATE, "One" + PlayerCast.DISOPERATE, "Two" + PlayerCast.DISOPERATE, "Three" + PlayerCast.DISOPERATE, "Four" + PlayerCast.DISOPERATE },

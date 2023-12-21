@@ -73,43 +73,17 @@ public class AudioPlayer : MonoBehaviour
 
 	public void PlayPoint(string clipName, Vector3 point, float duration = -1)
 	{
-		GameObject audioPt = PoolManager.GetObject("AudioPoint", point, Quaternion.identity);
-		AudioSource audioPoint= audioPt.GetComponent<AudioSource>();
 		if (dict.ContainsKey(clipName))
 		{
-			audioPoint.clip = dict[clipName];
-			audioPoint.Play();
-			float delT = audioPoint.clip.length;
+			AudioClip clip = dict[clipName];
+			float delT = clip.length;
 			if (duration != -1)
 				delT = duration;
-			StartCoroutine(DelReturnAudioPoint(delT, audioPt));
-		}
-		
-	}
-	
-	public void PlayPoint(string clipName, Transform point, float duration = -1)
-	{
-		GameObject audioPt = PoolManager.GetObject("AudioPoint", point);
-		AudioSource audioPoint= audioPt.GetComponent<AudioSource>();
-		if (dict.ContainsKey(clipName))
-		{
-			audioPoint.clip = dict[clipName];
+			GameObject audioPt = PoolManager.GetObject("AudioPoint", point, Quaternion.identity, delT);
+			AudioSource audioPoint= audioPt.GetComponent<AudioSource>();
+			audioPoint.clip = clip;
 			audioPoint.Play();
-			float delT = audioPoint.clip.length;
-			if (duration != -1)
-				delT = duration;
-			StartCoroutine(DelReturnAudioPoint(delT, audioPt));
-		}
-		else
-		{
-			Debug.LogError(clipName);
 		}
 		
-	}
-
-	IEnumerator DelReturnAudioPoint(float sec, GameObject audPoint)
-	{
-		yield return new WaitForSeconds(sec);
-		PoolManager.ReturnObject(audPoint);
 	}
 }

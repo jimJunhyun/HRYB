@@ -213,82 +213,86 @@ public class PlayerMove : MoveModule
 
 	public override void Move()
 	{
-		if (moveStat != MoveStates.Climb)
+		if (!immovable)
 		{
-			if (Physics.SphereCast(middle.position, 0.5f, transform.forward, out hitCache, climbDistance, (1 << GameManager.CLIMBABLELAYER)) && moveDir.z > 0)
+			if (moveStat != MoveStates.Climb)
 			{
-				Debug.Log("등반");
-				ropeNormal = hitCache.normal;
-				SetClimb();
-			}
-
-			ForceCalc();
-			SlipCalc();
-			GravityCalc();
-			
-
-			if (isLocked && target == null)
-			{
-				ResetTargets();
-			}
-			switch (CameraManager.instance.curCamStat)
-			{
-				case CamStatus.Freelook:
-					{
-						Vector3 vec = MoveDirCalced;
-
-						if (vec.sqrMagnitude != 0)
-						{
-							to = Quaternion.LookRotation(vec, Vector3.up);
-						}
-						RotateTo();
-						PlayerControllerMove(vec);
-					}
-
-					break;
-				case CamStatus.Locked:
-					{
-						Vector3 vec = GetDir(target);
-						to = Quaternion.LookRotation(vec, Vector3.up);
-						if (to != Quaternion.identity)
-						{
-							RotateTo();
-						}
-						PlayerControllerMove(MoveDirCalced);
-					}
-
-					break;
-				case CamStatus.Aim:
-					{
-						Vector3 vec = MoveDirCalced;
-
-						PlayerControllerMove(vec);
-					}
-					break;
-				default:
-					break;
-			}
-		}
-		else{
-
-			if (climbGrounded && moveDir.y < 0)
-			{
-				Debug.Log("착지");
-				ResetClimb();
-			}
-
-			if(!climbGrounded && !Physics.SphereCast(transform.position, 0.5f, transform.forward, out hitCache, climbDistance, (1 << GameManager.CLIMBABLELAYER)) && moveDir.y > 0)
-			{
-				Debug.Log("등반완");
-				PlayerControllerMove(-ropeNormal * climbSpeed);
-				if (Physics.Raycast(transform.position, Vector3.down, 2f, ~(1 << GameManager.PLAYERLAYER)))
+				if (Physics.SphereCast(middle.position, 0.5f, transform.forward, out hitCache, climbDistance, (1 << GameManager.CLIMBABLELAYER)) && moveDir.z > 0)
 				{
-					ResetClimb();
+					Debug.Log("등반");
+					ropeNormal = hitCache.normal;
+					SetClimb();
+				}
+
+				ForceCalc();
+				SlipCalc();
+				GravityCalc();
+
+
+				if (isLocked && target == null)
+				{
+					ResetTargets();
+				}
+				switch (GameManager.instance.curCamStat)
+				{
+					case CamStatus.Freelook:
+						{
+							Vector3 vec = MoveDirCalced;
+
+							if (vec.sqrMagnitude != 0)
+							{
+								to = Quaternion.LookRotation(vec, Vector3.up);
+							}
+							RotateTo();
+							PlayerControllerMove(vec);
+						}
+
+						break;
+					case CamStatus.Locked:
+						{
+							Vector3 vec = GetDir(target);
+							to = Quaternion.LookRotation(vec, Vector3.up);
+							if (to != Quaternion.identity)
+							{
+								RotateTo();
+							}
+							PlayerControllerMove(MoveDirCalced);
+						}
+
+						break;
+					case CamStatus.Aim:
+						{
+							Vector3 vec = MoveDirCalced;
+
+							PlayerControllerMove(vec);
+						}
+						break;
+					default:
+						break;
 				}
 			}
 			else
 			{
-				PlayerControllerMove(MoveDirCalced);
+
+				if (climbGrounded && moveDir.y < 0)
+				{
+					Debug.Log("착지");
+					ResetClimb();
+				}
+
+				if (!climbGrounded && !Physics.SphereCast(transform.position, 0.5f, transform.forward, out hitCache, climbDistance, (1 << GameManager.CLIMBABLELAYER)) && moveDir.y > 0)
+				{
+					Debug.Log("등반완");
+					PlayerControllerMove(-ropeNormal * climbSpeed);
+					if (Physics.Raycast(transform.position, Vector3.down, 2f, ~(1 << GameManager.PLAYERLAYER)))
+					{
+						ResetClimb();
+					}
+				}
+				else
+				{
+					PlayerControllerMove(MoveDirCalced);
+				}
 			}
 		}
 	}

@@ -91,14 +91,6 @@ public class AnimModule : Module
 				ctrl[$"{from[i]}"] = to[i];
 			}
 		}
-
-		ctrl.GetOverrides(apply);
-		for (int i = 0; i < apply.Count; i++)
-		{
-			Debug.Log($"{apply[i].Key} : {apply[i].Value}");
-		}
-
-		//ctrl.ApplyOverrides(apply);
 		anim.runtimeAnimatorController = ctrl;
 		
 	}

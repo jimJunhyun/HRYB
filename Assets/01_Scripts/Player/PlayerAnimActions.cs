@@ -40,6 +40,12 @@ public class PlayerAnimActions : MonoBehaviour
 		(self.cast as PlayerCast).ActualSkillOperate(SkillSlotInfo.LClick);
 	}
 
+	public void DoAttack(AnimationEvent evt)
+	{
+		SkillSlotInfo info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter);
+		(self.cast as PlayerCast).ActualSkillOperate(info);
+	}
+
 	public void SetAttackRange(AnimationEvent evt)
 	{
 		Debug.Log(evt.animatorClipInfo.clip.name + " : " + evt.stringParameter);
@@ -50,7 +56,23 @@ public class PlayerAnimActions : MonoBehaviour
 	public void ResetAttackRange(AnimationEvent evt)
 	{
 		SkillSlotInfo info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter);
-		(self.cast as PlayerCast).DisoperateAt(info);
+		(self.cast as PlayerCast).ActualSkillDisoperate(info, evt.intParameter);
+	}
+
+	public void StopAttack(AnimationEvent evt)
+	{
+		SkillSlotInfo info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter);
+		(self.cast as PlayerCast).ActualSkillDisoperate(info);
+	}
+
+	public void PauseAnimation()
+	{
+		(self.anim as PlayerAnim).SetStopState();
+	}
+
+	public void ResumeAnimation()
+	{
+		(self.anim as PlayerAnim).ResetStopState();
 	}
 
 	public void DisableInput()
@@ -58,11 +80,23 @@ public class PlayerAnimActions : MonoBehaviour
 		GameManager.instance.pinp.DeactivateInput();
 		self.move.moveDir = Vector3.zero;
 		self.move.forceDir = Vector3.zero;
+		DisableMove();
+	}
+
+	public void DisableMove()
+	{
+		GameManager.instance.pActor.move.immovable = true;
+	}
+
+	public void EnableMove()
+	{
+		GameManager.instance.pActor.move.immovable = false;
 	}
 
 	public void EnableInput()
 	{
 		GameManager.instance.pinp.ActivateInput();
+		EnableMove();
 	}
 
 	public void BowEquip()
