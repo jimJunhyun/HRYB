@@ -27,6 +27,11 @@ public class ChargeRoot : SkillRoot
 				pa.SetDisopTrigger(curCharge);
 				pa.ResetStopState();
 			}
+			if (isAimMode)
+			{
+				//CameraManager.instance.SwitchTo(CamStatus.Freelook);
+				GameManager.instance.uiManager.aimUI.Off();
+			}
 		}
 		else
 		{
@@ -41,6 +46,8 @@ public class ChargeRoot : SkillRoot
 		{
 			if (self.anim is PlayerAnim pa)
 			{
+				//CameraManager.instance.SwitchTo(CamStatus.Aim);
+				GameManager.instance.uiManager.aimUI.On();
 				pa.SetAttackTrigger(0);
 			}
 		}

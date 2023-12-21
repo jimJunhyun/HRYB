@@ -38,7 +38,7 @@ public class AudioPlayer : MonoBehaviour
 
 	public void PlayGlobal(string clipName, bool isInterrupt = true, bool loop = true)
 	{
-		if(curClip != clipName)
+		if (curClip != clipName)
 		{
 			if (dict.ContainsKey(clipName))
 			{
@@ -53,7 +53,7 @@ public class AudioPlayer : MonoBehaviour
 
 			}
 		}
-		
+
 	}
 	
 	public void PlayGlobalAdditive(string clipName)

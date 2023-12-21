@@ -64,7 +64,7 @@ public class JangsungManAI : AISetter
 		    waitJump.ResetReady();
 		    _jsMoveModule.SetTarget(player);
 		    _jsMoveModule.LookAt(player.transform);
-		    _jsMoveModule.FallDownAttack();
+		    
 		    //_jsMoveModule.ResetDest();
 		    
 		    StopExamine();
@@ -101,12 +101,10 @@ public class JangsungManAI : AISetter
 	    {		    
 		    Debug.LogWarning($"이동 : 공격시작");
 
-		    
-		    _jsMoveModule.ResetDest();
 		    waitMove.ResetReady();
 		    _jsMoveModule.SetTarget(player);
 		    _jsMoveModule.LookAt(player.transform);
-		    _jsMoveModule.NormalMoveAttack();
+		    
 		    
 		    
 		    StopExamine();

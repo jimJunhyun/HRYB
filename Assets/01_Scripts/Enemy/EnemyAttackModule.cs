@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,9 +23,14 @@ public abstract class EnemyAttackModule : AttackModule
 		AttackStd = AttackName;
 	}
 
+
 	public abstract void SetAttackRange(int idx);
 	public abstract void ResetAttackRange(int idx);
 
+	public abstract void OnAnimationStart();
+	public abstract void OnAnimationMove();
+
+	public abstract void OnAnimationSound();
 	public abstract void OnAnimationStop();
 	public abstract void OnAnimationEvent();
 	public abstract void OnAnimationEnd();
