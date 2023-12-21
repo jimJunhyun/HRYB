@@ -21,7 +21,7 @@ public abstract class DecalBase : MonoBehaviour
 
 	public void SetUpDecal(Vector3 vec, Quaternion qut, Vector3 decalSize, Vector3 decalStartSize, Vector3 decalEndSize)
 	{
-		transform.localPosition += vec;
+		transform.localPosition += vec + new Vector3(0,0.05f,0);
 		transform.rotation = qut;
 		transform.localScale = decalSize;
 		_start = decalStartSize;
@@ -35,7 +35,7 @@ public abstract class DecalBase : MonoBehaviour
 	public void SetUpDecal(Transform _parent, Vector3 decalStartSize, Vector3 decalEndSize)
 	{
 		transform.parent = _parent;
-		transform.localPosition = new Vector3(0, 0, 0);
+		transform.localPosition = new Vector3(0, 0.05f, 0);
 		_start = decalStartSize;
 		_end = decalEndSize;
 		
