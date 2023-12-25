@@ -467,7 +467,7 @@ public class PlayerCast : CastModule
 
 	protected override IEnumerator DelCast(Preparation p)
 	{
-		GameManager.instance.pinp.DeactivateInput();
+		GameManager.instance.DisableCtrl();
 		GameManager.instance.uiManager.interingUI.On();
 		float t = 0;
 		float waitSec = p.Timefunc();
@@ -481,7 +481,7 @@ public class PlayerCast : CastModule
 		ongoing = null;
 		curName = null;
 		GameManager.instance.uiManager.interingUI.Off();
-		GameManager.instance.pinp.ActivateInput();
+		GameManager.instance.EnableCtrl();
 	}
 
 	private void Update()

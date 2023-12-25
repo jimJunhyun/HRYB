@@ -30,6 +30,8 @@ public class PlayerAttack : AttackModule
 	bool clickL = false;
 	bool clickR = false;
 
+	
+
 	PlayerAnimActions animActions;
 
 	private void Awake()
@@ -50,22 +52,12 @@ public class PlayerAttack : AttackModule
 	private void Update()
 	{
 		updateActs?.Invoke();
-		if (Mouse.current.rightButton.wasPressedThisFrame)
-		{
-			//clickR = true;
-			
-			//
-		}
-		if (Mouse.current.rightButton.wasReleasedThisFrame)
-		{
-			//clickR = false;
-			
-			//
-		}
 	}
 
 	public void OnAim(InputAction.CallbackContext context)
 	{
+		if (!NotAttack)
+			return;
 		if (GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
 			if (!clickL)
@@ -74,7 +66,7 @@ public class PlayerAttack : AttackModule
 				if (!clickR && context.started)
 				{
 					clickR = true;
-					(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.RClick); // ?????????????????????
+					(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.RClick); 
 				}
 				else if (clickR && context.canceled)
 				{
@@ -89,8 +81,8 @@ public class PlayerAttack : AttackModule
 
 	public void OnAttack(InputAction.CallbackContext context)
 	{
-		//(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
-		
+		if (!NotAttack)
+			return;
 		if (GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
 			if (!clickR)

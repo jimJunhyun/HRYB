@@ -140,9 +140,17 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	public void DisableCtrl()
+	{
+		pActor.move.immovable = true;
+		pActor.atk.NotAttack = true;
+	}
 
-
-
+	public void EnableCtrl()
+	{
+		pActor.move.immovable = false;
+		pActor.atk.NotAttack = false;
+	}
 
 
 

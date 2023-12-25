@@ -16,7 +16,13 @@ public class AttackModule : Module, IAnimationEvent
 
 	protected float curPrepMod = 1;
 
-	
+	protected bool notattack = false;
+	public bool NotAttack
+	{
+		get => notattack;
+		set => notattack = value;
+	}
+
 	public virtual float prepMod
 	{
 		get

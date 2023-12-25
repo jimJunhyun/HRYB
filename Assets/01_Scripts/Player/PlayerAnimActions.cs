@@ -85,12 +85,12 @@ public class PlayerAnimActions : MonoBehaviour
 
 	public void DisableMove()
 	{
-		GameManager.instance.pActor.move.immovable = true;
+		GameManager.instance.DisableCtrl();
 	}
 
 	public void EnableMove()
 	{
-		GameManager.instance.pActor.move.immovable = false;
+		GameManager.instance.EnableCtrl();
 	}
 
 	public void EnableInput()
