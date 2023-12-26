@@ -623,6 +623,8 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (stat == HandStat.Weapon)
 		{
+			if(GameManager.instance.pActor.atk.NotAttack && !clickWood)
+				return;
 			if (context.started && !clickWood)
 			{
 				clickWood = true;
@@ -645,6 +647,8 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (stat == HandStat.Weapon)
 		{
+			if (GameManager.instance.pActor.atk.NotAttack && !clickFire)
+				return;
 			if (context.started && !clickFire)
 			{
 				clickFire = true;
@@ -667,6 +671,8 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (stat == HandStat.Weapon)
 		{
+			if (GameManager.instance.pActor.atk.NotAttack && !clickEarth)
+				return;
 			if (context.started && !clickEarth)
 			{
 				clickEarth = true;
@@ -688,6 +694,8 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (stat == HandStat.Weapon)
 		{
+			if (GameManager.instance.pActor.atk.NotAttack && !clickMetal)
+				return;
 			if (context.started && !clickMetal)
 			{
 				clickMetal = true;
@@ -709,6 +717,8 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (stat == HandStat.Weapon)
 		{
+			if (GameManager.instance.pActor.atk.NotAttack && !clickWater)
+				return;
 			if (context.started && !clickWater)
 			{
 				clickWater = true;

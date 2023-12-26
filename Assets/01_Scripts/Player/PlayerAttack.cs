@@ -56,20 +56,24 @@ public class PlayerAttack : AttackModule
 
 	public void OnAim(InputAction.CallbackContext context)
 	{
-		if (!NotAttack)
-			return;
 		if (GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
 			if (!clickL)
 			{
+				if (NotAttack && !clickR)
+					return;
 				Debug.LogWarning("phase : " +context.phase  + " : " + context.started + " : " + context.canceled);
 				if (!clickR && context.started)
 				{
+
+					
 					clickR = true;
 					(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.RClick); 
 				}
 				else if (clickR && context.canceled)
 				{
+
+					
 					clickR = false;
 					(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
 				}
@@ -81,12 +85,14 @@ public class PlayerAttack : AttackModule
 
 	public void OnAttack(InputAction.CallbackContext context)
 	{
-		if (!NotAttack)
+		if (NotAttack)
 			return;
 		if (GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
 			if (!clickR)
 			{
+				if (NotAttack && !clickL)
+					return;
 				if (context.started && !clickL)
 				{
 					clickL = true;
