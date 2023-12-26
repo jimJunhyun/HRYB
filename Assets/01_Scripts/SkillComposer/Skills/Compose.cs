@@ -13,6 +13,8 @@ public abstract class Compose : ScriptableObject, IComposer
 	public AnimationClip animClipDisop;
 	public string audioClipName;
 
+	
+
 	//public UnityEvent<Compose> onOperateSelf;
 
 	public abstract void Disoperate(Actor self);

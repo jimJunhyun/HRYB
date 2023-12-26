@@ -25,7 +25,7 @@ public abstract class AttackBase : Leaf
 		for (int i = 0; i < statEff.Count; i++)
 		{
 			StatusEffects.ApplyStat(to, by, statEff[i].id, statEff[i].power, statEff[i].duration);
-
+			
 		}
 	}
 }

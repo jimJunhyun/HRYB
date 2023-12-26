@@ -11,6 +11,12 @@ public enum StatEffID
 	Blind,
 	Slow,
 
+	EnhanceFire,
+	EnhanceIce,
+
+	Burn,
+
+	Max
 }
 
 public struct StatusEffect
@@ -32,9 +38,12 @@ public struct StatusEffect
 	}
 }
 
+
 public class StatusEffects
 {
-    public Hashtable idStatEffPairs = new Hashtable();
+
+	
+	public Hashtable idStatEffPairs = new Hashtable();
 
 	public Dictionary<StatEffID, string> idEffDict = new Dictionary<StatEffID, string>()
 	{
@@ -50,6 +59,12 @@ public class StatusEffects
 		idStatEffPairs.Add(((int)StatEffID.Immune), new StatusEffect("무적", "어머니의 비호를 받고 있습니다.", OnImmuneActivated, OnImmuneUpdated, OnImmuneEnded));
 		idStatEffPairs.Add(((int)StatEffID.Blind), new StatusEffect("실명", "눈 앞이 어두워집니다.", OnBlindActivated, OnBlindUpdated, OnBlindEnded));
 		idStatEffPairs.Add(((int)StatEffID.Slow), new StatusEffect("둔화", "움직임이 느려집니다.", OnSlowActivated, OnSlowUpdated, OnSlowEnded));
+		idStatEffPairs.Add(((int)StatEffID.EnhanceFire), new StatusEffect("화염", "다음 공격에 불의 힘을 부여합니다.", OnEnhanceFireActivated, OnEnhanceFireUpdated, OnEnhanceFireEnded));
+
+		idStatEffPairs.Add(new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", OnKnockbackActivated, OnKnockbackDebuffUpdated, OnKnockbackDebuffEnded), ((int)StatEffID.Knockback));
+		idStatEffPairs.Add(new StatusEffect("무적", "어머니의 비호를 받고 있습니다.", OnImmuneActivated, OnImmuneUpdated, OnImmuneEnded), ((int)StatEffID.Immune));
+		idStatEffPairs.Add(new StatusEffect("실명", "눈 앞이 어두워집니다.", OnBlindActivated, OnBlindUpdated, OnBlindEnded),((int)StatEffID.Blind));
+		idStatEffPairs.Add(new StatusEffect("둔화", "움직임이 느려집니다.", OnSlowActivated, OnSlowUpdated, OnSlowEnded), ((int)StatEffID.Slow));
 	}
 
 	void OnKnockbackActivated(Actor self, Actor inflicter, float power)
@@ -114,6 +129,28 @@ public class StatusEffects
 		self.move.speedMod += power;
 	}
 
+	void OnEnhanceFireActivated(Actor self, Actor inflicter, float power)
+	{
+		if(self.atk is PlayerAttack atk)
+		{
+			atk.onNextHits += EnhanceFire;
+		}
+	}
+	void OnEnhanceFireUpdated(Actor self, float power)
+	{
+
+	}
+	void OnEnhanceFireEnded(Actor self, float power)
+	{
+		if (self.atk is PlayerAttack atk)
+		{
+			atk.onNextHits -= EnhanceFire;
+		}
+	}
+	string EnhanceFire(GameObject effShower, LifeModule target)
+	{
+		return null;
+	}
 
 	public static void ApplyStat(Actor to, Actor by, StatEffID id, float dur, float pow = 1)
 	{
@@ -138,6 +175,8 @@ public class StatusEffects
 				vfx.Play();
 			}
 			float t = 0;
+			while(to.life.appliedDebuff[(StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]] < 0)
+				yield return null;
 			while(t < to.life.appliedDebuff[(StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]])
 			{
 				yield return null;

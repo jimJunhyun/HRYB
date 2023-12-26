@@ -99,7 +99,6 @@ public class LifeModule : Module
 
 	public void EndStaus(StatusEffect eff, Action<Actor> myUpdateAct, float power)
 	{
-		Debug.Log($"Status {eff.name} off");
 
 		Debug.Log($"update act count : {GetActor().updateActs.GetInvocationList().Length}");
 

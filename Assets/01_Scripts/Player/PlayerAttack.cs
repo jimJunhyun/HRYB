@@ -30,7 +30,7 @@ public class PlayerAttack : AttackModule
 	bool clickL = false;
 	bool clickR = false;
 
-	
+	public Func<GameObject, LifeModule, string> onNextHits;
 
 	PlayerAnimActions animActions;
 
@@ -85,8 +85,6 @@ public class PlayerAttack : AttackModule
 
 	public void OnAttack(InputAction.CallbackContext context)
 	{
-		if (NotAttack)
-			return;
 		if (GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
 			if (!clickR)
@@ -114,11 +112,6 @@ public class PlayerAttack : AttackModule
 			}
 		}
 	}
-
-	//public override void Attack()
-	//{
-	//	//(GetActor().cast as PlayerCast).UseSkillAt(SkillSlotInfo.LClick);
-	//}
 
 	public bool ThrowRope()
 	{
@@ -177,5 +170,17 @@ public class PlayerAttack : AttackModule
 	{
 		base.ResetStatus();
 		secPerCharge = initSecPerCharge;
+	}
+
+	public void ClearNextHit()
+	{
+		foreach (var item in GetActor().life.appliedDebuff.Keys)
+		{
+			if(((int)((StatEffID)GameManager.instance.statEff.idStatEffPairs[item])) >= ((int)StatEffID.EnhanceFire) &&
+				((int)((StatEffID)GameManager.instance.statEff.idStatEffPairs[item])) <= ((int)StatEffID.EnhanceIce))
+			{
+				GetActor().life.appliedDebuff[item] = 0;
+			}
+		}
 	}
 }

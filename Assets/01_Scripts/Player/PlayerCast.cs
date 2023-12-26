@@ -480,6 +480,7 @@ public class PlayerCast : CastModule
 		p.onPrepComp?.Invoke(transform);
 		ongoing = null;
 		curName = null;
+		(GetActor().atk as PlayerAttack).ClearNextHit();
 		GameManager.instance.uiManager.interingUI.Off();
 		GameManager.instance.EnableCtrl();
 	}
