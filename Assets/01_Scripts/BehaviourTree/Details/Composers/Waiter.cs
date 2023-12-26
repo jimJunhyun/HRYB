@@ -8,6 +8,7 @@ public class Waiter : INode
 {
 	float delTime;
 
+	private bool isFirst = false;
 	bool ready = false;
 	bool readyResets = true;
 
@@ -17,10 +18,11 @@ public class Waiter : INode
 	private Action _waiting;
 
 
-	public Waiter(float time, bool isResetReady = false, NodeStatus defStat = NodeStatus.Fail, bool countFromStart = false, Action _act = null)
+	public Waiter(float time, bool isFirstTime = false, bool isResetReady = false, NodeStatus defStat = NodeStatus.Fail, bool countFromStart = false, Action _act = null)
 	{
 		delTime = time;
 		readyResets = isResetReady;
+		isFirst = isFirstTime;
 		defaultStat = defStat;
 		if (countFromStart)
 		{
@@ -33,10 +35,20 @@ public class Waiter : INode
 
 	public void StartReady()
 	{
-		if (ongoing == null)
+		if (isFirst)
 		{
-			ongoing = GameManager.instance.StartCoroutine(Delayer());
+			ready = true;
+			_waiting?.Invoke();
+			isFirst = false;
 		}
+		else
+		{
+			if (ongoing == null)
+			{
+				ongoing = GameManager.instance.StartCoroutine(Delayer());
+			}
+		}
+
 	}
 
 	public void ResetReady()

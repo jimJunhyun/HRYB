@@ -11,7 +11,7 @@ public class BearAI : AISetter
 	{
 
 		IsFirstTime firstFound = new IsFirstTime();
-		Waiter waitDuration = new Waiter((float)GameManager.instance.timeliner.duration, false, NodeStatus.Run);
+		Waiter waitDuration = new Waiter((float)GameManager.instance.timeliner.duration, false, false, NodeStatus.Run);
 		IsInRange inWakeUp = new IsInRange(self, player.transform, self.sight.GetSightRange, (player.move as PlayerMove).GetSneakDist, ()=>
 		{
 			(self.anim as BearAnim).ResetSleepMode();
@@ -131,7 +131,7 @@ public class BearAI : AISetter
 			(self.atk as BearAttack).SetAttackType(AttackType.MouthAttack);
 			(self.atk as BearAttack).SetTarget(player);
 		});
-		Waiter wait2 = new Waiter(10, true, NodeStatus.Fail, true);
+		Waiter wait2 = new Waiter(10, false, true, NodeStatus.Fail, true);
 		Attacker atk2 = new Attacker(self, () =>
 		{
 			(self.move as BearMove).LookAt(player.transform);
