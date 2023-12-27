@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// (statEffId -> (EffectPoses -> List(GameObject)) * EffectPoses.Length)
+/// (statEffId -> List(EffPos : Eff))
 /// </summary>
 
 public enum EffectPoses
@@ -16,68 +16,11 @@ public enum EffectPoses
 	Max
 }
 
-[System.Serializable]
-public class IdEffPair
-{
-	public StatEffID id;
-	public EffDict effects;
-
-	public IdEffPair(StatEffID p, EffDict effs)
-	{
-		id = p;
-		effects = effs;
-	}
-}
 
 [System.Serializable]
-public class PosEffPair
+public class StatVfxDict : Dictionary<StatEffID, List<SerializePair<EffectPoses, string>>>
 {
-	public EffectPoses poses;
-	public List<GameObject> effects;
-
-	public PosEffPair(EffectPoses p, List<GameObject> effs)
-	{
-		poses = p;
-		effects = effs;
-	}
-}
-
-[System.Serializable]
-public class EffDict : Dictionary<EffectPoses, List<GameObject>>, ISerializationCallbackReceiver
-{
-	public List<PosEffPair> posEffs;
-
-	public void OnAfterDeserialize()
-	{
-		this.Clear();
-
-
-		for (int i = 0; i < posEffs.Count; i++)
-		{
-			if(posEffs[i].poses >= EffectPoses.Hit)
-				continue;
-			if (this.ContainsKey(posEffs[i].poses))
-			{
-				posEffs[i].poses += 1;
-			}
-			this.Add(posEffs[i].poses, posEffs[i].effects);
-		}
-	}
-
-	public void OnBeforeSerialize()
-	{
-		posEffs.Clear();
-		foreach (KeyValuePair<EffectPoses, List<GameObject>> pair in this)
-		{
-			posEffs.Add(new PosEffPair(pair.Key, pair.Value));
-		}
-	}
-}
-
-[System.Serializable]
-public class StatVfxDictionary : Dictionary<StatEffID, EffDict>
-{
-    public List<IdEffPair> idEff;
+    public List<SerializePair<StatEffID, List<SerializePair<EffectPoses, string>>>> idEff;
 
 	public void OnAfterDeserialize()
 	{
@@ -86,29 +29,22 @@ public class StatVfxDictionary : Dictionary<StatEffID, EffDict>
 
 		for (int i = 0; i < idEff.Count; i++)
 		{
-			if (this.ContainsKey(idEff[i].id))
-			{
-				if(idEff[i].id < StatEffID.Max)
-				{
-					idEff[i].id += 1;
-				}
-				else
-					continue;
-				for (int j = ((int)EffectPoses.Max) - 1; j >= idEff[i].effects.posEffs.Count; --j)
-				{
-					idEff[i].effects.Add((EffectPoses)j, new List<GameObject>());
-				}
-			}
-			this.Add(idEff[i].id, idEff[i].effects);
+			this.Add(idEff[i].key, idEff[i].value);
 		}
 	}
 
 	public void OnBeforeSerialize()
 	{
 		idEff.Clear();
-		foreach (KeyValuePair<StatEffID, EffDict> pair in this)
+		foreach (KeyValuePair<StatEffID, List<SerializePair<EffectPoses, string>>> pair in this)
 		{
-			idEff.Add(new IdEffPair(pair.Key, pair.Value));
+			idEff.Add(new SerializePair<StatEffID, List<SerializePair<EffectPoses, string>>> (pair.Key, pair.Value));
 		}
 	}
+}
+
+[CreateAssetMenu()]
+public class StatVfxDictionary : ScriptableObject
+{
+	public StatVfxDict data;
 }

@@ -23,10 +23,10 @@ public class AudioPlayer : MonoBehaviour
 
 	public void PlayBgm(string clipName)
 	{
-		if (dict.ContainsKey(clipName))
+		if (dict.data.ContainsKey(clipName))
 		{
 			globalBgm.Stop();
-			globalBgm.clip = dict[clipName];
+			globalBgm.clip = dict.data[clipName];
 			globalBgm.Play();
 		}
 	}
@@ -40,12 +40,12 @@ public class AudioPlayer : MonoBehaviour
 	{
 		if (curClip != clipName)
 		{
-			if (dict.ContainsKey(clipName))
+			if (dict.data.ContainsKey(clipName))
 			{
 				if (isInterrupt || !global.isPlaying)
 				{
 					global.Stop();
-					global.clip = dict[clipName];
+					global.clip = dict.data[clipName];
 					global.loop = loop;
 					global.Play();
 					curClip = clipName;
@@ -58,9 +58,9 @@ public class AudioPlayer : MonoBehaviour
 	
 	public void PlayGlobalAdditive(string clipName)
 	{
-		if (dict.ContainsKey(clipName))
+		if (dict.data.ContainsKey(clipName))
 		{
-			global.PlayOneShot(dict[clipName]);
+			global.PlayOneShot(dict.data[clipName]);
 		}
 	}
 
@@ -73,9 +73,9 @@ public class AudioPlayer : MonoBehaviour
 
 	public void PlayPoint(string clipName, Vector3 point, float duration = -1)
 	{
-		if (dict.ContainsKey(clipName))
+		if (dict.data.ContainsKey(clipName))
 		{
-			AudioClip clip = dict[clipName];
+			AudioClip clip = dict.data[clipName];
 			float delT = clip.length;
 			if (duration != -1)
 				delT = duration;

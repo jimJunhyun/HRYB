@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class CategoryImagePair
+public class SerializePair<T1, T2>
 {
-	public string name;
-	public Sprite sprite;
+	public T1 key;
+	public T2 value;
 
-	public CategoryImagePair(string n, Sprite sp)
+	public SerializePair(T1 k, T2 v)
 	{
-		name = n;
-		sprite = sp;
+		key = k;
+		value = v;
 	}
 }
 
@@ -19,7 +19,7 @@ public class CategoryImagePair
 public class SerializedNameSpritePairs : Dictionary<string, Sprite>, ISerializationCallbackReceiver
 {
 	[SerializeField]
-	public List<CategoryImagePair> keyValues = new List<CategoryImagePair>();
+	public List<SerializePair<string, Sprite>> keyValues = new List<SerializePair<string, Sprite>>();
 
 	public void OnAfterDeserialize()
 	{
@@ -28,11 +28,11 @@ public class SerializedNameSpritePairs : Dictionary<string, Sprite>, ISerializat
 
 		for (int i = 0; i < keyValues.Count; i++)
 		{
-			if (this.ContainsKey(keyValues[i].name))
+			if (this.ContainsKey(keyValues[i].key))
 			{
-				keyValues[i].name += '0';
+				keyValues[i].key += '0';
 			}
-			this.Add(keyValues[i].name, keyValues[i].sprite);
+			this.Add(keyValues[i].key, keyValues[i].value);
 		}
 	}
 
@@ -41,7 +41,7 @@ public class SerializedNameSpritePairs : Dictionary<string, Sprite>, ISerializat
 		keyValues.Clear();
 		foreach (KeyValuePair<string, Sprite> pair in this)
 		{
-			keyValues.Add(new CategoryImagePair(pair.Key, pair.Value));
+			keyValues.Add(new SerializePair<string, Sprite>(pair.Key, pair.Value));
 		}
 	}
 }

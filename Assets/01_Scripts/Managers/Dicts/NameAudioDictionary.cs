@@ -2,24 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class NameAudioPair
-{
-	public string name;
-	public AudioClip sound;
-
-	public NameAudioPair(string n, AudioClip s)
-	{
-		name = n;
-		sound = s;
-	}
-}
 
 [System.Serializable]
-public class NameAudioDictionary : Dictionary<string, AudioClip>, ISerializationCallbackReceiver
+public class NameAudioDict : Dictionary<string, AudioClip>, ISerializationCallbackReceiver
 {
 	[SerializeField]
-	public List<NameAudioPair> keyValues = new List<NameAudioPair>();
+	public List<SerializePair<string, AudioClip>> keyValues = new List<SerializePair<string, AudioClip>>();
 
 	public void OnAfterDeserialize()
 	{
@@ -28,11 +16,11 @@ public class NameAudioDictionary : Dictionary<string, AudioClip>, ISerialization
 
 		for (int i = 0; i < keyValues.Count; i++)
 		{
-			if (this.ContainsKey(keyValues[i].name))
+			if (this.ContainsKey(keyValues[i].key))
 			{
-				keyValues[i].name += '0';
+				keyValues[i].key += '0';
 			}
-			this.Add(keyValues[i].name, keyValues[i].sound);
+			this.Add(keyValues[i].key, keyValues[i].value);
 		}
 	}
 
@@ -41,7 +29,13 @@ public class NameAudioDictionary : Dictionary<string, AudioClip>, ISerialization
 		keyValues.Clear();
 		foreach (KeyValuePair<string, AudioClip> pair in this)
 		{
-			keyValues.Add(new NameAudioPair(pair.Key, pair.Value));
+			keyValues.Add(new SerializePair<string, AudioClip>(pair.Key, pair.Value));
 		}
 	}
+}
+
+[CreateAssetMenu()]
+public class NameAudioDictionary : ScriptableObject
+{
+	public NameAudioDict data;
 }

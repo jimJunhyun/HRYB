@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
 
 	public Transform outCaveTmp;
 
-
+	
 
 	public WaitForSeconds waitSec = new WaitForSeconds(1.0f);
 
@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
 		terrain = GameObject.Find("Terrain").GetComponentInChildren<Terrain>();
 		audioPlayer = GameObject.Find("AudioManager").GetComponent<AudioPlayer>();
 		sManager = GameObject.Find("SectionManager").GetComponent<SectionManager>();
-		timeliner = GameObject.Find("Timeliner").GetComponent<PlayableDirector>(); //////////#####타임라인매니저
+		timeliner = GameObject.Find("Timeliner").GetComponent<PlayableDirector>(); //////////#####타임라인매니저?????
 		timeliner2 = GameObject.Find("Timeliner2").GetComponent<PlayableDirector>();
 		camManager = GameObject.Find("PCam").GetComponent<CameraManager>();
 		pManager = GameObject.Find("PrefabManager").GetComponent<PrefabManager>();
