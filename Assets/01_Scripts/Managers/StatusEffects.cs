@@ -153,11 +153,11 @@ public class StatusEffects
 	}
 	string EnhanceIce(GameObject effShower, LifeModule target)
 	{
-		List<SerializePair<EffectPoses, string>> objs = effDict.data[StatEffID.EnhanceIce];
-		for (int i = 0; i < objs.Count; i++)
-		{
-			PoolManager.GetObject(objs[i].value, effShower.transform);
-		}
+		//List<SerializePair<EffectPoses, string>> objs = effDict.data[StatEffID.EnhanceIce];
+		//for (int i = 0; i < objs.Count; i++)
+		//{
+		//	PoolManager.GetObject(objs[i].value, effShower.transform);
+		//}
 		return null;
 	}
 
