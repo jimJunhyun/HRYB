@@ -971,15 +971,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1480622149016750883, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.40965593
+      value: -0.4096559
       objectReference: {fileID: 0}
     - target: {fileID: 1480622149016750883, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000027186877
+      value: 3.117857e-16
       objectReference: {fileID: 0}
     - target: {fileID: 1480622149016750883, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000012208699
+      value: 2.0973235e-15
       objectReference: {fileID: 0}
     - target: {fileID: 2109712079635487170, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_Follow
@@ -2472,6 +2472,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2015893833}
+  - component: {fileID: 2015893840}
+  - component: {fileID: 2015893839}
+  - component: {fileID: 2015893838}
+  - component: {fileID: 2015893837}
+  - component: {fileID: 2015893836}
+  - component: {fileID: 2015893835}
+  - component: {fileID: 2015893834}
   m_Layer: 0
   m_Name: JangSungGirl
   m_TagString: Untagged
@@ -2495,6 +2502,129 @@ Transform:
   - {fileID: 748703934}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2015893834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015893832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 556cbf31fa457984da0c4f264de2b718, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  atk: {fileID: 0}
+  move: {fileID: 0}
+  life: {fileID: 0}
+  sight: {fileID: 0}
+  cast: {fileID: 0}
+  anim: {fileID: 0}
+  ai: {fileID: 0}
+--- !u!114 &2015893835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015893832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bbd7cf0c98ee4744a787213af8a7bd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitClipName: 
+--- !u!114 &2015893836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015893832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22f5b4f9ea692714cac19fa81bcdcd77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2015893837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015893832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 370e0265f3715bb47a2fd58463a3120f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initSightRange: 0
+  sightRange: 0
+--- !u!114 &2015893838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015893832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cd1cfdc8b01b404f8b56a0e6ede7766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isImmune: 0
+  initYinYang:
+    yinAmt: 0
+    yangAmt: 0
+  initAdequity:
+    yinAmt: 0
+    yangAmt: 0
+  initSoul: 0
+  yy:
+    yinAmt: 0
+    yangAmt: 0
+  maxSoul: 0
+  regenMod: 1
+  regenThreshold: 10
+  applyMod: 1
+--- !u!114 &2015893839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015893832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fc2186f7ee167d4ab78cdb161565e87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveDir: {x: 0, y: 0, z: 0}
+  forceDir: {x: 0, y: 0, z: 0}
+  runSpeed: 0
+  walkSpeed: 0
+  crouchSpeed: 0
+  speedMod: 1
+  gravity: 0
+  groundThreshold: 0.5
+  immovable: 0
+--- !u!114 &2015893840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015893832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 977304e6e1ea6cc4b86d5987ac28bf2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initAtkDist: 0
+  initAtkGap: 0
+  initDamage:
+    yinAmt: 0
+    yangAmt: 0
 --- !u!1001 &2036832950
 PrefabInstance:
   m_ObjectHideFlags: 0
