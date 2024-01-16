@@ -131,7 +131,7 @@ public class PlayerAnimActions : MonoBehaviour
 		EnableInput();
 		self.life.isImmune = false;
 		self.move.moveDir = Vector3.zero;
-		(self.move as PlayerMove).ctrl.height *= 4f;
+		(self.move as PlayerMove).ctrl.height *= 2f;
 		(self.move as PlayerMove).ctrl.radius *= 2f;
 		if (self.move.moveStat != MoveStates.Sit)
 			(self.move as PlayerMove).ctrl.center *= 2f;

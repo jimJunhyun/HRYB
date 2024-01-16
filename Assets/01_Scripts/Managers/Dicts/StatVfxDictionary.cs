@@ -9,15 +9,29 @@ public enum EffectPoses
 	Whirl,
 	Hit,
 
+	Applied,
+
 	Max
+}
+
+[System.Serializable]
+public class EffPosStrPair
+{
+	public EffectPoses effPos;
+	public string effPrefName;
+	public EffPosStrPair(string s, EffectPoses p)
+	{
+		effPrefName = s ;
+		effPos = p;
+	}
 }
 
 
 [System.Serializable]
-public class StatVfxDict : Dictionary<StatEffID, List<SerializePair<EffectPoses, string>>>, ISerializationCallbackReceiver
+public class StatVfxDict : Dictionary<StatEffID, List<EffPosStrPair>>, ISerializationCallbackReceiver
 {
-    public List<SerializePair<StatEffID, List<SerializePair<EffectPoses, string>>>> idEff = 
-		new List<SerializePair<StatEffID, List<SerializePair<EffectPoses, string>>>>();
+    public List<SerializePair<StatEffID, List<EffPosStrPair>>> idEff = 
+		new List<SerializePair<StatEffID, List<EffPosStrPair>>>();
 
 	public void OnAfterDeserialize()
 	{
@@ -33,9 +47,9 @@ public class StatVfxDict : Dictionary<StatEffID, List<SerializePair<EffectPoses,
 	public void OnBeforeSerialize()
 	{
 		idEff.Clear();
-		foreach (KeyValuePair<StatEffID, List<SerializePair<EffectPoses, string>>> pair in this)
+		foreach (KeyValuePair<StatEffID, List<EffPosStrPair>> pair in this)
 		{
-			idEff.Add(new SerializePair<StatEffID, List<SerializePair<EffectPoses, string>>>(pair.Key, pair.Value));
+			idEff.Add(new SerializePair<StatEffID, List<EffPosStrPair>>(pair.Key, pair.Value));
 		}
 	}
 
@@ -43,7 +57,7 @@ public class StatVfxDict : Dictionary<StatEffID, List<SerializePair<EffectPoses,
 	{
 		for (int i = 0; i < ((int)StatEffID.Max); i++)
 		{
-			idEff.Add(new SerializePair<StatEffID, List<SerializePair<EffectPoses, string>>>((StatEffID)i, new List<SerializePair<EffectPoses, string>>()));
+			idEff.Add(new SerializePair<StatEffID, List<EffPosStrPair>>((StatEffID)i, new List<EffPosStrPair>()));
 		}
 		OnAfterDeserialize();
 	}
