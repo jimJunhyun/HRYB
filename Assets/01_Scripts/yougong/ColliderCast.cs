@@ -43,7 +43,7 @@ public abstract class ColliderCast : MonoBehaviour
 			{
 				CastAct?.Invoke(lf);
 			}
-			Debug.LogWarning($"{col.name} 맞음");
+			// Debug.LogWarning($"{col.name} 맞음");
 
 		}
 	}
@@ -51,7 +51,7 @@ public abstract class ColliderCast : MonoBehaviour
 	public void Now(Action<LifeModule> act = null)
 	{
 		CheckDic.Clear();
-		Debug.Log("시작");
+		//Debug.Log("시작");
 		_isRunning = true; 
 		if(act != null)
 			CastAct = act;

@@ -57,7 +57,7 @@ public class JangSungMoveModule : MoveModule
 				UnityEngine.AI.NavMesh.SamplePosition( _target.transform.position, out UnityEngine.AI.NavMeshHit hit, 15f, UnityEngine.AI.NavMesh.AllAreas);
 				agent.speed = _fallDownMoveSpeed;
 				agent.SetDestination(hit.position);
-				Debug.LogError(hit.position);
+				//Debug.LogError(hit.position);
 //			Debug.LogWarning(_target.transform.position);
 				//GetActor().anim.SetMoveState();
 			}
@@ -74,7 +74,7 @@ public class JangSungMoveModule : MoveModule
 		{
 			_moveDecalOnShot = false;
 			GameObject obj = PoolManager.GetObject("MiddleBoxDecal", transform);
-			Debug.LogError("1111");
+			//Debug.LogError("1111");
 
 			if (obj.TryGetComponent<BoxDecal>(out BoxDecal box))
 			{
@@ -116,7 +116,7 @@ public class JangSungMoveModule : MoveModule
 
 			if (obj.TryGetComponent<BoxDecal>(out BoxDecal box))
 			{
-				box.SetUpDecal(new Vector3(0, 0, 5), transform.rotation, new Vector3(0.55f,0.55f,0.55f), Vector3.zero, Vector3.one );
+				box.SetUpDecal(new Vector3(0, 0, 7), transform.rotation, new Vector3(0.55f,0.55f,0.55f), Vector3.zero, Vector3.one );
 				box.StartDecal(1f);
 			}
 			else

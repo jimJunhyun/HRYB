@@ -28,7 +28,7 @@ public class BoxColliderCast : ColliderCast
 	// Update is called once per frame
     public override Collider[] ReturnColliders()
     {
-	    Debug.LogError(_box.size);
+	    //Debug.LogError(_box.size);
 	    return Physics.OverlapBox(transform.position + _box.center, _box.size, transform.rotation, Layer);
     }
     

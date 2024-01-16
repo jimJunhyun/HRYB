@@ -70,7 +70,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 		}
 
 		
-		Debug.LogWarning(AttackStd);
+		//Debug.LogWarning(AttackStd);
 		GetActor().anim.SetAttackTrigger();
 		GetActor().anim.Animators.SetBool(AttackStd, true);
 	}
@@ -136,7 +136,8 @@ public class JangsungManAttackModule : EnemyAttackModule
 	public override void OnAnimationStop()
 	{
 		self.ai.StartExamine();	
-		Debug.LogWarning("Anim Stop!!!!");
+		//Debug.LogWarning("Anim Stop!!!!");
+
 		GetActor().anim.Animators.SetBool(AttackStd, false); 
 
 	}

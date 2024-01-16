@@ -87,7 +87,7 @@ public class JangsungManAI : AISetter
 	    
 	    IsInRange isMoveAttack = new IsInRange(self, player.transform, _jsAttckModule.MoveAttack, null, () =>
 	    {
-		    Debug.LogWarning($"이동 : 거리재기");
+		    //Debug.LogWarning($"이동 : 거리재기");
 
 		    _jsAttckModule.SetAttackType(MoveAttackHash);
 		    _jsAttckModule.SetTarget(player);
@@ -99,7 +99,7 @@ public class JangsungManAI : AISetter
 	    
 	    Attacker MoveAttack = new Attacker(self, () =>
 	    {		    
-		    Debug.LogWarning($"이동 : 공격시작");
+		    //Debug.LogWarning($"이동 : 공격시작");
 
 		    waitMove.ResetReady();
 		    _jsMoveModule.SetTarget(player);
