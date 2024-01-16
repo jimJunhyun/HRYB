@@ -30,7 +30,7 @@ public class PlayerAttack : AttackModule
 	bool clickL = false;
 	bool clickR = false;
 
-	public Func<GameObject, LifeModule, string> onNextHits;
+	public Func<GameObject, LifeModule, string> onNextHits; //피격 판정 등 이펙트 보여줄 위치, 피격자에게 행할 행동, 
 
 	PlayerAnimActions animActions;
 
