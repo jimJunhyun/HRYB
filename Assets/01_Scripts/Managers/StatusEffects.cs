@@ -11,6 +11,12 @@ public enum StatEffID
 	Blind,
 	Slow,
 
+	EnhanceIce,
+	EnhanceFire,
+
+	Burn,
+
+	Max
 }
 
 public struct StatusEffect
@@ -32,11 +38,14 @@ public struct StatusEffect
 	}
 }
 
+
 public class StatusEffects
 {
-    public Hashtable idStatEffPairs = new Hashtable();
 
-	public Dictionary<StatEffID, string> idEffDict = new Dictionary<StatEffID, string>()
+	public StatVfxDictionary effDict;
+	public Hashtable idStatEffPairs = new Hashtable();
+
+	public Dictionary<StatEffID, string> idEffDict = new Dictionary<StatEffID, string>() //상태이상 작용 시의 이펙트
 	{
 		{StatEffID.Knockback, "" },
 		{StatEffID.Immune, "" },
@@ -50,6 +59,16 @@ public class StatusEffects
 		idStatEffPairs.Add(((int)StatEffID.Immune), new StatusEffect("무적", "어머니의 비호를 받고 있습니다.", OnImmuneActivated, OnImmuneUpdated, OnImmuneEnded));
 		idStatEffPairs.Add(((int)StatEffID.Blind), new StatusEffect("실명", "눈 앞이 어두워집니다.", OnBlindActivated, OnBlindUpdated, OnBlindEnded));
 		idStatEffPairs.Add(((int)StatEffID.Slow), new StatusEffect("둔화", "움직임이 느려집니다.", OnSlowActivated, OnSlowUpdated, OnSlowEnded));
+		idStatEffPairs.Add(((int)StatEffID.EnhanceIce), new StatusEffect("냉기", "다음 공격에 얼음의 힘을 부여합니다.", OnEnhanceIceActivated, OnEnhanceIceUpdated, OnEnhanceIceEnded));
+
+		idStatEffPairs.Add(new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", OnKnockbackActivated, OnKnockbackDebuffUpdated, OnKnockbackDebuffEnded), ((int)StatEffID.Knockback));
+		idStatEffPairs.Add(new StatusEffect("무적", "어머니의 비호를 받고 있습니다.", OnImmuneActivated, OnImmuneUpdated, OnImmuneEnded), ((int)StatEffID.Immune));
+		idStatEffPairs.Add(new StatusEffect("실명", "눈 앞이 어두워집니다.", OnBlindActivated, OnBlindUpdated, OnBlindEnded),((int)StatEffID.Blind));
+		idStatEffPairs.Add(new StatusEffect("둔화", "움직임이 느려집니다.", OnSlowActivated, OnSlowUpdated, OnSlowEnded), ((int)StatEffID.Slow));
+		idStatEffPairs.Add(new StatusEffect("냉기", "다음 공격에 얼음의 힘을 부여합니다.", OnEnhanceIceActivated, OnEnhanceIceUpdated, OnEnhanceIceEnded), ((int)StatEffID.EnhanceIce));
+
+
+		effDict = Resources.Load<StatVfxDictionary>("AudioList");
 	}
 
 	void OnKnockbackActivated(Actor self, Actor inflicter, float power)
@@ -114,6 +133,33 @@ public class StatusEffects
 		self.move.speedMod += power;
 	}
 
+	void OnEnhanceIceActivated(Actor self, Actor inflicter, float power)
+	{
+		if(self.atk is PlayerAttack atk)
+		{
+			atk.onNextHits += EnhanceIce;
+		}
+	}
+	void OnEnhanceIceUpdated(Actor self, float power)
+	{
+
+	}
+	void OnEnhanceIceEnded(Actor self, float power)
+	{
+		if (self.atk is PlayerAttack atk)
+		{
+			atk.onNextHits -= EnhanceIce;
+		}
+	}
+	string EnhanceIce(GameObject effShower, LifeModule target)
+	{
+		//List<SerializePair<EffectPoses, string>> objs = effDict.data[StatEffID.EnhanceIce];
+		//for (int i = 0; i < objs.Count; i++)
+		//{
+		//	PoolManager.GetObject(objs[i].value, effShower.transform);
+		//}
+		return null;
+	}
 
 	public static void ApplyStat(Actor to, Actor by, StatEffID id, float dur, float pow = 1)
 	{
@@ -138,6 +184,8 @@ public class StatusEffects
 				vfx.Play();
 			}
 			float t = 0;
+			while(to.life.appliedDebuff[(StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]] < 0)
+				yield return null;
 			while(t < to.life.appliedDebuff[(StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]])
 			{
 				yield return null;

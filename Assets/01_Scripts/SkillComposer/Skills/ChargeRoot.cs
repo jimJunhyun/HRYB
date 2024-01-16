@@ -46,7 +46,7 @@ public class ChargeRoot : SkillRoot
 		{
 			if (self.anim is PlayerAnim pa)
 			{
-				//CameraManager.instance.SwitchTo(CamStatus.Aim);
+				
 				GameManager.instance.uiManager.aimUI.On();
 				pa.SetAttackTrigger(0);
 			}

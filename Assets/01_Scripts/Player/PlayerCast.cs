@@ -467,7 +467,7 @@ public class PlayerCast : CastModule
 
 	protected override IEnumerator DelCast(Preparation p)
 	{
-		GameManager.instance.pinp.DeactivateInput();
+		GameManager.instance.DisableCtrl();
 		GameManager.instance.uiManager.interingUI.On();
 		float t = 0;
 		float waitSec = p.Timefunc();
@@ -480,8 +480,9 @@ public class PlayerCast : CastModule
 		p.onPrepComp?.Invoke(transform);
 		ongoing = null;
 		curName = null;
+		(GetActor().atk as PlayerAttack).ClearNextHit();
 		GameManager.instance.uiManager.interingUI.Off();
-		GameManager.instance.pinp.ActivateInput();
+		GameManager.instance.EnableCtrl();
 	}
 
 	private void Update()
@@ -576,7 +577,6 @@ public class PlayerCast : CastModule
 			switch (at)
 			{
 				case SkillSlotInfo.Wood:
-					Debug.Log("START CASING");
 					Cast(WXSkillSlots.WOODSKILL);
 					break;
 				case SkillSlotInfo.Fire:

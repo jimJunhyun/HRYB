@@ -30,6 +30,8 @@ public class PlayerAttack : AttackModule
 	bool clickL = false;
 	bool clickR = false;
 
+	public Func<GameObject, LifeModule, string> onNextHits; //피격 판정 등 이펙트 보여줄 위치, 피격자에게 행할 행동, 
+
 	PlayerAnimActions animActions;
 
 	private void Awake()
@@ -50,26 +52,31 @@ public class PlayerAttack : AttackModule
 	private void Update()
 	{
 		updateActs?.Invoke();
-		if (Mouse.current.rightButton.wasPressedThisFrame)
-		{
-			//clickR = true;
-			Debug.Log("AIM START");
-			(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.RClick);
-		}
-		if (Mouse.current.rightButton.wasReleasedThisFrame)
-		{
-			//clickR = false;
-			(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
-		}
 	}
 
 	public void OnAim(InputAction.CallbackContext context)
 	{
 		if (GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
-			//Debug.Log(context.);
 			if (!clickL)
 			{
+				if (NotAttack && !clickR)
+					return;
+				Debug.LogWarning("phase : " +context.phase  + " : " + context.started + " : " + context.canceled);
+				if (!clickR && context.started)
+				{
+
+					
+					clickR = true;
+					(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.RClick); 
+				}
+				else if (clickR && context.canceled)
+				{
+
+					
+					clickR = false;
+					(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
+				}
 				
 			}
 			
@@ -78,12 +85,12 @@ public class PlayerAttack : AttackModule
 
 	public void OnAttack(InputAction.CallbackContext context)
 	{
-		//(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
-		
 		if (GameManager.instance.pinven.stat == HandStat.Weapon)
 		{
 			if (!clickR)
 			{
+				if (NotAttack && !clickL)
+					return;
 				if (context.started && !clickL)
 				{
 					clickL = true;
@@ -105,11 +112,6 @@ public class PlayerAttack : AttackModule
 			}
 		}
 	}
-
-	//public override void Attack()
-	//{
-	//	//(GetActor().cast as PlayerCast).UseSkillAt(SkillSlotInfo.LClick);
-	//}
 
 	public bool ThrowRope()
 	{
@@ -168,5 +170,17 @@ public class PlayerAttack : AttackModule
 	{
 		base.ResetStatus();
 		secPerCharge = initSecPerCharge;
+	}
+
+	public void ClearNextHit()
+	{
+		foreach (var item in GetActor().life.appliedDebuff.Keys)
+		{
+			if(((int)((StatEffID)GameManager.instance.statEff.idStatEffPairs[item])) >= ((int)StatEffID.EnhanceFire) &&
+				((int)((StatEffID)GameManager.instance.statEff.idStatEffPairs[item])) <= ((int)StatEffID.EnhanceIce))
+			{
+				GetActor().life.appliedDebuff[item] = 0;
+			}
+		}
 	}
 }

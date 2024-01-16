@@ -571,7 +571,7 @@ public class PlayerMove : MoveModule
 			to = Quaternion.LookRotation(moveDir, Vector3.up);
 			RotateTo();
 			(GetActor().anim as PlayerAnim).SetRollTrigger();
-			ctrl.height *= 0.25f;
+			ctrl.height *= 0.5f;
 			ctrl.radius *= 0.5f;
 			if(GetActor().move.moveStat != MoveStates.Sit)
 				ctrl.center *= 0.5f;

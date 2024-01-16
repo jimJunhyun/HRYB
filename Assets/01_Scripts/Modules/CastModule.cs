@@ -52,7 +52,7 @@ public class CastModule : Module
 	{
 		float t = 0;
 		float waitSec = p.Timefunc();
-		while(waitSec * (fixedCastMod == null? castMod : (float)fixedCastMod) > t)
+		while (waitSec * (fixedCastMod == null ? castMod : (float)fixedCastMod) > t)
 		{
 			t += Time.deltaTime;
 			yield return null;
