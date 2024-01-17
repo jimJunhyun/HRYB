@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 
 public class LifeModule : Module
 {
@@ -33,6 +34,7 @@ public class LifeModule : Module
 
 	public float TotalApplySpeed { get => baseApplySpeed * applyMod;}
 
+	public Action _dieEvent;
 
 	internal Dictionary<StatusEffect, float> appliedDebuff = new Dictionary<StatusEffect, float>();
 
@@ -155,9 +157,10 @@ public class LifeModule : Module
 
 	public virtual void OnDead()
 	{
-		Debug.Log(maxSoul);
+		Debug.LogError($"{gameObject.name} : 사망");
 		StopAllCoroutines();
 		GetActor().anim.SetDieTrigger();
+		_dieEvent?.Invoke();
 		//PoolManager.ReturnObject(gameObject);
 	}
 

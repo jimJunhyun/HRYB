@@ -13,10 +13,22 @@ public class JangsungManAI : AISetter
 	
 	private const string MoveAttackHash = "MoveAttack";
 	
+
+	public void DieEvent()
+	{
+		self.anim.ResetStatus();
+		StopExamine();
+	}
+
     protected override void StartInvoke()
     {
-	    
-	    JangsungManAttackModule _jsAttckModule = self.atk as JangsungManAttackModule;
+		GetComponent<BossHPBar>().Init(self);
+
+
+		self.life._dieEvent = DieEvent;
+
+
+		JangsungManAttackModule _jsAttckModule = self.atk as JangsungManAttackModule;
 	    JangSungMoveModule _jsMoveModule = self.move as JangSungMoveModule;
 	    _jsAttckModule.SetTarget(player);
 	    _jsMoveModule.SetTarget(player);
@@ -52,8 +64,8 @@ public class JangsungManAI : AISetter
 	    //});
 
 	    #region 점프 공격
-	    Waiter waitJump = new Waiter(15f);
-	    IsInRange isJumpAtk = new IsInRange(self, player.transform, _jsAttckModule.JumpDist, null, () =>
+	    Waiter waitJump = new Waiter(10f);
+	    IsOutRange isJumpAtk = new IsOutRange(self, player.transform, _jsAttckModule.JumpDist, null, () =>
 	    {
 		    _jsAttckModule.SetAttackType(FallDownAttackHash);
 		    _jsAttckModule.SetTarget(player);

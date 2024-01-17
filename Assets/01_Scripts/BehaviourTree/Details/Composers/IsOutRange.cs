@@ -32,6 +32,7 @@ public class IsOutRange : INode
 		}
 		else
 		{
+			Debug.LogError($"Is Out : {dir.sqrMagnitude} : {sqrRng}");
 			foundAction?.Invoke();
 			return NodeStatus.Sucs;
 		}

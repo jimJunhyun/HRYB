@@ -12,6 +12,7 @@ public class BoxColliderCast : ColliderCast
 		try
 		{
 			_box = GetComponent<BoxCollider>();
+			_box.isTrigger = true;
 		}
 		catch
 		{
