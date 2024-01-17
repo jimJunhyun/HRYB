@@ -30,7 +30,7 @@ public class PlayerAttack : AttackModule
 	bool clickL = false;
 	bool clickR = false;
 
-	public Func<GameObject, LifeModule, string> onNextHits; //피격 판정 등 이펙트 보여줄 위치, 피격자에게 행할 행동, 
+	//public Func<GameObject, Actor, Actor, List<string>> onNextHits; //피격 판정 등 이펙트 보여줄 위치, 자신, 피격자, 타격 이펙트
 
 	PlayerAnimActions animActions;
 
@@ -175,17 +175,5 @@ public class PlayerAttack : AttackModule
 	{
 		base.ResetStatus();
 		secPerCharge = initSecPerCharge;
-	}
-
-	public void ClearNextHit()
-	{
-		foreach (var item in GetActor().life.appliedDebuff.Keys)
-		{
-			if(((int)((StatEffID)GameManager.instance.statEff.idStatEffPairs[item])) >= ((int)StatEffID.EnhanceFire) &&
-				((int)((StatEffID)GameManager.instance.statEff.idStatEffPairs[item])) <= ((int)StatEffID.EnhanceIce))
-			{
-				GetActor().life.appliedDebuff[item] = 0;
-			}
-		}
 	}
 }

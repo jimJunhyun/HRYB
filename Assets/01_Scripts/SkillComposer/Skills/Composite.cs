@@ -12,6 +12,19 @@ public class Composite : Compose, IComposer
 	public bool isPlayAnim = false;
 	public bool isPlayDisopAnim = false;
 
+	public override int tags 
+	{
+		get
+		{
+			int v = 0;
+			for (int i = 0; i < childs.Count; i++)
+			{
+				v |= childs[i].tags;
+			}
+			return v;
+		} 
+	}
+
 	public void AddChild(Compose comp)
 	{
 		childs.Add(comp);

@@ -127,30 +127,46 @@ public class StatusEffects
 
 	void OnEnhanceIceActivated(Actor self, Actor inflicter, float power)
 	{
-		if(self.atk is PlayerAttack atk)
-		{
-			atk.onNextHits += EnhanceIce;
-		}
+		
 	}
 	void OnEnhanceIceUpdated(Actor self, float power)
 	{
-
+		//스킬을 사용하면
+		//강화 효과를 제공하고
+		//이펙트를 발생시키고
+		//스스로를 제거한다. (지속시간을 0으로)
+		
 	}
 	void OnEnhanceIceEnded(Actor self, float power)
 	{
-		if (self.atk is PlayerAttack atk)
-		{
-			atk.onNextHits -= EnhanceIce;
-		}
+		
 	}
-	string EnhanceIce(GameObject effShower, LifeModule target)
+
+	List<string> ShowEffect(GameObject effShower, Actor self, Actor target, StatEffID stat)
 	{
-		//List<SerializePair<EffectPoses, string>> objs = effDict.data[StatEffID.EnhanceIce];
-		//for (int i = 0; i < objs.Count; i++)
-		//{
-		//	PoolManager.GetObject(objs[i].value, effShower.transform);
-		//}
-		return null;
+		List<EffPosStrPair> objs = effDict.data[stat];
+		Transform trailPos, whirlPos;
+		List<string> hitEffs = new List<string>();
+		trailPos = effShower.transform.Find("TrailPos");
+		whirlPos = effShower.transform.Find("WhirlPos");
+		for (int i = 0; i < objs.Count; i++)
+		{
+			switch (objs[i].effPos)
+			{
+				case EffectPoses.Trail:
+					PoolManager.GetObject(objs[i].effPrefName, trailPos);
+					break;
+				case EffectPoses.Whirl:
+					PoolManager.GetObject(objs[i].effPrefName, whirlPos);
+					break;
+				case EffectPoses.Hit:
+					hitEffs.Add(objs[i].effPrefName);
+					break;
+				default:
+					break;
+			}
+		}
+		return hitEffs;
 	}
 
 	public static void ApplyStat(Actor to, Actor by, StatEffID id, float dur, float pow = 1)

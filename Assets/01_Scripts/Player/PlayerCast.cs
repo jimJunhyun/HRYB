@@ -480,7 +480,6 @@ public class PlayerCast : CastModule
 		p.onPrepComp?.Invoke(transform);
 		ongoing = null;
 		curName = null;
-		(GetActor().atk as PlayerAttack).ClearNextHit();
 		GameManager.instance.uiManager.interingUI.Off();
 		GameManager.instance.EnableCtrl();
 	}
@@ -501,7 +500,7 @@ public class PlayerCast : CastModule
 		}
 		if (Input.GetKeyDown(KeyCode.N))
 		{
-			DisconnectSkillDataFrom(SkillSlotInfo.Wood);
+			ConnectSkillDataTo(GameManager.instance.skillLoader["EnhanceIce"], SkillSlotInfo.Earth);
 		}
 		///
 	}
