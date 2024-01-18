@@ -112,6 +112,19 @@ public class LifeModule : Module
 		
 	}
 
+	public void RemoveStatEff(StatEffID id)
+	{
+		foreach (var item in appliedDebuff)
+		{
+			if(id == (StatEffID)GameManager.instance.statEff.idStatEffPairs[item.Key])
+			{
+				appliedDebuff.Remove(item.Key);
+				appliedDebuff.Add(item.Key, 0);
+				break;
+			}
+		}
+	}
+
 	public virtual void AddYYBase(YinYang data)
 	{
 		AddYY(data.yinAmt, YYInfo.Yin);

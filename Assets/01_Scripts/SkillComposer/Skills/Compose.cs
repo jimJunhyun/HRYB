@@ -41,6 +41,17 @@ public abstract class Compose : ScriptableObject, IComposer
 		return res;
 	}
 
+	public static bool ContainsTag(int tags, params SkillTags[] objs)
+	{
+		bool res = true;
+		for (int i = 0; i < objs.Length; i++)
+		{
+			int digit = (int)Mathf.Log(((int)objs[i]), 2);
+			res &= (tags >> digit) % 2 == 1;
+		}
+		return res;
+	}
+
 	//public UnityEvent<Compose> onOperateSelf;
 
 	public abstract void Disoperate(Actor self);

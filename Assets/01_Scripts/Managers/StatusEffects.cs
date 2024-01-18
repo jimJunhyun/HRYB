@@ -127,23 +127,21 @@ public class StatusEffects
 
 	void OnEnhanceIceActivated(Actor self, Actor inflicter, float power)
 	{
-		
+		(self.atk as PlayerAttack).onNextHits += EnhanceIce;
 	}
 	void OnEnhanceIceUpdated(Actor self, float power)
 	{
-		//스킬을 사용하면
-		//강화 효과를 제공하고
-		//이펙트를 발생시키고
-		//스스로를 제거한다. (지속시간을 0으로)
 		
 	}
 	void OnEnhanceIceEnded(Actor self, float power)
 	{
-		
+		(self.atk as PlayerAttack).onNextHits -= EnhanceIce;
+		//스킬 부여 효과 지우기???????????????/
 	}
 
 	List<string> ShowEffect(GameObject effShower, Actor self, Actor target, StatEffID stat)
 	{
+		
 		List<EffPosStrPair> objs = effDict.data[stat];
 		Transform trailPos, whirlPos;
 		List<string> hitEffs = new List<string>();
@@ -167,6 +165,20 @@ public class StatusEffects
 			}
 		}
 		return hitEffs;
+	}
+
+	List<string> EnhanceIce(GameObject effShower, Actor self, Actor target, Compose skInfo)
+	{
+		if(skInfo.ContainsTag(SkillTags.AttackEnhance))
+		{
+			if((skInfo is AttackBase atk))
+			{
+				atk.statEff.Add(new StatusEffectApplyData(StatEffID.Slow, 15 /*(레벨에 따른 변화)*/, 5));
+				self.life.RemoveStatEff(StatEffID.EnhanceIce);
+				return ShowEffect(effShower, self, target, StatEffID.EnhanceIce);
+			}
+		}
+		return null;
 	}
 
 	public static void ApplyStat(Actor to, Actor by, StatEffID id, float dur, float pow = 1)

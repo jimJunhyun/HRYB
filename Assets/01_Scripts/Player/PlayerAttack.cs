@@ -30,7 +30,7 @@ public class PlayerAttack : AttackModule
 	bool clickL = false;
 	bool clickR = false;
 
-	//public Func<GameObject, Actor, Actor, List<string>> onNextHits; //피격 판정 등 이펙트 보여줄 위치, 자신, 피격자, 타격 이펙트
+	public Func<GameObject, Actor, Actor, Compose, List<string>> onNextHits; //피격 판정 등 이펙트 보여줄 위치, 자신, 피격자, 스킬정보, 타격 이펙트
 
 	PlayerAnimActions animActions;
 
@@ -176,4 +176,6 @@ public class PlayerAttack : AttackModule
 		base.ResetStatus();
 		secPerCharge = initSecPerCharge;
 	}
+
+	
 }
