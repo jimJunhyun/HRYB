@@ -169,7 +169,7 @@ public class StatusEffects
 
 	List<string> EnhanceIce(GameObject effShower, Actor self, Actor target, Compose skInfo)
 	{
-		if(skInfo.ContainsTag(SkillTags.AttackEnhance))
+		if(skInfo.tags.ContainsTag(SkillTags.AttackEnhance))
 		{
 			if((skInfo is AttackBase atk))
 			{
