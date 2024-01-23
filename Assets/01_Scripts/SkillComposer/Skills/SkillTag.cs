@@ -6,7 +6,6 @@ using UnityEngine;
 
 public enum SkillTags
 {
-	All = -1,
 	None = 0,
 
 	AttackEnhance = 1,
@@ -19,8 +18,10 @@ public enum SkillTags
 
 
 
+	All = -1,
 }
 
+[Serializable]
 public struct SkillTag
 {
     public int value;
@@ -67,7 +68,7 @@ public struct SkillTag
 		sb.Append(" : ");
 		int v = value;
 		Array arr = Enum.GetValues(typeof(SkillTags));
-		int head = 2;
+		int head = 1;
 		if(v == 0)
 		{
 			sb.Append("None");

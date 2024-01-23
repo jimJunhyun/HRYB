@@ -169,12 +169,15 @@ public class StatusEffects
 
 	List<string> EnhanceIce(GameObject effShower, Actor self, Actor target, Compose skInfo)
 	{
-		if(skInfo.tags.ContainsTag(SkillTags.AttackEnhance))
+		Debug.Log("얼음공격 : " + skInfo.tags.ToString());
+		if(skInfo.tags.ContainsTag(SkillTags.AttackEnhancable))
 		{
+			Debug.Log("얼음공격으로 강화디ㅗㅁ.");
 			if((skInfo is AttackBase atk))
 			{
 				atk.statEff.Add(new StatusEffectApplyData(StatEffID.Slow, 15 /*(레벨에 따른 변화)*/, 5));
 				self.life.RemoveStatEff(StatEffID.EnhanceIce);
+
 				return ShowEffect(effShower, self, target, StatEffID.EnhanceIce);
 			}
 		}

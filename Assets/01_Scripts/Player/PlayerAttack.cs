@@ -27,8 +27,8 @@ public class PlayerAttack : AttackModule
 
 	Coroutine ongoingResetter;
 
-	bool clickL = false;
-	bool clickR = false;
+	internal bool clickL = false;
+	internal bool clickR = false;
 
 	public Func<GameObject, Actor, Actor, Compose, List<string>> onNextHits; //피격 판정 등 이펙트 보여줄 위치, 자신, 피격자, 스킬정보, 타격 이펙트
 
