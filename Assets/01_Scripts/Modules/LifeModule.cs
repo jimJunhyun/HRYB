@@ -35,6 +35,7 @@ public class LifeModule : Module
 	public float TotalApplySpeed { get => baseApplySpeed * applyMod;}
 
 	public Action _dieEvent;
+	public Action _hitEvent;
 
 	internal Dictionary<StatusEffect, float> appliedDebuff = new Dictionary<StatusEffect, float>();
 
@@ -128,6 +129,12 @@ public class LifeModule : Module
 			GetActor().anim.SetHitTrigger();
 			StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 		}
+
+		if(hit== true)
+		{
+			_hitEvent?.Invoke();
+		}
+
 	}
 
 	public virtual void AddYY(YinYang data, float spd, bool isNegatable = false, bool hit = false)
@@ -137,6 +144,11 @@ public class LifeModule : Module
 			StartCoroutine(DelAddYYWX(data, (spd * TotalApplySpeed)));
 			GetActor().anim.SetHitTrigger();
 			StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+		}
+
+		if (hit == true)
+		{
+			_hitEvent?.Invoke();
 		}
 	}
 

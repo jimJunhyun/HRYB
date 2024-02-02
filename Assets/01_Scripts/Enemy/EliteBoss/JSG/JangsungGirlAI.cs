@@ -7,6 +7,7 @@ public class JangsungGirlAI : AISetter
 {
 	public Actor _friend;
 
+	private const string MumukNansa = "mumuk";
 	private const string BarrierPatton = "Barrier";
 	private const string RootPatton = "Root";
     protected override void StartInvoke()

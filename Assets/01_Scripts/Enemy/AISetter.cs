@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class AISetter : MonoBehaviour
 {
 	protected Actor self;
-	protected Actor player;
+	public Actor player;
 	
 	protected Selecter head;
 	
