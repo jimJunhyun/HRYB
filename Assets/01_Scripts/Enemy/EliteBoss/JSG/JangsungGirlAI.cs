@@ -58,6 +58,7 @@ public class JangsungGirlAI : AISetter
 
 	    Attacker RootAttack = new Attacker(self, () =>
 	    {
+			waitRootAttack.ResetReady();
 			_att.SetAttackType(_RootPatton);
 			// 이름 셋팅 함 더하기
 			self.anim.Animators.SetBool(_RootPatton, true);
@@ -75,34 +76,33 @@ public class JangsungGirlAI : AISetter
 
 	    #region 묘목
 
-	    Waiter waitSeedAttack = new Waiter(6.0f);
+	    Waiter waitSeedAttack = new Waiter(12.0f);
 	    IsInRange isSeedAttack = new IsInRange(self, player.transform, SeedRange, null, () =>
 	    {
 			// AttackMoudle에서 이름 셋팅 << Attack에 유기하기?
 			_att.SetAttackType(_MumukNansa);
-			waitRootAttack.StartReady();
+			waitSeedAttack.StartReady();
 	    });
-
 	    Attacker SeedAttack = new Attacker(self, () =>
 	    {
+			waitSeedAttack.ResetReady();
 			_att.SetAttackType(_MumukNansa);
 			self.anim.Animators.SetBool(_MumukNansa, true);
 			self.anim.SetAttackTrigger();
-
 			Debug.LogError("뮤뮥");
 			StopExamine();
 	    });
 
 	    Sequencer SeedPatton = new Sequencer();
-	    SeedPatton.connecteds.Add(isRootAttack);
-	    SeedPatton.connecteds.Add(waitBarrier);
+	    SeedPatton.connecteds.Add(isSeedAttack);
+	    SeedPatton.connecteds.Add(waitSeedAttack);
 	    SeedPatton.connecteds.Add(SeedAttack);
 
 	    #endregion
 	    
 	    head.connecteds.Add(BarrierPatton);
-	    head.connecteds.Add(SeedPatton);
 	    head.connecteds.Add(RootPatton);
+	    head.connecteds.Add(SeedPatton);
 		Debug.LogError("실행중");
 	    StartExamine();
     }

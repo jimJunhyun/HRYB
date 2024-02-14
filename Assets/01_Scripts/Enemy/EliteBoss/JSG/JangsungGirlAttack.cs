@@ -57,25 +57,8 @@ public class JangsungGirlAttack : EnemyAttackModule
 		{
 			case "mumuk":
 				{
-					if(fireIndex == 0)
-					{
-						GameObject obj = PoolManager.GetObject("Jangsung" + AttackStd, transform);
-						_missile.Add(obj.GetComponent<JangsungMumukMissile>());
-						_missile[fireIndex].Init(mumukPos[fireIndex], self.ai.player.transform, 5);
-						fireIndex++;
-					}
-					else
-					{
-						GameObject obj1 = PoolManager.GetObject("Jangsung" + AttackStd, transform);
-						_missile.Add(obj1.GetComponent<JangsungMumukMissile>());
-						_missile[fireIndex].Init(mumukPos[fireIndex], self.ai.player.transform, 5);
-						fireIndex++;
-
-						GameObject obj2 = PoolManager.GetObject("Jangsung" + AttackStd, transform);
-						_missile.Add(obj2.GetComponent<JangsungMumukMissile>());
-						_missile[fireIndex].Init(mumukPos[fireIndex], self.ai.player.transform, 5);
-						fireIndex++;
-					}
+					Debug.LogError("생성중");
+					StartCoroutine(SeedPatton());
 
 				}
 				break;
@@ -88,6 +71,35 @@ public class JangsungGirlAttack : EnemyAttackModule
 
 
 
+	}
+
+	IEnumerator SeedPatton()
+	{
+
+		if (fireIndex == 0)
+		{
+			GameObject obj = PoolManager.GetObject("MumukMissile", mumukPos[fireIndex].position, mumukPos[fireIndex].rotation);
+			_missile.Add(obj.GetComponent<JangsungMumukMissile>());
+
+			Debug.LogError(self);
+			_missile[fireIndex].Init(mumukPos[fireIndex], self.ai.player.transform, 10);
+			fireIndex++;
+		}
+		else
+		{
+			GameObject obj1 = PoolManager.GetObject("MumukMissile", mumukPos[fireIndex].position, mumukPos[fireIndex].rotation);
+			_missile.Add(obj1.GetComponent<JangsungMumukMissile>());
+			_missile[fireIndex].Init(mumukPos[fireIndex], self.ai.player.transform, 10);
+			fireIndex++;
+
+			yield return null;
+			GameObject obj2 = PoolManager.GetObject("MumukMissile", mumukPos[fireIndex].position, mumukPos[fireIndex].rotation);
+			_missile.Add(obj2.GetComponent<JangsungMumukMissile>());
+			_missile[fireIndex].Init(mumukPos[fireIndex], self.ai.player.transform, 10);
+			fireIndex++;
+		}
+
+		yield return null;
 	}
 
 
@@ -141,7 +153,7 @@ public class JangsungGirlAttack : EnemyAttackModule
 		GameObject objs = PoolManager.GetObject("JangsungPuri", new Vector3(x, transform.position.y, y), Quaternion.identity);
 		objs.GetComponent<ColliderCast>().Now((player) =>
 		{
-			player.AddYYBase(new YinYang(30, 0));
+			player.AddYYBase(new YinYang(3, 0));
 		}, -1, 2f, 3f);
 	}
 
@@ -155,8 +167,6 @@ public class JangsungGirlAttack : EnemyAttackModule
 
 	public override void OnAnimationStart()
 	{
-		GetActor().anim.SetAttackTrigger();
-		GetActor().anim.Animators.SetBool(AttackStd, true);
 	}
 
 	public override void OnAnimationStop()
