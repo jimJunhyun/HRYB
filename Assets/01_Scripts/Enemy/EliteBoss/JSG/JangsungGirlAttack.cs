@@ -15,7 +15,7 @@ public class JangsungGirlAttack : EnemyAttackModule
 	public override void Attack()
 	{
 		fireIndex = 0;
-		_missile = new();
+		_missile.Clear();
 
 	}
 
@@ -30,8 +30,21 @@ public class JangsungGirlAttack : EnemyAttackModule
 						_missile[i].Fire();
 					}
 
-					self.ai.StartExamine();
 					GetActor().anim.Animators.SetBool(AttackStd, false);
+					self.ai.StartExamine();
+				}
+				break;
+			case "Root":
+				{
+
+					GetActor().anim.Animators.SetBool(AttackStd, false);
+					self.ai.StartExamine();
+				}
+				break;
+			case "Barrier":
+				{
+					GetActor().anim.Animators.SetBool(AttackStd, false);
+					self.ai.StartExamine();
 				}
 				break;
 		}
@@ -66,10 +79,50 @@ public class JangsungGirlAttack : EnemyAttackModule
 
 				}
 				break;
+			case "Root":
+				{
+					StartCoroutine(RootPatton());
+				}
+				break;
 		}
 
 
 
+	}
+
+
+	IEnumerator RootPatton()
+	{
+		JangsungGirlLIfeModule lf = self.life as JangsungGirlLIfeModule;
+		lf.BarrierON(5);
+
+		// 바닥 범위 보여주기 <= 에니메이션 처리
+
+
+		yield return new WaitForSeconds(3f);
+
+		for(int i =0; i < 50; i++)
+		{
+
+			if(lf.IsBarrier == false)
+			{
+				break;
+			}
+
+
+			float x;
+			float y;
+			bool escape;
+			yield return new WaitForSeconds(0.4f);
+			do
+			{
+				x = transform.position.x + Random.Range(-10.0f, 10.0f);
+				y = transform.position.z + Random.Range(-10.0f, 10.0f);
+				escape = Mathf.Pow(10, 2) > (Mathf.Pow(transform.position.x - x, 2) + Mathf.Pow(transform.position.z - y, 2));
+
+			} while (escape == false);
+			// 생성
+		}
 	}
 
 	public override void OnAnimationMove()
