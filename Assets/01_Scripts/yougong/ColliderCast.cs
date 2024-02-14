@@ -48,13 +48,35 @@ public abstract class ColliderCast : MonoBehaviour
 		}
 	}
 
-	public void Now(Action<LifeModule> act = null)
+	private void OnDisable()
 	{
-		CheckDic.Clear();
-		//Debug.Log("시작");
-		_isRunning = true; 
-		if(act != null)
-			CastAct = act;
+		StopAllCoroutines();
+	}
+
+	public void Now(Action<LifeModule> act = null, float StartSec = -1, float EndSec = -1, float dieSec = -1)
+	{
+		if(StartSec > 0)
+		{
+			StartCoroutine(StartSet(StartSec));
+		}
+		else
+		{
+			CheckDic.Clear();
+			//Debug.Log("시작");
+			_isRunning = true;
+			if (act != null)
+				CastAct = act;
+		}
+
+		if(EndSec > 0)
+		{
+			StartCoroutine(EndSet(EndSec));
+		}
+
+		if(dieSec > 0)
+		{
+			StartCoroutine(DieSet(dieSec));
+		}
 	}
 
 	public void End()
@@ -63,5 +85,33 @@ public abstract class ColliderCast : MonoBehaviour
 		
 		CheckDic.Clear();
 		CastAct = null;
+	}
+
+	IEnumerator StartSet(float t, Action<LifeModule> act = null)
+	{
+		yield return new WaitForSeconds(t);
+		CheckDic.Clear();
+		_isRunning = true;
+		if (act != null)
+			CastAct = act;
+	}
+
+	IEnumerator EndSet(float t)
+	{
+		yield return new WaitForSeconds(t);
+		End();
+	}
+
+	IEnumerator DieSet(float t)
+	{
+		yield return new WaitForSeconds(t);
+		try
+		{
+			PoolManager.ReturnObject(gameObject);
+		}
+		catch
+		{
+			Destroy(gameObject);
+		}
 	}
 }

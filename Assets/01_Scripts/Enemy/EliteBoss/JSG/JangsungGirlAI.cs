@@ -13,12 +13,12 @@ public class JangsungGirlAI : AISetter
     protected override void StartInvoke()
     {
 		JangsungGirlAttack _att = self.atk as JangsungGirlAttack;
-		JangsungGirlLIfeModule _life = self.life as JangsungGirlLIfeModule;
+		JangsungGirlLifeModule _life = self.life as JangsungGirlLifeModule;
 
 
 	    #region 보호막
 
-	    Waiter waitBarrier = new Waiter(20f, true);
+	    Waiter waitBarrier = new Waiter(0.5f, true);
 	    IsOutRange isBarrier = new IsOutRange(self, _friend.transform, BarrierRange, null, () =>
 	    {
 			// Barrier 에니메이션 실행
@@ -31,6 +31,8 @@ public class JangsungGirlAI : AISetter
 			waitBarrier.ResetReady();
 			// AttackMoudle에서 이름 셋팅 << Attack에 유기하기
 			_life.BarrierON(5);
+			Debug.LogError("보호막패턴");
+			self.anim.SetAttackTrigger();
 			self.anim.Animators.SetBool(_BarrierPattonname, true);
 			StopExamine(); // LifeModule에서 풀어줘야됨 << 몇회 피격시니까
 	    });
@@ -46,7 +48,7 @@ public class JangsungGirlAI : AISetter
 
 	    #region 으아악 뿌리다
 
-	    Waiter waitRootAttack = new Waiter(10f);
+	    Waiter waitRootAttack = new Waiter(20.0f);
 	    IsInRange isRootAttack = new IsInRange(self, player.transform, RootRange, null, () =>
 	    {
 			// AttackMoudle에서 이름 셋팅 << Attack에 유기하기?
@@ -58,6 +60,9 @@ public class JangsungGirlAI : AISetter
 	    {
 			_att.SetAttackType(_RootPatton);
 			// 이름 셋팅 함 더하기
+			self.anim.Animators.SetBool(_RootPatton, true);
+			self.anim.SetAttackTrigger();
+			Debug.LogError("땅바닥");
 			StopExamine(); // 패턴 끝나거나 (코루틴) or 캔슬시 코루틴 끊고 Start 해주기 
 	    });
 
@@ -70,7 +75,7 @@ public class JangsungGirlAI : AISetter
 
 	    #region 묘목
 
-	    Waiter waitSeedAttack = new Waiter(7f);
+	    Waiter waitSeedAttack = new Waiter(6.0f);
 	    IsInRange isSeedAttack = new IsInRange(self, player.transform, SeedRange, null, () =>
 	    {
 			// AttackMoudle에서 이름 셋팅 << Attack에 유기하기?
@@ -81,6 +86,10 @@ public class JangsungGirlAI : AISetter
 	    Attacker SeedAttack = new Attacker(self, () =>
 	    {
 			_att.SetAttackType(_MumukNansa);
+			self.anim.Animators.SetBool(_MumukNansa, true);
+			self.anim.SetAttackTrigger();
+
+			Debug.LogError("뮤뮥");
 			StopExamine();
 	    });
 
@@ -92,9 +101,9 @@ public class JangsungGirlAI : AISetter
 	    #endregion
 	    
 	    head.connecteds.Add(BarrierPatton);
-	    head.connecteds.Add(RootPatton);
 	    head.connecteds.Add(SeedPatton);
-	    
+	    head.connecteds.Add(RootPatton);
+		Debug.LogError("실행중");
 	    StartExamine();
     }
 

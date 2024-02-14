@@ -1215,15 +1215,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1480622149016750883, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.40965593
+      value: -0.4096559
       objectReference: {fileID: 0}
     - target: {fileID: 1480622149016750883, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000027186877
+      value: -4.7054993e-15
       objectReference: {fileID: 0}
     - target: {fileID: 1480622149016750883, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000000012208699
+      value: -2.0226018e-15
       objectReference: {fileID: 0}
     - target: {fileID: 2109712079635487170, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_Follow
@@ -1343,15 +1343,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5427353396124325487, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.4096559
+      value: -0.40965593
       objectReference: {fileID: 0}
     - target: {fileID: 5427353396124325487, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -3.117857e-16
+      value: -0.000000027186877
       objectReference: {fileID: 0}
     - target: {fileID: 5427353396124325487, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -2.0973235e-15
+      value: -0.000000012208699
       objectReference: {fileID: 0}
     - target: {fileID: 5676069116628508807, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_Name
@@ -1387,11 +1387,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7309920490111502992, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -3.117857e-16
+      value: 4.7054993e-15
       objectReference: {fileID: 0}
     - target: {fileID: 7309920490111502992, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -2.0973235e-15
+      value: 2.0226018e-15
       objectReference: {fileID: 0}
     - target: {fileID: 9212909236423785911, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_AmplitudeGain
@@ -1501,6 +1501,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hpBar: {fileID: 1509715224}
   _lifeModule: {fileID: 0}
+--- !u!114 &1084197968 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6876894668503783341, guid: b3cef04dfd46fe74ca37c7061eb027bf, type: 3}
+  m_PrefabInstance: {fileID: 4346475804763650723}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084197949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 556cbf31fa457984da0c4f264de2b718, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1100062105
 GameObject:
   m_ObjectHideFlags: 0
@@ -2575,7 +2586,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 167437475892866106, guid: 6e5e0a20baa41694bb9f9dca7a14283e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 111.97361
+      value: 111.97362
       objectReference: {fileID: 0}
     - target: {fileID: 944609695278081980, guid: 6e5e0a20baa41694bb9f9dca7a14283e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3336,6 +3347,7 @@ GameObject:
   - component: {fileID: 2015893842}
   - component: {fileID: 2015893844}
   - component: {fileID: 2015893843}
+  - component: {fileID: 2015893845}
   m_Layer: 0
   m_Name: JangSungGirl
   m_TagString: Untagged
@@ -3461,7 +3473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  _friend: {fileID: 0}
+  _friend: {fileID: 1084197968}
 --- !u!95 &2015893842
 Animator:
   serializedVersion: 5
@@ -3537,6 +3549,27 @@ MonoBehaviour:
   regenMod: 1
   regenThreshold: 10
   applyMod: 1
+--- !u!65 &2015893845
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015893832}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2036832950
 PrefabInstance:
   m_ObjectHideFlags: 0

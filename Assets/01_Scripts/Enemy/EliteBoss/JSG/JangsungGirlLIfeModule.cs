@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JangsungGirlLIfeModule : LifeModule
+public class JangsungGirlLifeModule : LifeModule
 {
 	bool _isBarrier = false;
 	public bool IsBarrier => _isBarrier;
@@ -32,10 +32,12 @@ public class JangsungGirlLIfeModule : LifeModule
 		}
 		else
 		{
+
 			if (hit == true)
 			{
 				_barrierNums--;
 			}
+			Debug.LogError($"보호막 : {_barrierNums}" );
 
 			if(_barrierNums <=0)
 			{
