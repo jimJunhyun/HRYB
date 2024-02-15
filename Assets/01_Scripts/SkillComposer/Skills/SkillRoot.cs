@@ -23,6 +23,9 @@ public class SkillRoot : Composite
 
 	public override void Operate(Actor self)
 	{
+		Vector3 dir = Camera.main.transform.forward;
+		dir.y = 0;
+		self.transform.rotation = Quaternion.LookRotation(dir);
 		base.Operate(self);
 	}
 

@@ -31,6 +31,7 @@ public class FireStrongArrow : AttackBase
 		//UnityEditor.EditorApplication.isPaused = true;
 		r.SetInfo(damage);
 		r.SetOwner(self);
+		r.SetHitEff((self.atk as PlayerAttack).onNextHits?.Invoke(r.gameObject, self, null, this));
 		for (int i = 0; i < statEff.Count; i++)
 		{
 			r.AddStatusEffect(statEff[i]);

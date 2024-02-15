@@ -24,7 +24,7 @@ public abstract class AttackBase : Leaf
 		to.life.AddYY(damage);
 		for (int i = 0; i < statEff.Count; i++)
 		{
-			StatusEffects.ApplyStat(to, by, statEff[i].id, statEff[i].power, statEff[i].duration);
+			StatusEffects.ApplyStat(to, by, statEff[i].id, statEff[i].duration, statEff[i].power);
 			
 		}
 	}

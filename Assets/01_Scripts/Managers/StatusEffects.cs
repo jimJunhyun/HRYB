@@ -45,14 +45,6 @@ public class StatusEffects
 	public StatVfxDictionary effDict;
 	public Hashtable idStatEffPairs = new Hashtable();
 
-	public Dictionary<StatEffID, string> idEffDict = new Dictionary<StatEffID, string>() //상태이상 작용 시의 이펙트
-	{
-		{StatEffID.Knockback, "" },
-		{StatEffID.Immune, "" },
-		{StatEffID.Blind, "" },
-		{StatEffID.Slow, "SlowEffect" },
-	};
-
 	public StatusEffects()
 	{
 		idStatEffPairs.Add(((int)StatEffID.Knockback), new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", OnKnockbackActivated, OnKnockbackDebuffUpdated, OnKnockbackDebuffEnded));
@@ -68,7 +60,7 @@ public class StatusEffects
 		idStatEffPairs.Add(new StatusEffect("냉기", "다음 공격에 얼음의 힘을 부여합니다.", OnEnhanceIceActivated, OnEnhanceIceUpdated, OnEnhanceIceEnded), ((int)StatEffID.EnhanceIce));
 
 
-		effDict = Resources.Load<StatVfxDictionary>("AudioList");
+		effDict = Resources.Load<StatVfxDictionary>("StatEffList");
 	}
 
 	void OnKnockbackActivated(Actor self, Actor inflicter, float power)
@@ -135,29 +127,63 @@ public class StatusEffects
 
 	void OnEnhanceIceActivated(Actor self, Actor inflicter, float power)
 	{
-		if(self.atk is PlayerAttack atk)
-		{
-			atk.onNextHits += EnhanceIce;
-		}
+		Debug.Log("얼음강화 사용됨");
+		(self.atk as PlayerAttack).onNextHits += EnhanceIce;
 	}
 	void OnEnhanceIceUpdated(Actor self, float power)
 	{
-
+		
 	}
 	void OnEnhanceIceEnded(Actor self, float power)
 	{
-		if (self.atk is PlayerAttack atk)
-		{
-			atk.onNextHits -= EnhanceIce;
-		}
+		
+		(self.atk as PlayerAttack).onNextHits -= EnhanceIce;
+		//스킬 부여 효과 지우기?
 	}
-	string EnhanceIce(GameObject effShower, LifeModule target)
+
+	List<string> ShowEffect(GameObject effShower, Actor self, Actor target, StatEffID stat)
 	{
-		//List<SerializePair<EffectPoses, string>> objs = effDict.data[StatEffID.EnhanceIce];
-		//for (int i = 0; i < objs.Count; i++)
-		//{
-		//	PoolManager.GetObject(objs[i].value, effShower.transform);
-		//}
+		
+		List<EffPosStrPair> objs = effDict.data[stat];
+		Transform trailPos, whirlPos;
+		List<string> hitEffs = new List<string>();
+		trailPos = effShower.transform.Find("TrailPos");
+		whirlPos = effShower.transform.Find("WhirlPos");
+		for (int i = 0; i < objs.Count; i++)
+		{
+			switch (objs[i].effPos)
+			{
+				case EffectPoses.Trail:
+					PoolManager.GetObject(objs[i].effPrefName, trailPos);
+					break;
+				case EffectPoses.Whirl:
+					PoolManager.GetObject(objs[i].effPrefName, whirlPos);
+					break;
+				case EffectPoses.Hit:
+					hitEffs.Add(objs[i].effPrefName);
+					break;
+				default:
+					break;
+			}
+		}
+		return hitEffs;
+	}
+
+	List<string> EnhanceIce(GameObject effShower, Actor self, Actor target, Compose skInfo)
+	{
+		Debug.Log("얼음공격 : " + skInfo.tags.ToString());
+		if(skInfo.tags.ContainsTag(SkillTags.AttackEnhancable))
+		{
+			Debug.Log("얼음공격으로 강화디ㅗㅁ.");
+			if((skInfo is AttackBase atk))
+			{
+				atk.statEff.Add(new StatusEffectApplyData(StatEffID.Slow, 15 /*(레벨에 따른 변화)*/, 5));
+				Debug.Log("REMOVING STAT : " + self.life.name);
+				self.life.RemoveStatEff(StatEffID.EnhanceIce);
+
+				return ShowEffect(effShower, self, target, StatEffID.EnhanceIce);
+			}
+		}
 		return null;
 	}
 
@@ -176,13 +202,22 @@ public class StatusEffects
 		Action<Actor> updateAct = to.life.ApplyStatus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], by, power, dur);
 		if(updateAct != null)
 		{
-			GameObject eff = PoolManager.GetObject(GameManager.instance.statEff.idEffDict[id], to.transform);
-			if (eff)
+			List<GameObject> effs = new List<GameObject>();
+			for (int i = 0; i < GameManager.instance.statEff.effDict.data[id].Count; i++)
 			{
-				VisualEffect vfx = eff.GetComponent<VisualEffect>();
-				vfx.Reinit();
-				vfx.Play();
+				if(GameManager.instance.statEff.effDict.data[id][i].effPos == EffectPoses.Applied)
+				{
+					GameObject eff = PoolManager.GetObject(GameManager.instance.statEff.effDict.data[id][i].effPrefName, to.transform);
+					if (eff)
+					{
+						VisualEffect vfx = eff.GetComponent<VisualEffect>();
+						vfx.Reinit();
+						vfx.Play();
+						effs.Add(eff);
+					}
+				}
 			}
+			
 			float t = 0;
 			while(to.life.appliedDebuff[(StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]] < 0)
 				yield return null;
@@ -192,9 +227,12 @@ public class StatusEffects
 				t += Time.deltaTime;
 			}
 			to.life.EndStaus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], updateAct, power);
-			if (eff)
+			if (effs.Count > 0)
 			{
-				PoolManager.ReturnObject(eff);
+				for (int i = 0; i < effs.Count; i++)
+				{
+					PoolManager.ReturnObject(effs[i]);
+				}
 			}
 		}
 		else
