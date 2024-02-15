@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class JangsungGirlLifeModule : LifeModule
@@ -48,10 +49,19 @@ public class JangsungGirlLifeModule : LifeModule
 			{
 				_isBarrier = false;
 				// 대충 베리어 이팩트 같은거 터지게 만들기
-				Destroy(_objs);
 				JangsungGirlAttack a = self.atk as JangsungGirlAttack;
 				a.OnAnimationEnd();
+
+				DeleteBarrier();
 			}
+		}
+	}
+
+	public void DeleteBarrier()
+	{
+		if(_objs)
+		{
+			Destroy(_objs);
 		}
 	}
 

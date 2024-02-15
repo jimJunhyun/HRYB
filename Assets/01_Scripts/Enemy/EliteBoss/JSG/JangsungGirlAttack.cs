@@ -48,6 +48,7 @@ public class JangsungGirlAttack : EnemyAttackModule
 				}
 				break;
 		}
+		GetComponent<JangsungGirlLifeModule>().DeleteBarrier();
 	}
 
 
@@ -146,12 +147,16 @@ public class JangsungGirlAttack : EnemyAttackModule
 		GameObject obj = PoolManager.GetObject("MiddleBoxDecal", transform);
 		if (obj.TryGetComponent<BoxDecal>(out BoxDecal box))
 		{
-			box.SetUpDecal(new Vector3(x,0.15f,y), Quaternion.identity, new Vector3(0.5f,0.5f,0.5f), new Vector3(0,0,0), new Vector3(1,1,1));
+			box.transform.parent = null;
+			box.SetUpDecal(new Vector3(x,0.15f,y), Quaternion.identity, new Vector3(0.26f, 0.26f, 0.26f), new Vector3(0,0,0), new Vector3(1,1,1));
 			box.StartDecal(0.6f);
 		}
 
 		yield return new WaitForSeconds(0.6f);
 		GameObject objs = PoolManager.GetObject("JangsungPuri", new Vector3(x, transform.position.y, y), Quaternion.identity);
+
+		objs.transform.parent = null;
+
 		objs.GetComponent<ColliderCast>().Now((player) =>
 		{
 			player.AddYYBase(new YinYang(3, 0));
