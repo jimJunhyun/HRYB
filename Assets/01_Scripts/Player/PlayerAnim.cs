@@ -85,6 +85,9 @@ public class PlayerAnim : AnimModule
 					}
 					break;
 				case CamStatus.Locked:
+					//anim.SetFloat(moveXHash, pmove.MoveDirCalced.x);
+					//anim.SetFloat(moveYHash, pmove.MoveDirCalced.z);
+					//break;
 				case CamStatus.Aim:
 					anim.SetFloat(moveXHash, pmove.MoveDirUncalced.x);
 					anim.SetFloat(moveYHash, pmove.MoveDirUncalced.z);
