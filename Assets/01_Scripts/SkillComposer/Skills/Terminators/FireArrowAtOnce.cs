@@ -34,6 +34,7 @@ public class FireArrowAtOnce : AttackBase
 		pos.y += Mathf.Sin(circularAngle * Mathf.Deg2Rad) * circularRad;
 		arrow = PoolManager.GetObject(arrowPrefabName, pos, relatedTransform.forward).GetComponent<Arrow>();
 		arrow.SetInfo(damage);
+		arrow.SetHitEff((self.atk as PlayerAttack).onNextHits?.Invoke(arrow.gameObject, self, null, this));
 		for (int i = 0; i < statEff.Count; i++)
 		{
 			arrow.AddStatusEffect(statEff[i]);

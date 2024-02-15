@@ -127,6 +127,7 @@ public class StatusEffects
 
 	void OnEnhanceIceActivated(Actor self, Actor inflicter, float power)
 	{
+		Debug.Log("얼음강화 사용됨");
 		(self.atk as PlayerAttack).onNextHits += EnhanceIce;
 	}
 	void OnEnhanceIceUpdated(Actor self, float power)
@@ -135,8 +136,9 @@ public class StatusEffects
 	}
 	void OnEnhanceIceEnded(Actor self, float power)
 	{
+		
 		(self.atk as PlayerAttack).onNextHits -= EnhanceIce;
-		//스킬 부여 효과 지우기???????????????/
+		//스킬 부여 효과 지우기?
 	}
 
 	List<string> ShowEffect(GameObject effShower, Actor self, Actor target, StatEffID stat)
@@ -176,6 +178,7 @@ public class StatusEffects
 			if((skInfo is AttackBase atk))
 			{
 				atk.statEff.Add(new StatusEffectApplyData(StatEffID.Slow, 15 /*(레벨에 따른 변화)*/, 5));
+				Debug.Log("REMOVING STAT : " + self.life.name);
 				self.life.RemoveStatEff(StatEffID.EnhanceIce);
 
 				return ShowEffect(effShower, self, target, StatEffID.EnhanceIce);

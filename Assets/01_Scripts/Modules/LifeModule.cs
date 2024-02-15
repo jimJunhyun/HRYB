@@ -69,6 +69,10 @@ public class LifeModule : Module
 		{
 			regenOn = false;
 		}
+		//foreach (var item in appliedDebuff)
+		//{
+		//	Debug.Log(name + " Effefct : " + item.Key.name + " For " + item.Value);
+		//}
 	}
 
 	public void AddYY(float amt, YYInfo to)
@@ -104,6 +108,7 @@ public class LifeModule : Module
 
 		if (appliedDebuff.Remove(eff))
 		{
+			Debug.Log($"{eff.name}사라짐");
 			GetActor().updateActs -= myUpdateAct;
 
 			eff.onEnded.Invoke(GetActor(), power);
@@ -114,10 +119,13 @@ public class LifeModule : Module
 
 	public void RemoveStatEff(StatEffID id)
 	{
+		Debug.Log(name + " EffectCount : " + appliedDebuff.Count);
 		foreach (var item in appliedDebuff)
 		{
+			Debug.Log("스탯제거중...");
 			if(id == (StatEffID)GameManager.instance.statEff.idStatEffPairs[item.Key])
 			{
+				Debug.Log("발견, 지속시간 0으로//");
 				appliedDebuff.Remove(item.Key);
 				appliedDebuff.Add(item.Key, 0);
 				break;
