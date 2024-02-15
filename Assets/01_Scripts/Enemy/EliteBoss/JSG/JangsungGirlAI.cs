@@ -31,6 +31,8 @@ public class JangsungGirlAI : AISetter
 			waitBarrier.ResetReady();
 			// AttackMoudle에서 이름 셋팅 << Attack에 유기하기
 			_life.BarrierON(5);
+			_friend.GetComponent<JangsungLifeModule>().BarrierON();
+
 			Debug.LogError("보호막패턴");
 			self.anim.SetAttackTrigger();
 			self.anim.Animators.SetBool(_BarrierPattonname, true);
@@ -48,7 +50,7 @@ public class JangsungGirlAI : AISetter
 
 	    #region 으아악 뿌리다
 
-	    Waiter waitRootAttack = new Waiter(20.0f);
+	    Waiter waitRootAttack = new Waiter(12.0f);
 	    IsInRange isRootAttack = new IsInRange(self, player.transform, RootRange, null, () =>
 	    {
 			// AttackMoudle에서 이름 셋팅 << Attack에 유기하기?
@@ -109,8 +111,10 @@ public class JangsungGirlAI : AISetter
 
     protected override void UpdateInvoke()
     {
-	    
-    }
+		Vector3 lookPos = player.transform.position - transform.position;
+		lookPos.y = transform.position.y;
+		transform.rotation = Quaternion.LookRotation(lookPos);
+	}
 
     public float BarrierRange()
     {

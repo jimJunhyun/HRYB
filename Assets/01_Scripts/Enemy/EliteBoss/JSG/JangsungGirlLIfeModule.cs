@@ -8,8 +8,13 @@ public class JangsungGirlLifeModule : LifeModule
 	public bool IsBarrier => _isBarrier;
 	int _barrierNums = 0;
 
+	public GameObject _barrierEffect;
+
+	GameObject _objs;
+
 	public void BarrierON(int a)
 	{
+		_objs = Instantiate(_barrierEffect, transform);
 		_barrierNums = a;
 		_isBarrier = true;
 	}
@@ -43,6 +48,7 @@ public class JangsungGirlLifeModule : LifeModule
 			{
 				_isBarrier = false;
 				// 대충 베리어 이팩트 같은거 터지게 만들기
+				Destroy(_objs);
 				JangsungGirlAttack a = self.atk as JangsungGirlAttack;
 				a.OnAnimationEnd();
 			}

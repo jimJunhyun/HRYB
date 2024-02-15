@@ -16,7 +16,6 @@ public class JangsungGirlAttack : EnemyAttackModule
 	{
 		fireIndex = 0;
 		_missile.Clear();
-
 	}
 
 	public override void OnAnimationEnd()
@@ -44,11 +43,13 @@ public class JangsungGirlAttack : EnemyAttackModule
 			case "Barrier":
 				{
 					GetActor().anim.Animators.SetBool(AttackStd, false);
+					GetComponent<JangsungGirlAI>()._friend.GetComponent<JangsungLifeModule>().BarrierOff();
 					self.ai.StartExamine();
 				}
 				break;
 		}
 	}
+
 
 	public override void OnAnimationEvent()
 	{

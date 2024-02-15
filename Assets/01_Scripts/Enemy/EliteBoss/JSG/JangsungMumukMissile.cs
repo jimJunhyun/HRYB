@@ -39,10 +39,10 @@ public class JangsungMumukMissile : MonoBehaviour
 		_isFire = true;
 		_cast.Now((a)=>
 		{
-			if(a.gameObject.layer == _enemy)
+			if(1 << a.gameObject.layer == (int)_enemy)
 			{
+				Debug.LogError("dd");
 				a.AddYY(new YinYang(10, 0), true);
-
 				CameraManager.instance.ShakeCamFor(0.3f);
 			}
 		});

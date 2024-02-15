@@ -62,7 +62,7 @@ public abstract class ColliderCast : MonoBehaviour
 		else
 		{
 			CheckDic.Clear();
-			//Debug.Log("시작");
+			Debug.LogError("시작");
 			_isRunning = true;
 			if (act != null)
 				CastAct = act;

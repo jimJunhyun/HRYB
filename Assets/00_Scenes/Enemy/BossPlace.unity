@@ -1241,11 +1241,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1480622149016750883, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000015693509
+      value: -0.00000001569635
       objectReference: {fileID: 0}
     - target: {fileID: 1480622149016750883, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00000000704742
+      value: -0.0000000070486967
       objectReference: {fileID: 0}
     - target: {fileID: 2109712079635487170, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_Follow
@@ -1369,11 +1369,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5427353396124325487, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000016099582
+      value: -0.000000015696362
       objectReference: {fileID: 0}
     - target: {fileID: 5427353396124325487, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000007229774
+      value: -0.0000000070487007
       objectReference: {fileID: 0}
     - target: {fileID: 5676069116628508807, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_Name
@@ -1409,11 +1409,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7309920490111502992, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000015693564
+      value: 0.00000001569635
       objectReference: {fileID: 0}
     - target: {fileID: 7309920490111502992, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000007047445
+      value: 0.0000000070486967
       objectReference: {fileID: 0}
     - target: {fileID: 9212909236423785911, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_AmplitudeGain
@@ -1504,6 +1504,11 @@ Terrain:
   m_EnableHeightmapRayTracing: 1
   m_EnableTreesAndDetailsRayTracing: 0
   m_TreeMotionVectorModeOverride: 3
+--- !u!4 &1031824569 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7856797209567409450, guid: b3cef04dfd46fe74ca37c7061eb027bf, type: 3}
+  m_PrefabInstance: {fileID: 4346475804763650723}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1084197949 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6548958457746408809, guid: b3cef04dfd46fe74ca37c7061eb027bf, type: 3}
@@ -1534,6 +1539,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556cbf31fa457984da0c4f264de2b718, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1084197980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084197949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0976ebe9aa25fa344af99466c0e4e237, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isImmune: 0
+  initYinYang:
+    yinAmt: 20
+    yangAmt: 20
+  initAdequity:
+    yinAmt: 1
+    yangAmt: 1
+  initSoul: 0
+  yy:
+    yinAmt: 0
+    yangAmt: 0
+  maxSoul: 0
+  regenMod: 1
+  regenThreshold: 10
+  applyMod: 1
+  _barrierEffect: {fileID: 6036363885242095341, guid: 761ce3f370c6bdd4491bb2246cf28e18, type: 3}
+  _visualPos: {fileID: 1031824569}
 --- !u!1 &1100062105
 GameObject:
   m_ObjectHideFlags: 0
@@ -2486,7 +2520,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 167437475892866106, guid: 6e5e0a20baa41694bb9f9dca7a14283e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 111.97371
+      value: 111.97366
       objectReference: {fileID: 0}
     - target: {fileID: 944609695278081980, guid: 6e5e0a20baa41694bb9f9dca7a14283e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3299,7 +3333,7 @@ MonoBehaviour:
   sight: {fileID: 0}
   cast: {fileID: 0}
   anim: {fileID: 0}
-  ai: {fileID: 0}
+  _ai: {fileID: 0}
 --- !u!114 &2015893835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3372,7 +3406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be74b6530c113174ebeca6e0c1c587a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  _player: {fileID: 0}
   _friend: {fileID: 1084197968}
 --- !u!95 &2015893842
 Animator:
@@ -3449,6 +3483,7 @@ MonoBehaviour:
   regenMod: 1
   regenThreshold: 10
   applyMod: 1
+  _barrierEffect: {fileID: 6036363885242095341, guid: 761ce3f370c6bdd4491bb2246cf28e18, type: 3}
 --- !u!65 &2015893845
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3643,7 +3678,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 933205084412357019, guid: b3cef04dfd46fe74ca37c7061eb027bf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.415
       objectReference: {fileID: 0}
     - target: {fileID: 933205084412357019, guid: b3cef04dfd46fe74ca37c7061eb027bf, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3691,15 +3726,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6548958457746408809, guid: b3cef04dfd46fe74ca37c7061eb027bf, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 528978467100965919, guid: b3cef04dfd46fe74ca37c7061eb027bf, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6548958457746408809, guid: b3cef04dfd46fe74ca37c7061eb027bf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1084197962}
+    - targetCorrespondingSourceObject: {fileID: 6548958457746408809, guid: b3cef04dfd46fe74ca37c7061eb027bf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1084197980}
   m_SourcePrefab: {fileID: 100100000, guid: b3cef04dfd46fe74ca37c7061eb027bf, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
