@@ -52,6 +52,7 @@ public class Arrow : DamageObject
     Rigidbody rig;
 
 	HashSet<StatusEffectApplyData> statData = new HashSet<StatusEffectApplyData>();
+	List<string> hitEffData;
 
 	public override void OnTriggerEnter(Collider other)
 	{
@@ -59,6 +60,14 @@ public class Arrow : DamageObject
 		{
 			if (other.TryGetComponent<LifeModule>(out LifeModule hit))
 			{
+				if(hitEffData != null)
+				{
+					Vector3 hitPos = other.ClosestPointOnBounds(transform.position);
+					for (int i = 0; i < hitEffData.Count; i++)
+					{
+						PoolManager.GetObject(hitEffData[i], hitPos, -transform.forward, 2.5f);
+					}
+				}
 				foreach (var item in statData)
 				{
 					StatusEffects.ApplyStat(hit.GetActor(), owner, item.id, item.duration, item.power);
@@ -127,6 +136,11 @@ public class Arrow : DamageObject
 	public void ResetOwner()
 	{
 		owner = null;
+	}
+
+	public void SetHitEff(List<string> hits)
+	{
+		hitEffData = hits;
 	}
 
 	public void Shoot()

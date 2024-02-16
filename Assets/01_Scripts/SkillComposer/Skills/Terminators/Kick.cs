@@ -38,14 +38,17 @@ public class Kick : AttackBase
 		{
 			if(life != null)
 			{
+				List<string> hitEffs = (self.atk as PlayerAttack).onNextHits?.Invoke(relatedTransform.gameObject, self, life.GetActor(), this);
 				DoDamage(life.GetActor(), self);
-				string hitEff = (self.atk as PlayerAttack).onNextHits?.Invoke(relatedTransform.gameObject, life);
 				CameraManager.instance.ShakeCamFor(0.1f);
-
+				//Debug.Log(hitEffs.Count);
 				Vector3 effPos = life.transform.GetComponent<Collider>().ClosestPointOnBounds(caster.transform.position);
-				if (hitEff != null)
+				if (hitEffs != null && hitEffs.Count > 0)
 				{
-					PoolManager.GetObject(hitEff, effPos, -caster.transform.forward, 2.5f);
+					for (int i = 0; i < hitEffs.Count; i++)
+					{
+						PoolManager.GetObject(hitEffs[i], effPos, -caster.transform.forward, 2.5f);
+					}
 
 				}
 				else

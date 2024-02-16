@@ -533,11 +533,12 @@ public class PlayerInven : MonoBehaviour
 					
 					break;
 				case HandStat.Weapon:
-
-					stat = HandStat.Item;
-					(GameManager.instance.pActor.anim as PlayerAnim).SetUnequipTrigger();
-					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
-					(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.LClick);
+					if((GameManager.instance.pActor.atk is PlayerAttack atk) &&
+						!atk.clickL && !atk.clickR)
+					{
+						stat = HandStat.Item;
+						(GameManager.instance.pActor.anim as PlayerAnim).SetUnequipTrigger();
+					}
 					break;
 				default:
 					break;

@@ -27,10 +27,10 @@ public class PlayerAttack : AttackModule
 
 	Coroutine ongoingResetter;
 
-	bool clickL = false;
-	bool clickR = false;
+	internal bool clickL = false;
+	internal bool clickR = false;
 
-	public Func<GameObject, LifeModule, string> onNextHits; //피격 판정 등 이펙트 보여줄 위치, 피격자에게 행할 행동, 
+	public Func<GameObject, Actor, Actor, Compose, List<string>> onNextHits = default; //피격 판정 등 이펙트 보여줄 위치, 자신, 피격자, 스킬정보, 타격 이펙트
 
 	PlayerAnimActions animActions;
 
@@ -62,11 +62,13 @@ public class PlayerAttack : AttackModule
 			{
 				if (NotAttack && !clickR)
 					return;
-				Debug.LogWarning("phase : " +context.phase  + " : " + context.started + " : " + context.canceled);
+				//Debug.LogWarning("phase : " +context.phase  + " : " + context.started + " : " + context.canceled);
 				if (!clickR && context.started)
 				{
+					Vector3 dir = Camera.main.transform.forward;
+					dir.y = 0;
+					transform.rotation = Quaternion.LookRotation(dir);
 
-					
 					clickR = true;
 					(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.RClick); 
 				}
@@ -93,6 +95,9 @@ public class PlayerAttack : AttackModule
 					return;
 				if (context.started && !clickL)
 				{
+					Vector3 dir = Camera.main.transform.forward;
+					dir.y = 0;
+					transform.rotation = Quaternion.LookRotation(dir);
 					clickL = true;
 					(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.LClick);
 				}
@@ -172,15 +177,5 @@ public class PlayerAttack : AttackModule
 		secPerCharge = initSecPerCharge;
 	}
 
-	public void ClearNextHit()
-	{
-		foreach (var item in GetActor().life.appliedDebuff.Keys)
-		{
-			if(((int)((StatEffID)GameManager.instance.statEff.idStatEffPairs[item])) >= ((int)StatEffID.EnhanceFire) &&
-				((int)((StatEffID)GameManager.instance.statEff.idStatEffPairs[item])) <= ((int)StatEffID.EnhanceIce))
-			{
-				GetActor().life.appliedDebuff[item] = 0;
-			}
-		}
-	}
+	
 }

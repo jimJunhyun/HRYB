@@ -108,7 +108,7 @@ public class PlayerMove : MoveModule
 					case CamStatus.Freelook:
 						return ConvertToCamFront(moveDir) * speed;
 					case CamStatus.Locked:
-						return transform.rotation * moveDir * speed;
+						return /*transform.rotation **/ moveDir * speed;
 					default:
 						return Vector3.zero;
 				}
