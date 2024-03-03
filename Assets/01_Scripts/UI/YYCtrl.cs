@@ -14,22 +14,13 @@ public class YYCtrl : MonoBehaviour
 	public float emerSpeed = 5;
 
 	Transform bgnd;
-	Image blk;
-	Image wht;
 
 	Slider blkGauge;
 	Slider whtGauge;
-	
-	float diff;
+
 
 	private void Awake()
 	{
-
-		bgnd = transform.GetChild(0);
-		Image[] imgs = bgnd.GetComponentsInChildren<Image>();
-
-		blk = imgs[1];
-		wht = imgs[2];
 
 		blkGauge = transform.Find("YinGauge").GetComponent<Slider>();
 		whtGauge = transform.Find("YangGauge").GetComponent<Slider>();
@@ -49,17 +40,16 @@ public class YYCtrl : MonoBehaviour
 
 	public void RefreshValues()
 	{
-		spirit = GameManager.instance.pActor.life.maxSoul;
 		yy = GameManager.instance.pActor.life.yy;
 
-		diff = yy.yinAmt > yy.yangAmt ? yy.yangAmt / yy.yinAmt : yy.yinAmt / yy.yangAmt;
+		//diff = yy.yinAmt > yy.yangAmt ? yy.yangAmt / yy.yinAmt : yy.yinAmt / yy.yangAmt;
 
-		float sum = yy.yangAmt + yy.yinAmt;
+		//float sum = yy.yangAmt + yy.yinAmt;
 
-		blk.rectTransform.sizeDelta = Vector2.one * (UICIRCUM * yy.yinAmt / sum);
-		wht.rectTransform.sizeDelta = Vector2.one * (UICIRCUM * yy.yangAmt / sum);
+		//blk.rectTransform.sizeDelta = Vector2.one * (UICIRCUM * yy.yinAmt / sum);
+		//wht.rectTransform.sizeDelta = Vector2.one * (UICIRCUM * yy.yangAmt / sum);
 
-		blkGauge.value = GameManager.instance.pActor.life.yy.yinAmt / GameManager.instance.pActor.life.maxSoul;
-		whtGauge.value = GameManager.instance.pActor.life.yy.yangAmt / GameManager.instance.pActor.life.maxSoul;
+		blkGauge.value = yy.yinAmt / GameManager.instance.pActor.life.initYinYang.yinAmt;
+		whtGauge.value = yy.yangAmt / GameManager.instance.pActor.life.initYinYang.yangAmt;
 	}
 }

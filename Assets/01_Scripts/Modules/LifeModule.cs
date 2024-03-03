@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public enum DamageType
+{
+	DirectHit, //일반적 공격
+	DotDamage, //지속시간동안 매 틱마다 지정된 피해
+	NoEvadeHit, //필중공격, 회피 불가
+	Continuous, //지속시간동안 지정된 만큼 변함. 매 틱마다 적용
+}
+
 public class LifeModule : Module
 {
 	public const float IMMUNETIME = 0.3f;
@@ -11,20 +19,20 @@ public class LifeModule : Module
 
 	public YinYang initYinYang;
 	public YinYang initAdequity;
-	public float initSoul;
+	//public float initSoul;
 
 	//[HideInInspector]
 	public YinYang yy;
 
 	protected YinYang adequity;
 
-	[HideInInspector]
-	public float maxSoul;
+	//[HideInInspector]
+	//public float maxSoul;
 
-	public float regenMod = 1f;
-	public float? fixedRegenMod = null;
+	public YinYang regenMod = YinYang.One;
+	public YinYang fixedRegenMod = null;
 	float baseRegen = 1f;
-	public float TotalRegenSpeed { get => (fixedRegenMod == null ? regenMod : (float)fixedRegenMod) * baseRegen;}
+	public YinYang TotalRegenSpeed { get => (fixedRegenMod == null ? regenMod : fixedRegenMod) * baseRegen;}
 
 	public float regenThreshold = 10f;
 
@@ -38,36 +46,31 @@ public class LifeModule : Module
 
 	public virtual bool isDead
 	{
-		get => yy.yinAmt * 2 <= yy.yangAmt || yy.yangAmt * 2 <=yy.yinAmt || yy.yangAmt + yy.yinAmt > maxSoul;
+		get => yy.yangAmt <= 0;
 	}
 
-	protected bool regenOn = false;
+	protected bool regenOn = true;
 	float diff;
 
 	public virtual void Awake()
 	{
-		maxSoul = initSoul;
+		//maxSoul = initSoul;
 	}
 
 	public virtual void Update()
 	{
-		if(Mathf.Abs((diff = yy.yinAmt - yy.yangAmt)) > regenThreshold)
+		if (regenOn)
 		{
-			regenOn = true;
-			if(diff > 0)
+			if(Mathf.Abs((diff = initYinYang.yangAmt - yy.yangAmt)) > regenThreshold)
 			{
-				yy.yinAmt -= TotalRegenSpeed * Time.deltaTime;
-				yy.yangAmt += TotalRegenSpeed * Time.deltaTime;
+				regenOn = true;
+				yy.yangAmt += TotalRegenSpeed.yangAmt * Time.deltaTime;
 			}
-			else
+			if(Mathf.Abs((diff = initYinYang.yinAmt - yy.yinAmt)) > regenThreshold)
 			{
-				yy.yinAmt += TotalRegenSpeed * Time.deltaTime;
-				yy.yangAmt -= TotalRegenSpeed * Time.deltaTime;
+				regenOn = true;
+				yy.yinAmt += TotalRegenSpeed.yinAmt * Time.deltaTime;
 			}
-		}
-		else if (regenOn)
-		{
-			regenOn = false;
 		}
 		//foreach (var item in appliedDebuff)
 		//{
@@ -75,9 +78,9 @@ public class LifeModule : Module
 		//}
 	}
 
-	public void AddYY(float amt, YYInfo to)
+	void DecreaseYY(float amt, YYInfo to)
 	{
-		yy[((int)to)] += amt * adequity[((int)to)];
+		yy[((int)to)] -= amt * adequity[((int)to)];
 		if (isDead)
 		{
 			OnDead();
@@ -133,50 +136,74 @@ public class LifeModule : Module
 		}
 	}
 
-	public virtual void AddYYBase(YinYang data)
+	protected virtual void DamageYYBase(YinYang data)
 	{
-		AddYY(data.yinAmt, YYInfo.Yin);
-		AddYY(data.yangAmt, YYInfo.Yang);
+		DecreaseYY(data.yinAmt, YYInfo.Yin);
+		DecreaseYY(data.yangAmt, YYInfo.Yang);
 	}
 
-	public virtual void AddYY(YinYang data, bool isNegatable = false, bool hit = true)
+	public virtual void DamageYY(YinYang data, DamageType type, float dur = 0, float tick = 0)
 	{
-		if(!(isNegatable && isImmune))
+		switch (type)
 		{
-			AddYYBase(data);
-			GetActor().anim.SetHitTrigger();
-			StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+			case DamageType.DirectHit:
+				if (!(isImmune))
+				{
+					DamageYYBase(data);
+					GetActor().anim.SetHitTrigger();
+					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+				}
+				break;
+			case DamageType.DotDamage:
+			case DamageType.Continuous:
+				StartCoroutine(DelDmgYYWX(data, dur, tick, type));
+				break;
+			case DamageType.NoEvadeHit:
+				DamageYYBase(data);
+				GetActor().anim.SetHitTrigger();
+				StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+				break;
+			default:
+				break;
 		}
+		
 	}
 
-	public virtual void AddYY(YinYang data, float spd, bool isNegatable = false, bool hit = false)
-	{
-		if(!(isNegatable && isImmune))
-		{ 
-			StartCoroutine(DelAddYYWX(data, (spd * TotalApplySpeed)));
-			GetActor().anim.SetHitTrigger();
-			StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
-		}
-	}
 
-
-	IEnumerator DelAddYYWX(YinYang data, float spd)
+	IEnumerator DelDmgYYWX(YinYang data, float dur, float tick, DamageType type)
 	{
 		float curT = 0;
-		YinYang incPerSec = YinYang.Zero;
-		incPerSec.yinAmt = data.yinAmt / spd;
-		incPerSec.yangAmt = data.yangAmt / spd;
-		while (curT < spd)
+		WaitForSeconds w = new WaitForSeconds(tick);
+		switch (type)
 		{
-			curT += Time.deltaTime;
-			yield return null;
-			AddYYBase(incPerSec * Time.deltaTime);
+			case DamageType.DotDamage:
+				while (curT < dur)
+				{
+					curT += Time.deltaTime;
+					yield return w;
+					DamageYYBase(data);
+				}
+				break;
+			case DamageType.Continuous:
+				YinYang incPerSec = YinYang.Zero;
+				incPerSec.yinAmt = data.yinAmt / dur;
+				incPerSec.yangAmt = data.yangAmt / dur;
+				while (curT < dur)
+				{
+					curT += Time.deltaTime;
+					yield return w;
+					DamageYYBase(incPerSec * Time.deltaTime);
+				}
+				break;
+			default:
+				break;
 		}
+		
+		
 	}
 
 	public virtual void OnDead()
 	{
-		Debug.Log(maxSoul);
 		StopAllCoroutines();
 		GetActor().anim.SetDieTrigger();
 		//PoolManager.ReturnObject(gameObject);
@@ -187,9 +214,9 @@ public class LifeModule : Module
 		base.ResetStatus();
 		yy = new YinYang(initYinYang);
 		adequity = initAdequity;
-		maxSoul = initSoul;
-		regenMod = 1;
-		regenOn = false;
+		//maxSoul = initSoul;
+		regenMod = YinYang.One;
+		regenOn = true;
 		regenThreshold =10;
 		baseRegen = 1;
 		isImmune = false;
