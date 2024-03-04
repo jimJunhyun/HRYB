@@ -145,6 +145,34 @@ public class LifeModule : Module
 		DecreaseYY(data.yangAmt, YYInfo.Yang);
 	}
 
+	public virtual void DamageYY(float yin, float yang, DamageType type, float dur = 0, float tick = 0)
+	{
+		YinYang data = new YinYang(yin, yang);
+		switch (type)
+		{
+			case DamageType.DirectHit:
+				if (!(isImmune))
+				{
+					DamageYYBase(data);
+					GetActor().anim.SetHitTrigger();
+					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+				}
+				break;
+			case DamageType.DotDamage:
+			case DamageType.Continuous:
+				StartCoroutine(DelDmgYYWX(data, dur, tick, type));
+				break;
+			case DamageType.NoEvadeHit:
+				DamageYYBase(data);
+				GetActor().anim.SetHitTrigger();
+				StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+				break;
+			default:
+				break;
+		}
+
+	}
+
 	public virtual void DamageYY(YinYang data, DamageType type, float dur = 0, float tick = 0)
 	{
 		switch (type)
