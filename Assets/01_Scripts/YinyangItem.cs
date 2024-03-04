@@ -66,7 +66,7 @@ public class YinyangItem : Item
 
 	public override void Use()
 	{
-		GameManager.instance.pActor.life.AddYY(yy, ApplySpeed);
+		GameManager.instance.pActor.life.DamageYY(yy, DamageType.Continuous, ApplySpeed);
 		base.Use();
 	}
 

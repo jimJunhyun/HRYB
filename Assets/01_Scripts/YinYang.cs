@@ -44,10 +44,10 @@ public class YinYang
 		yangAmt = origin.yangAmt;
 	}
 
-	public float GetBalanceRatio()
-	{
-		return yinAmt > yangAmt ? yangAmt / yinAmt : yinAmt / yangAmt;
-	}
+	//public float GetBalanceRatio()
+	//{
+	//	return yinAmt > yangAmt ? yangAmt / yinAmt : yinAmt / yangAmt;
+	//}
 
     public float this[int i]
 	{
@@ -103,5 +103,9 @@ public class YinYang
 	public static YinYang Zero
 	{
 		get=> new YinYang(0,  0);
+	}
+	public static YinYang One
+	{
+		get => new YinYang(1, 1);
 	}
 }

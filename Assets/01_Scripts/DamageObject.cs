@@ -24,6 +24,6 @@ public class DamageObject : MonoBehaviour
 
 	public virtual void Damage(LifeModule to)
 	{
-		to.AddYY(yy, true);
+		to.DamageYY(yy, DamageType.DirectHit);
 	}
 }

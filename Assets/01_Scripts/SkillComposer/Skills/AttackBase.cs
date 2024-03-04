@@ -21,7 +21,7 @@ public abstract class AttackBase : Leaf
 
 	protected void DoDamage(Actor to, Actor by)
 	{
-		to.life.AddYY(damage);
+		to.life.DamageYY(damage, DamageType.DirectHit);
 		for (int i = 0; i < statEff.Count; i++)
 		{
 			StatusEffects.ApplyStat(to, by, statEff[i].id, statEff[i].duration, statEff[i].power);

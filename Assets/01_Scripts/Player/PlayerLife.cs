@@ -18,9 +18,9 @@ public class PlayerLife : LifeModule
 		}
 	}
 
-	public override void AddYYBase(YinYang data)
+	protected override void DamageYYBase(YinYang data)
 	{
-		base.AddYYBase(data);
+		base.DamageYYBase(data);
 		GameManager.instance.uiManager.yinYangUI.RefreshValues();
 	}
 

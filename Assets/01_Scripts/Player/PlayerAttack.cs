@@ -30,7 +30,7 @@ public class PlayerAttack : AttackModule
 	internal bool clickL = false;
 	internal bool clickR = false;
 
-	public Func<GameObject, Actor, Actor, Compose, List<string>> onNextHits = default; //피격 판정 등 이펙트 보여줄 위치, 자신, 피격자, 스킬정보, 타격 이펙트
+	public Func<GameObject, Actor, Actor, Compose, List<string>> onNextHits = default; //이펙트 보여줄 위치 명명 규칙 (xxx_yyyPos), 자신, 피격자, 스킬정보, 타격 이펙트
 
 	PlayerAnimActions animActions;
 
