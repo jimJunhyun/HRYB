@@ -159,7 +159,7 @@ public class JangsungGirlAttack : EnemyAttackModule
 
 		objs.GetComponent<ColliderCast>().Now((player) =>
 		{
-			player.AddYYBase(new YinYang(3, 0));
+			player.DamageYY(3, 0, DamageType.DirectHit);
 		}, -1, 2f, 3f);
 	}
 

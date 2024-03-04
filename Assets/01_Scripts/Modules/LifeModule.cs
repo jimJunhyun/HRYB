@@ -203,7 +203,7 @@ public class LifeModule : Module
 	}
 
 
-	IEnumerator DelDmgYYWX(YinYang data, float dur, float tick, DamageType type)
+	protected IEnumerator DelDmgYYWX(YinYang data, float dur, float tick, DamageType type)
 	{
 		float curT = 0;
 		WaitForSeconds w = new WaitForSeconds(tick);

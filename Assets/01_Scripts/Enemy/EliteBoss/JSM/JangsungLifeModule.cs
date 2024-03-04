@@ -26,20 +26,35 @@ public class JangsungLifeModule : LifeModule
 		}
 	}
 
-	public override void AddYY(YinYang data, bool isNegatable = false, bool hit = true)
+	public virtual void DamageYY(float yin, float yang, DamageType type, float dur = 0, float tick = 0)
 	{
 		if (_isBarrier == false)
 		{
-			if (!(isNegatable && isImmune))
+			YinYang data = new YinYang(yin, yang);
+			switch (type)
 			{
-				AddYYBase(data);
-				GetActor().anim.SetHitTrigger();
-				StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
-			}
-
-			if (hit == true)
-			{
-				_hitEvent?.Invoke();
+				case DamageType.DirectHit:
+					if (!(isImmune))
+					{
+						DamageYYBase(data);
+						
+						_hitEvent?.Invoke();
+						
+						GetActor().anim.SetHitTrigger();
+						StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+					}
+					break;
+				case DamageType.DotDamage:
+				case DamageType.Continuous:
+					StartCoroutine(DelDmgYYWX(data, dur, tick, type));
+					break;
+				case DamageType.NoEvadeHit:
+					DamageYYBase(data);
+					GetActor().anim.SetHitTrigger();
+					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+					break;
+				default:
+					break;
 			}
 		}
 	}
