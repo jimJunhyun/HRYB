@@ -22,7 +22,7 @@ public class JangsungManAI : AISetter
 
     protected override void StartInvoke()
     {
-		GetComponent<BossHPBar>().Init(self);
+		//GetComponent<BossHPBar>().Init(self);
 
 
 		self.life._dieEvent = DieEvent;
