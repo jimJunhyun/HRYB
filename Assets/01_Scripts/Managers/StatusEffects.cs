@@ -136,7 +136,7 @@ public class StatusEffects
 	}
 	void OnEnhanceIceEnded(Actor self, float power)
 	{
-		
+		Debug.Log("!!!!!!!!!!!!!");
 		(self.atk as PlayerAttack).onNextHits -= EnhanceIce;
 		//스킬 부여 효과 지우기?
 	}
@@ -147,17 +147,26 @@ public class StatusEffects
 		List<EffPosStrPair> objs = effDict.data[stat];
 		Transform trailPos, whirlPos;
 		List<string> hitEffs = new List<string>();
-		trailPos = effShower.transform.Find("TrailPos");
-		whirlPos = effShower.transform.Find("WhirlPos");
+		int iId = effShower.transform.GetInstanceID();
+		Debug.Log(effShower.transform.name + " id : " +iId);
+		trailPos = GameObject.Find($"{iId}_TrailPos")?.transform;
+		whirlPos = GameObject.Find($"{iId}_WhirlPos")?.transform;
 		for (int i = 0; i < objs.Count; i++)
 		{
 			switch (objs[i].effPos)
 			{
 				case EffectPoses.Trail:
-					PoolManager.GetObject(objs[i].effPrefName, trailPos);
+					if(trailPos != null)
+					{
+						GameObject res= PoolManager.GetObject(objs[i].effPrefName, trailPos);
+						Debug.Log(" 트레일생성 " + (res != null) + " " + res.transform.GetInstanceID());
+					}
 					break;
 				case EffectPoses.Whirl:
-					PoolManager.GetObject(objs[i].effPrefName, whirlPos);
+					if(whirlPos != null)
+					{
+						PoolManager.GetObject(objs[i].effPrefName, whirlPos);
+					}
 					break;
 				case EffectPoses.Hit:
 					hitEffs.Add(objs[i].effPrefName);
@@ -181,7 +190,9 @@ public class StatusEffects
 				Debug.Log("REMOVING STAT : " + self.life.name);
 				self.life.RemoveStatEff(StatEffID.EnhanceIce);
 
-				return ShowEffect(effShower, self, target, StatEffID.EnhanceIce);
+				return ShowEffect(effShower, self, target, StatEffID.EnhanceIce); 
+				//##############################
+				//이펙트 시점이 다름. 타격 제외 이펙트는 사용 시점에서 등장.
 			}
 		}
 		return null;

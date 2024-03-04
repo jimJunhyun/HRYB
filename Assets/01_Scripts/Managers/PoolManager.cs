@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -23,6 +24,7 @@ public class PoolManager : MonoBehaviour
 
 	public void Awake()
 	{
+		StringBuilder sb = new StringBuilder();
 		self = transform;
 
 		list = Resources.Load<PoolList>("PoolList");
@@ -34,6 +36,19 @@ public class PoolManager : MonoBehaviour
 			{
 				GameObject o = Instantiate(list.poolList[i].obj, Vector3.zero, Quaternion.identity, transform);
 				o.name = list.poolList[i].obj.name;
+				int iId = o.transform.GetInstanceID();
+				for (int k = 0; k < o.transform.childCount; k++)
+				{
+					Transform child = o.transform.GetChild(k);
+					if(child.name == "TrailPos" || child.name == "WhirlPos")
+					{
+						sb.Append(iId);
+						sb.Append('_');
+						sb.Append(o.name);
+						child.name = sb.ToString();
+						sb.Clear();
+					}
+				}
 				o.SetActive(false);
 				pooleds[i].data.Push(o);
 			}
@@ -62,7 +77,7 @@ public class PoolManager : MonoBehaviour
 				return res;
 			}
 		}
-		Debug.LogWarning($"Item named {name} doesn't exist!");
+		Debug.LogError($"Item named {name} doesn't exist!");
 		return null;
 	}
 
@@ -90,7 +105,7 @@ public class PoolManager : MonoBehaviour
 				return res;
 			}
 		}
-		Debug.LogWarning($"Item named {name} doesn't exist!");
+		Debug.LogError($"Item named {name} doesn't exist!");
 		return null;
 	}
 
@@ -118,7 +133,7 @@ public class PoolManager : MonoBehaviour
 			}
 
 		}
-		Debug.LogWarning($"Item named {name} doesn't exist!");
+		Debug.LogError($"Item named {name} doesn't exist!");
 		return null;
 	}
 
@@ -147,7 +162,7 @@ public class PoolManager : MonoBehaviour
 			}
 			
 		}
-		Debug.LogWarning($"Item named {name} doesn't exist!");
+		Debug.LogError($"Item named {name} doesn't exist!");
 		return null;
 	}
 
@@ -173,7 +188,7 @@ public class PoolManager : MonoBehaviour
 				return res;
 			}
 		}
-		Debug.LogWarning($"Item named {name} doesn't exist!");
+		Debug.LogError($"Item named {name} doesn't exist!");
 		return null;
 	}
 
@@ -201,7 +216,7 @@ public class PoolManager : MonoBehaviour
 				return res;
 			}
 		}
-		Debug.LogWarning($"Item named {name} doesn't exist!");
+		Debug.LogError($"Item named {name} doesn't exist!");
 		return null;
 	}
 
@@ -220,7 +235,7 @@ public class PoolManager : MonoBehaviour
 		}
 		else
 		{
-			Debug.LogWarning($"{obj.name} doesn't exist in pool!");
+			Debug.LogError($"{obj.name} doesn't exist in pool!");
 		}
 	}
 
