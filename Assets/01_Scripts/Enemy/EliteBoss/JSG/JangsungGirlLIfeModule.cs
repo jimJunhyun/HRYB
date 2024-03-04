@@ -30,6 +30,7 @@ public class JangsungGirlLifeModule : LifeModule
 				GetActor().anim.SetHitTrigger();
 				StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 			}
+			
 
 			if (hit == true)
 			{
