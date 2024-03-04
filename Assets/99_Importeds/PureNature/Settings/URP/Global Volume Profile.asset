@@ -21,10 +21,10 @@ MonoBehaviour:
     m_Value: 0.9
   intensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 3
   scatter:
     m_OverrideState: 1
-    m_Value: 0.25
+    m_Value: 0.67
   clamp:
     m_OverrideState: 1
     m_Value: 65472
@@ -89,20 +89,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   postExposure:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1.5
   contrast:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 5
   colorFilter:
     m_OverrideState: 1
     m_Value: {r: 1, g: 0.9764151, b: 0.9792453, a: 1}
   hueShift:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: -5
   saturation:
     m_OverrideState: 1
-    m_Value: 50
+    m_Value: 33
 --- !u!114 &-6446540029592084553
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -164,13 +164,13 @@ MonoBehaviour:
     m_Value: 2
   alphaMultiplier:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0
   additionalLightsIntensityMultiplier:
     m_OverrideState: 1
     m_Value: 1
   jitter:
     m_OverrideState: 1
-    m_Value: 0.15
+    m_Value: 0.063
   downsample:
     m_OverrideState: 1
     m_Value: 2
@@ -182,28 +182,28 @@ MonoBehaviour:
     m_Value: 0.2
   density:
     m_OverrideState: 1
-    m_Value: 0.045
+    m_Value: 0.073
   minDensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.147
   fogColor:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_Value: {r: 0, g: 0.6700578, b: 1, a: 1}
   brightness:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 3.91
   anisotropy:
     m_OverrideState: 1
-    m_Value: 0.8
+    m_Value: 0.985
   blurRadius:
     m_OverrideState: 1
-    m_Value: 0.01
+    m_Value: 0.027
   blurStrength:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 3.33
   blurIterations:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 10
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,7 +259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   mode:
     m_OverrideState: 1
     m_Value: 1
