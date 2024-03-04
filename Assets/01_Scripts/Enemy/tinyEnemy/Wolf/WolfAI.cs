@@ -37,14 +37,15 @@ public class WolfAI : AISetter
 	    });
 	    Attacker normalAttack = new Attacker(self, () =>
 	    {
-
+		    
 	    });
 
 	    Sequencer normalATK = new Sequencer();
 	    
-	    normalATK.connecteds.Add((noramlRange));
-	    normalATK.connecteds.Add((_normalAtt));
+	    normalATK.connecteds.Add(noramlRange);
+	    normalATK.connecteds.Add(_normalAtt);
 		normalATK.connecteds.Add(normalAttack);
+		
 	    #endregion
 
 
