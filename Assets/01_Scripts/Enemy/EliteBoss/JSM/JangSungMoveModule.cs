@@ -9,7 +9,7 @@ public class JangSungMoveModule : MoveModule
 	Actor _target;
 	UnityEngine.AI.NavMeshAgent agent;
 
-	[Header("fIND")] [SerializeField] private float _findPlayerRange = 30;
+	[Header("FIND")] [SerializeField] private float _findPlayerRange = 30;
 	
 	[Header("Stat")] 
 	[SerializeField] private float _normalSpeed = 3.5f;

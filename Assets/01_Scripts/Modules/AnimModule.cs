@@ -47,6 +47,10 @@ public class AnimModule : Module
 	{
 		anim.SetInteger(moveHash, val);
 	}
+	public virtual void SetMoveState(bool b)
+	{
+		anim.SetBool(moveHash, b);
+	}
 
 	public virtual void SetIdleState(bool val)
 	{

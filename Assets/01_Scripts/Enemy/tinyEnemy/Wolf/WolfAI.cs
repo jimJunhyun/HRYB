@@ -1,43 +1,81 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class WolfAI : AISetter
 {
-
+	[Header("IsWake")] [SerializeField] private bool _isWake;
+	
+	
 	[Header("공격 시작 범위")]
 	[SerializeField] public float _attackRange = 2f;
 
+	[Header("탐색 범위")] [SerializeField] public float _sectionRange = 10f;
+	[Header("초기화 범위")] [SerializeField] public float _section2Range = 15f;
 	public float Attackrange()
 	{
 		return _attackRange;
 	}
+
+	public float SectionRanged()
+	{
+		return _sectionRange;
+	}
+	
+	public float OutSectionRanged()
+   	{
+   		return _section2Range;
+   	}
 	
 	private const string NormalAttack = "normallAtt";
 
 	
 	public void DieEvent()
 	{
-		self.anim.ResetStatus();
+		//self.anim.ResetStatus();
 		StopExamine();
+		WolfMoveModule _moveModule = self.move as WolfMoveModule;
+		GetComponent<BoxCollider>().isTrigger = true;
+		_moveModule.StopMove();
+	}
+    	
+	public void LookAt(Transform t)
+	{
+		Vector3 lookPos = t.position - transform.position;
+		lookPos.y = transform.position.y;
+		transform.rotation = Quaternion.Lerp( transform.rotation,Quaternion.LookRotation(lookPos), Time.deltaTime * 8);
 	}
 	
     protected override void StartInvoke()
     {
 	    self.life._dieEvent = DieEvent;
+	    Wolf_normalAttackModule _atkModule = self.atk as Wolf_normalAttackModule;
+	    WolfMoveModule _moveModule = self.move as WolfMoveModule;
 
+	    if (_isWake)
+	    {
+		    self.anim.SetIdleState(true);
+	    }
+	    
+	    
 
 	    #region 평타
 
 	    Waiter _normalAtt = new Waiter(3f);
 	    IsInRange noramlRange = new IsInRange(self, player.transform, Attackrange, null, () =>
 	    {
-			// 공격 셋팅
+			// 공격 
+			_normalAtt.StartReady();
+			_atkModule.SetAttackType(NormalAttack);
+			_moveModule.StopMove();
 	    });
 	    Attacker normalAttack = new Attacker(self, () =>
 	    {
+		    _normalAtt.ResetReady();
 		    
+		    StopExamine();
 	    });
 
 	    Sequencer normalATK = new Sequencer();
@@ -48,13 +86,49 @@ public class WolfAI : AISetter
 		
 	    #endregion
 
+	    IsInRange SectionRange = new IsInRange(self, player.transform, this.SectionRanged, null, () =>
+	    {
+		    if (_isWake)
+		    {
+			    Debug.Log("AAA");
+			    _moveModule.SetTarget(player.transform);
+		    }
+		    
+	    });
+	    Mover move = new Mover(self);
 
+	    Sequencer Moved = new Sequencer();
+	    Moved.connecteds.Add(SectionRange);
+	    Moved.connecteds.Add(move);
+
+	    IsOutRange LongaRange = new IsOutRange(self, player.transform, OutSectionRanged, null, () =>
+	    {
+			_moveModule.StopMove();
+	    });
+	    Idler idles = new Idler(self);
+	    
+	    Sequencer idler = new Sequencer();
+	    idler.connecteds.Add(LongaRange);
+	    idler.connecteds.Add(idles);
+	    
+	    head.connecteds.Add(normalATK);
+	    head.connecteds.Add(Moved);
+	    head.connecteds.Add(idler);
+	    
+	    
+	    _moveModule.StopMove();
 
     }
     
 
     protected override void UpdateInvoke()
     {
-	    
+	    if(self.life.isDead ==false)
+			LookAt(player.transform);
+
+	    if (self.life._isFirstHit == true && _isWake == false)
+	    {
+		    _isWake = true;
+	    }
     }
 }

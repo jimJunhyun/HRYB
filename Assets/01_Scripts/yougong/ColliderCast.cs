@@ -25,6 +25,7 @@ public abstract class ColliderCast : MonoBehaviour
 	public abstract Collider[] ReturnColliders();
 	
 	public Action<LifeModule> CastAct;
+	public Action NowTrigger;
 	
 	protected void Update()
 	{
@@ -66,6 +67,8 @@ public abstract class ColliderCast : MonoBehaviour
 			_isRunning = true;
 			if (act != null)
 				CastAct = act;
+			
+			NowTrigger?.Invoke();
 		}
 
 		if(EndSec > 0)
@@ -94,6 +97,8 @@ public abstract class ColliderCast : MonoBehaviour
 		_isRunning = true;
 		if (act != null)
 			CastAct = act;
+		
+		NowTrigger?.Invoke();
 	}
 
 	IEnumerator EndSet(float t)

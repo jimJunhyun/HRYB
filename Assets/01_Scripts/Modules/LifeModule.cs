@@ -47,6 +47,8 @@ public class LifeModule : Module
 
 	internal Dictionary<StatusEffect, float> appliedDebuff = new Dictionary<StatusEffect, float>();
 
+	public bool _isFirstHit = false;
+
 	public virtual bool isDead
 	{
 		get => yy.yangAmt <= 0;
@@ -147,6 +149,8 @@ public class LifeModule : Module
 
 	public virtual void DamageYY(float yin, float yang, DamageType type, float dur = 0, float tick = 0)
 	{
+		_isFirstHit = true;
+		
 		YinYang data = new YinYang(yin, yang);
 		switch (type)
 		{
@@ -175,6 +179,8 @@ public class LifeModule : Module
 
 	public virtual void DamageYY(YinYang data, DamageType type, float dur = 0, float tick = 0)
 	{
+		_isFirstHit = true;
+		
 		switch (type)
 		{
 			case DamageType.DirectHit:
@@ -205,6 +211,8 @@ public class LifeModule : Module
 
 	protected IEnumerator DelDmgYYWX(YinYang data, float dur, float tick, DamageType type)
 	{
+		_isFirstHit = true;
+		
 		float curT = 0;
 		WaitForSeconds w = new WaitForSeconds(tick);
 		switch (type)
