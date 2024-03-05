@@ -28,7 +28,7 @@ public class EffectObject : MonoBehaviour
 		if (Particle.isPlaying == false && _isPlay==true)
 		{
 			_isPlay = false;
-			EffectManager.ReturnObject(this);
+			EffectManager.Instance.ReturnObject(this);
 		}
 	}
 
@@ -44,7 +44,7 @@ public class EffectObject : MonoBehaviour
 		Particle.Stop();
 		
 		_isPlay = false;
-		EffectManager.ReturnObject(this);
+		EffectManager.Instance.ReturnObject(this);
 	}
 	
 }

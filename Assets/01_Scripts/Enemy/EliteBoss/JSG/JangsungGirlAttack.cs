@@ -157,7 +157,7 @@ public class JangsungGirlAttack : EnemyAttackModule
 
 		objs.transform.parent = null;
 
-		objs.GetComponent<ColliderCast>().Now((player) =>
+		objs.GetComponent<ColliderCast>().Now(transform,(player) =>
 		{
 			player.DamageYY(3, 0, DamageType.DirectHit);
 		}, -1, 2f, 3f);

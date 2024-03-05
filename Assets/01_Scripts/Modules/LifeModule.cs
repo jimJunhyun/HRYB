@@ -160,6 +160,7 @@ public class LifeModule : Module
 					DamageYYBase(data);
 					GetActor().anim.SetHitTrigger();
 					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+					_hitEvent?.Invoke();
 				}
 				break;
 			case DamageType.DotDamage:

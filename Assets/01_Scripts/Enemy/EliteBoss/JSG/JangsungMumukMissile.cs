@@ -37,7 +37,7 @@ public class JangsungMumukMissile : MonoBehaviour
 	public void Fire()
 	{
 		_isFire = true;
-		_cast.Now((a)=>
+		_cast.Now(transform,(a)=>
 		{
 			if(1 << a.gameObject.layer == (int)_enemy)
 			{

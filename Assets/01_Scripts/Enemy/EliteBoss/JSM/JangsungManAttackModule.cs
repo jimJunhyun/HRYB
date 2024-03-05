@@ -55,16 +55,16 @@ public class JangsungManAttackModule : EnemyAttackModule
 		switch (AttackStd)
 		{
 			case "DownAttack":
-				ef = EffectManager.GetObject("JangsungEffect1", transform);
+				ef = EffectManager.Instance.GetObject("JangsungEffect1", transform);
 				ef.Begin();
 				break;
 			case "FallDownAttack":
-				ef = EffectManager.GetObject("JangsungEffect1", transform);
+				ef = EffectManager.Instance.GetObject("JangsungEffect1", transform);
 				ef.Begin();
 				break;
 			case "MoveAttack":
 				
-				ef = EffectManager.GetObject("JangsungEffect1", transform);
+				ef = EffectManager.Instance.GetObject("JangsungEffect1", transform);
 				ef.Begin();
 				break;
 		}
@@ -152,12 +152,12 @@ public class JangsungManAttackModule : EnemyAttackModule
 
 				break;
 			case "FallDownAttack":
-				ef = EffectManager.GetObject("JangsungEffect1", transform);
+				ef = EffectManager.Instance.GetObject("JangsungEffect1", transform);
 				ef.Begin();
 				break;
 			case "MoveAttack":
 				
-				ef = EffectManager.GetObject("JangsungEffect1", transform);
+				ef = EffectManager.Instance.GetObject("JangsungEffect1", transform);
 				ef.Begin();
 				break;
 		}
@@ -168,14 +168,13 @@ public class JangsungManAttackModule : EnemyAttackModule
 				case "DownAttack":
 					if (_curCols != null)
 					{
-						_curCols.Now((player) =>
+						_curCols.Now(transform, (player) =>
 						{
 							player.DamageYY(new YinYang(5, 0), DamageType.DirectHit);
 							CameraManager.instance.ShakeCamFor(0.5f);
 						});
-					_curCols.Now();
 					}
-					ef = EffectManager.GetObject("JangsungEffect2", transform);
+					ef = EffectManager.Instance.GetObject("JangsungEffect2", transform);
 					ef.Begin();
 					
 					
@@ -183,28 +182,26 @@ public class JangsungManAttackModule : EnemyAttackModule
 				case "FallDownAttack":
 					if (_curCols != null)
 					{
-						_curCols.Now((player) =>
+						_curCols.Now(transform, (player) =>
 						{
 							player.DamageYY(new YinYang(10, 0), DamageType.DirectHit); 
 							CameraManager.instance.ShakeCamFor(0.8f);
 						});
-					_curCols.Now();
 					}
-					ef = EffectManager.GetObject("JangsungEffect2", transform);
+					ef = EffectManager.Instance.GetObject("JangsungEffect2", transform);
 					ef.Begin();
 					break;
 				case "MoveAttack":
 					if (_curCols != null)
 					{
-						_curCols.Now((player) =>
+						_curCols.Now(transform,(player) =>
 						{
 							player.DamageYY(new YinYang(4, 0), DamageType.DirectHit);
 							CameraManager.instance.ShakeCamFor(0.3f);
 						});
-						_curCols.Now();
 					}
 					
-					ef = EffectManager.GetObject("JangsungEffect2", transform);
+					ef = EffectManager.Instance.GetObject("JangsungEffect2", transform);
 					ef.Begin();
 					break;
 			}

@@ -30,6 +30,7 @@ public class WolfAI : AISetter
    	}
 	
 	private const string NormalAttack = "normallAtt";
+	
 
 	
 	public void DieEvent()
@@ -45,7 +46,7 @@ public class WolfAI : AISetter
 	{
 		Vector3 lookPos = t.position - transform.position;
 		lookPos.y = transform.position.y;
-		transform.rotation = Quaternion.Lerp( transform.rotation,Quaternion.LookRotation(lookPos), Time.deltaTime * 8);
+		transform.rotation = Quaternion.LookRotation(lookPos);
 	}
 	
     protected override void StartInvoke()
@@ -90,7 +91,7 @@ public class WolfAI : AISetter
 	    {
 		    if (_isWake)
 		    {
-			    Debug.Log("AAA");
+			    //Debug.Log("AAA");
 			    _moveModule.SetTarget(player.transform);
 		    }
 		    
@@ -105,15 +106,27 @@ public class WolfAI : AISetter
 	    {
 			_moveModule.StopMove();
 	    });
+
+	    IsInRange Idler = new IsInRange(self, player.transform, Attackrange, null, () =>
+	    {
+		    _moveModule.StopMove();
+	    });
+	    
 	    Idler idles = new Idler(self);
 	    
-	    Sequencer idler = new Sequencer();
-	    idler.connecteds.Add(LongaRange);
-	    idler.connecteds.Add(idles);
+	    Sequencer Faridler = new Sequencer();
+	    Faridler.connecteds.Add(LongaRange);
+	    Faridler.connecteds.Add(idles);
+
+	    Sequencer ShowIdler = new Sequencer();
+	    
+	    ShowIdler.connecteds.Add(Idler);
+	    ShowIdler.connecteds.Add(idles);
 	    
 	    head.connecteds.Add(normalATK);
+	    head.connecteds.Add(ShowIdler);
 	    head.connecteds.Add(Moved);
-	    head.connecteds.Add(idler);
+	    head.connecteds.Add(Faridler);
 	    
 	    
 	    _moveModule.StopMove();

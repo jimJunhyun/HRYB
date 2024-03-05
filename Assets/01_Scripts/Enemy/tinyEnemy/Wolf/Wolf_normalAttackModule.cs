@@ -30,12 +30,13 @@ public class Wolf_normalAttackModule : EnemyAttackModule
 	public override void OnAnimationEvent()
 	{
 		left = !left;
-		int a = left == true ? 1 : 2;
-		_nowCols.Now((_life) =>
+		int a = left == true ? 2 : 1;
+		_nowCols.Now(transform,(_life) =>
 		{
-			_life.DamageYY(20, 0, DamageType.DirectHit);
+			_life.DamageYY(new YinYang(20,0), DamageType.DirectHit);
 		});
-		EffectManager.GetObject($"Wolf_noraml_Attack{a}", transform);
+		EffectObject eff =  EffectManager.Instance.GetObject($"Wolf_noraml_Attack{a}", transform.GetChild(0));
+		eff.Begin();
 	}
 
 	public override void OnAnimationEnd()
@@ -50,7 +51,7 @@ public class Wolf_normalAttackModule : EnemyAttackModule
 
 	public override void OnAnimationStop()
 	{
-		self.ai.StartExamine();	
+		self.ai.StartExamine();
 	}
 
 	public override void Attack()

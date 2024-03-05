@@ -14,6 +14,8 @@ public abstract class ColliderCast : MonoBehaviour
 	[Header("Enemy Layer")]
 	[SerializeField] private LayerMask _layer;
 
+	[SerializeField] protected Transform Owner;
+
 	public LayerMask Layer => _layer;
 	
 	[Header("Already Get Object")][SerializeField] public Dictionary<Collider, bool> CheckDic = new();
@@ -25,7 +27,6 @@ public abstract class ColliderCast : MonoBehaviour
 	public abstract Collider[] ReturnColliders();
 	
 	public Action<LifeModule> CastAct;
-	public Action NowTrigger;
 	
 	protected void Update()
 	{
@@ -36,15 +37,18 @@ public abstract class ColliderCast : MonoBehaviour
 		// 생각해 봤는데 어차피 col있는 만큼만 돌아가기 때문에 큰 문제 없음
 		foreach (var col in ReturnColliders())
 		{
+			Debug.LogWarning($"{col.name} 맞음");
 			if (CheckDic.ContainsKey(col))
 				return;
 			else
+			{
 				CheckDic.Add(col, false);
+				Debug.LogError(col.name);
+			}
 			if (col.TryGetComponent<LifeModule>(out LifeModule lf))
 			{
 				CastAct?.Invoke(lf);
 			}
-			// Debug.LogWarning($"{col.name} 맞음");
 
 		}
 	}
@@ -54,8 +58,9 @@ public abstract class ColliderCast : MonoBehaviour
 		StopAllCoroutines();
 	}
 
-	public void Now(Action<LifeModule> act = null, float StartSec = -1, float EndSec = -1, float dieSec = -1)
+	public void Now(Transform _owner, Action<LifeModule> act = null, float StartSec = -1, float EndSec = -1, float dieSec = -1)
 	{
+		this.Owner = _owner;
 		if(StartSec > 0)
 		{
 			StartCoroutine(StartSet(StartSec));
@@ -67,8 +72,6 @@ public abstract class ColliderCast : MonoBehaviour
 			_isRunning = true;
 			if (act != null)
 				CastAct = act;
-			
-			NowTrigger?.Invoke();
 		}
 
 		if(EndSec > 0)
@@ -88,6 +91,8 @@ public abstract class ColliderCast : MonoBehaviour
 		
 		CheckDic.Clear();
 		CastAct = null;
+		
+		PoolManager.ReturnObject(gameObject);
 	}
 
 	IEnumerator StartSet(float t, Action<LifeModule> act = null)
@@ -97,8 +102,6 @@ public abstract class ColliderCast : MonoBehaviour
 		_isRunning = true;
 		if (act != null)
 			CastAct = act;
-		
-		NowTrigger?.Invoke();
 	}
 
 	IEnumerator EndSet(float t)

@@ -34,7 +34,7 @@ public class Kick : AttackBase
 
 	internal override void MyOperation(Actor self)
 	{
-		caster.Now(life =>
+		caster.Now( self.transform,life =>
 		{
 			if(life != null)
 			{

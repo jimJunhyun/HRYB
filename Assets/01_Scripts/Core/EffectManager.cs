@@ -1,10 +1,11 @@
 //using GSpawn;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
-public class EffectManager : MonoBehaviour
+public class EffectManager : Singleton<EffectManager>
 {
 	PoolList list;
 	static List<StackWithName<EffectObject>> pooleds = new List<StackWithName<EffectObject>>();
@@ -32,7 +33,7 @@ public class EffectManager : MonoBehaviour
 		}
 	}
 	
-	public static EffectObject GetObject(string name, Vector3 pos, Quaternion rot)
+	public EffectObject GetObject(string name, Vector3 pos, Quaternion rot)
 	{
 		StackWithName<EffectObject> st;
 		if ((st = pooleds.Find(item => item.name == name)) != null)
@@ -51,7 +52,7 @@ public class EffectManager : MonoBehaviour
 		return null;
 	}
 	
-	public static EffectObject GetObject(string name, Transform parent)
+	public EffectObject GetObject(string name, Transform parent)
 	{
 		StackWithName<EffectObject> st;
 		if ((st = pooleds.Find(item => item.name == name)) != null)
@@ -60,15 +61,15 @@ public class EffectManager : MonoBehaviour
 			res.gameObject.SetActive(true);
 			res.transform.SetParent(parent);
 			res.transform.localPosition = res._originPosision;
-			res.transform.localEulerAngles = parent.localEulerAngles +  res._originQuaternion;
-			res.transform.parent = null;
+			res.transform.localEulerAngles = res._originQuaternion;
+			//res.transform.parent = null;
 			return res;
 		}
 		Debug.LogError($"Item named {name} doesn't exist!");
 		return null;
 	}
 	
-	public static void ReturnObject(EffectObject obj)
+	public void ReturnObject(EffectObject obj)
 	{
 		StackWithName<EffectObject> st;
 		if ((st = pooleds.Find(item => item.name == obj.name)) != null)
@@ -79,6 +80,7 @@ public class EffectManager : MonoBehaviour
 			obj.transform.rotation = Quaternion.identity;
 			obj.transform.localScale = Vector3.one;
 			st.data.Push(obj);
+			obj.transform.parent = transform;
 		}
 		else
 		{
