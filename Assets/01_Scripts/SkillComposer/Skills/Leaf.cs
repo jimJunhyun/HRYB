@@ -11,6 +11,7 @@ public abstract class  Leaf : Compose
 
 	public override void Operate(Actor self)
 	{
+		Debug.Log("OPERATED " + name);
 		MyOperation(self);
 	}
 

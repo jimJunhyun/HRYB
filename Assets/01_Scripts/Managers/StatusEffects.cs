@@ -128,7 +128,10 @@ public class StatusEffects
 	void OnEnhanceIceActivated(Actor self, Actor inflicter, float power)
 	{
 		Debug.Log("얼음강화 사용됨");
-		(self.atk as PlayerAttack).onNextHits += EnhanceIce;
+		(self.atk as PlayerAttack).onNextUse += ShowUseEnhanceIce;
+		(self.atk as PlayerAttack).onNextSkill += EnhanceIce;
+		(self.atk as PlayerAttack).onNextHit += ShowHitEnhanceIce;
+		//(self.atk as PlayerAttack).onNextUse += ShowEffect;
 	}
 	void OnEnhanceIceUpdated(Actor self, float power)
 	{
@@ -137,20 +140,31 @@ public class StatusEffects
 	void OnEnhanceIceEnded(Actor self, float power)
 	{
 		Debug.Log("!!!!!!!!!!!!!");
-		(self.atk as PlayerAttack).onNextHits -= EnhanceIce;
+		(self.atk as PlayerAttack).onNextUse -= ShowUseEnhanceIce;
+		(self.atk as PlayerAttack).onNextSkill -= EnhanceIce;
+		(self.atk as PlayerAttack).onNextHit -= ShowHitEnhanceIce;
 		//스킬 부여 효과 지우기?
 	}
 
-	List<string> ShowEffect(GameObject effShower, Actor self, Actor target, StatEffID stat)
+	void ShowUseEnhanceIce(GameObject obj)
+	{
+		ShowUseEffect(obj, StatEffID.EnhanceIce);
+	}
+	void ShowHitEnhanceIce(Vector3 pos)
+	{
+		ShowHitEffect(pos, StatEffID.EnhanceIce);
+	}
+
+	void ShowUseEffect(GameObject effShower, StatEffID stat)
 	{
 		
 		List<EffPosStrPair> objs = effDict.data[stat];
 		Transform trailPos, whirlPos;
-		List<string> hitEffs = new List<string>();
-		int iId = effShower.transform.GetInstanceID();
-		Debug.Log(effShower.transform.name + " id : " +iId);
-		trailPos = GameObject.Find($"{iId}_TrailPos")?.transform;
-		whirlPos = GameObject.Find($"{iId}_WhirlPos")?.transform;
+		//int iId = effShower.transform.GetInstanceID();
+		//Debug.Log(effShower.transform.name + " id : " +effShower.transform.GetHashCode());
+		//InstanceId 의 경우, 유니티 재시작마다 변경. 빌드후의 안정성을 보장하기 힘듬.
+		trailPos = GameObject.Find($"{effShower.name}_TrailPos")?.transform;
+		whirlPos = GameObject.Find($"{effShower.name}_WhirlPos")?.transform;
 		for (int i = 0; i < objs.Count; i++)
 		{
 			switch (objs[i].effPos)
@@ -169,16 +183,34 @@ public class StatusEffects
 					}
 					break;
 				case EffectPoses.Hit:
-					hitEffs.Add(objs[i].effPrefName);
-					break;
 				default:
 					break;
 			}
 		}
-		return hitEffs;
 	}
 
-	List<string> EnhanceIce(GameObject effShower, Actor self, Actor target, Compose skInfo)
+	void ShowHitEffect(Vector3 pos, StatEffID stat)
+	{
+		List<EffPosStrPair> objs = effDict.data[stat];
+		//int iId = effShower.transform.GetInstanceID();
+		//Debug.Log(effShower.transform.name + " id : " +effShower.transform.GetHashCode());
+		//InstanceId 의 경우, 유니티 재시작마다 변경. 빌드후의 안정성을 보장하기 힘듬.
+		for (int i = 0; i < objs.Count; i++)
+		{
+			switch (objs[i].effPos)
+			{
+				case EffectPoses.Hit:
+					PoolManager.GetObject(objs[i].effPrefName, pos, Quaternion.identity);
+					break;
+				case EffectPoses.Trail:
+				case EffectPoses.Whirl:
+				default:
+					break;
+			}
+		}
+	}
+
+	void EnhanceIce(Actor self, Compose skInfo)
 	{
 		Debug.Log("얼음공격 : " + skInfo.tags.ToString());
 		if(skInfo.tags.ContainsTag(SkillTags.AttackEnhancable))
@@ -186,16 +218,11 @@ public class StatusEffects
 			Debug.Log("얼음공격으로 강화디ㅗㅁ.");
 			if((skInfo is AttackBase atk))
 			{
-				atk.statEff.Add(new StatusEffectApplyData(StatEffID.Slow, 15 /*(레벨에 따른 변화)*/, 5));
+				atk.statEff.Add(new StatusEffectApplyData(StatEffID.Slow, 15 /*(레벨에 따른 변화)*/, 5)); //더하긴 했는데, 언제 지우지?
 				Debug.Log("REMOVING STAT : " + self.life.name);
 				self.life.RemoveStatEff(StatEffID.EnhanceIce);
-
-				return ShowEffect(effShower, self, target, StatEffID.EnhanceIce); 
-				//##############################
-				//이펙트 시점이 다름. 타격 제외 이펙트는 사용 시점에서 등장.
 			}
 		}
-		return null;
 	}
 
 	public static void ApplyStat(Actor to, Actor by, StatEffID id, float dur, float pow = 1)

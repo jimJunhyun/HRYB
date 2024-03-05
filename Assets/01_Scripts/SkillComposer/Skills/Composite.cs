@@ -55,10 +55,12 @@ public class Composite : Compose, IComposer
 
 	internal override void MyOperation(Actor self)
 	{
-		for (int i = 0; i < childs.Count; i++)
-		{
-			childs[i].MyOperation(self);
-		}
+		GameManager.instance.StartCoroutine(DelOperate(self));
+		//for (int i = 0; i < childs.Count; i++)
+		//{
+		//	Debug.Log("!!!@@@@@@@2");
+		//	childs[i].MyOperation(self);
+		//}
 	}
 
 	public override void UpdateStatus()
@@ -105,12 +107,15 @@ public class Composite : Compose, IComposer
 			Debug.Log("ARROW SHOOT : " + childs[i].name);
 			if (isPlayAnim)
 			{
+				Debug.Log("PLAYED ANIM");
 				(GameManager.instance.pActor.anim as PlayerAnim).SetSkillAtomCount(childs.Count - 1);
 				(GameManager.instance.pActor.anim as PlayerAnim).SetAttackTrigger();
+				childs[i].Operate(self);
 			}
 			else
 			{
-				childs[i].Operate(self);
+				Debug.Log("NOT PLAYING ANIM>");
+				childs[i].MyOperation(self);
 			}
 			yield return new WaitForSeconds(composeDel);
 		}

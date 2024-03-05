@@ -12,11 +12,16 @@ public abstract class AttackBase : Leaf
 
 	protected virtual void OnValidate()
 	{
-		relatedTransform = GameObject.Find(relateTrmName).transform;
+		relatedTransform = GameObject.Find(relateTrmName)?.transform;
 		if(relatedTransform == null)
 		{
 			Debug.Log($"NO TRANSFORM FOUND IN SUCH NAME : {relateTrmName}");
 		}
+	}
+
+	public override void Operate(Actor self)
+	{
+
 	}
 
 	protected void DoDamage(Actor to, Actor by)

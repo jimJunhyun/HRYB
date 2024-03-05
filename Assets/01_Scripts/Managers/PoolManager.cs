@@ -35,16 +35,22 @@ public class PoolManager : MonoBehaviour
 			for (int j = 0; j < list.poolList[i].num; j++)
 			{
 				GameObject o = Instantiate(list.poolList[i].obj, Vector3.zero, Quaternion.identity, transform);
-				o.name = list.poolList[i].obj.name;
-				int iId = o.transform.GetInstanceID();
+				sb.Append(list.poolList[i].obj.name);
+				sb.Append('&');
+				sb.Append(j);
+				sb.Append('&');
+				o.name = sb.ToString();
+				sb.Clear();
+				o.transform.GetHashCode();
+				//int iId = o.transform.GetInstanceID();
 				for (int k = 0; k < o.transform.childCount; k++)
 				{
 					Transform child = o.transform.GetChild(k);
 					if(child.name == "TrailPos" || child.name == "WhirlPos")
 					{
-						sb.Append(iId);
+						sb.Append(o.transform.name);
 						sb.Append('_');
-						sb.Append(o.name);
+						sb.Append(child.name);
 						child.name = sb.ToString();
 						sb.Clear();
 					}
@@ -58,7 +64,7 @@ public class PoolManager : MonoBehaviour
 	public static GameObject GetObject(string name, Vector3 pos, Quaternion rot)
 	{
 		StackWithName<GameObject> st;
-		if ((st = pooleds.Find(item => item.name == name)) != null)
+		if ((st = pooleds.Find(item => SimilarName(item.name, name))) != null)
 		{
 			if(st.data.Count > 1)
 			{
@@ -77,14 +83,14 @@ public class PoolManager : MonoBehaviour
 				return res;
 			}
 		}
-		Debug.LogError($"Item named {name} doesn't exist!");
+		Debug.LogWarning($"Item named {name} doesn't exist!");
 		return null;
 	}
 
 	public static GameObject GetObject(string name, Vector3 pos, Quaternion rot, float lifetime)
 	{
 		StackWithName<GameObject> st;
-		if ((st = pooleds.Find(item => item.name == name)) != null)
+		if ((st = pooleds.Find(item => SimilarName(item.name, name))) != null)
 		{
 			if (st.data.Count > 1)
 			{
@@ -105,14 +111,14 @@ public class PoolManager : MonoBehaviour
 				return res;
 			}
 		}
-		Debug.LogError($"Item named {name} doesn't exist!");
+		Debug.LogWarning($"Item named {name} doesn't exist!");
 		return null;
 	}
 
 	public static GameObject GetObject(string name, Transform parent)
 	{
 		StackWithName<GameObject> st;
-		if ((st = pooleds.Find(item => item.name == name)) != null)
+		if ((st = pooleds.Find(item => SimilarName(item.name, name))) != null)
 		{
 			if(st.data.Count > 1)
 			{
@@ -133,14 +139,14 @@ public class PoolManager : MonoBehaviour
 			}
 
 		}
-		Debug.LogError($"Item named {name} doesn't exist!");
+		Debug.LogWarning($"Item named {name} doesn't exist!");
 		return null;
 	}
 
 	public static GameObject GetObject(string name, Transform parent, float lifetime)
 	{
 		StackWithName<GameObject> st;
-		if ((st = pooleds.Find(item => item.name == name)) != null)
+		if ((st = pooleds.Find(item => SimilarName(item.name, name))) != null)
 		{
 			if(st.data.Count > 1)
 			{
@@ -162,14 +168,14 @@ public class PoolManager : MonoBehaviour
 			}
 			
 		}
-		Debug.LogError($"Item named {name} doesn't exist!");
+		Debug.LogWarning($"Item named {name} doesn't exist!");
 		return null;
 	}
 
 	public static GameObject GetObject(string name, Vector3 pos, Vector3 forward)
 	{
 		StackWithName<GameObject> st;
-		if ((st = pooleds.Find(item => item.name == name)) != null)
+		if ((st = pooleds.Find(item => SimilarName(item.name, name))) != null)
 		{
 			if(st.data.Count > 1)
 			{
@@ -188,14 +194,14 @@ public class PoolManager : MonoBehaviour
 				return res;
 			}
 		}
-		Debug.LogError($"Item named {name} doesn't exist!");
+		Debug.LogWarning($"Item named {name} doesn't exist!");
 		return null;
 	}
 
 	public static GameObject GetObject(string name, Vector3 pos, Vector3 forward, float lifetime)
 	{
 		StackWithName<GameObject> st;
-		if ((st = pooleds.Find(item => item.name == name)) != null)
+		if ((st = pooleds.Find(item => SimilarName(item.name, name))) != null)
 		{
 			if (st.data.Count > 0)
 			{
@@ -216,32 +222,67 @@ public class PoolManager : MonoBehaviour
 				return res;
 			}
 		}
-		Debug.LogError($"Item named {name} doesn't exist!");
+		Debug.LogWarning($"Item named {name} doesn't exist!");
 		return null;
 	}
-
+	
 	public static void ReturnObject(GameObject obj)
 	{
 		StackWithName<GameObject> st;
 		
-		if ((st = pooleds.Find(item => item.name == obj.name)) != null)
+		if ((st = pooleds.Find(item => SimilarName(item.name, obj.name))) != null)
 		{
 			obj.SetActive(false);
 			obj.transform.SetParent(self);
 			obj.transform.position = Vector3.zero;
 			obj.transform.rotation = Quaternion.identity;
 			obj.transform.localScale = Vector3.one;
+			
 			st.data.Push(obj);
 		}
 		else
 		{
-			Debug.LogError($"{obj.name} doesn't exist in pool!");
+			Debug.LogWarning($"{obj.name} doesn't exist in pool!");
 		}
+	}
+
+	public static void ReturnAllChilds(GameObject obj)
+	{
+		ReturnChild(obj);
+	}
+
+	static void ReturnChild(GameObject obj)
+	{
+		for (int i = 0; i < obj.transform.childCount; i++)
+		{
+			ReturnChild(obj.transform.GetChild(i).gameObject);
+		}
+		ReturnObject(obj);
 	}
 
 	static IEnumerator DelReturner(GameObject obj, float t)
 	{
 		yield return new WaitForSeconds(t);
 		ReturnObject(obj);
+	}
+
+	static bool SimilarName(string a, string b)
+	{
+		if(a.Trim('&').Length == a.Length && b.Trim('&').Length == b.Length)
+		{
+			return a == b;
+		}
+		else if(a.Trim('&').Length == a.Length)
+		{
+			string comp = b.Split('&')[0];
+			return a.Equals(comp);
+		}
+		else if(b.Trim('&').Length == b.Length)
+		{
+			string comp = a.Split('&')[0];
+			return b.Equals(comp);
+		}
+		return a == b;
+		
 	}
 }
