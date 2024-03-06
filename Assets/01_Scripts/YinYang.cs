@@ -15,33 +15,33 @@ public enum WXInfo
 
 public enum YYInfo
 {
-    Yin,
-    Yang,
+    Black,
+    White,
 
     Max
 }
 [System.Serializable]
 public class YinYang
 {
-    public float yinAmt;
-    public float yangAmt;
+    public float black;
+    public float white;
 
-    public YinYang(float yin, float yang)
+    public YinYang(float blk, float wht)
 	{
-		yinAmt= yin;
-		yangAmt = yang;
+		black= blk;
+		white = wht;
 	}
 
 	public YinYang(float v)
 	{
-		yinAmt = v;
-		yangAmt = v;
+		black = v;
+		white = v;
 	}
 
 	public YinYang(YinYang origin)
 	{
-		yinAmt = origin.yinAmt;
-		yangAmt = origin.yangAmt;
+		black = origin.black;
+		white = origin.white;
 	}
 
 	//public float GetBalanceRatio()
@@ -55,10 +55,10 @@ public class YinYang
 		{
 			switch (i)
 			{
-                case ((int)YYInfo.Yin):
-                    return yinAmt;
-                case ((int)YYInfo.Yang):
-                    return yangAmt;
+                case ((int)YYInfo.Black):
+                    return black;
+                case ((int)YYInfo.White):
+                    return white;
                 default:
                     return -1;
 			}
@@ -67,11 +67,11 @@ public class YinYang
 		{
             switch (i)
             {
-                case ((int)YYInfo.Yin):
-                    yinAmt = value;
+                case ((int)YYInfo.Black):
+                    black = value;
                     break;
-                case ((int)YYInfo.Yang):
-                    yangAmt = value;
+                case ((int)YYInfo.White):
+                    white = value;
                     break;
                 default:
                     break;
@@ -81,23 +81,23 @@ public class YinYang
 
 	public static YinYang operator+(YinYang a, YinYang b)
 	{
-		return new YinYang(a.yinAmt + b.yinAmt, a.yangAmt + b.yangAmt);
+		return new YinYang(a.black + b.black, a.white + b.white);
 	}
 
 	public static YinYang operator -(YinYang a, YinYang b)
 	{
-		return new YinYang(a.yinAmt - b.yinAmt, a.yangAmt - b.yangAmt);
+		return new YinYang(a.black - b.black, a.white - b.white);
 	}
 
 
 	public static YinYang operator *(YinYang a, float b)
 	{
-		return new YinYang(a.yinAmt * b, a.yangAmt * b);
+		return new YinYang(a.black * b, a.white * b);
 	}
 
 	public static YinYang operator /(YinYang a, float b)
 	{
-		return new YinYang(a.yinAmt / b, a.yangAmt / b);
+		return new YinYang(a.black / b, a.white / b);
 	}
 
 	public static YinYang Zero

@@ -46,7 +46,7 @@ public class LifeModule : Module
 
 	public virtual bool isDead
 	{
-		get => yy.yangAmt <= 0;
+		get => yy.white <= 0;
 	}
 
 	protected bool regenOn = true;
@@ -61,15 +61,15 @@ public class LifeModule : Module
 	{
 		if (regenOn)
 		{
-			if(Mathf.Abs((diff = initYinYang.yangAmt - yy.yangAmt)) > regenThreshold)
+			if(Mathf.Abs((diff = initYinYang.white - yy.white)) > regenThreshold)
 			{
 				regenOn = true;
-				yy.yangAmt += TotalRegenSpeed.yangAmt * Time.deltaTime;
+				yy.white += TotalRegenSpeed.white * Time.deltaTime;
 			}
-			if(Mathf.Abs((diff = initYinYang.yinAmt - yy.yinAmt)) > regenThreshold)
+			if(Mathf.Abs((diff = initYinYang.black - yy.black)) > regenThreshold)
 			{
 				regenOn = true;
-				yy.yinAmt += TotalRegenSpeed.yinAmt * Time.deltaTime;
+				yy.black += TotalRegenSpeed.black * Time.deltaTime;
 			}
 		}
 		//foreach (var item in appliedDebuff)
@@ -138,13 +138,13 @@ public class LifeModule : Module
 
 	protected virtual void DamageYYBase(YinYang data)
 	{
-		DecreaseYY(data.yinAmt, YYInfo.Yin);
-		DecreaseYY(data.yangAmt, YYInfo.Yang);
+		DecreaseYY(data.black, YYInfo.Black);
+		DecreaseYY(data.white, YYInfo.White);
 	}
 
-	public virtual void DamageYY(float yin, float yang, DamageType type, float dur = 0, float tick = 0)
+	public virtual void DamageYY(float black, float white, DamageType type, float dur = 0, float tick = 0)
 	{
-		YinYang data = new YinYang(yin, yang);
+		YinYang data = new YinYang(black, white);
 		switch (type)
 		{
 			case DamageType.DirectHit:
@@ -214,8 +214,8 @@ public class LifeModule : Module
 				break;
 			case DamageType.Continuous:
 				YinYang incPerSec = YinYang.Zero;
-				incPerSec.yinAmt = data.yinAmt / dur;
-				incPerSec.yangAmt = data.yangAmt / dur;
+				incPerSec.black = data.black / dur;
+				incPerSec.white = data.white / dur;
 				while (curT < dur)
 				{
 					curT += Time.deltaTime;

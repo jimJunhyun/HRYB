@@ -47,16 +47,8 @@ public class Kick : AttackBase
 				//Debug.Log(hitEffs.Count);
 				Vector3 effPos = life.transform.GetComponent<Collider>().ClosestPointOnBounds(caster.transform.position);
 				(self.atk as PlayerAttack).onNextSkill?.Invoke(self, this);
-				if ((self.atk as PlayerAttack).onNextHit.GetInvocationList().Length > 0)
-				{
-					(self.atk as PlayerAttack).onNextHit.Invoke(effPos);
-
-				}
-				else
-				{
-					PoolManager.GetObject("Hit 26", effPos, -caster.transform.forward, 2.5f);
-
-				}
+				(self.atk as PlayerAttack).onNextHit?.Invoke(effPos);
+				PoolManager.GetObject("Hit 26", effPos, -caster.transform.forward, 2.5f);
 			}
 			
 		});

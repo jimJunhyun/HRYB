@@ -53,7 +53,7 @@ public class Arrow : DamageObject
 
 	HashSet<StatusEffectApplyData> statData = new HashSet<StatusEffectApplyData>();
 	Action<Vector3> hitEffData;
-
+	//@@@@@@@@@@@@화살이 간헐적으로 사라지는 경우 발견
 	public override void OnTriggerEnter(Collider other)
 	{
 		if(!other.isTrigger && detectOn)
@@ -71,8 +71,8 @@ public class Arrow : DamageObject
 				}
 				CameraManager.instance.ShakeCamFor(0.1f);
 			}
-			//Debug.Log(other.name);
 			base.OnTriggerEnter(other);
+			Debug.Log(other.name + " 과 충돌");
 			Returner();
 		}
 		
@@ -168,6 +168,7 @@ public class Arrow : DamageObject
 	IEnumerator DelReturn()
 	{
 		yield return waitTillDisappear;
+		Debug.Log("!!!!!!!!!!!!!!!!!!!!!!!!");
 		Returner();
 		c = null;
 	}

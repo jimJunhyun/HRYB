@@ -29,7 +29,7 @@ public class FireStrongArrow : AttackBase
 		localRot.y += angleY;
 		r.transform.localEulerAngles = localRot;
 		//UnityEditor.EditorApplication.isPaused = true;
-		r.SetInfo(damage);
+		r.SetInfo(self.atk.initDamage * damageMult);
 		r.SetOwner(self);
 		(self.atk as PlayerAttack).onNextUse?.Invoke(r.gameObject);
 		(self.atk as PlayerAttack).onNextSkill?.Invoke(self, this);

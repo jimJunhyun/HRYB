@@ -24,8 +24,9 @@ public class Composite : Compose, IComposer
 
 	public override void Operate(Actor self)
 	{
-		Debug.Log("OPERATING : " + name);
-		GameManager.instance.StartCoroutine(DelOperate(self));
+		//Debug.Log(name + " isPlayAnim : " + isPlayAnim);
+		//Debug.Log("OPERATING : " + name);
+		//GameManager.instance.StartCoroutine(DelOperate(self));
 	}
 
 	public void OperateAt(Actor self, int idx)

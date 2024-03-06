@@ -43,8 +43,17 @@ public class MoveModule : Module
 	{
 		get=>Physics.Raycast(transform.position, Vector3.down, groundThreshold, 1<< GameManager.GROUNDLAYER);
 	}
-
-	public bool immovable = false;
+	bool nomove = true;
+	bool prevImmovability = false;
+	public bool immovable 
+	{
+		get => nomove;
+		set
+		{
+			prevImmovability = nomove;
+			nomove = value;
+		}
+	}
 
 	protected MoveStates curStat;
 	public virtual MoveStates moveStat
@@ -134,7 +143,11 @@ public class MoveModule : Module
 		moveStat  =MoveStates.Walk;
 		moveDir = Vector3.zero;
 		forceDir = Vector3.zero;
+		nomove = false;
 	}
 
-	
+	public void RevertImmovableState()
+	{
+		immovable = prevImmovability;
+	}
 }

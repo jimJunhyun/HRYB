@@ -10,11 +10,10 @@ public enum StatEffID
 	Immune,
 	Blind,
 	Slow,
+	Bind,
 
 	EnhanceIce,
 	EnhanceFire,
-
-	Burn,
 
 	Max
 }
@@ -45,6 +44,10 @@ public class StatusEffects
 	public StatVfxDictionary effDict;
 	public Hashtable idStatEffPairs = new Hashtable();
 
+	Action<Actor, Compose> enhanceIceAction;
+
+	Compose lastEnhancedSkill = null;
+
 	public StatusEffects()
 	{
 		idStatEffPairs.Add(((int)StatEffID.Knockback), new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", OnKnockbackActivated, OnKnockbackDebuffUpdated, OnKnockbackDebuffEnded));
@@ -52,12 +55,16 @@ public class StatusEffects
 		idStatEffPairs.Add(((int)StatEffID.Blind), new StatusEffect("실명", "눈 앞이 어두워집니다.", OnBlindActivated, OnBlindUpdated, OnBlindEnded));
 		idStatEffPairs.Add(((int)StatEffID.Slow), new StatusEffect("둔화", "움직임이 느려집니다.", OnSlowActivated, OnSlowUpdated, OnSlowEnded));
 		idStatEffPairs.Add(((int)StatEffID.EnhanceIce), new StatusEffect("냉기", "다음 공격에 얼음의 힘을 부여합니다.", OnEnhanceIceActivated, OnEnhanceIceUpdated, OnEnhanceIceEnded));
+		idStatEffPairs.Add(((int)StatEffID.Bind), new StatusEffect("속박", "발이 묶여 이동할 수 없습니다.", OnBindActivated, OnBindUpdated, OnBindEnded));
+		idStatEffPairs.Add(((int)StatEffID.EnhanceFire), new StatusEffect("화상", "불로 인해 피해를 입습니다.", OnEnhanceFireActivated, OnEnhanceFireUpdated, OnEnhanceFireEnded));
 
 		idStatEffPairs.Add(new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", OnKnockbackActivated, OnKnockbackDebuffUpdated, OnKnockbackDebuffEnded), ((int)StatEffID.Knockback));
 		idStatEffPairs.Add(new StatusEffect("무적", "어머니의 비호를 받고 있습니다.", OnImmuneActivated, OnImmuneUpdated, OnImmuneEnded), ((int)StatEffID.Immune));
 		idStatEffPairs.Add(new StatusEffect("실명", "눈 앞이 어두워집니다.", OnBlindActivated, OnBlindUpdated, OnBlindEnded),((int)StatEffID.Blind));
 		idStatEffPairs.Add(new StatusEffect("둔화", "움직임이 느려집니다.", OnSlowActivated, OnSlowUpdated, OnSlowEnded), ((int)StatEffID.Slow));
 		idStatEffPairs.Add(new StatusEffect("냉기", "다음 공격에 얼음의 힘을 부여합니다.", OnEnhanceIceActivated, OnEnhanceIceUpdated, OnEnhanceIceEnded), ((int)StatEffID.EnhanceIce));
+		idStatEffPairs.Add(new StatusEffect("속박", "발이 묶여 이동할 수 없습니다.", OnBindActivated, OnBindUpdated, OnBindEnded), ((int)StatEffID.Bind));
+		idStatEffPairs.Add(new StatusEffect("화상", "불로 인해 피해를 입습니다.", OnEnhanceFireActivated, OnEnhanceFireUpdated, OnEnhanceFireEnded), ((int)StatEffID.EnhanceFire));
 
 
 		effDict = Resources.Load<StatVfxDictionary>("StatEffList");
@@ -125,11 +132,25 @@ public class StatusEffects
 		self.move.speedMod += power;
 	}
 
+	void OnBindActivated(Actor self, Actor inflicter, float power)
+	{
+		self.move.immovable = true;
+	}
+	void OnBindUpdated(Actor self, float power)
+	{
+
+	}
+	void OnBindEnded(Actor self, float power)
+	{
+		self.move.RevertImmovableState();
+	}
+
 	void OnEnhanceIceActivated(Actor self, Actor inflicter, float power)
 	{
 		Debug.Log("얼음강화 사용됨");
+		enhanceIceAction = GetEffectWithLevel(EnhanceIce, (int)power);
 		(self.atk as PlayerAttack).onNextUse += ShowUseEnhanceIce;
-		(self.atk as PlayerAttack).onNextSkill += EnhanceIce;
+		(self.atk as PlayerAttack).onNextSkill += enhanceIceAction;
 		(self.atk as PlayerAttack).onNextHit += ShowHitEnhanceIce;
 		//(self.atk as PlayerAttack).onNextUse += ShowEffect;
 	}
@@ -141,8 +162,9 @@ public class StatusEffects
 	{
 		Debug.Log("!!!!!!!!!!!!!");
 		(self.atk as PlayerAttack).onNextUse -= ShowUseEnhanceIce;
-		(self.atk as PlayerAttack).onNextSkill -= EnhanceIce;
+		(self.atk as PlayerAttack).onNextSkill -= enhanceIceAction;
 		(self.atk as PlayerAttack).onNextHit -= ShowHitEnhanceIce;
+		enhanceIceAction = null;
 		//스킬 부여 효과 지우기?
 	}
 
@@ -154,6 +176,28 @@ public class StatusEffects
 	{
 		ShowHitEffect(pos, StatEffID.EnhanceIce);
 	}
+	Action<Actor, Compose> GetEffectWithLevel(Action<Actor, Compose, int> act, int lv)
+	{
+		return (a, c) => { act(a, c, lv); };
+	}
+
+	void OnEnhanceFireActivated(Actor self, Actor inflicter, float power)
+	{
+		Debug.Log("화염강화 사용됨");
+		enhanceIceAction = GetEffectWithLevel(EnhanceFire, (int)power);
+		(self.atk as PlayerAttack).onNextUse += ShowUseEnhanceIce;
+		(self.atk as PlayerAttack).onNextSkill += enhanceIceAction;
+		(self.atk as PlayerAttack).onNextHit += ShowHitEnhanceIce;
+	}
+	void OnEnhanceFireUpdated(Actor self, float power)
+	{
+	}
+	void OnEnhanceFireEnded(Actor self, float power)
+	{
+		Debug.Log("화상제거됨");
+		//스킬 부여 효과 지우기?
+	}
+
 
 	void ShowUseEffect(GameObject effShower, StatEffID stat)
 	{
@@ -210,7 +254,7 @@ public class StatusEffects
 		}
 	}
 
-	void EnhanceIce(Actor self, Compose skInfo)
+	void EnhanceIce(Actor self, Compose skInfo, int power)
 	{
 		Debug.Log("얼음공격 : " + skInfo.tags.ToString());
 		if(skInfo.tags.ContainsTag(SkillTags.AttackEnhancable))
@@ -218,7 +262,31 @@ public class StatusEffects
 			Debug.Log("얼음공격으로 강화디ㅗㅁ.");
 			if((skInfo is AttackBase atk))
 			{
-				atk.statEff.Add(new StatusEffectApplyData(StatEffID.Slow, 15 /*(레벨에 따른 변화)*/, 5)); //더하긴 했는데, 언제 지우지?
+				if(power >= 6)
+				{
+					atk.statEff.Add(new StatusEffectApplyData(StatEffID.Bind, 0, 5));
+				}
+				else
+				{
+					atk.statEff.Add(new StatusEffectApplyData(StatEffID.Slow, (10 + 5 * (power * (power - 1) / 2)) * 0.01f, 5));; //더하긴 했는데, 언제 지우지?
+					lastEnhancedSkill = atk;
+				}
+				Debug.Log("REMOVING STAT : " + self.life.name);
+				self.life.RemoveStatEff(StatEffID.EnhanceIce);
+			}
+		}
+	}
+
+	void EnhanceFire(Actor self, Compose skInfo, int power)
+	{
+		Debug.Log("화염공격 : " + skInfo.tags.ToString());
+		if (skInfo.tags.ContainsTag(SkillTags.AttackEnhancable))
+		{
+			Debug.Log("화염공격으로 강화디ㅗㅁ.");
+			if ((skInfo is AttackBase atk))
+			{
+				
+				lastEnhancedSkill = atk;
 				Debug.Log("REMOVING STAT : " + self.life.name);
 				self.life.RemoveStatEff(StatEffID.EnhanceIce);
 			}
