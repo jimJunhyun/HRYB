@@ -59,11 +59,11 @@ public class PlayerAttack : AttackModule
 
 	public void OnAim(InputAction.CallbackContext context)
 	{
-		if (GameManager.instance.pinven.stat == HandStat.Weapon)
-		{
+		//if (GameManager.instance.pinven.stat == HandStat.Weapon)
+		//{
 			if (!clickL)
 			{
-				if (NotAttack && !clickR)
+				if (NoAttack && !clickR)
 					return;
 				//Debug.LogWarning("phase : " +context.phase  + " : " + context.started + " : " + context.canceled);
 				if (!clickR && context.started)
@@ -76,25 +76,23 @@ public class PlayerAttack : AttackModule
 					(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.RClick); 
 				}
 				else if (clickR && context.canceled)
-				{
-
-					
+				{	
 					clickR = false;
 					(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
 				}
 				
-			}
+			//}
 			
 		}
 	}
 
 	public void OnAttack(InputAction.CallbackContext context)
 	{
-		if (GameManager.instance.pinven.stat == HandStat.Weapon)
-		{
+		//if (GameManager.instance.pinven.stat == HandStat.Weapon)
+		//{
 			if (!clickR)
 			{
-				if (NotAttack && !clickL)
+				if (NoAttack && !clickL)
 					return;
 				if (context.started && !clickL)
 				{
@@ -111,14 +109,14 @@ public class PlayerAttack : AttackModule
 				}
 			}
 				
-		}
-		else if (GameManager.instance.pinven.stat == HandStat.Item && context.performed)
-		{
-			if (!GameManager.instance.uiManager.isWholeScreenUIOn)
-			{
-				GameManager.instance.pinven.CurHoldingItem.info?.Use();
-			}
-		}
+		//}
+		//else if (GameManager.instance.pinven.stat == HandStat.Item && context.performed)
+		//{
+		//	if (!GameManager.instance.uiManager.isWholeScreenUIOn)
+		//	{
+		//		GameManager.instance.pinven.CurHoldingItem.info?.Use();
+		//	}
+		//}
 	}
 
 	public bool ThrowRope()
@@ -159,10 +157,10 @@ public class PlayerAttack : AttackModule
 		aimStart = Time.time;
 	}
 
-	public void ObtainBowRender()
-	{
-		animActions.eBowRend.enabled = true;
-	}
+	//public void ObtainBowRender()
+	//{
+	//	animActions.eBowRend.enabled = true;
+	//}
 
 	IEnumerator DelayResetCam()
 	{

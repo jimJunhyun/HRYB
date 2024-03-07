@@ -11,6 +11,29 @@ public enum DamageType
 	Continuous, //지속시간동안 지정된 만큼 변함. 매 틱마다 적용
 }
 
+public struct AppliedStatus
+{
+	public StatusEffect eff;
+	public float dur;
+
+	public AppliedStatus(StatusEffect e, float d)
+	{
+		eff = e;
+		dur = d;
+	}
+
+	public override bool Equals(object obj)
+	{
+		return obj is AppliedStatus status &&
+			   eff.Equals(status.eff);
+	}
+
+	public override int GetHashCode()
+	{
+		return HashCode.Combine(eff);
+	}
+}
+
 public class LifeModule : Module
 {
 	public const float IMMUNETIME = 0.3f;
@@ -41,8 +64,8 @@ public class LifeModule : Module
 
 	public float TotalApplySpeed { get => baseApplySpeed * applyMod;}
 
-
-	internal Dictionary<StatusEffect, float> appliedDebuff = new Dictionary<StatusEffect, float>();
+	
+	internal List<AppliedStatus> appliedDebuff = new List<AppliedStatus>();
 
 	public virtual bool isDead
 	{
@@ -87,19 +110,57 @@ public class LifeModule : Module
 		}
 	}
 
-	public Action<Actor> ApplyStatus(StatusEffect eff, Actor applier, float power, float dur)
+	public Action<Actor> ApplyStatus(StatusEffect eff, Actor applier, float power, float dur, out int effIndex)
 	{
-		if (!appliedDebuff.ContainsKey(eff))
+		int idx = appliedDebuff.FindIndex(item => item.eff.Equals(eff));
+
+		if(eff.method == StatEffApplyMethod.Overwrite)
 		{
-			appliedDebuff.Add(eff, dur);
+			RemoveStatEff(idx);
+		}
+		if (idx == -1 || eff.method == StatEffApplyMethod.Stackable || eff.method == StatEffApplyMethod.Overwrite)
+		{
+			appliedDebuff.Add( new AppliedStatus(eff, dur));
 			eff.onApplied.Invoke(GetActor(), applier, power);
 			Action<Actor> updAct = (self) => { eff.onUpdated(self, power);};
 			GetActor().updateActs += updAct;
+			effIndex = idx;
+
 			return updAct;
 		}
 		else
 		{
-			appliedDebuff[eff] += dur;
+			switch (eff.method)
+			{
+				case StatEffApplyMethod.AddDuration:
+					{
+						AppliedStatus stat = appliedDebuff[idx];
+						stat.dur += dur;
+						appliedDebuff[idx] = stat;
+					}
+					break;
+				case StatEffApplyMethod.AddPower:
+					{
+						//?????????????
+					}
+					break;
+				case StatEffApplyMethod.AddDurationAndPower:
+					{
+						AppliedStatus stat = appliedDebuff[idx];
+						stat.dur += dur;
+						//?????????????
+						appliedDebuff[idx] = stat;
+					}
+					break;
+				case StatEffApplyMethod.Overwrite:
+				case StatEffApplyMethod.Stackable:
+				case StatEffApplyMethod.NoOverwrite:
+				default:
+					break;
+			}
+			
+
+			effIndex = -1;
 			return null;
 		}
 	}
@@ -108,8 +169,8 @@ public class LifeModule : Module
 	{
 
 		Debug.Log($"update act count : {GetActor().updateActs.GetInvocationList().Length}");
-
-		if (appliedDebuff.Remove(eff))
+		int idx = appliedDebuff.FindIndex(item=>item.eff.Equals(eff));
+		if (idx != -1 && appliedDebuff.Remove(appliedDebuff[idx]))
 		{
 			Debug.Log($"{eff.name}사라짐");
 			GetActor().updateActs -= myUpdateAct;
@@ -120,18 +181,24 @@ public class LifeModule : Module
 		
 	}
 
-	public void RemoveStatEff(StatEffID id)
+	public void RemoveStatEff(int idx)
 	{
 		Debug.Log(name + " EffectCount : " + appliedDebuff.Count);
-		foreach (var item in appliedDebuff)
+		Debug.Log("스탯제거중...");
+		AppliedStatus stat = appliedDebuff[idx];
+		stat.dur = 0;
+		appliedDebuff[idx] = stat;
+	}
+
+	public void RemoveAllStatEff(StatEffID id)
+	{
+		for (int i = 0; i < appliedDebuff.Count; i++)
 		{
-			Debug.Log("스탯제거중...");
-			if(id == (StatEffID)GameManager.instance.statEff.idStatEffPairs[item.Key])
+			if (((StatusEffect)GameManager.instance.statEff.idStatEffPairs[id]).Equals(appliedDebuff[i].eff))
 			{
-				Debug.Log("발견, 지속시간 0으로//");
-				appliedDebuff.Remove(item.Key);
-				appliedDebuff.Add(item.Key, 0);
-				break;
+				AppliedStatus stat = appliedDebuff[i];
+				stat.dur = 0;
+				appliedDebuff[i] = stat;
 			}
 		}
 	}

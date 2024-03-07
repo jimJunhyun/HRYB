@@ -17,25 +17,24 @@ public class StackWithName<T>{
 
 public class PoolManager : MonoBehaviour
 {
-	PoolList list;
 	static List<StackWithName<GameObject>> pooleds = new List<StackWithName<GameObject>>();
 
+	static StringBuilder sb = new StringBuilder();
 	static Transform self;
 
 	public void Awake()
 	{
-		StringBuilder sb = new StringBuilder();
 		self = transform;
 
-		list = Resources.Load<PoolList>("PoolList");
+		List<PoolElement> datas = new List<PoolElement>(Resources.LoadAll<PoolElement>("PoolList"));
 
-		for (int i = 0; i < list.poolList.Count; i++)
+		for (int i = 0; i < datas.Count; i++)
 		{
-			pooleds.Add(new StackWithName<GameObject>(list.poolList[i].obj.name));
-			for (int j = 0; j < list.poolList[i].num; j++)
+			pooleds.Add(new StackWithName<GameObject>(datas[i].data.obj.name));
+			for (int j = datas[i].data.num - 1; j >= 0; --j)
 			{
-				GameObject o = Instantiate(list.poolList[i].obj, Vector3.zero, Quaternion.identity, transform);
-				sb.Append(list.poolList[i].obj.name);
+				GameObject o = Instantiate(datas[i].data.obj, Vector3.zero, Quaternion.identity, transform);
+				sb.Append(datas[i].data.obj.name);
 				sb.Append('&');
 				sb.Append(j);
 				sb.Append('&');
@@ -59,12 +58,14 @@ public class PoolManager : MonoBehaviour
 				pooleds[i].data.Push(o);
 			}
 		}
+		sb.Clear();
 	}
 	
 	public static GameObject GetObject(string name, Vector3 pos, Quaternion rot)
 	{
 		StackWithName<GameObject> st;
-		if ((st = pooleds.Find(item => SimilarName(item.name, name))) != null)
+		int idx = pooleds.FindIndex(item => SimilarName(item.name, name));
+		if ((st = pooleds[idx]) != null)
 		{
 			if(st.data.Count > 1)
 			{
@@ -72,14 +73,31 @@ public class PoolManager : MonoBehaviour
 				res.SetActive(true);
 				res.transform.position = pos;
 				res.transform.rotation = rot;
+				pooleds[idx] = st;
 				return res;
 			}
 			else
 			{
-				GameObject res = Instantiate(st.data.Peek(), Vector3.zero, Quaternion.identity, self);
-				res.name = name;
+
+				GameObject res = st.data.Peek();
+
+				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, self);
+				string[] str = res.name.Trim('&').Split('&');
+				sb.Append(str[0]);
+				sb.Append('&');
+				sb.Append(int.Parse(str[1]) + 1);
+				sb.Append('&');
+				added.name = sb.ToString();
+				sb.Clear();
+				added.SetActive(false);
+
+				res.SetActive(true);
 				res.transform.position = pos;
 				res.transform.rotation = rot;
+				st.data.Pop();
+
+				st.data.Push(added);
+				pooleds[idx] = st;
 				return res;
 			}
 		}
@@ -90,7 +108,8 @@ public class PoolManager : MonoBehaviour
 	public static GameObject GetObject(string name, Vector3 pos, Quaternion rot, float lifetime)
 	{
 		StackWithName<GameObject> st;
-		if ((st = pooleds.Find(item => SimilarName(item.name, name))) != null)
+		int idx = pooleds.FindIndex(item => SimilarName(item.name, name));
+		if ((st = pooleds[idx]) != null)
 		{
 			if (st.data.Count > 1)
 			{
@@ -99,15 +118,31 @@ public class PoolManager : MonoBehaviour
 				res.transform.position = pos;
 				res.transform.rotation = rot;
 				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
+				pooleds[idx] = st;
 				return res;
 			}
 			else
 			{
-				GameObject res = Instantiate(st.data.Peek(), Vector3.zero, Quaternion.identity, self);
-				res.name = name;
+				GameObject res = st.data.Peek();
+
+				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, self);
+				string[] str = res.name.Trim('&').Split('&');
+				sb.Append(str[0]);
+				sb.Append('&');
+				sb.Append(int.Parse(str[1]) + 1);
+				sb.Append('&');
+				added.name = sb.ToString();
+				sb.Clear();
+				added.SetActive(false);
+
+				res.SetActive(true);
 				res.transform.position = pos;
 				res.transform.rotation = rot;
 				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
+				st.data.Pop();
+
+				st.data.Push(added);
+				pooleds[idx] = st;
 				return res;
 			}
 		}
@@ -118,7 +153,8 @@ public class PoolManager : MonoBehaviour
 	public static GameObject GetObject(string name, Transform parent)
 	{
 		StackWithName<GameObject> st;
-		if ((st = pooleds.Find(item => SimilarName(item.name, name))) != null)
+		int idx = pooleds.FindIndex(item => SimilarName(item.name, name));
+		if ((st = pooleds[idx]) != null)
 		{
 			if(st.data.Count > 1)
 			{
@@ -127,14 +163,31 @@ public class PoolManager : MonoBehaviour
 				res.transform.SetParent(parent);
 				res.transform.localPosition = Vector3.zero;
 				res.transform.localRotation = Quaternion.identity;
+				pooleds[idx] = st;
 				return res;
 			}
 			else
 			{
-				GameObject res = Instantiate(st.data.Peek(), Vector3.zero, Quaternion.identity, parent);
-				res.name = name;
+				GameObject res = st.data.Peek();
+
+				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, self);
+				string[] str = res.name.Trim('&').Split('&');
+				sb.Append(str[0]);
+				sb.Append('&');
+				sb.Append(int.Parse(str[1]) + 1);
+				sb.Append('&');
+				added.name = sb.ToString();
+				sb.Clear();
+				added.SetActive(false);
+
+				res.SetActive(true);
+				res.transform.SetParent(parent);
 				res.transform.localPosition = Vector3.zero;
 				res.transform.localRotation = Quaternion.identity;
+				st.data.Pop();
+
+				st.data.Push(added);
+				pooleds[idx] = st;
 				return res;
 			}
 
@@ -146,7 +199,8 @@ public class PoolManager : MonoBehaviour
 	public static GameObject GetObject(string name, Transform parent, float lifetime)
 	{
 		StackWithName<GameObject> st;
-		if ((st = pooleds.Find(item => SimilarName(item.name, name))) != null)
+		int idx = pooleds.FindIndex(item => SimilarName(item.name, name));
+		if ((st = pooleds[idx]) != null)
 		{
 			if(st.data.Count > 1)
 			{
@@ -156,14 +210,32 @@ public class PoolManager : MonoBehaviour
 				res.transform.localPosition = Vector3.zero;
 				res.transform.localRotation = Quaternion.identity;
 				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
+				pooleds[idx] = st;
 				return res;
 			}
 			else
 			{
-				GameObject res = Instantiate(st.data.Peek(), Vector3.zero, Quaternion.identity, parent);
-				res.name = name;
+				GameObject res = st.data.Peek();
+
+				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, self);
+				string[] str = res.name.Trim('&').Split('&');
+				sb.Append(str[0]);
+				sb.Append('&');
+				sb.Append(int.Parse(str[1]) + 1);
+				sb.Append('&');
+				added.name = sb.ToString();
+				sb.Clear();
+				added.SetActive(false);
+
+				res.SetActive(true);
+				res.transform.SetParent(parent);
 				res.transform.localPosition = Vector3.zero;
 				res.transform.localRotation = Quaternion.identity;
+				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
+				st.data.Pop();
+
+				st.data.Push(added);
+				pooleds[idx] = st;
 				return res;
 			}
 			
@@ -175,22 +247,44 @@ public class PoolManager : MonoBehaviour
 	public static GameObject GetObject(string name, Vector3 pos, Vector3 forward)
 	{
 		StackWithName<GameObject> st;
-		if ((st = pooleds.Find(item => SimilarName(item.name, name))) != null)
+		int idx = pooleds.FindIndex(item => SimilarName(item.name, name));
+		if ((st = pooleds[idx]) != null)
 		{
+			foreach (var item in st.data)
+			{
+				Debug.Log("Stack : " + item.name);
+			}
+
 			if(st.data.Count > 1)
 			{
 				GameObject res = st.data.Pop();
 				res.SetActive(true);
 				res.transform.position = pos;
 				res.transform.forward = forward;
+				pooleds[idx] = st;
 				return res;
 			}
 			else
 			{
-				GameObject res = Instantiate(st.data.Peek(), Vector3.zero, Quaternion.identity, self);
-				res.name = name;
+				GameObject res = st.data.Peek();
+
+				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, self);
+				string[] str = res.name.Trim('&').Split('&');
+				sb.Append(str[0]);
+				sb.Append('&');
+				sb.Append(int.Parse(str[1]) + 1);
+				sb.Append('&');
+				added.name = sb.ToString();
+				sb.Clear();
+				added.SetActive(false);
+
+				res.SetActive(true);
 				res.transform.position = pos;
 				res.transform.forward = forward;
+				st.data.Pop();
+
+				st.data.Push(added);
+				pooleds[idx] = st;
 				return res;
 			}
 		}
@@ -201,7 +295,8 @@ public class PoolManager : MonoBehaviour
 	public static GameObject GetObject(string name, Vector3 pos, Vector3 forward, float lifetime)
 	{
 		StackWithName<GameObject> st;
-		if ((st = pooleds.Find(item => SimilarName(item.name, name))) != null)
+		int idx = pooleds.FindIndex(item => SimilarName(item.name, name));
+		if ((st = pooleds[idx]) != null)
 		{
 			if (st.data.Count > 0)
 			{
@@ -210,15 +305,31 @@ public class PoolManager : MonoBehaviour
 				res.transform.position = pos;
 				res.transform.forward = forward;
 				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
+				pooleds[idx] = st;
 				return res;
 			}
 			else
 			{
-				GameObject res = Instantiate(st.data.Peek(), Vector3.zero, Quaternion.identity, self);
-				res.name = name;
+				GameObject res = st.data.Peek();
+
+				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, self);
+				string[] str = res.name.Trim('&').Split('&');
+				sb.Append(str[0]);
+				sb.Append('&');
+				sb.Append(int.Parse(str[1]) + 1);
+				sb.Append('&');
+				added.name = sb.ToString();
+				sb.Clear();
+				added.SetActive(false);
+
+				res.SetActive(true);
 				res.transform.position = pos;
 				res.transform.forward = forward;
 				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
+				st.data.Pop();
+
+				st.data.Push(added);
+				pooleds[idx] = st;
 				return res;
 			}
 		}
@@ -238,6 +349,7 @@ public class PoolManager : MonoBehaviour
 			obj.transform.rotation = Quaternion.identity;
 			obj.transform.localScale = Vector3.one;
 			
+			Debug.Log("RETURNED : " + obj.name);
 			st.data.Push(obj);
 		}
 		else

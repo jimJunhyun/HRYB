@@ -9,7 +9,7 @@ public class PoolData
     public int num;
 }
 
-[CreateAssetMenu()]
+
 public class PoolList : ScriptableObject
 {
     public List<PoolData> poolList;

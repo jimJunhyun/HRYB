@@ -181,7 +181,6 @@ public class Arrow : DamageObject
 		ResetOwner();
 		statData.Clear();
 		PoolManager.ReturnAllChilds(gameObject);
-		PoolManager.ReturnObject(gameObject);
 	}
 
 	
