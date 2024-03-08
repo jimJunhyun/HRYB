@@ -69,6 +69,11 @@ public class AnimModule : Module
 		anim.SetTrigger(hash);
 	}
 
+	public void SetBoolModify(string a, bool b)
+	{
+		anim.SetBool(Animator.StringToHash(a), b);
+	}
+
 	public virtual void SetAnimationOverrides(List<string> from, List<AnimationClip> to)
 	{
 		AnimatorOverrideController ctrl = new AnimatorOverrideController(anim.runtimeAnimatorController);

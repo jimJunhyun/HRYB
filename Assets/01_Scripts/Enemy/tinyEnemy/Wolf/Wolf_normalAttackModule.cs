@@ -29,8 +29,8 @@ public class Wolf_normalAttackModule : EnemyAttackModule
 
 	public override void OnAnimationEvent()
 	{
-		left = !left;
-		int a = left == true ? 2 : 1;
+		int a = left ? 1 : 2;
+		
 		_nowCols.Now(transform,(_life) =>
 		{
 			_life.DamageYY(new YinYang(20,0), DamageType.DirectHit);
@@ -57,7 +57,7 @@ public class Wolf_normalAttackModule : EnemyAttackModule
 	public override void Attack()
 	{
 		left = !left;
-		int a = left == true ? 1 : 2;
+		int a = left ? 1 : 2;
 		
 		GameObject obj = PoolManager.GetObject($"Wolf_noraml_Attack", transform);
 		
@@ -67,11 +67,10 @@ public class Wolf_normalAttackModule : EnemyAttackModule
 		}
 		
 		
-		GetActor().anim.SetAttackTrigger();
-		if(left)
-			GetActor().anim.Animators.SetTrigger(Animator.StringToHash(AttackStd + $"{a}"));
-		else
-			GetActor().anim.Animators.SetTrigger(Animator.StringToHash(AttackStd + $"{a}"));
+		//GetActor().anim.SetAttackTrigger();
+		
+		GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"Attack{a}"));
+
 	}
 	
 

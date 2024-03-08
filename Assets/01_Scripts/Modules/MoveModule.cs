@@ -136,5 +136,10 @@ public class MoveModule : Module
 		forceDir = Vector3.zero;
 	}
 
+	public void AddForce(Vector3 amt)
+	{
+		forceDir += amt;
+	}
+
 	
 }

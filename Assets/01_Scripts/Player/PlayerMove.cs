@@ -224,9 +224,7 @@ public class PlayerMove : MoveModule
 					SetClimb();
 				}
 
-				ForceCalc();
-				SlipCalc();
-				GravityCalc();
+				
 
 
 				if (isLocked && target == null)
@@ -295,6 +293,9 @@ public class PlayerMove : MoveModule
 				}
 			}
 		}
+		ForceCalc();
+		SlipCalc();
+		GravityCalc();
 	}
 
 	public void CalcClimbState()

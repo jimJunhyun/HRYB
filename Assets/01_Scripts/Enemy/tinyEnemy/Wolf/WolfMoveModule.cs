@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class WolfMoveModule : MoveModule
 {
@@ -11,7 +12,9 @@ public class WolfMoveModule : MoveModule
 
 	private bool _isMove = false;
 	UnityEngine.AI.NavMeshAgent agent;
-	
+
+	public NavMeshAgent Agent => agent;
+
 	private void Awake()
 	{
 		agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -21,6 +24,7 @@ public class WolfMoveModule : MoveModule
 	public void SetTarget(Transform target)
 	{
 		this._target = target;
+		agent.updatePosition = true;
 	}
 	
 	public override void Move()
@@ -46,6 +50,10 @@ public class WolfMoveModule : MoveModule
 
 	public void StopMove()
 	{
+		agent.updatePosition = false;
+		agent.velocity = new Vector3(0, 0, 0);
+		
+		
 		_isMove = false;
 		SetTarget(transform);
 		self.anim.SetMoveState(false);

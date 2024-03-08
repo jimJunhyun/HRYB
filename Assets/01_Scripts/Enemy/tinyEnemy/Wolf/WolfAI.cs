@@ -51,6 +51,7 @@ public class WolfAI : AISetter
 	
     protected override void StartInvoke()
     {
+	    head.connecteds.Clear();
 	    self.life._dieEvent = DieEvent;
 	    Wolf_normalAttackModule _atkModule = self.atk as Wolf_normalAttackModule;
 	    WolfMoveModule _moveModule = self.move as WolfMoveModule;
@@ -58,90 +59,94 @@ public class WolfAI : AISetter
 	    if (_isWake)
 	    {
 		    self.anim.SetIdleState(true);
-	    }
-	    
-	    
 
-	    #region 평타
 
-	    Waiter _normalAtt = new Waiter(3f);
-	    IsInRange noramlRange = new IsInRange(self, player.transform, Attackrange, null, () =>
-	    {
-			// 공격 
-			_normalAtt.StartReady();
-			_atkModule.SetAttackType(NormalAttack);
-			_moveModule.StopMove();
-	    });
-	    Attacker normalAttack = new Attacker(self, () =>
-	    {
-		    _normalAtt.ResetReady();
-		    
-		    StopExamine();
-	    });
 
-	    Sequencer normalATK = new Sequencer();
-	    
-	    normalATK.connecteds.Add(noramlRange);
-	    normalATK.connecteds.Add(_normalAtt);
-		normalATK.connecteds.Add(normalAttack);
-		
-	    #endregion
 
-	    IsInRange SectionRange = new IsInRange(self, player.transform, this.SectionRanged, null, () =>
-	    {
-		    if (_isWake)
+		    #region 평타
+
+		    Waiter _normalAtt = new Waiter(1.5f);
+		    IsInRange noramlRange = new IsInRange(self, player.transform, Attackrange, null, () =>
 		    {
-			    //Debug.Log("AAA");
+
+				_normalAtt.StartReady();
+				_atkModule.SetAttackType(NormalAttack);
+				_moveModule.StopMove();
+			    
+
+		    });
+		    Attacker normalAttack = new Attacker(self, () =>
+		    {
+			    _normalAtt.ResetReady();
+
+			    StopExamine();
+		    });
+
+		    Sequencer normalATK = new Sequencer();
+
+		    normalATK.connecteds.Add(noramlRange);
+		    normalATK.connecteds.Add(_normalAtt);
+		    normalATK.connecteds.Add(normalAttack);
+
+		    #endregion
+
+		    IsInRange SectionRange = new IsInRange(self, player.transform, this.SectionRanged, null, () =>
+		    {
+
 			    _moveModule.SetTarget(player.transform);
-		    }
-		    
-	    });
-	    Mover move = new Mover(self);
 
-	    Sequencer Moved = new Sequencer();
-	    Moved.connecteds.Add(SectionRange);
-	    Moved.connecteds.Add(move);
 
-	    IsOutRange LongaRange = new IsOutRange(self, player.transform, OutSectionRanged, null, () =>
+		    });
+		    Mover move = new Mover(self);
+
+		    Sequencer Moved = new Sequencer();
+		    Moved.connecteds.Add(SectionRange);
+		    Moved.connecteds.Add(move);
+
+		    IsOutRange LongaRange = new IsOutRange(self, player.transform, OutSectionRanged, null, () =>
+		    {
+		    });
+		    IsInRange Idler = new IsInRange(self, player.transform, Attackrange, null, () =>
+		    {
+			    _moveModule.StopMove();
+		    });
+
+		    Idler idles = new Idler(self);
+
+		    Sequencer Faridler = new Sequencer();
+		    Faridler.connecteds.Add(LongaRange);
+		    Faridler.connecteds.Add(idles);
+
+		    Sequencer ShowIdler = new Sequencer();
+
+		    ShowIdler.connecteds.Add(Idler);
+		    ShowIdler.connecteds.Add(idles);
+
+		    head.connecteds.Add(normalATK);
+		    head.connecteds.Add(ShowIdler);
+		    head.connecteds.Add(Moved);
+		    head.connecteds.Add(Faridler);
+
+
+		    //_moveModule.StopMove();
+	    }
+	    else
 	    {
-			_moveModule.StopMove();
-	    });
-
-	    IsInRange Idler = new IsInRange(self, player.transform, Attackrange, null, () =>
-	    {
-		    _moveModule.StopMove();
-	    });
-	    
-	    Idler idles = new Idler(self);
-	    
-	    Sequencer Faridler = new Sequencer();
-	    Faridler.connecteds.Add(LongaRange);
-	    Faridler.connecteds.Add(idles);
-
-	    Sequencer ShowIdler = new Sequencer();
-	    
-	    ShowIdler.connecteds.Add(Idler);
-	    ShowIdler.connecteds.Add(idles);
-	    
-	    head.connecteds.Add(normalATK);
-	    head.connecteds.Add(ShowIdler);
-	    head.connecteds.Add(Moved);
-	    head.connecteds.Add(Faridler);
-	    
-	    
-	    _moveModule.StopMove();
-
+		    self.anim.SetBoolModify("Sleep", true);
+	    }
     }
     
 
     protected override void UpdateInvoke()
     {
-	    if(self.life.isDead ==false)
+	    if(self.life.isDead ==false && _isWake)
 			LookAt(player.transform);
 
-	    if (self.life._isFirstHit == true && _isWake == false)
+	    if ((self.life._isFirstHit == true || Vector3.Distance(player.transform.position, transform.position) < 7) && _isWake == false)
 	    {
 		    _isWake = true;
+		    self.anim.SetBoolModify("Sleep", false);
+		    StartInvoke();
 	    }
     }
 }

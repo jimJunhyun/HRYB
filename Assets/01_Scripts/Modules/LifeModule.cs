@@ -85,7 +85,7 @@ public class LifeModule : Module
 
 	void DecreaseYY(float amt, YYInfo to)
 	{
-		yy[((int)to)] -= amt * adequity[((int)to)];
+		yy[(int)to] -= amt * adequity[((int)to)];
 		if (isDead)
 		{
 			OnDead();
