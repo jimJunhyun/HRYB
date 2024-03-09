@@ -27,6 +27,8 @@ public class SkillRoot : Composite
 		dir.y = 0;
 		self.transform.rotation = Quaternion.LookRotation(dir);
 		base.Operate(self);
+		//GameManager.instance.StartCoroutine(DelOperate(self));
+		base.MyOperation(self);
 	}
 
 	public override void Disoperate(Actor self)

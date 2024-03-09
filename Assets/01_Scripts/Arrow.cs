@@ -52,8 +52,8 @@ public class Arrow : DamageObject
     Rigidbody rig;
 
 	HashSet<StatusEffectApplyData> statData = new HashSet<StatusEffectApplyData>();
-	List<string> hitEffData;
-
+	Action<Vector3> hitEffData;
+	//@@@@@@@@@@@@화살이 간헐적으로 사라지는 경우 발견
 	public override void OnTriggerEnter(Collider other)
 	{
 		if(!other.isTrigger && detectOn)
@@ -63,10 +63,7 @@ public class Arrow : DamageObject
 				if(hitEffData != null)
 				{
 					Vector3 hitPos = other.ClosestPointOnBounds(transform.position);
-					for (int i = 0; i < hitEffData.Count; i++)
-					{
-						PoolManager.GetObject(hitEffData[i], hitPos, -transform.forward, 2.5f);
-					}
+					hitEffData(hitPos);
 				}
 				foreach (var item in statData)
 				{
@@ -74,8 +71,8 @@ public class Arrow : DamageObject
 				}
 				CameraManager.instance.ShakeCamFor(0.1f);
 			}
-			//Debug.Log(other.name);
 			base.OnTriggerEnter(other);
+			Debug.Log(other.name + " 과 충돌");
 			Returner();
 		}
 		
@@ -99,6 +96,11 @@ public class Arrow : DamageObject
 	private void OnEnable()
 	{
 		
+	}
+
+	private void OnDisable()
+	{
+
 	}
 
 	public void SetDisappearTimer()
@@ -138,9 +140,10 @@ public class Arrow : DamageObject
 		owner = null;
 	}
 
-	public void SetHitEff(List<string> hits)
+	public void SetHitEff(Action<Vector3> onHit)
 	{
-		hitEffData = hits;
+
+		hitEffData = (onHit);
 	}
 
 	public void Shoot()
@@ -153,6 +156,7 @@ public class Arrow : DamageObject
 
 	public void AddStatusEffect(StatusEffectApplyData data)
 	{
+		Debug.Log("STAT ADDED : " + data.id.ToString());
 		statData.Add(data);
 	}
 
@@ -164,17 +168,20 @@ public class Arrow : DamageObject
 	IEnumerator DelReturn()
 	{
 		yield return waitTillDisappear;
+		Debug.Log("!!!!!!!!!!!!!!!!!!!!!!!!");
 		Returner();
 		c = null;
 	}
 
 	void Returner()
 	{
-		//Debug.Log("RETURN");
+		Debug.Log("RETURN");
 		rig.velocity = Vector3.zero;
 		StopAllCoroutines();
 		ResetOwner();
 		statData.Clear();
-		PoolManager.ReturnObject(gameObject);
+		PoolManager.ReturnAllChilds(gameObject);
 	}
+
+	
 }

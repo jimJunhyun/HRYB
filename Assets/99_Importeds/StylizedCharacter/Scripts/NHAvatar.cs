@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -410,9 +410,12 @@ namespace NHance.Assets.Scripts
 
         public void Save()
         {
-            //chose file path
-            string filePath = EditorUtility.SaveFilePanel("Select Directory to save prefab", "Assets/StylizedCharacter/Prefabs", $"{gameObject.name}_Prefab", "prefab");
-            if (string.IsNullOrEmpty(filePath))
+			//chose file path
+			string filePath = null;
+			#if UNITY_EDITOR
+			filePath = EditorUtility.SaveFilePanel("Select Directory to save prefab", "Assets/StylizedCharacter/Prefabs", $"{gameObject.name}_Prefab", "prefab");
+			#endif
+			if (string.IsNullOrEmpty(filePath))
                 return;
             //copy current game object
             var copy = Instantiate(gameObject);
@@ -422,8 +425,10 @@ namespace NHance.Assets.Scripts
             copy.GetComponents<NHAvatar>().ToList().ForEach(i => DestroyImmediate(i));
             copy.GetComponents<NHAvatarDemo>().ToList().ForEach(i => DestroyImmediate(i));
             copy.GetComponentsInChildren<NHItem>().ToList().ForEach(i => DestroyImmediate(i));
-            //save to prefab
-            PrefabUtility.SaveAsPrefabAsset(copy, filePath);
+			//save to prefab
+			#if UNITY_EDITOR
+			PrefabUtility.SaveAsPrefabAsset(copy, filePath);
+			#endif
             //destroy on scene
             DestroyImmediate(copy);
         }

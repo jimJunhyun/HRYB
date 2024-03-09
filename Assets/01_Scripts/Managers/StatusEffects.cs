@@ -10,13 +10,27 @@ public enum StatEffID
 	Immune,
 	Blind,
 	Slow,
+	Bind,
 
 	EnhanceIce,
 	EnhanceFire,
+	Stun,
 
-	Burn,
+	FoxBewitched,
+	SpeedUp,
 
 	Max
+}
+
+public enum StatEffApplyMethod
+{
+	NoOverwrite,
+	Overwrite,
+	AddDuration,
+	AddPower,
+	AddDurationAndPower,
+	Stackable,
+
 }
 
 public struct StatusEffect
@@ -28,13 +42,27 @@ public struct StatusEffect
     public Action<Actor, float> onUpdated;
     public Action<Actor, float> onEnded;
 
-    public StatusEffect(string n, string d, Action<Actor, Actor, float> app, Action<Actor, float> upd, Action<Actor, float> end)
+	public StatEffApplyMethod method;
+
+    public StatusEffect(string n, string d, StatEffApplyMethod mtd, Action<Actor, Actor, float> app, Action<Actor, float> upd, Action<Actor, float> end)
 	{
         name = n;
         desc = d;
+		method = mtd;
         onApplied = app;
         onUpdated = upd;
         onEnded = end;
+	}
+
+	public override bool Equals(object obj)
+	{
+		return obj is StatusEffect effect &&
+			name == effect.name;
+	}
+
+	public override int GetHashCode()
+	{
+		return HashCode.Combine(name);
 	}
 }
 
@@ -45,19 +73,33 @@ public class StatusEffects
 	public StatVfxDictionary effDict;
 	public Hashtable idStatEffPairs = new Hashtable();
 
+	Action<Actor, Compose> enhanceIceAction;
+
+	//Compose lastEnhancedSkill = null;
+
 	public StatusEffects()
 	{
-		idStatEffPairs.Add(((int)StatEffID.Knockback), new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", OnKnockbackActivated, OnKnockbackDebuffUpdated, OnKnockbackDebuffEnded));
-		idStatEffPairs.Add(((int)StatEffID.Immune), new StatusEffect("무적", "어머니의 비호를 받고 있습니다.", OnImmuneActivated, OnImmuneUpdated, OnImmuneEnded));
-		idStatEffPairs.Add(((int)StatEffID.Blind), new StatusEffect("실명", "눈 앞이 어두워집니다.", OnBlindActivated, OnBlindUpdated, OnBlindEnded));
-		idStatEffPairs.Add(((int)StatEffID.Slow), new StatusEffect("둔화", "움직임이 느려집니다.", OnSlowActivated, OnSlowUpdated, OnSlowEnded));
-		idStatEffPairs.Add(((int)StatEffID.EnhanceIce), new StatusEffect("냉기", "다음 공격에 얼음의 힘을 부여합니다.", OnEnhanceIceActivated, OnEnhanceIceUpdated, OnEnhanceIceEnded));
+		idStatEffPairs.Add(((int)StatEffID.Knockback), new StatusEffect("밀려남", "강력한 힘에 밀려납니다.",  StatEffApplyMethod.NoOverwrite, OnKnockbackActivated, OnKnockbackDebuffUpdated, OnKnockbackDebuffEnded));
+		idStatEffPairs.Add(((int)StatEffID.Immune), new StatusEffect("무적", "세계의 비호를 받고 있습니다.", StatEffApplyMethod.NoOverwrite, OnImmuneActivated, OnImmuneUpdated, OnImmuneEnded));
+		idStatEffPairs.Add(((int)StatEffID.Blind), new StatusEffect("실명", "눈 앞이 어두워집니다.", StatEffApplyMethod.NoOverwrite, OnBlindActivated, OnBlindUpdated, OnBlindEnded));
+		idStatEffPairs.Add(((int)StatEffID.Slow), new StatusEffect("둔화", "움직임이 느려집니다.", StatEffApplyMethod.Stackable, OnSlowActivated, OnSlowUpdated, OnSlowEnded));
+		idStatEffPairs.Add(((int)StatEffID.Bind), new StatusEffect("속박", "발이 묶여 이동할 수 없습니다.", StatEffApplyMethod.AddDuration, OnBindActivated, OnBindUpdated, OnBindEnded));
+		idStatEffPairs.Add(((int)StatEffID.EnhanceIce), new StatusEffect("냉기", "다음 공격에 얼음의 힘을 부여합니다.", StatEffApplyMethod.NoOverwrite, OnEnhanceIceActivated, OnEnhanceIceUpdated, OnEnhanceIceEnded));
+		idStatEffPairs.Add(((int)StatEffID.EnhanceFire), new StatusEffect("화상", "불로 인해 피해를 입습니다.", StatEffApplyMethod.NoOverwrite, OnEnhanceFireActivated, OnEnhanceFireUpdated, OnEnhanceFireEnded));
+		idStatEffPairs.Add(((int)StatEffID.Stun), new StatusEffect("기절", "행동할 수 없습니다.", StatEffApplyMethod.AddDuration, OnStunActivated, OnStunUpdated, OnStunEnded));
+		idStatEffPairs.Add(((int)StatEffID.FoxBewitched), new StatusEffect("여우홀림", "피해를 받으면, 여우를 빠르게 합니다.", StatEffApplyMethod.NoOverwrite, OnFoxBewitchedActivated, OnFoxBewitchedUpdated, OnFoxBewitchedEnded));
+		idStatEffPairs.Add(((int)StatEffID.SpeedUp), new StatusEffect("신속", "움직임이 날래집니다.", StatEffApplyMethod.Stackable, OnFoxBewitchedActivated, OnFoxBewitchedUpdated, OnFoxBewitchedEnded));
 
-		idStatEffPairs.Add(new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", OnKnockbackActivated, OnKnockbackDebuffUpdated, OnKnockbackDebuffEnded), ((int)StatEffID.Knockback));
-		idStatEffPairs.Add(new StatusEffect("무적", "어머니의 비호를 받고 있습니다.", OnImmuneActivated, OnImmuneUpdated, OnImmuneEnded), ((int)StatEffID.Immune));
-		idStatEffPairs.Add(new StatusEffect("실명", "눈 앞이 어두워집니다.", OnBlindActivated, OnBlindUpdated, OnBlindEnded),((int)StatEffID.Blind));
-		idStatEffPairs.Add(new StatusEffect("둔화", "움직임이 느려집니다.", OnSlowActivated, OnSlowUpdated, OnSlowEnded), ((int)StatEffID.Slow));
-		idStatEffPairs.Add(new StatusEffect("냉기", "다음 공격에 얼음의 힘을 부여합니다.", OnEnhanceIceActivated, OnEnhanceIceUpdated, OnEnhanceIceEnded), ((int)StatEffID.EnhanceIce));
+		idStatEffPairs.Add(new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", StatEffApplyMethod.NoOverwrite, OnKnockbackActivated, OnKnockbackDebuffUpdated, OnKnockbackDebuffEnded), ((int)StatEffID.Knockback));
+		idStatEffPairs.Add(new StatusEffect("무적", "세계의 비호를 받고 있습니다.", StatEffApplyMethod.NoOverwrite, OnImmuneActivated, OnImmuneUpdated, OnImmuneEnded), ((int)StatEffID.Immune));
+		idStatEffPairs.Add(new StatusEffect("실명", "눈 앞이 어두워집니다.", StatEffApplyMethod.NoOverwrite, OnBlindActivated, OnBlindUpdated, OnBlindEnded),((int)StatEffID.Blind));
+		idStatEffPairs.Add(new StatusEffect("둔화", "움직임이 느려집니다.", StatEffApplyMethod.Stackable, OnSlowActivated, OnSlowUpdated, OnSlowEnded), ((int)StatEffID.Slow));
+		idStatEffPairs.Add(new StatusEffect("속박", "발이 묶여 이동할 수 없습니다.", StatEffApplyMethod.AddDuration, OnBindActivated, OnBindUpdated, OnBindEnded), ((int)StatEffID.Bind));
+		idStatEffPairs.Add(new StatusEffect("냉기", "다음 공격에 얼음의 힘을 부여합니다.", StatEffApplyMethod.NoOverwrite, OnEnhanceIceActivated, OnEnhanceIceUpdated, OnEnhanceIceEnded), ((int)StatEffID.EnhanceIce));
+		idStatEffPairs.Add(new StatusEffect("화상", "불로 인해 피해를 입습니다.", StatEffApplyMethod.NoOverwrite, OnEnhanceFireActivated, OnEnhanceFireUpdated, OnEnhanceFireEnded), ((int)StatEffID.EnhanceFire));
+		idStatEffPairs.Add(new StatusEffect("기절", "행동할 수 없습니다.", StatEffApplyMethod.AddDuration, OnStunActivated, OnStunUpdated, OnStunEnded), ((int)StatEffID.Stun));
+		idStatEffPairs.Add(new StatusEffect("여우홀림", "피격시, 플레이어를 빠르게 합니다.", StatEffApplyMethod.NoOverwrite, OnFoxBewitchedActivated, OnFoxBewitchedUpdated, OnFoxBewitchedEnded), ((int)StatEffID.FoxBewitched));
+		idStatEffPairs.Add(new StatusEffect("신속", "움직임이 날래집니다.", StatEffApplyMethod.Stackable, OnFoxBewitchedActivated, OnFoxBewitchedUpdated, OnFoxBewitchedEnded), ((int)StatEffID.SpeedUp));
 
 
 		effDict = Resources.Load<StatVfxDictionary>("StatEffList");
@@ -125,10 +167,27 @@ public class StatusEffects
 		self.move.speedMod += power;
 	}
 
+	void OnBindActivated(Actor self, Actor inflicter, float power)
+	{
+		self.move.NoMove = true;
+	}
+	void OnBindUpdated(Actor self, float power)
+	{
+
+	}
+	void OnBindEnded(Actor self, float power)
+	{
+		self.move.NoMove = false;
+	}
+
 	void OnEnhanceIceActivated(Actor self, Actor inflicter, float power)
 	{
 		Debug.Log("얼음강화 사용됨");
-		(self.atk as PlayerAttack).onNextHits += EnhanceIce;
+		enhanceIceAction = GetEffectWithLevel(EnhanceIce, (int)power);
+		(self.atk as PlayerAttack).onNextUse += ShowUseEnhanceIce;
+		(self.atk as PlayerAttack).onNextSkill += enhanceIceAction;
+		(self.atk as PlayerAttack).onNextHit += ShowHitEnhanceIce;
+		//(self.atk as PlayerAttack).onNextUse += ShowEffect;
 	}
 	void OnEnhanceIceUpdated(Actor self, float power)
 	{
@@ -136,55 +195,184 @@ public class StatusEffects
 	}
 	void OnEnhanceIceEnded(Actor self, float power)
 	{
-		
-		(self.atk as PlayerAttack).onNextHits -= EnhanceIce;
+		Debug.Log("!!!!!!!!!!!!!");
+		(self.atk as PlayerAttack).onNextUse -= ShowUseEnhanceIce;
+		(self.atk as PlayerAttack).onNextSkill -= enhanceIceAction;
+		(self.atk as PlayerAttack).onNextHit -= ShowHitEnhanceIce;
+		enhanceIceAction = null;
 		//스킬 부여 효과 지우기?
 	}
 
-	List<string> ShowEffect(GameObject effShower, Actor self, Actor target, StatEffID stat)
+	void ShowUseEnhanceIce(GameObject obj)
+	{
+		Debug.Log("시전시?");
+		ShowUseEffect(obj, StatEffID.EnhanceIce);
+	}
+	void ShowHitEnhanceIce(Vector3 pos)
+	{
+		Debug.Log("타격시?");
+		ShowHitEffect(pos, StatEffID.EnhanceIce);
+	}
+	Action<Actor, Compose> GetEffectWithLevel(Action<Actor, Compose, int> act, int lv)
+	{
+		Debug.Log("GETTING LEVEL");
+		return (a, c) => { act(a, c, lv); };
+	}
+
+	void OnEnhanceFireActivated(Actor self, Actor inflicter, float power)
+	{
+		Debug.Log("화염강화 사용됨");
+	}
+	void OnEnhanceFireUpdated(Actor self, float power)
+	{
+	}
+	void OnEnhanceFireEnded(Actor self, float power)
+	{
+		Debug.Log("화상제거됨");
+		//스킬 부여 효과 지우기?
+	}
+
+	void OnStunActivated(Actor self, Actor inflicter, float power)
+	{
+		self.move.NoMove = true;
+		self.atk.NoAttack = true;
+		self.cast.NoCast = true;
+	}
+	void OnStunUpdated(Actor self, float power)
+	{
+
+	}
+	void OnStunEnded(Actor self, float power)
+	{
+		self.move.NoMove = false;
+		self.atk.NoAttack = false;
+		self.cast.NoCast = false;
+	}
+
+	void OnFoxBewitchedActivated(Actor self, Actor inflicter, float power)
+	{
+		if(inflicter.atk is PlayerAttack atk)
+		{
+			//@@@@@@@@@@@@@@@2피격시 이속증가시키기
+		}
+	}
+	void OnFoxBewitchedUpdated(Actor self, float power)
+	{
+
+	}
+	void OnFoxBewitchedEnded(Actor self, float power)
+	{
+
+	}
+
+
+
+	void OnSpeedUpActivated(Actor self, Actor inflicter, float power)
+	{
+		self.move.speedMod += 0.1f;
+	}
+	void OnSpeedUpUpdated(Actor self, float power)
+	{
+
+	}
+	void OnSpeedUpEnded(Actor self, float power)
+	{
+		self.move.speedMod -= 0.1f;
+	}
+
+
+	void ShowUseEffect(GameObject effShower, StatEffID stat)
 	{
 		
 		List<EffPosStrPair> objs = effDict.data[stat];
 		Transform trailPos, whirlPos;
-		List<string> hitEffs = new List<string>();
-		trailPos = effShower.transform.Find("TrailPos");
-		whirlPos = effShower.transform.Find("WhirlPos");
+		//int iId = effShower.transform.GetInstanceID();
+		//Debug.Log(effShower.transform.name + " id : " +effShower.transform.GetHashCode());
+		//InstanceId 의 경우, 유니티 재시작마다 변경. 빌드후의 안정성을 보장하기 힘듬.
+		trailPos = GameObject.Find($"{effShower.name}_TrailPos")?.transform;
+		whirlPos = GameObject.Find($"{effShower.name}_WhirlPos")?.transform;
 		for (int i = 0; i < objs.Count; i++)
 		{
 			switch (objs[i].effPos)
 			{
 				case EffectPoses.Trail:
-					PoolManager.GetObject(objs[i].effPrefName, trailPos);
+					if(trailPos != null)
+					{
+						GameObject res= PoolManager.GetObject(objs[i].effPrefName, trailPos);
+						Debug.Log(" 트레일생성 " + (res != null) + " " + res.transform.GetInstanceID());
+					}
 					break;
 				case EffectPoses.Whirl:
-					PoolManager.GetObject(objs[i].effPrefName, whirlPos);
+					if(whirlPos != null)
+					{
+						PoolManager.GetObject(objs[i].effPrefName, whirlPos);
+					}
 					break;
 				case EffectPoses.Hit:
-					hitEffs.Add(objs[i].effPrefName);
-					break;
 				default:
 					break;
 			}
 		}
-		return hitEffs;
 	}
 
-	List<string> EnhanceIce(GameObject effShower, Actor self, Actor target, Compose skInfo)
+	void ShowHitEffect(Vector3 pos, StatEffID stat)
 	{
+		List<EffPosStrPair> objs = effDict.data[stat];
+		//int iId = effShower.transform.GetInstanceID();
+		//Debug.Log(effShower.transform.name + " id : " +effShower.transform.GetHashCode());
+		//InstanceId 의 경우, 유니티 재시작마다 변경. 빌드후의 안정성을 보장하기 힘듬.
+		for (int i = 0; i < objs.Count; i++)
+		{
+			switch (objs[i].effPos)
+			{
+				case EffectPoses.Hit:
+					PoolManager.GetObject(objs[i].effPrefName, pos, Quaternion.identity);
+					break;
+				case EffectPoses.Trail:
+				case EffectPoses.Whirl:
+				default:
+					break;
+			}
+		}
+	}
+
+	void EnhanceIce(Actor self, Compose skInfo, int power)
+	{
+		Debug.Log("레벨 : "+ power);
 		Debug.Log("얼음공격 : " + skInfo.tags.ToString());
 		if(skInfo.tags.ContainsTag(SkillTags.AttackEnhancable))
 		{
 			Debug.Log("얼음공격으로 강화디ㅗㅁ.");
 			if((skInfo is AttackBase atk))
 			{
-				atk.statEff.Add(new StatusEffectApplyData(StatEffID.Slow, 15 /*(레벨에 따른 변화)*/, 5));
+				if(power >= 6)
+				{
+					atk.statEff.Add(new StatusEffectApplyData(StatEffID.Bind, 0, 5));
+				}
+				else
+				{
+					atk.statEff.Add(new StatusEffectApplyData(StatEffID.Slow, (10 + 5 * (power * (power - 1) / 2)) * 0.01f, 5));; //더하긴 했는데, 언제 지우지?
+					//lastEnhancedSkill = atk;
+				}
 				Debug.Log("REMOVING STAT : " + self.life.name);
-				self.life.RemoveStatEff(StatEffID.EnhanceIce);
-
-				return ShowEffect(effShower, self, target, StatEffID.EnhanceIce);
+				self.life.RemoveAllStatEff(StatEffID.EnhanceIce);
 			}
 		}
-		return null;
+	}
+
+	void EnhanceFire(Actor self, Compose skInfo, int power)
+	{
+		Debug.Log("화염공격 : " + skInfo.tags.ToString());
+		if (skInfo.tags.ContainsTag(SkillTags.AttackEnhancable))
+		{
+			Debug.Log("화염공격으로 강화디ㅗㅁ.");
+			if ((skInfo is AttackBase atk))
+			{
+				
+				//lastEnhancedSkING STAT : " + self.life.name);
+				self.life.RemoveAllStatEff(StatEffID.EnhanceFire);
+			}
+		}
 	}
 
 	public static void ApplyStat(Actor to, Actor by, StatEffID id, float dur, float pow = 1)
@@ -199,8 +387,8 @@ public class StatusEffects
 			power /= dur;
 			power *= GameManager.instance.forceResistance;
 		}
-		Action<Actor> updateAct = to.life.ApplyStatus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], by, power, dur);
-		if(updateAct != null)
+		Action<Actor> updateAct = to.life.ApplyStatus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], by, power, dur, out int idx);
+		if(updateAct != null && idx != -1)
 		{
 			List<GameObject> effs = new List<GameObject>();
 			for (int i = 0; i < GameManager.instance.statEff.effDict.data[id].Count; i++)
@@ -219,9 +407,9 @@ public class StatusEffects
 			}
 			
 			float t = 0;
-			while(to.life.appliedDebuff[(StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]] < 0)
+			while(to.life.appliedDebuff[idx].dur < 0)
 				yield return null;
-			while(t < to.life.appliedDebuff[(StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]])
+			while(t < to.life.appliedDebuff[idx].dur)
 			{
 				yield return null;
 				t += Time.deltaTime;

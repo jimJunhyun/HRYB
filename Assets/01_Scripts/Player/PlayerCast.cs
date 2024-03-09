@@ -545,6 +545,7 @@ public class PlayerCast : CastModule
 
 	internal void ActualSkillOperate(SkillSlotInfo at)
 	{
+		Debug.Log(this[((int)at)].skInfo.name);
 		this[((int)at)].skInfo.MyOperation(GetActor());
 	}
 

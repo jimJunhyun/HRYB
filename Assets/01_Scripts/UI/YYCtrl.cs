@@ -49,7 +49,7 @@ public class YYCtrl : MonoBehaviour
 		//blk.rectTransform.sizeDelta = Vector2.one * (UICIRCUM * yy.yinAmt / sum);
 		//wht.rectTransform.sizeDelta = Vector2.one * (UICIRCUM * yy.yangAmt / sum);
 
-		blkGauge.value = yy.yinAmt / GameManager.instance.pActor.life.initYinYang.yinAmt;
-		whtGauge.value = yy.yangAmt / GameManager.instance.pActor.life.initYinYang.yangAmt;
+		blkGauge.value = yy.black / GameManager.instance.pActor.life.initYinYang.black;
+		whtGauge.value = yy.white / GameManager.instance.pActor.life.initYinYang.white;
 	}
 }

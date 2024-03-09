@@ -142,14 +142,14 @@ public class GameManager : MonoBehaviour
 
 	public void DisableCtrl()
 	{
-		pActor.move.immovable = true;
-		pActor.atk.NotAttack = true;
+		(pActor.move as PlayerMove).NoInput = true;
+		pActor.atk.NoAttack = true;
 	}
 
 	public void EnableCtrl()
 	{
-		pActor.move.immovable = false;
-		pActor.atk.NotAttack = false;
+		(pActor.move as PlayerMove).NoInput = false;
+		pActor.atk.NoAttack = false;
 	}
 
 

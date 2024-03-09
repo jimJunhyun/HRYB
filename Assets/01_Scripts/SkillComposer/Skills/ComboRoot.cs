@@ -61,7 +61,7 @@ public class ComboRoot : SkillRoot
 		Debug.Log($"콤보 {curCombo + 1}/{childs.Count}");
 
 		//childs[curCombo].onOperateSelf += onOperateSelf;
-		childs[curCombo].Operate(self);
+		childs[curCombo].MyOperation(self);
 		
 
 		NextCombo(true, self);

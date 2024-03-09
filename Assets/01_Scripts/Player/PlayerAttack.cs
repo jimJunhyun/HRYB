@@ -30,7 +30,10 @@ public class PlayerAttack : AttackModule
 	internal bool clickL = false;
 	internal bool clickR = false;
 
-	public Func<GameObject, Actor, Actor, Compose, List<string>> onNextHits = default; //이펙트 보여줄 위치 명명 규칙 (xxx_yyyPos), 자신, 피격자, 스킬정보, 타격 이펙트
+	public Action<GameObject> onNextUse = default; //사용 시점에서 등장하는 이펙트 관련.
+	public Action<Actor, Compose> onNextSkill = default; //자신, 스킬정보
+	public Action<Vector3> onNextHit = default;
+
 
 	PlayerAnimActions animActions;
 
@@ -56,11 +59,11 @@ public class PlayerAttack : AttackModule
 
 	public void OnAim(InputAction.CallbackContext context)
 	{
-		if (GameManager.instance.pinven.stat == HandStat.Weapon)
-		{
+		//if (GameManager.instance.pinven.stat == HandStat.Weapon)
+		//{
 			if (!clickL)
 			{
-				if (NotAttack && !clickR)
+				if (NoAttack && !clickR)
 					return;
 				//Debug.LogWarning("phase : " +context.phase  + " : " + context.started + " : " + context.canceled);
 				if (!clickR && context.started)
@@ -73,25 +76,23 @@ public class PlayerAttack : AttackModule
 					(GetActor().cast as PlayerCast).SetSkillUse(SkillSlotInfo.RClick); 
 				}
 				else if (clickR && context.canceled)
-				{
-
-					
+				{	
 					clickR = false;
 					(GetActor().cast as PlayerCast).ResetSkillUse(SkillSlotInfo.RClick);
 				}
 				
-			}
+			//}
 			
 		}
 	}
 
 	public void OnAttack(InputAction.CallbackContext context)
 	{
-		if (GameManager.instance.pinven.stat == HandStat.Weapon)
-		{
+		//if (GameManager.instance.pinven.stat == HandStat.Weapon)
+		//{
 			if (!clickR)
 			{
-				if (NotAttack && !clickL)
+				if (NoAttack && !clickL)
 					return;
 				if (context.started && !clickL)
 				{
@@ -108,14 +109,14 @@ public class PlayerAttack : AttackModule
 				}
 			}
 				
-		}
-		else if (GameManager.instance.pinven.stat == HandStat.Item && context.performed)
-		{
-			if (!GameManager.instance.uiManager.isWholeScreenUIOn)
-			{
-				GameManager.instance.pinven.CurHoldingItem.info?.Use();
-			}
-		}
+		//}
+		//else if (GameManager.instance.pinven.stat == HandStat.Item && context.performed)
+		//{
+		//	if (!GameManager.instance.uiManager.isWholeScreenUIOn)
+		//	{
+		//		GameManager.instance.pinven.CurHoldingItem.info?.Use();
+		//	}
+		//}
 	}
 
 	public bool ThrowRope()
@@ -156,10 +157,10 @@ public class PlayerAttack : AttackModule
 		aimStart = Time.time;
 	}
 
-	public void ObtainBowRender()
-	{
-		animActions.eBowRend.enabled = true;
-	}
+	//public void ObtainBowRender()
+	//{
+	//	animActions.eBowRend.enabled = true;
+	//}
 
 	IEnumerator DelayResetCam()
 	{
