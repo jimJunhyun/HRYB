@@ -43,6 +43,9 @@ public class PlayerMove : MoveModule
 	bool slip = false;
 	bool climbGrounded = false;
 
+	bool jumped = false;
+	bool jumpComplete = false;
+
 	float prevJump = 0;
 
 	Vector3 slipDir = Vector3.zero;
@@ -65,7 +68,30 @@ public class PlayerMove : MoveModule
 
 	RaycastHit hitCache;
 
-	
+	int noInput = 0;
+	public bool NoInput
+	{
+		get =>noInput > 0;
+		set
+		{
+			if (value)
+			{ 
+				noInput += 1;
+			}
+			else
+			{
+				if(noInput > 0)
+				{
+					noInput -=1 ;
+				}
+			}
+		}
+	}
+
+	bool IsActualGrounded
+	{
+		get => !jumped && isGrounded;
+	}
 
 	public Vector3 MoveDirCalced
 	{
@@ -213,7 +239,7 @@ public class PlayerMove : MoveModule
 
 	public override void Move()
 	{
-		if (!immovable)
+		if (!NoMove)
 		{
 			if (moveStat != MoveStates.Climb)
 			{
@@ -224,8 +250,7 @@ public class PlayerMove : MoveModule
 					SetClimb();
 				}
 
-				
-
+			
 
 				if (isLocked && target == null)
 				{
@@ -293,9 +318,12 @@ public class PlayerMove : MoveModule
 				}
 			}
 		}
-		ForceCalc();
-		SlipCalc();
-		GravityCalc();
+		if (moveStat != MoveStates.Climb)
+		{
+			ForceCalc();
+			SlipCalc();
+			GravityCalc();
+		}
 	}
 
 	public void CalcClimbState()
@@ -389,7 +417,7 @@ public class PlayerMove : MoveModule
 		}
 		catch
 		{
-//			Debug.Log("사운드 혐오");
+			Debug.Log("사운드 혐오");
 		}
 
 
@@ -407,22 +435,26 @@ public class PlayerMove : MoveModule
 
 	public void Move(InputAction.CallbackContext context)
 	{
-		Vector2 inp = context.ReadValue<Vector2>();
-		if (moveStat != MoveStates.Climb)
+		if (!NoInput)
 		{
-			moveDir = new Vector3(inp.x, moveDir.y, inp.y);
-			
-		}
-		else
-		{
-			moveDir = new Vector3(0, inp.y, 0);
-			
-		}
+			Vector2 inp = context.ReadValue<Vector2>();
+			if (moveStat != MoveStates.Climb)
+			{
+				moveDir = new Vector3(inp.x, moveDir.y, inp.y);
 
-		if (target != null && (target.position - transform.position).sqrMagnitude >= lockOnDist * lockOnDist)
-		{
-			ResetTargets();
+			}
+			else
+			{
+				moveDir = new Vector3(0, inp.y, 0);
+
+			}
+
+			if (target != null && (target.position - transform.position).sqrMagnitude >= lockOnDist * lockOnDist)
+			{
+				ResetTargets();
+			}
 		}
+		
 	}
 
 	public void Run(InputAction.CallbackContext context)
@@ -470,25 +502,30 @@ public class PlayerMove : MoveModule
 
 	public void Jump(InputAction.CallbackContext context)
 	{
-		if (context.performed && jumpable)
+		if (!NoInput)
 		{
-			if (moveStat == MoveStates.Climb)
+			if (context.performed && jumpable)
 			{
-				forceDir.y += jumpPwer / climbSpeed;
-				Vector3 ropeJumpDir = (ropeNormal + Vector3.up).normalized;
-				forceDir += ropeJumpDir * jumpPwer;
-				ResetClimb();
-			}
-			else
-			{
-				if (ctrl.isGrounded && Time.time - prevJump >= jumpGap)
+				if (moveStat == MoveStates.Climb)
 				{
-					prevJump = Time.time;
-					forceDir.y += jumpPwer;
-					(GetActor().anim as PlayerAnim).SetJumpTrigger();
+					forceDir.y += jumpPwer / climbSpeed;
+					Vector3 ropeJumpDir = (ropeNormal + Vector3.up).normalized;
+					forceDir += ropeJumpDir * jumpPwer;
+					ResetClimb();
+				}
+				else
+				{
+					if (ctrl.isGrounded && Time.time - prevJump >= jumpGap)
+					{
+						prevJump = Time.time;
+						forceDir.y += jumpPwer;
+						jumped = true;
+						(GetActor().anim as PlayerAnim).SetJumpTrigger();
+					}
 				}
 			}
 		}
+		
 		
 	}
 
@@ -507,76 +544,84 @@ public class PlayerMove : MoveModule
 
 	public void Lock(InputAction.CallbackContext context)
 	{
-		if (context.started)
+		if (!NoInput)
 		{
-			Collider[] c = Physics.OverlapSphere(transform.position, lockOnDist, ~(1 << GameManager.PLAYERLAYER | 1 << GameManager.GROUNDLAYER));
-			if (c.Length > 0)
+			if (context.started)
 			{
-				prevTargets = targets;
-				targets = c.Select(item => item.transform).OrderBy(item => (item.position - transform.position).sqrMagnitude).ToArray();
-				
-				if(prevTargets != null && targets != null)
+				Collider[] c = Physics.OverlapSphere(transform.position, lockOnDist, ~(1 << GameManager.PLAYERLAYER | 1 << GameManager.GROUNDLAYER));
+				if (c.Length > 0)
 				{
-					IEnumerable<Transform> t = prevTargets.Except(targets);
-					if (t.Any())
+					prevTargets = targets;
+					targets = c.Select(item => item.transform).OrderBy(item => (item.position - transform.position).sqrMagnitude).ToArray();
+
+					if (prevTargets != null && targets != null)
 					{
-						Transform[] removes = t.ToArray();
-						for (int i = 0; i < removes.Length; i++)
+						IEnumerable<Transform> t = prevTargets.Except(targets);
+						if (t.Any())
 						{
-							already.Remove(removes[i]);
+							Transform[] removes = t.ToArray();
+							for (int i = 0; i < removes.Length; i++)
+							{
+								already.Remove(removes[i]);
+							}
 						}
 					}
 				}
-			}
 
-			if(targets != null)
-			{
-				bool found = false;
-				if (target != null)
+				if (targets != null)
 				{
-					already.Add(target);
-				}
-
-				for (int i = 0; i < targets.Length; i++)
-				{
-					if (!already.Contains(targets[i]))
+					bool found = false;
+					if (target != null)
 					{
-						target = targets[i];
+						already.Add(target);
+					}
 
-						CameraManager.instance.SwitchTo(CamStatus.Locked);
-						
-						isLocked = true;
-						found = true;
-						break;
+					for (int i = 0; i < targets.Length; i++)
+					{
+						if (!already.Contains(targets[i]))
+						{
+							target = targets[i];
+
+							CameraManager.instance.SwitchTo(CamStatus.Locked);
+
+							isLocked = true;
+							found = true;
+							break;
+						}
+					}
+					if (!found)
+					{
+						ResetTargets();
 					}
 				}
-				if (!found)
+				else
 				{
 					ResetTargets();
 				}
 			}
-			else
-			{
-				ResetTargets();
-			}
 		}
+		
 	}
 
 	public void Roll(InputAction.CallbackContext context)
 	{
-		if (context.started && moveStat != MoveStates.Climb && rollable)
+		if (!NoInput)
 		{
-			GetActor().life.isImmune = true;
-			GameManager.instance.pinp.DeactivateInput();
-			moveDir = Vector3.forward;
-			to = Quaternion.LookRotation(moveDir, Vector3.up);
-			RotateTo();
-			(GetActor().anim as PlayerAnim).SetRollTrigger();
-			ctrl.height *= 0.5f;
-			ctrl.radius *= 0.5f;
-			if(GetActor().move.moveStat != MoveStates.Sit)
-				ctrl.center *= 0.5f;
+			if (context.started && moveStat != MoveStates.Climb && rollable && IsActualGrounded)
+			{
+				GetActor().life.isImmune = true;
+				GameManager.instance.pinp.DeactivateInput();
+				moveDir = Vector3.forward;
+				to = Quaternion.LookRotation(moveDir, Vector3.up);
+				RotateTo();
+				(GetActor().anim as PlayerAnim).SetRollTrigger();
+				ctrl.height *= 0.5f;
+				ctrl.radius *= 0.5f;
+				if (GetActor().move.moveStat != MoveStates.Sit)
+					ctrl.center *= 0.5f;
+			}
 		}
+		
 		
 	}
 
@@ -589,9 +634,28 @@ public class PlayerMove : MoveModule
 		return 0;
 	}
 
-	
 
-	
+	public override void GravityCalc()
+	{
+		
+		if (gravity && !isGrounded)
+		{
+			forceDir.y -= GameManager.GRAVITY * Time.deltaTime;
+		}
+		else if (IsActualGrounded)
+		{
+			forceDir.y = 0f;
+		}
+		if (jumped && !isGrounded)
+		{
+			jumpComplete = true;
+		}
+		if(jumpComplete && isGrounded)
+		{
+			jumped = false;
+		}
+	}
+
 
 	void ResetTargets()
 	{

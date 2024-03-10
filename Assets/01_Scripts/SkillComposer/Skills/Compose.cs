@@ -15,7 +15,7 @@ public abstract class Compose : ScriptableObject, IComposer
 
 	public SkillTag tags;
 
-	
+	public int level;
 
 	//public UnityEvent<Compose> onOperateSelf;
 

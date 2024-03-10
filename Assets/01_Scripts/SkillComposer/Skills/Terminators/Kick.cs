@@ -19,7 +19,8 @@ public class Kick : AttackBase
 
 	public override void Operate(Actor self)
 	{
-
+		Debug.Log("!@!@!@!@!@!@");
+		(self.atk as PlayerAttack).onNextUse?.Invoke(relatedTransform.gameObject);
 	}
 
 	public override void UpdateStatus()
@@ -30,6 +31,8 @@ public class Kick : AttackBase
 	internal override void MyDisoperation(Actor self)
 	{
 		caster.End();
+		//트레일지워주기
+		Debug.Log("KICKENDER");
 	}
 
 	internal override void MyOperation(Actor self)
@@ -38,24 +41,14 @@ public class Kick : AttackBase
 		{
 			if(life != null)
 			{
-				List<string> hitEffs = (self.atk as PlayerAttack).onNextHits?.Invoke(relatedTransform.gameObject, self, life.GetActor(), this);
+				
 				DoDamage(life.GetActor(), self);
 				CameraManager.instance.ShakeCamFor(0.1f);
 				//Debug.Log(hitEffs.Count);
 				Vector3 effPos = life.transform.GetComponent<Collider>().ClosestPointOnBounds(caster.transform.position);
-				if (hitEffs != null && hitEffs.Count > 0)
-				{
-					for (int i = 0; i < hitEffs.Count; i++)
-					{
-						PoolManager.GetObject(hitEffs[i], effPos, -caster.transform.forward, 2.5f);
-					}
-
-				}
-				else
-				{
-					PoolManager.GetObject("Hit 26", effPos, -caster.transform.forward, 2.5f);
-
-				}
+				(self.atk as PlayerAttack).onNextSkill?.Invoke(self, this);
+				(self.atk as PlayerAttack).onNextHit?.Invoke(effPos);
+				PoolManager.GetObject("Hit 26", effPos, -caster.transform.forward, 2.5f);
 			}
 			
 		});

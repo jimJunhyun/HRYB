@@ -16,11 +16,24 @@ public class AttackModule : Module, IAnimationEvent
 
 	protected float curPrepMod = 1;
 
-	protected bool notattack = false;
-	public bool NotAttack
+	int noAttack = 0;
+	public bool NoAttack
 	{
-		get => notattack;
-		set => notattack = value;
+		get => noAttack > 0;
+		set
+		{
+			if (value)
+			{
+				noAttack += 1;
+			}
+			else
+			{
+				if (noAttack > 0)
+				{
+					noAttack -= 1;
+				}
+			}
+		}
 	}
 
 	public virtual float prepMod

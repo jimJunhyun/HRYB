@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public enum HandStat
 {
-	None,
+	//None,
 	Weapon,
 	Item,
 
@@ -263,7 +263,7 @@ public class PlayerInven : MonoBehaviour
 	public SkillInventory skInven = new SkillInventory();
     public int cap = 21;
 
-	bool havingBow = false;
+	bool attackable = true;
 
 	bool clickWood = false;
 	bool clickFire = false;
@@ -513,8 +513,8 @@ public class PlayerInven : MonoBehaviour
 
 	public void ObtainWeapon()
 	{
-		havingBow = true;
-		(GameManager.instance.pActor.atk as PlayerAttack).ObtainBowRender();
+		attackable = true;
+		//(GameManager.instance.pActor.atk as PlayerAttack).ObtainBowRender();
 	}
 
 	public void SwitchHand(InputAction.CallbackContext context)
@@ -523,12 +523,12 @@ public class PlayerInven : MonoBehaviour
 		{
 			switch (stat)
 			{
-				case HandStat.None:
+				//case HandStat.None:
 				case HandStat.Item:
-					if (havingBow)
+					if (attackable)
 					{
 						stat = HandStat.Weapon;
-						(GameManager.instance.pActor.anim as PlayerAnim).SetEquipTrigger();
+						//(GameManager.instance.pActor.anim as PlayerAnim).SetEquipTrigger();
 					}
 					
 					break;
@@ -537,7 +537,7 @@ public class PlayerInven : MonoBehaviour
 						!atk.clickL && !atk.clickR)
 					{
 						stat = HandStat.Item;
-						(GameManager.instance.pActor.anim as PlayerAnim).SetUnequipTrigger();
+						//(GameManager.instance.pActor.anim as PlayerAnim).SetUnequipTrigger();
 					}
 					break;
 				default:
@@ -551,9 +551,9 @@ public class PlayerInven : MonoBehaviour
 	{
 		switch (stat)
 		{
-			case HandStat.None:
-				curHolding = -1;
-				break;
+			//case HandStat.None:
+			//	curHolding = -1;
+			//	break;
 			case HandStat.Weapon:
 				curHolding = -1;
 				break;
@@ -624,7 +624,7 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (stat == HandStat.Weapon)
 		{
-			if(GameManager.instance.pActor.atk.NotAttack && !clickWood)
+			if(GameManager.instance.pActor.atk.NoAttack && !clickWood)
 				return;
 			if (context.started && !clickWood)
 			{
@@ -640,6 +640,7 @@ public class PlayerInven : MonoBehaviour
 		else if (context.started && stat == HandStat.Item)
 		{
 			Hold(HandStat.Item, 0);
+			UseHolding();
 		}
 		
 	}
@@ -648,7 +649,7 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (stat == HandStat.Weapon)
 		{
-			if (GameManager.instance.pActor.atk.NotAttack && !clickFire)
+			if (GameManager.instance.pActor.atk.NoAttack && !clickFire)
 				return;
 			if (context.started && !clickFire)
 			{
@@ -664,6 +665,7 @@ public class PlayerInven : MonoBehaviour
 		else if (stat == HandStat.Item && context.started)
 		{
 			Hold(HandStat.Item, 1);
+			UseHolding();
 		}
 
 	}
@@ -672,7 +674,7 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (stat == HandStat.Weapon)
 		{
-			if (GameManager.instance.pActor.atk.NotAttack && !clickEarth)
+			if (GameManager.instance.pActor.atk.NoAttack && !clickEarth)
 				return;
 			if (context.started && !clickEarth)
 			{
@@ -688,14 +690,24 @@ public class PlayerInven : MonoBehaviour
 		else if (stat == HandStat.Item && context.started)
 		{
 			Hold(HandStat.Item, 2);
+			UseHolding();
 		}
 	}
 
 	public void OnPressFour(InputAction.CallbackContext context)
 	{
+		if (stat == HandStat.Item && context.started)
+		{
+			Hold(HandStat.Item, 3);
+			UseHolding();
+		}
+	}
+
+	public void OnPressQ(InputAction.CallbackContext context)
+	{
 		if (stat == HandStat.Weapon)
 		{
-			if (GameManager.instance.pActor.atk.NotAttack && !clickMetal)
+			if (GameManager.instance.pActor.atk.NoAttack && !clickMetal)
 				return;
 			if (context.started && !clickMetal)
 			{
@@ -708,17 +720,22 @@ public class PlayerInven : MonoBehaviour
 				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Metal);
 			}
 		}
-		else if (stat == HandStat.Item && context.started)
-		{
-			Hold(HandStat.Item, 3);
-		}
 	}
 
 	public void OnPressFive(InputAction.CallbackContext context)
 	{
+		if (stat == HandStat.Item && context.started)
+		{
+			Hold(HandStat.Item, 4);
+			UseHolding();
+		}
+	}
+
+	public void OnPressE(InputAction.CallbackContext context)
+	{
 		if (stat == HandStat.Weapon)
 		{
-			if (GameManager.instance.pActor.atk.NotAttack && !clickWater)
+			if (GameManager.instance.pActor.atk.NoAttack && !clickWater)
 				return;
 			if (context.started && !clickWater)
 			{
@@ -730,10 +747,6 @@ public class PlayerInven : MonoBehaviour
 				clickWater = false;
 				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Water);
 			}
-		}
-		else if (stat == HandStat.Item && context.started)
-		{
-			Hold(HandStat.Item, 4);
 		}
 	}
 }

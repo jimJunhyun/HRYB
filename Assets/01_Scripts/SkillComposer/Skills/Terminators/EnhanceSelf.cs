@@ -21,7 +21,7 @@ public class EnhanceSelf : Leaf
 	{
 		for (int i = 0; i < data.Count; i++)
 		{
-			StatusEffects.ApplyStat(self, self, data[i].id, data[i].duration, data[i].power);
+			StatusEffects.ApplyStat(self, self, data[i].id, data[i].duration, level);
 		}
 	}
 }

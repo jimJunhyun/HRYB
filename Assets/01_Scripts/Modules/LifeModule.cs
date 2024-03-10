@@ -12,6 +12,29 @@ public enum DamageType
 	Continuous, //지속시간동안 지정된 만큼 변함. 매 틱마다 적용
 }
 
+public struct AppliedStatus
+{
+	public StatusEffect eff;
+	public float dur;
+
+	public AppliedStatus(StatusEffect e, float d)
+	{
+		eff = e;
+		dur = d;
+	}
+
+	public override bool Equals(object obj)
+	{
+		return obj is AppliedStatus status &&
+			   eff.Equals(status.eff);
+	}
+
+	public override int GetHashCode()
+	{
+		return HashCode.Combine(eff);
+	}
+}
+
 public class LifeModule : Module
 {
 	public const float IMMUNETIME = 0.3f;
@@ -44,14 +67,12 @@ public class LifeModule : Module
 
 	public Action _dieEvent;
 	public Action _hitEvent;
-
-	internal Dictionary<StatusEffect, float> appliedDebuff = new Dictionary<StatusEffect, float>();
-
-	public bool _isFirstHit = false;
+	
+	internal List<AppliedStatus> appliedDebuff = new List<AppliedStatus>();
 
 	public virtual bool isDead
 	{
-		get => yy.yangAmt <= 0;
+		get => yy.white <= 0;
 	}
 
 	protected bool regenOn = true;
@@ -66,15 +87,15 @@ public class LifeModule : Module
 	{
 		if (regenOn)
 		{
-			if(Mathf.Abs((diff = initYinYang.yangAmt - yy.yangAmt)) > regenThreshold)
+			if(Mathf.Abs((diff = initYinYang.white - yy.white)) > regenThreshold)
 			{
 				regenOn = true;
-				yy.yangAmt += TotalRegenSpeed.yangAmt * Time.deltaTime;
+				yy.white += TotalRegenSpeed.white * Time.deltaTime;
 			}
-			if(Mathf.Abs((diff = initYinYang.yinAmt - yy.yinAmt)) > regenThreshold)
+			if(Mathf.Abs((diff = initYinYang.black - yy.black)) > regenThreshold)
 			{
 				regenOn = true;
-				yy.yinAmt += TotalRegenSpeed.yinAmt * Time.deltaTime;
+				yy.black += TotalRegenSpeed.black * Time.deltaTime;
 			}
 		}
 		//foreach (var item in appliedDebuff)
@@ -85,26 +106,64 @@ public class LifeModule : Module
 
 	void DecreaseYY(float amt, YYInfo to)
 	{
-		yy[(int)to] -= amt * adequity[((int)to)];
+		yy[((int)to)] -= amt * adequity[((int)to)];
 		if (isDead)
 		{
 			OnDead();
 		}
 	}
 
-	public Action<Actor> ApplyStatus(StatusEffect eff, Actor applier, float power, float dur)
+	public Action<Actor> ApplyStatus(StatusEffect eff, Actor applier, float power, float dur, out int effIndex)
 	{
-		if (!appliedDebuff.ContainsKey(eff))
+		int idx = appliedDebuff.FindIndex(item => item.eff.Equals(eff));
+
+		if(eff.method == StatEffApplyMethod.Overwrite)
 		{
-			appliedDebuff.Add(eff, dur);
+			RemoveStatEff(idx);
+		}
+		if (idx == -1 || eff.method == StatEffApplyMethod.Stackable || eff.method == StatEffApplyMethod.Overwrite)
+		{
+			appliedDebuff.Add( new AppliedStatus(eff, dur));
 			eff.onApplied.Invoke(GetActor(), applier, power);
 			Action<Actor> updAct = (self) => { eff.onUpdated(self, power);};
 			GetActor().updateActs += updAct;
+			effIndex = idx;
+
 			return updAct;
 		}
 		else
 		{
-			appliedDebuff[eff] += dur;
+			switch (eff.method)
+			{
+				case StatEffApplyMethod.AddDuration:
+					{
+						AppliedStatus stat = appliedDebuff[idx];
+						stat.dur += dur;
+						appliedDebuff[idx] = stat;
+					}
+					break;
+				case StatEffApplyMethod.AddPower:
+					{
+						//?????????????
+					}
+					break;
+				case StatEffApplyMethod.AddDurationAndPower:
+					{
+						AppliedStatus stat = appliedDebuff[idx];
+						stat.dur += dur;
+						//?????????????
+						appliedDebuff[idx] = stat;
+					}
+					break;
+				case StatEffApplyMethod.Overwrite:
+				case StatEffApplyMethod.Stackable:
+				case StatEffApplyMethod.NoOverwrite:
+				default:
+					break;
+			}
+			
+
+			effIndex = -1;
 			return null;
 		}
 	}
@@ -113,8 +172,8 @@ public class LifeModule : Module
 	{
 
 		Debug.Log($"update act count : {GetActor().updateActs.GetInvocationList().Length}");
-
-		if (appliedDebuff.Remove(eff))
+		int idx = appliedDebuff.FindIndex(item=>item.eff.Equals(eff));
+		if (idx != -1 && appliedDebuff.Remove(appliedDebuff[idx]))
 		{
 			Debug.Log($"{eff.name}사라짐");
 			GetActor().updateActs -= myUpdateAct;
@@ -125,33 +184,37 @@ public class LifeModule : Module
 		
 	}
 
-	public void RemoveStatEff(StatEffID id)
+	public void RemoveStatEff(int idx)
 	{
 		Debug.Log(name + " EffectCount : " + appliedDebuff.Count);
-		foreach (var item in appliedDebuff)
+		Debug.Log("스탯제거중...");
+		AppliedStatus stat = appliedDebuff[idx];
+		stat.dur = 0;
+		appliedDebuff[idx] = stat;
+	}
+
+	public void RemoveAllStatEff(StatEffID id)
+	{
+		for (int i = 0; i < appliedDebuff.Count; i++)
 		{
-			Debug.Log("스탯제거중...");
-			if(id == (StatEffID)GameManager.instance.statEff.idStatEffPairs[item.Key])
+			if (((StatusEffect)GameManager.instance.statEff.idStatEffPairs[id]).Equals(appliedDebuff[i].eff))
 			{
-				Debug.Log("발견, 지속시간 0으로//");
-				appliedDebuff.Remove(item.Key);
-				appliedDebuff.Add(item.Key, 0);
-				break;
+				AppliedStatus stat = appliedDebuff[i];
+				stat.dur = 0;
+				appliedDebuff[i] = stat;
 			}
 		}
 	}
 
 	protected virtual void DamageYYBase(YinYang data)
 	{
-		DecreaseYY(data.yinAmt, YYInfo.Yin);
-		DecreaseYY(data.yangAmt, YYInfo.Yang);
+		DecreaseYY(data.black, YYInfo.Black);
+		DecreaseYY(data.white, YYInfo.White);
 	}
 
-	public virtual void DamageYY(float yin, float yang, DamageType type, float dur = 0, float tick = 0)
+	public virtual void DamageYY(float black, float white, DamageType type, float dur = 0, float tick = 0)
 	{
-		_isFirstHit = true;
-		
-		YinYang data = new YinYang(yin, yang);
+		YinYang data = new YinYang(black, white);
 		switch (type)
 		{
 			case DamageType.DirectHit:
@@ -160,7 +223,6 @@ public class LifeModule : Module
 					DamageYYBase(data);
 					GetActor().anim.SetHitTrigger();
 					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
-					_hitEvent?.Invoke();
 				}
 				break;
 			case DamageType.DotDamage:
@@ -180,8 +242,6 @@ public class LifeModule : Module
 
 	public virtual void DamageYY(YinYang data, DamageType type, float dur = 0, float tick = 0)
 	{
-		_isFirstHit = true;
-		
 		switch (type)
 		{
 			case DamageType.DirectHit:
@@ -212,8 +272,6 @@ public class LifeModule : Module
 
 	protected IEnumerator DelDmgYYWX(YinYang data, float dur, float tick, DamageType type)
 	{
-		_isFirstHit = true;
-		
 		float curT = 0;
 		WaitForSeconds w = new WaitForSeconds(tick);
 		switch (type)
@@ -228,8 +286,8 @@ public class LifeModule : Module
 				break;
 			case DamageType.Continuous:
 				YinYang incPerSec = YinYang.Zero;
-				incPerSec.yinAmt = data.yinAmt / dur;
-				incPerSec.yangAmt = data.yangAmt / dur;
+				incPerSec.black = data.black / dur;
+				incPerSec.white = data.white / dur;
 				while (curT < dur)
 				{
 					curT += Time.deltaTime;

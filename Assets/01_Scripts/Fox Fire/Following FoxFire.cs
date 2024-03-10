@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class FollowingFoxFire : MonoBehaviour
 {
@@ -64,8 +65,8 @@ public class FollowingFoxFire : MonoBehaviour
 	private IEnumerator SmoothEmissive(float value)
 	{
 		isChanging = true;
-		var particle = effect.GetComponent<ParticleSystem>();
-		if (particle.isStopped) particle.Play();
+		var particle = effect.GetComponent<VisualEffect>();
+		if (particle.pause) particle.Play();
 
 		float t = 0;
 		float i = light.intensity;
@@ -79,7 +80,7 @@ public class FollowingFoxFire : MonoBehaviour
 
 		if (CurrentEmissiveLevel == 0)
 		{
-			particle.Stop();
+			//particle.Stop();
 			yield return stopWait;
 			
 		}

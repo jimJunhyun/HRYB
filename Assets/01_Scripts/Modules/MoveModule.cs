@@ -43,8 +43,25 @@ public class MoveModule : Module
 	{
 		get=>Physics.Raycast(transform.position, Vector3.down, groundThreshold, 1<< GameManager.GROUNDLAYER);
 	}
-
-	public bool immovable = false;
+	int noMove = 0;
+	public bool NoMove 
+	{
+		get => noMove > 0;
+		set
+		{
+			if (value)
+			{
+				noMove += 1;
+			}
+			else
+			{
+				if(noMove > 0)
+				{
+					noMove -= 1;
+				}
+			}
+		}
+	}
 
 	protected MoveStates curStat;
 	public virtual MoveStates moveStat
@@ -80,13 +97,9 @@ public class MoveModule : Module
 
 	public virtual void Move()
 	{
-		if (!immovable)
-		{
-			ForceCalc();
-			GravityCalc();
-			transform.Translate(forceDir * Time.deltaTime, Space.World);
-
-		}
+		ForceCalc();
+		GravityCalc();
+		transform.Translate(forceDir * Time.deltaTime, Space.World);
 	}
 
 	public virtual void FixedUpdate()
@@ -102,13 +115,13 @@ public class MoveModule : Module
 		}
 		else if (isGrounded)
 		{
-			forceDir.y = 0;
+			forceDir.y = 0f;
 		}
 	}
 
 	public virtual void ForceCalc()
 	{
-		if(forceDir.sqrMagnitude > 0.001f)
+		if(forceDir.sqrMagnitude > 0.01f)
 		{
 			Vector3 antiForce = -(forceDir) * GameManager.instance.forceResistance * Time.deltaTime;
 			forceDir += antiForce;
@@ -134,12 +147,6 @@ public class MoveModule : Module
 		moveStat  =MoveStates.Walk;
 		moveDir = Vector3.zero;
 		forceDir = Vector3.zero;
+		noMove = 0;
 	}
-
-	public void AddForce(Vector3 amt)
-	{
-		forceDir += amt;
-	}
-
-	
 }
