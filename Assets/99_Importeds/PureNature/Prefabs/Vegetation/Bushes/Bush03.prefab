@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1172181875094368916}
   - component: {fileID: 1745131258161964112}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Bush03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,12 +27,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6131349407003824541}
   - {fileID: 1422289309944439429}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &1745131258161964112
 LODGroup:
@@ -68,9 +67,7 @@ GameObject:
   - component: {fileID: 6131349407003824541}
   - component: {fileID: 2716779312055394862}
   - component: {fileID: 8045968543337411501}
-  - component: {fileID: 1549825802907944347}
-  - component: {fileID: 2332954068003670175}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Bush03_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +84,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1172181875094368916}
   m_RootOrder: 0
@@ -111,16 +107,14 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 47ea5fc56032e9e4bb4f1549690ca639, type: 2}
+  - {fileID: 2100000, guid: c2ab83233cc39c74aa3a5256fb813f77, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -141,48 +135,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1549825802907944347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3773745735592809367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb441ae724af6f745809f03081fed471, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interTime: 1
-  isInterable: 1
-  isDestroyed: 1
-  regenable: 1
-  regenSec: 20
-  resItem:
-  - "\uC12C\uC720"
-  amount: 1
---- !u!135 &2332954068003670175
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3773745735592809367}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 2.6563904
-  m_Center: {x: 0.19013502, y: 1.3039418, z: -0.16369888}
 --- !u!1 &8364143216005029188
 GameObject:
   m_ObjectHideFlags: 0
@@ -194,7 +146,7 @@ GameObject:
   - component: {fileID: 1422289309944439429}
   - component: {fileID: 1723541904845990133}
   - component: {fileID: 777959623704488878}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Bush03_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +163,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.159, y: -0.582, z: 0}
   m_LocalScale: {x: 1.8226001, y: 1.8226001, z: 1.8226001}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1172181875094368916}
   m_RootOrder: 1
@@ -235,16 +186,14 @@ MeshRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c1099b350663dfd43a81a08a316907dc, type: 2}
+  - {fileID: 2100000, guid: 9bf70e8dee7ee9a4e82c79098404fa3d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -265,4 +214,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
