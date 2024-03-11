@@ -23,19 +23,19 @@ public class Kick : AttackBase
 		(self.atk as PlayerAttack).onNextUse?.Invoke(relatedTransform.gameObject);
 	}
 
-	public override void UpdateStatus()
+	public override void UpdateStatus()	// ?? 스킬 시전중
 	{
 		
 	}
 
-	internal override void MyDisoperation(Actor self)
+	internal override void MyDisoperation(Actor self) // 사라질 때
 	{
 		caster.End();
 		//트레일지워주기
 		Debug.Log("KICKENDER");
 	}
 
-	internal override void MyOperation(Actor self)
+	internal override void MyOperation(Actor self) // 애니메이션? 이밴트
 	{
 		caster.Now( self.transform,life =>
 		{
@@ -53,4 +53,5 @@ public class Kick : AttackBase
 			
 		});
 	}
+	
 }

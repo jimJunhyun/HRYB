@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class  Leaf : Compose
+public abstract class Leaf : Compose
 {
 	//public UnityAction act;
 

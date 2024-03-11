@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public enum HandStat
+public enum PlayerForm
 {
 	//None,
-	Weapon,
-	Item,
-
+	Magic,
+	Yoho,
+	
 }
 
 public struct InventoryItem
@@ -271,7 +271,7 @@ public class PlayerInven : MonoBehaviour
 	bool clickMetal = false;
 	bool clickWater = false;
 
-	public HandStat stat = HandStat.Item;
+	public PlayerForm stat = PlayerForm.Magic;
 	public int curHolding = 0;
 	public ItemAmountPair CurHoldingItem 
 	{ 
@@ -524,19 +524,19 @@ public class PlayerInven : MonoBehaviour
 			switch (stat)
 			{
 				//case HandStat.None:
-				case HandStat.Item:
+				case PlayerForm.Yoho:
 					if (attackable)
 					{
-						stat = HandStat.Weapon;
+						stat = PlayerForm.Magic;
 						//(GameManager.instance.pActor.anim as PlayerAnim).SetEquipTrigger();
 					}
 					
 					break;
-				case HandStat.Weapon:
+				case PlayerForm.Magic:
 					if((GameManager.instance.pActor.atk is PlayerAttack atk) &&
 						!atk.clickL && !atk.clickR)
 					{
-						stat = HandStat.Item;
+						stat = PlayerForm.Yoho;
 						//(GameManager.instance.pActor.anim as PlayerAnim).SetUnequipTrigger();
 					}
 					break;
@@ -547,29 +547,29 @@ public class PlayerInven : MonoBehaviour
 		
 	}
 
-	public void Hold(HandStat stat, int idx)
+	public void Hold(PlayerForm stat, int idx)
 	{
-		switch (stat)
-		{
-			//case HandStat.None:
-			//	curHolding = -1;
-			//	break;
-			case HandStat.Weapon:
-				curHolding = -1;
-				break;
-			case HandStat.Item:
-				if(this.stat == stat)
-				{
-					curHolding = idx;
-				}
-				else
-				{
-					curHolding = 0;
-				}
-				break;
-		}
-		this.stat = stat;
-		GameManager.instance.uiManager.UpdateInvenUI();
+		// switch (stat)
+		// {
+		// 	//case HandStat.None:
+		// 	//	curHolding = -1;
+		// 	//	break;
+		// 	case HandStat.Magic:
+		// 		curHolding = -1;
+		// 		break;
+		// 	case HandStat.Item:
+		// 		if(this.stat == stat)
+		// 		{
+		// 			curHolding = idx;
+		// 		}
+		// 		else
+		// 		{
+		// 			curHolding = 0;
+		// 		}
+		// 		break;
+		// }
+		// this.stat = stat;
+		// GameManager.instance.uiManager.UpdateInvenUI();
 	}
 
 	public void UseHolding()
@@ -622,130 +622,130 @@ public class PlayerInven : MonoBehaviour
 
 	public void OnPressOne(InputAction.CallbackContext context)
 	{
-		if (stat == HandStat.Weapon)
+		if (stat == PlayerForm.Magic)
 		{
 			if(GameManager.instance.pActor.atk.NoAttack && !clickWood)
 				return;
 			if (context.started && !clickWood)
 			{
 				clickWood = true;
-				(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Wood);
+				(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.One);
 			}
 			else if (context.canceled && clickWood)
 			{
 				clickWood = false;
-				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Wood);
+				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.One);
 			}
 		}
-		else if (context.started && stat == HandStat.Item)
-		{
-			Hold(HandStat.Item, 0);
-			UseHolding();
-		}
+		// else if (context.started && stat == HandStat.Yoho)
+		// {
+		// 	Hold(HandStat.Item, 0);
+		// 	UseHolding();
+		// }
 		
 	}
 
 	public void OnPressTwo(InputAction.CallbackContext context)
 	{
-		if (stat == HandStat.Weapon)
+		if (stat == PlayerForm.Magic)
 		{
 			if (GameManager.instance.pActor.atk.NoAttack && !clickFire)
 				return;
 			if (context.started && !clickFire)
 			{
 				clickFire = true;
-				(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Fire);
+				(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Two);
 			}
 			else if (context.canceled && clickFire)
 			{
 				clickFire = false;
-				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Fire);
+				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Two);
 			}
 		}
-		else if (stat == HandStat.Item && context.started)
-		{
-			Hold(HandStat.Item, 1);
-			UseHolding();
-		}
+		// else if (stat == HandStat.Yoho && context.started)
+		// {
+		// 	Hold(HandStat.Yoho, 1);
+		// 	UseHolding();
+		// }
 
 	}
 
 	public void OnPressThree(InputAction.CallbackContext context)
 	{
-		if (stat == HandStat.Weapon)
+		if (stat == PlayerForm.Magic)
 		{
 			if (GameManager.instance.pActor.atk.NoAttack && !clickEarth)
 				return;
 			if (context.started && !clickEarth)
 			{
 				clickEarth = true;
-				(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Earth);
+				(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Three);
 			}
 			else if (context.canceled && clickEarth)
 			{
 				clickEarth = false;
-				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Earth);
+				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Three);
 			}
 		}
-		else if (stat == HandStat.Item && context.started)
-		{
-			Hold(HandStat.Item, 2);
-			UseHolding();
-		}
+		// else if (stat == HandStat.Item && context.started)
+		// {
+		// 	Hold(HandStat.Item, 2);
+		// 	UseHolding();
+		// }
 	}
 
 	public void OnPressFour(InputAction.CallbackContext context)
 	{
-		if (stat == HandStat.Item && context.started)
-		{
-			Hold(HandStat.Item, 3);
-			UseHolding();
-		}
+		// if (stat == HandStat.Item && context.started)
+		// {
+		// 	Hold(HandStat.Item, 3);
+		// 	UseHolding();
+		// }
 	}
 
 	public void OnPressQ(InputAction.CallbackContext context)
 	{
-		if (stat == HandStat.Weapon)
+		if (stat == PlayerForm.Magic)
 		{
 			if (GameManager.instance.pActor.atk.NoAttack && !clickMetal)
 				return;
 			if (context.started && !clickMetal)
 			{
 				clickMetal = true;
-				(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Metal);
+				(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Q);
 			}
 			else if (context.canceled && clickMetal)
 			{
 				clickMetal = false;
-				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Metal);
+				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Q);
 			}
 		}
 	}
 
 	public void OnPressFive(InputAction.CallbackContext context)
 	{
-		if (stat == HandStat.Item && context.started)
-		{
-			Hold(HandStat.Item, 4);
-			UseHolding();
-		}
+		// if (stat == HandStat.Item && context.started)
+		// {
+		// 	Hold(HandStat.Item, 4);
+		// 	UseHolding();
+		// }
 	}
 
 	public void OnPressE(InputAction.CallbackContext context)
 	{
-		if (stat == HandStat.Weapon)
+		if (stat == PlayerForm.Magic)
 		{
 			if (GameManager.instance.pActor.atk.NoAttack && !clickWater)
 				return;
 			if (context.started && !clickWater)
 			{
 				clickWater = true;
-				(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Water);
+				(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.E);
 			}
 			else if (context.canceled && clickWater)
 			{
 				clickWater = false;
-				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Water);
+				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.E);
 			}
 		}
 	}

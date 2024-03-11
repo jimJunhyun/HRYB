@@ -15,7 +15,7 @@ public class ConvertUI : MonoBehaviour
 
 	void Update()
     {
-		if(GameManager.instance.pinven.stat == HandStat.Weapon) //무기를 들고 있다면 키 가이드 변경
+		if(GameManager.instance.pinven.stat == PlayerForm.Magic) //무기를 들고 있다면 키 가이드 변경
 		{
 			guideKey[0].text = "Q";
 			guideKey[1].text = "E";

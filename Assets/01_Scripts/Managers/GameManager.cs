@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
 	public QuestManager qManager;
 	public SectionManager sManager;
 	public SkillLoader skillLoader;
+	
 	public PrefabManager pManager;
 
 	public PlayableDirector timeliner;
