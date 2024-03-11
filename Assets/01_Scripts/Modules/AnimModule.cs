@@ -47,6 +47,10 @@ public class AnimModule : Module
 	{
 		anim.SetInteger(moveHash, val);
 	}
+	public virtual void SetMoveState(bool b)
+	{
+		anim.SetBool(moveHash, b);
+	}
 
 	public virtual void SetIdleState(bool val)
 	{
@@ -63,6 +67,11 @@ public class AnimModule : Module
 	public void SetTrigger(int hash)
 	{
 		anim.SetTrigger(hash);
+	}
+
+	public void SetBoolModify(string a, bool b)
+	{
+		anim.SetBool(Animator.StringToHash(a), b);
 	}
 
 	public virtual void SetAnimationOverrides(List<string> from, List<AnimationClip> to)

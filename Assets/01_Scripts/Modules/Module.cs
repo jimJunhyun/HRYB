@@ -4,17 +4,22 @@ using UnityEngine;
 
 public class Module : MonoBehaviour
 {
-	protected Actor self;
+	private Actor _self;
+	protected Actor self
+	{
+		get
+		{
+			if(_self == null)
+			{
+				_self = GetComponent<Actor>();
+			}
+			return _self;
+		}
+	}
+
     public virtual Actor GetActor()
 	{
-		if(self == null)
-		{
-			return self = GetComponent<Actor>();
-		}
-		else
-		{
-			return self;
-		}
+		return self;
 	}
 
 	public virtual void ResetStatus()

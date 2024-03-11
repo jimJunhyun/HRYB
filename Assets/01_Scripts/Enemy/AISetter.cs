@@ -5,7 +5,20 @@ using UnityEngine;
 public abstract class AISetter : MonoBehaviour
 {
 	protected Actor self;
-	protected Actor player;
+	[SerializeField] Actor _player;
+
+	public Actor player
+	{
+		get
+		{
+			if(_player == null)
+			{
+				_player = FindObjectOfType<PlayerInter>().GetComponent<Actor>();
+
+			}
+			return _player;
+		}
+	}
 	
 	protected Selecter head;
 	
@@ -16,7 +29,6 @@ public abstract class AISetter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-	    player = GameManager.instance.pActor;
 
 	    self = GetComponent<Actor>();
 	    head = new Selecter();

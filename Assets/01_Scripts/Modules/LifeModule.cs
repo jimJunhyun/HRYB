@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 
 public enum DamageType
 {
@@ -64,6 +65,8 @@ public class LifeModule : Module
 
 	public float TotalApplySpeed { get => baseApplySpeed * applyMod;}
 
+	public Action _dieEvent;
+	public Action _hitEvent;
 	
 	internal List<AppliedStatus> appliedDebuff = new List<AppliedStatus>();
 
@@ -77,6 +80,9 @@ public class LifeModule : Module
 
 	protected bool regenOn = true;
 	float diff;
+	private bool _isFirstHit;
+
+	public bool IsFirstHit => _isFirstHit;
 
 	public virtual void Awake()
 	{
@@ -214,6 +220,8 @@ public class LifeModule : Module
 
 	public virtual void DamageYY(float black, float white, DamageType type, float dur = 0, float tick = 0, Actor attacker = null)
 	{
+		_isFirstHit = true;
+		
 		YinYang data = new YinYang(black, white);
 		switch (type)
 		{
@@ -244,6 +252,8 @@ public class LifeModule : Module
 
 	public virtual void DamageYY(YinYang data, DamageType type, float dur = 0, float tick = 0, Actor attacker = null)
 	{
+		_isFirstHit = true;
+		
 		switch (type)
 		{
 			case DamageType.DirectHit:
@@ -253,6 +263,7 @@ public class LifeModule : Module
 					GetActor().anim.SetHitTrigger();
 					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 					onNextDamaged?.Invoke(GetActor(), attacker, data);
+					_hitEvent?.Invoke();
 				}
 				break;
 			case DamageType.DotDamage:
@@ -264,6 +275,7 @@ public class LifeModule : Module
 				GetActor().anim.SetHitTrigger();
 				StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 				onNextDamaged?.Invoke(GetActor(), attacker, data);
+				_hitEvent?.Invoke();
 				break;
 			default:
 				break;
@@ -272,7 +284,7 @@ public class LifeModule : Module
 	}
 
 
-	IEnumerator DelDmgYYWX(YinYang data, float dur, float tick, DamageType type)
+	protected IEnumerator DelDmgYYWX(YinYang data, float dur, float tick, DamageType type)
 	{
 		float curT = 0;
 		WaitForSeconds w = new WaitForSeconds(tick);
@@ -306,8 +318,10 @@ public class LifeModule : Module
 
 	public virtual void OnDead()
 	{
+		Debug.LogError($"{gameObject.name} : 사망");
 		StopAllCoroutines();
 		GetActor().anim.SetDieTrigger();
+		_dieEvent?.Invoke();
 		//PoolManager.ReturnObject(gameObject);
 	}
 

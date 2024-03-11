@@ -13,40 +13,40 @@ MonoBehaviour:
   m_Name: Bloom
   m_EditorClassIdentifier: 
   active: 1
-  skipIterations:
-    m_OverrideState: 1
-    m_Value: 1
+  m_AdvancedMode: 0
   threshold:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0.9
+    min: 0
   intensity:
     m_OverrideState: 1
     m_Value: 1
+    min: 0
   scatter:
-    m_OverrideState: 1
-    m_Value: 0.25
+    m_OverrideState: 0
+    m_Value: 0.7
+    min: 0
+    max: 1
   clamp:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 65472
+    min: 0
   tint:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
+    hdr: 0
+    showAlpha: 0
+    showEyeDropper: 1
   highQualityFiltering:
-    m_OverrideState: 1
-    m_Value: 1
-  downscale:
     m_OverrideState: 0
     m_Value: 0
-  maxIterations:
-    m_OverrideState: 0
-    m_Value: 6
   dirtTexture:
-    m_OverrideState: 1
-    m_Value: {fileID: 2800000, guid: 93d6dd07560ce794ba0b299308af8651, type: 3}
-    dimension: 1
+    m_OverrideState: 0
+    m_Value: {fileID: 0}
   dirtIntensity:
-    m_OverrideState: 1
-    m_Value: 1
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
 --- !u!114 &-8741919681417581527
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -60,18 +60,26 @@ MonoBehaviour:
   m_Name: Vignette
   m_EditorClassIdentifier: 
   active: 1
+  m_AdvancedMode: 0
   color:
     m_OverrideState: 0
     m_Value: {r: 0, g: 0, b: 0, a: 1}
+    hdr: 0
+    showAlpha: 0
+    showEyeDropper: 1
   center:
     m_OverrideState: 0
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
     m_Value: 0.25
+    min: 0
+    max: 1
   smoothness:
     m_OverrideState: 0
     m_Value: 0.2
+    min: 0.01
+    max: 1
   rounded:
     m_OverrideState: 0
     m_Value: 0
@@ -88,21 +96,31 @@ MonoBehaviour:
   m_Name: ColorAdjustments
   m_EditorClassIdentifier: 
   active: 1
+  m_AdvancedMode: 0
   postExposure:
     m_OverrideState: 1
-    m_Value: 1.5
+    m_Value: 1
   contrast:
     m_OverrideState: 1
-    m_Value: 5
+    m_Value: 15
+    min: -100
+    max: 100
   colorFilter:
-    m_OverrideState: 1
-    m_Value: {r: 1, g: 0.9764151, b: 0.9792453, a: 1}
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1
   hueShift:
     m_OverrideState: 1
     m_Value: -5
+    min: -180
+    max: 180
   saturation:
     m_OverrideState: 1
-    m_Value: 50
+    m_Value: 10
+    min: -100
+    max: 100
 --- !u!114 &-6446540029592084553
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -116,92 +134,8 @@ MonoBehaviour:
   m_Name: Tonemapping
   m_EditorClassIdentifier: 
   active: 1
+  m_AdvancedMode: 0
   mode:
-    m_OverrideState: 1
-    m_Value: 2
-  neutralHDRRangeReductionMode:
-    m_OverrideState: 0
-    m_Value: 2
-  acesPreset:
-    m_OverrideState: 0
-    m_Value: 3
-  hueShiftAmount:
-    m_OverrideState: 0
-    m_Value: 0
-  detectPaperWhite:
-    m_OverrideState: 0
-    m_Value: 0
-  paperWhite:
-    m_OverrideState: 0
-    m_Value: 300
-  detectBrightnessLimits:
-    m_OverrideState: 0
-    m_Value: 1
-  minNits:
-    m_OverrideState: 0
-    m_Value: 0.005
-  maxNits:
-    m_OverrideState: 0
-    m_Value: 1000
---- !u!114 &-3208120381580951322
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8752436c1c6e30f4da82236df21c18e3, type: 3}
-  m_Name: Fog
-  m_EditorClassIdentifier: 
-  active: 0
-  enabled:
-    m_OverrideState: 1
-    m_Value: 1
-  quality:
-    m_OverrideState: 1
-    m_Value: 2
-  alphaMultiplier:
-    m_OverrideState: 1
-    m_Value: 0.5
-  additionalLightsIntensityMultiplier:
-    m_OverrideState: 1
-    m_Value: 1
-  jitter:
-    m_OverrideState: 1
-    m_Value: 0.15
-  downsample:
-    m_OverrideState: 1
-    m_Value: 2
-  steps:
-    m_OverrideState: 1
-    m_Value: 125
-  stepSize:
-    m_OverrideState: 1
-    m_Value: 0.2
-  density:
-    m_OverrideState: 1
-    m_Value: 0.045
-  minDensity:
-    m_OverrideState: 1
-    m_Value: 1
-  fogColor:
-    m_OverrideState: 1
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
-  brightness:
-    m_OverrideState: 1
-    m_Value: 3
-  anisotropy:
-    m_OverrideState: 1
-    m_Value: 0.8
-  blurRadius:
-    m_OverrideState: 1
-    m_Value: 0.01
-  blurStrength:
-    m_OverrideState: 1
-    m_Value: 0.5
-  blurIterations:
     m_OverrideState: 1
     m_Value: 2
 --- !u!114 &11400000
@@ -221,127 +155,3 @@ MonoBehaviour:
   - {fileID: -8646091827501034898}
   - {fileID: -8741919681417581527}
   - {fileID: -8797831758913661356}
-  - {fileID: 5556606781414504177}
-  - {fileID: 3818588392319564476}
-  - {fileID: -3208120381580951322}
-  - {fileID: 5958377469006792502}
---- !u!114 &3818588392319564476
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5485954d14dfb9a4c8ead8edb0ded5b1, type: 3}
-  m_Name: LiftGammaGain
-  m_EditorClassIdentifier: 
-  active: 1
-  lift:
-    m_OverrideState: 0
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
-  gamma:
-    m_OverrideState: 0
-    m_Value: {x: 1, y: 1, z: 1, w: -0.3992995}
-  gain:
-    m_OverrideState: 0
-    m_Value: {x: 1, y: 1, z: 1, w: -1}
---- !u!114 &5556606781414504177
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
-  m_Name: DepthOfField
-  m_EditorClassIdentifier: 
-  active: 1
-  mode:
-    m_OverrideState: 1
-    m_Value: 1
-  gaussianStart:
-    m_OverrideState: 1
-    m_Value: 160
-  gaussianEnd:
-    m_OverrideState: 1
-    m_Value: 320
-  gaussianMaxRadius:
-    m_OverrideState: 0
-    m_Value: 1
-  highQualitySampling:
-    m_OverrideState: 0
-    m_Value: 0
-  focusDistance:
-    m_OverrideState: 0
-    m_Value: 10
-  aperture:
-    m_OverrideState: 0
-    m_Value: 5.6
-  focalLength:
-    m_OverrideState: 0
-    m_Value: 50
-  bladeCount:
-    m_OverrideState: 0
-    m_Value: 5
-  bladeCurvature:
-    m_OverrideState: 0
-    m_Value: 1
-  bladeRotation:
-    m_OverrideState: 0
-    m_Value: 0
---- !u!114 &5958377469006792502
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdaaa7489cdb84f4b9389e3a3e61a780, type: 3}
-  m_Name: SkyAndClouds
-  m_EditorClassIdentifier: 
-  active: 0
-  enabled:
-    m_OverrideState: 1
-    m_Value: 0
-  compositing:
-    m_OverrideState: 0
-    m_Value:
-      renderScale: 0.4
-      blurRadius: 0.0025
-      blurStrength: 0.01
-      blurIterations: 1
-      alphaStep: 0
-      alphaSoftness: 0.35
-      cloudBrightness: 0.3
-      skyBrightness: 0.2
-  clouds:
-    m_OverrideState: 0
-    m_Value:
-      quality: 2
-      steps: 30
-      stepSize: 80
-      cloudLayerLow: 1
-      cloudLayerHigh: 4
-      cloudShadows: 0
-      cloudDataLow: {fileID: 0}
-      cloudDataHigh: {fileID: 0}
-  sky:
-    m_OverrideState: 0
-    m_Value:
-      sunSize: 0.1
-      sunIntensity: 1000
-      starIntensity: 5
-      lightWavelengths: {x: 680, y: 550, z: 440}
-      densityPower: 8
-      DayScattering: 1
-      EveningScattering: 8
-      dayColor: {r: 1, g: 1, b: 1, a: 1}
-      eveningColor: {r: 1, g: 0.509, b: 0.509, a: 1}
-      saturation: 1.5
-      eveningThreshold: 3

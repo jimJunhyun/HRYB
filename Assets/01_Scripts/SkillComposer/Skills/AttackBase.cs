@@ -23,7 +23,7 @@ public abstract class AttackBase : Leaf
 		}
 	}
 
-	public override void Operate(Actor self)
+	public override void Operate(Actor self) // 실행시
 	{
 
 	}

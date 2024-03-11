@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR;
 
 public enum SkillSlotInfo
 {
-	Wood,
-	Fire,
-	Earth,
-	Metal,
-	Water,
+	One,
+	Two,
+	Three,
+	Q,
+	E,
 
 	LClick,
 	RClick,
@@ -17,6 +18,7 @@ public enum SkillSlotInfo
 
 	Max
 }
+
 
 public class SkillSlots
 {
@@ -104,18 +106,13 @@ public class SkillSlots
 
 public class WXSkillSlots
 {
-	public const string WOODSKILL = "woodSkill";
-	public const string FIRESKILL = "fireSkill";
-	public const string EARTHSKILL = "earthSkill";
-	public const string METALSKILL = "metalSkill";
-	public const string WATERSKILL = "waterSkill";
 	
 
-	SkillSlots[] slots = new SkillSlots[5];
+	SkillSlots[] slots = new SkillSlots[(int)SkillSlotInfo.Max];
 
 	public void Update()
 	{
-		for (int i = 0; i < ((int)WXInfo.Max); i++)
+		for (int i = 0; i < ((int)SkillSlotInfo.Max); i++)
 		{
 			if(!slots[i].IsEmpty && slots[i].skInfo.useType != SkillUseType.Passive && !slots[i].IsUsable)
 				slots[i].CurCooledTime += Time.deltaTime;
@@ -125,7 +122,7 @@ public class WXSkillSlots
 
 	public WXSkillSlots(Actor attatched)
 	{
-		for (int i = 0; i < ((int)WXInfo.Max); i++)
+		for (int i = 0; i < ((int)SkillSlotInfo.Max); i++)
 		{
 			slots[i] = new SkillSlots(null, attatched, (SkillSlotInfo)i);
 		}
@@ -134,7 +131,7 @@ public class WXSkillSlots
 	{
 		get
 		{
-			if(i < ((int)WXInfo.Max))
+			if(i < ((int)SkillSlotInfo.Max))
 			{
 				return slots[i];
 			}
@@ -145,52 +142,36 @@ public class WXSkillSlots
 
 public class PlayerCast : CastModule
 {
-	public WXSkillSlots slots;
-	public SkillSlots lClickSlot;
-	public SkillSlots rClickSlot;
+	public WXSkillSlots nowSkillSlot;
+	public WXSkillSlots humenSkillSlot;
+	public WXSkillSlots yohoSkillSlot;
+	
+	public const string WOODSKILL = "woodSkill";
+	public const string FIRESKILL = "fireSkill";
+	public const string EARTHSKILL = "earthSkill";
+	public const string METALSKILL = "metalSkill";
+	public const string WATERSKILL = "waterSkill";
 	public const string LCLICKSKILL = "lClickSkill";
 	public const string RCLICKSKILL = "rClickSkill";
 
 	public const string DISOPERATE = "disop";
 
-	public SkillSlots this[int at]
-	{
-		get
-		{
-			if(at < ((int)WXInfo.Max))
-			{
-				return slots[at];
-			}
-			else
-			{
-				if(at == ((int)SkillSlotInfo.LClick))
-				{
-					return lClickSlot;
-				}
-				else if(at == ((int)SkillSlotInfo.RClick))
-				{
-					return rClickSlot;
-				}
-				else
-				{
-					return null;
-				}
-			}
-		}
-	}
+	private SkillRoot _nowSkillUse= null;
+	public SkillRoot NowSkillUse => _nowSkillUse;
 
 
 	private void Awake()
 	{
-		slots = new WXSkillSlots(GetActor());
-		lClickSlot = new SkillSlots(null, GetActor());
-		rClickSlot = new SkillSlots(null, GetActor());	
+		humenSkillSlot = new WXSkillSlots(GetActor());
+		yohoSkillSlot = new WXSkillSlots(GetActor());
+		
+		nowSkillSlot = humenSkillSlot;
 	}
 
 	private void Start()
 	{
-		ConnectSkillDataTo(GameManager.instance.skillLoader["NormalBowAttack"], SkillSlotInfo.LClick);
-		ConnectSkillDataTo(GameManager.instance.skillLoader["ChargeBowAttack"], SkillSlotInfo.RClick);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("NormalBowAttack"), SkillSlotInfo.LClick, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
 
 		nameCastPair.Add("interact" , new Preparation(
 		(self)=>
@@ -235,29 +216,30 @@ public class PlayerCast : CastModule
 			return 0;
 		}));
 
-		nameCastPair.Add(WXSkillSlots.WOODSKILL, new Preparation(
+		nameCastPair.Add(WOODSKILL, new Preparation(
 		(self)=>
 		{
 			if(self.TryGetComponent<Actor>(out Actor a))
 			{
-				slots[((int)SkillSlotInfo.Wood)].Execute(a);
+				nowSkillSlot[((int)SkillSlotInfo.One)].Execute(a);
+				_nowSkillUse = nowSkillSlot[((int)SkillSlotInfo.One)].skInfo;
 			}
 		},
 		() =>
 		{
-			if (!slots[((int)SkillSlotInfo.Wood)].IsEmpty)
+			if (!nowSkillSlot[((int)SkillSlotInfo.One)].IsEmpty)
 			{
-				return slots[((int)SkillSlotInfo.Wood)].skInfo.castTime;
+				return nowSkillSlot[((int)SkillSlotInfo.One)].skInfo.castTime;
 			}
 			return 0;
 		}));
 
-		nameCastPair.Add(WXSkillSlots.WOODSKILL+DISOPERATE, new Preparation(
+		nameCastPair.Add(WOODSKILL+DISOPERATE, new Preparation(
 		(self) =>
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				slots[((int)SkillSlotInfo.Wood)].Disoperate(a);
+				nowSkillSlot[((int)SkillSlotInfo.One)].Disoperate(a);
 			}
 		},
 		() =>
@@ -265,32 +247,33 @@ public class PlayerCast : CastModule
 			return 0;
 		}));
 
-		nameCastPair.Add(WXSkillSlots.FIRESKILL, new Preparation(
+		nameCastPair.Add(FIRESKILL, new Preparation(
 		(self) =>
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				if (slots[((int)SkillSlotInfo.Fire)].IsUsable)
+				if (nowSkillSlot[((int)SkillSlotInfo.Two)].IsUsable)
 				{
-					slots[((int)SkillSlotInfo.Fire)].Execute(a);
+					nowSkillSlot[((int)SkillSlotInfo.Two)].Execute(a);
+					_nowSkillUse = nowSkillSlot[((int)SkillSlotInfo.Two)].skInfo;
 				}
 			}
 		},
 		() =>
 		{
-			if (!slots[((int)SkillSlotInfo.Fire)].IsEmpty)
+			if (!nowSkillSlot[((int)SkillSlotInfo.Two)].IsEmpty)
 			{
-				return slots[((int)SkillSlotInfo.Fire)].skInfo.castTime;
+				return nowSkillSlot[((int)SkillSlotInfo.Two)].skInfo.castTime;
 			}
 			return 0;
 		}));
 
-		nameCastPair.Add(WXSkillSlots.FIRESKILL + DISOPERATE, new Preparation(
+		nameCastPair.Add(FIRESKILL + DISOPERATE, new Preparation(
 		(self) =>
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				slots[((int)SkillSlotInfo.Fire)].Disoperate(a);
+				nowSkillSlot[((int)SkillSlotInfo.Two)].Disoperate(a);
 			}
 		},
 		() =>
@@ -298,32 +281,33 @@ public class PlayerCast : CastModule
 			return 0;
 		}));
 
-		nameCastPair.Add(WXSkillSlots.EARTHSKILL, new Preparation(
+		nameCastPair.Add(EARTHSKILL, new Preparation(
 		(self) =>
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				if (slots[((int)SkillSlotInfo.Earth)].IsUsable)
+				if (nowSkillSlot[((int)SkillSlotInfo.Three)].IsUsable)
 				{
-					slots[((int)SkillSlotInfo.Earth)].Execute(a);
+					nowSkillSlot[((int)SkillSlotInfo.Three)].Execute(a);
+					_nowSkillUse = nowSkillSlot[((int)SkillSlotInfo.Three)].skInfo;
 				}
 			}
 		},
 		() =>
 		{
-			if (!slots[((int)SkillSlotInfo.Earth)].IsEmpty)
+			if (!nowSkillSlot[((int)SkillSlotInfo.Three)].IsEmpty)
 			{
-				return slots[((int)SkillSlotInfo.Earth)].skInfo.castTime;
+				return nowSkillSlot[((int)SkillSlotInfo.Three)].skInfo.castTime;
 			}
 			return 0;
 		}));
 
-		nameCastPair.Add(WXSkillSlots.EARTHSKILL + DISOPERATE, new Preparation(
+		nameCastPair.Add(EARTHSKILL + DISOPERATE, new Preparation(
 		(self) =>
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				slots[((int)SkillSlotInfo.Earth)].Disoperate(a);
+				nowSkillSlot[((int)SkillSlotInfo.Three)].Disoperate(a);
 			}
 		},
 		() =>
@@ -331,32 +315,33 @@ public class PlayerCast : CastModule
 			return 0;
 		}));
 
-		nameCastPair.Add(WXSkillSlots.METALSKILL, new Preparation(
+		nameCastPair.Add(METALSKILL, new Preparation(
 		(self) =>
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				if (slots[((int)SkillSlotInfo.Metal)].IsUsable)
+				if (nowSkillSlot[((int)SkillSlotInfo.Q)].IsUsable)
 				{
-					slots[((int)SkillSlotInfo.Metal)].Execute(a);
+					nowSkillSlot[((int)SkillSlotInfo.Q)].Execute(a);
+					_nowSkillUse = nowSkillSlot[((int)SkillSlotInfo.Q)].skInfo;
 				}	
 			}
 		},
 		() =>
 		{
-			if (!slots[((int)SkillSlotInfo.Metal)].IsEmpty)
+			if (!nowSkillSlot[((int)SkillSlotInfo.Q)].IsEmpty)
 			{
-				return slots[((int)SkillSlotInfo.Metal)].skInfo.castTime;
+				return nowSkillSlot[((int)SkillSlotInfo.Q)].skInfo.castTime;
 			}
 			return 0;
 		}));
 
-		nameCastPair.Add(WXSkillSlots.METALSKILL + DISOPERATE, new Preparation(
+		nameCastPair.Add(METALSKILL + DISOPERATE, new Preparation(
 		(self) =>
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				slots[((int)SkillSlotInfo.Metal)].Disoperate(a);
+				nowSkillSlot[((int)SkillSlotInfo.Q)].Disoperate(a);
 			}
 		},
 		() =>
@@ -364,32 +349,33 @@ public class PlayerCast : CastModule
 			return 0;
 		}));
 
-		nameCastPair.Add(WXSkillSlots.WATERSKILL, new Preparation(
+		nameCastPair.Add(WATERSKILL, new Preparation(
 		(self) =>
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				if (slots[((int)SkillSlotInfo.Water)].IsUsable)
+				if (nowSkillSlot[((int)SkillSlotInfo.E)].IsUsable)
 				{
-					slots[((int)SkillSlotInfo.Water)].Execute(a);
+					nowSkillSlot[((int)SkillSlotInfo.E)].Execute(a);
+					_nowSkillUse = nowSkillSlot[((int)SkillSlotInfo.E)].skInfo;
 				}
 			}
 		},
 		() =>
 		{
-			if (!slots[((int)SkillSlotInfo.Water)].IsEmpty)
+			if (!nowSkillSlot[((int)SkillSlotInfo.E)].IsEmpty)
 			{
-				return slots[((int)SkillSlotInfo.Water)].skInfo.castTime;
+				return nowSkillSlot[((int)SkillSlotInfo.E)].skInfo.castTime;
 			}
 			return 0;
 		}));
 
-		nameCastPair.Add(WXSkillSlots.WATERSKILL + DISOPERATE, new Preparation(
+		nameCastPair.Add(WATERSKILL + DISOPERATE, new Preparation(
 		(self) =>
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				slots[((int)SkillSlotInfo.Water)].Disoperate(a);
+				nowSkillSlot[((int)SkillSlotInfo.E)].Disoperate(a);
 			}
 		},
 		() =>
@@ -402,14 +388,15 @@ public class PlayerCast : CastModule
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				lClickSlot.Execute(a);
+				nowSkillSlot[(int)SkillSlotInfo.LClick].Execute(a);
+				_nowSkillUse = nowSkillSlot[((int)SkillSlotInfo.LClick)].skInfo;
 			}
 		},
 		() =>
 		{
-			if (!lClickSlot.IsEmpty)
+			if (!nowSkillSlot[(int)SkillSlotInfo.LClick].IsEmpty)
 			{
-				return lClickSlot.skInfo.castTime;
+				return nowSkillSlot[(int)SkillSlotInfo.LClick].skInfo.castTime;
 			}
 			return 0;
 		}));
@@ -419,7 +406,7 @@ public class PlayerCast : CastModule
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				lClickSlot.Disoperate(a);
+				nowSkillSlot[(int)SkillSlotInfo.LClick].Disoperate(a);
 			}
 		},
 		() =>
@@ -432,14 +419,15 @@ public class PlayerCast : CastModule
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{ 
-				rClickSlot.Execute(a);
+				nowSkillSlot[(int)SkillSlotInfo.RClick].Execute(a);
+				_nowSkillUse = nowSkillSlot[((int)SkillSlotInfo.RClick)].skInfo;
 			}
 		},
 		() =>
 		{
-			if (!rClickSlot.IsEmpty)
+			if (!nowSkillSlot[(int)SkillSlotInfo.RClick].IsEmpty)
 			{
-				return rClickSlot.skInfo.castTime;
+				return nowSkillSlot[(int)SkillSlotInfo.RClick].skInfo.castTime;
 			}
 			return 0;
 		}));
@@ -449,7 +437,7 @@ public class PlayerCast : CastModule
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
-				rClickSlot.Disoperate(a);
+				nowSkillSlot[(int)SkillSlotInfo.RClick].Disoperate(a);
 			}
 		},
 		() =>
@@ -486,21 +474,20 @@ public class PlayerCast : CastModule
 
 	private void Update()
 	{
-		slots.Update();
-		UpdateClickSlots();
+		nowSkillSlot.Update();
 
 		///
 		if (Input.GetKeyDown(KeyCode.Y))
 		{
-			ConnectSkillDataTo(GameManager.instance.skillLoader["BackKick"], SkillSlotInfo.Wood);
+			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("BackKick"), SkillSlotInfo.One, PlayerForm.Magic);
 		}
 		if (Input.GetKeyDown(KeyCode.H))
 		{
-			ConnectSkillDataTo(GameManager.instance.skillLoader["IceMultishot"], SkillSlotInfo.Fire);
+			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("IceMultishot"), SkillSlotInfo.Two, PlayerForm.Magic);
 		}
 		if (Input.GetKeyDown(KeyCode.N))
 		{
-			ConnectSkillDataTo(GameManager.instance.skillLoader["EnhanceIce"], SkillSlotInfo.Earth);
+			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("EnhanceIce"), SkillSlotInfo.Three, PlayerForm.Magic);
 		}
 		///
 	}
@@ -508,32 +495,74 @@ public class PlayerCast : CastModule
 	void UpdateClickSlots()
 	{
 		
-		if (!lClickSlot.IsEmpty && lClickSlot.skInfo.useType != SkillUseType.Passive && !lClickSlot.IsUsable)
-			lClickSlot.CurCooledTime += Time.deltaTime;
-		lClickSlot.skInfo?.UpdateStatus();
+		if (!nowSkillSlot[(int)SkillSlotInfo.LClick].IsEmpty && nowSkillSlot[(int)SkillSlotInfo.LClick].skInfo.useType != SkillUseType.Passive && !nowSkillSlot[(int)SkillSlotInfo.LClick].IsUsable)
+			nowSkillSlot[(int)SkillSlotInfo.LClick].CurCooledTime += Time.deltaTime;
+		nowSkillSlot[(int)SkillSlotInfo.LClick].skInfo?.UpdateStatus();
 
-		if (!rClickSlot.IsEmpty && rClickSlot.skInfo.useType != SkillUseType.Passive && !rClickSlot.IsUsable)
-			rClickSlot.CurCooledTime += Time.deltaTime;
-		rClickSlot.skInfo?.UpdateStatus();
+		if (!nowSkillSlot[(int)SkillSlotInfo.RClick].IsEmpty && nowSkillSlot[(int)SkillSlotInfo.RClick].skInfo.useType != SkillUseType.Passive && !nowSkillSlot[(int)SkillSlotInfo.RClick].IsUsable)
+			nowSkillSlot[(int)SkillSlotInfo.RClick].CurCooledTime += Time.deltaTime;
+		nowSkillSlot[(int)SkillSlotInfo.RClick].skInfo?.UpdateStatus();
 	}
 
-	public SkillRoot ConnectSkillDataTo(SkillRoot root, SkillSlotInfo to)
+	public SkillRoot ConnectSkillDataTo(SkillRoot root, SkillSlotInfo to, PlayerForm st)
 	{
-		SkillRoot original = this[((int)to)].skInfo;
+		SkillRoot original = null;
+		switch (st)
+		{
+			case PlayerForm.Magic:
+				original = humenSkillSlot[((int)to)].skInfo;
+				break;
+			case PlayerForm.Yoho:
+				original = yohoSkillSlot[((int)to)].skInfo;
+				break;
+			default:
+				break;
+		}
 		if(original != null)
 			original.Disoperate(GetActor());
-		this[((int)to)].Equip(root, GetActor());
+		switch (st)
+		{
+			case PlayerForm.Magic:
+				humenSkillSlot[((int)to)].Equip(root, GetActor());
+				break;
+			case PlayerForm.Yoho:
+				yohoSkillSlot[((int)to)].Equip(root, GetActor());
+				break;
+			default:
+				break;
+		}
 		Debug.Log($"스킬 장착 : {to}, {root.name}");
 		
 		return original;
 	}
 
-	public SkillRoot DisconnectSkillDataFrom(SkillSlotInfo from)
+	public SkillRoot DisconnectSkillDataFrom(SkillSlotInfo from, PlayerForm st)
 	{
-		SkillRoot data = this[((int)from)].skInfo;
+		SkillRoot data = null;
+		switch (st)
+		{
+			case PlayerForm.Magic:
+				data = humenSkillSlot[((int)from)].skInfo;
+				break;
+			case PlayerForm.Yoho:
+				data = yohoSkillSlot[((int)from)].skInfo;
+				break;
+			default:
+				break;
+		}
 		if(data == null)
 			return data;
-		this[((int)from)].UnEquip(GetActor());
+		switch (st)
+		{
+			case PlayerForm.Magic:
+				humenSkillSlot[((int)from)].UnEquip(GetActor());
+				break;
+			case PlayerForm.Yoho:
+				yohoSkillSlot[((int)from)].UnEquip(GetActor());
+				break;
+			default:
+				break;
+		}
 		Debug.Log($"스킬 해제 : {from}, {data.name}");
 		return data;
 	}
@@ -542,54 +571,55 @@ public class PlayerCast : CastModule
 	{
 		DisoperateAt(at);
 	}
+	
 
 	internal void ActualSkillOperate(SkillSlotInfo at)
 	{
-		Debug.Log(this[((int)at)].skInfo.name);
-		this[((int)at)].skInfo.MyOperation(GetActor());
+		Debug.Log(nowSkillSlot[((int)at)].skInfo.name);
+		nowSkillSlot[((int)at)].skInfo.MyOperation(GetActor());
 	}
 
 	internal void ActualSkillDisoperate(SkillSlotInfo at)
 	{
-		this[((int)at)].skInfo.MyDisoperation(GetActor());
+		nowSkillSlot[((int)at)].skInfo.MyDisoperation(GetActor());
 	}
 
 	internal void ActualSkillOperate(SkillSlotInfo at, int idx)
 	{
-		this[((int)at)].skInfo.ActualOperateAt(GetActor(), idx);
+		nowSkillSlot[((int)at)].skInfo.ActualOperateAt(GetActor(), idx);
 	}
 
 	internal void ActualSkillDisoperate(SkillSlotInfo at, int idx)
 	{
-		this[((int)at)].skInfo.ActualDisoperateAt(GetActor(), idx);
+		nowSkillSlot[((int)at)].skInfo.ActualDisoperateAt(GetActor(), idx);
 	}
 
 	internal void SetSkillUse(SkillSlotInfo at)
 	{
-		this[((int)at)].skInfo.SetAnimations(GetActor(), at);
+		nowSkillSlot[((int)at)].skInfo.SetAnimations(GetActor(), at);
 		UseSkillAt(at);
 	}
 
 	void UseSkillAt(SkillSlotInfo at)
 	{
-		if (this[((int)at)].IsUsable)
+		if (nowSkillSlot[((int)at)].IsUsable)
 		{
 			switch (at)
 			{
-				case SkillSlotInfo.Wood:
-					Cast(WXSkillSlots.WOODSKILL);
+				case SkillSlotInfo.One:
+					Cast(WOODSKILL);
 					break;
-				case SkillSlotInfo.Fire:
-					Cast(WXSkillSlots.FIRESKILL);
+				case SkillSlotInfo.Two:
+					Cast(FIRESKILL);
 					break;
-				case SkillSlotInfo.Earth:
-					Cast(WXSkillSlots.EARTHSKILL);
+				case SkillSlotInfo.Three:
+					Cast(EARTHSKILL);
 					break;
-				case SkillSlotInfo.Metal:
-					Cast(WXSkillSlots.METALSKILL);
+				case SkillSlotInfo.Q:
+					Cast(METALSKILL);
 					break;
-				case SkillSlotInfo.Water:
-					Cast(WXSkillSlots.WATERSKILL);
+				case SkillSlotInfo.E:
+					Cast(WATERSKILL);
 					break;
 				case SkillSlotInfo.LClick:
 					Cast(LCLICKSKILL);
@@ -605,20 +635,20 @@ public class PlayerCast : CastModule
 	{
 		switch (at)
 		{
-			case SkillSlotInfo.Wood:
-				Cast(WXSkillSlots.WOODSKILL+DISOPERATE);
+			case SkillSlotInfo.One:
+				Cast(WOODSKILL+DISOPERATE);
 				break;
-			case SkillSlotInfo.Fire:
-				Cast(WXSkillSlots.FIRESKILL + DISOPERATE);
+			case SkillSlotInfo.Two:
+				Cast(FIRESKILL + DISOPERATE);
 				break;
-			case SkillSlotInfo.Earth:
-				Cast(WXSkillSlots.EARTHSKILL + DISOPERATE);
+			case SkillSlotInfo.Three:
+				Cast(EARTHSKILL + DISOPERATE);
 				break;
-			case SkillSlotInfo.Metal:
-				Cast(WXSkillSlots.METALSKILL + DISOPERATE);
+			case SkillSlotInfo.Q:
+				Cast(METALSKILL + DISOPERATE);
 				break;
-			case SkillSlotInfo.Water:
-				Cast(WXSkillSlots.WATERSKILL + DISOPERATE);
+			case SkillSlotInfo.E:
+				Cast(WATERSKILL + DISOPERATE);
 				break;
 			case SkillSlotInfo.LClick:
 				Cast(LCLICKSKILL + DISOPERATE);

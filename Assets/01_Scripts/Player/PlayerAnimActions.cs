@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimActions : MonoBehaviour
+public class PlayerAnimActions : MonoBehaviour, IAnimationEvent
 {
 	Actor self;
 
@@ -135,5 +135,36 @@ public class PlayerAnimActions : MonoBehaviour
 		(self.move as PlayerMove).ctrl.radius *= 2f;
 		if (self.move.moveStat != MoveStates.Sit)
 			(self.move as PlayerMove).ctrl.center *= 2f;
+	}
+
+	public void OnAnimationStart()
+	{
+		if ((self.cast as PlayerCast).NowSkillUse != null)
+			(self.cast as PlayerCast).NowSkillUse.OnAnimationStart(self);
+
+	}
+
+	public void OnAnimationMove()
+	{
+		if ((self.cast as PlayerCast).NowSkillUse != null)
+			(self.cast as PlayerCast).NowSkillUse.OnAnimationMove(self);
+	}
+
+	public void OnAnimationEvent()
+	{
+		if ((self.cast as PlayerCast).NowSkillUse != null)
+			(self.cast as PlayerCast).NowSkillUse.OnAnimationEvent(self);
+	}
+
+	public void OnAnimationStop()
+	{
+		if ((self.cast as PlayerCast).NowSkillUse != null)
+			(self.cast as PlayerCast).NowSkillUse.OnAnimationStop(self);
+	}
+
+	public void OnAnimationEnd()
+	{
+		if ((self.cast as PlayerCast).NowSkillUse != null)
+			(self.cast as PlayerCast).NowSkillUse.OnAnimationEnd(self);
 	}
 }

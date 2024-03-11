@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4686957641140889157}
   - component: {fileID: 1189349165432698312}
   - component: {fileID: 1967767189651506515}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Bush01_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.108, z: 0}
   m_LocalScale: {x: 1.0144804, y: 1.0144804, z: 1.0144804}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 365312301281907717}
   m_RootOrder: 1
@@ -52,16 +51,14 @@ MeshRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: aea776c6c0d7e1d4497899699a493117, type: 2}
+  - {fileID: 2100000, guid: fcd81e9f1b3d63b4f8f106e670b5d2fe, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -82,7 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &2925902453360712356
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,9 +90,7 @@ GameObject:
   - component: {fileID: 7088391117107844576}
   - component: {fileID: 1631592673213394549}
   - component: {fileID: 1536709545366867151}
-  - component: {fileID: 3902697406752541744}
-  - component: {fileID: 445521741906917635}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Bush01_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +107,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 365312301281907717}
   m_RootOrder: 0
@@ -137,16 +130,14 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 47ea5fc56032e9e4bb4f1549690ca639, type: 2}
+  - {fileID: 2100000, guid: c2ab83233cc39c74aa3a5256fb813f77, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -167,48 +158,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3902697406752541744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2925902453360712356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb441ae724af6f745809f03081fed471, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interTime: 1
-  isInterable: 1
-  isDestroyed: 1
-  regenable: 1
-  regenSec: 20
-  resItem:
-  - "\uC12C\uC720"
-  amount: 1
---- !u!135 &445521741906917635
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2925902453360712356}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1.2892497
-  m_Center: {x: 0.034365475, y: 0.8514792, z: -0.09445426}
 --- !u!1 &3695907468697396758
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,7 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 365312301281907717}
   - component: {fileID: 964411388451029697}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Bush01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -235,13 +184,12 @@ Transform:
   m_GameObject: {fileID: 3695907468697396758}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7088391117107844576}
   - {fileID: 4686957641140889157}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &964411388451029697
 LODGroup:

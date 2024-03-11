@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 933205084412357019}
   - component: {fileID: 6071776871589111563}
-  - component: {fileID: 528978467100965919}
   - component: {fileID: 4059774453932043328}
   - component: {fileID: 1634534468717466394}
   - component: {fileID: 1333461994721108836}
@@ -20,6 +19,8 @@ GameObject:
   - component: {fileID: 2719180598335837514}
   - component: {fileID: 5216959805318715878}
   - component: {fileID: 2178317243217670839}
+  - component: {fileID: 5654347094407411979}
+  - component: {fileID: 5373213743209681124}
   m_Layer: 0
   m_Name: JangSung
   m_TagString: Untagged
@@ -34,14 +35,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6548958457746408809}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -21.68, y: 0, z: 0.42}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7856797209567409450}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &6071776871589111563
 BoxCollider:
@@ -64,33 +65,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 8, z: 1}
   m_Center: {x: 0, y: 4, z: 0}
---- !u!114 &528978467100965919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6548958457746408809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cd1cfdc8b01b404f8b56a0e6ede7766, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isImmune: 0
-  initYinYang:
-    yinAmt: 0
-    yangAmt: 0
-  initAdequity:
-    yinAmt: 15
-    yangAmt: 15
-  initSoul: 0
-  yy:
-    yinAmt: 0
-    yangAmt: 0
-  maxSoul: 0
-  regenMod: 1
-  regenThreshold: 10
-  applyMod: 1
 --- !u!114 &4059774453932043328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,6 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bbd7cf0c98ee4744a787213af8a7bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitClipName: 
 --- !u!114 &6876894668503783341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,7 +122,7 @@ MonoBehaviour:
   sight: {fileID: 0}
   cast: {fileID: 0}
   anim: {fileID: 0}
-  ai: {fileID: 0}
+  _ai: {fileID: 0}
 --- !u!114 &4689662016484940396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,6 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 329696d17a66fae43bb28a736bf76a98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 0}
   _friend: {fileID: 0}
 --- !u!114 &3885280090406563638
 MonoBehaviour:
@@ -173,17 +149,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf82c52e028920a4c90fbdcf9acc70e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initEffSpeed: 0
-  initIsDirect: 0
   initAtkDist: 0
   initAtkGap: 0
   initDamage:
     yinAmt: 0
     yangAmt: 0
-  effSpeedMod: 1
-  isDirect: 0
   DownAttackDist: 10
-  FallDownAttackDist: 150
+  FallDownAttackDist: 15
   MoveAttackDist: 100
 --- !u!114 &2719180598335837514
 MonoBehaviour:
@@ -203,9 +175,12 @@ MonoBehaviour:
   walkSpeed: 0
   crouchSpeed: 0
   speedMod: 1
+  gravity: 0
+  groundThreshold: 0.5
+  immovable: 0
   _findPlayerRange: 30
-  _normalSpeed: 3.5
-  _fallDownMoveSpeed: 18
+  _normalSpeed: 7
+  _fallDownMoveSpeed: 20
 --- !u!95 &5216959805318715878
 Animator:
   serializedVersion: 5
@@ -238,17 +213,60 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.7
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 10
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 180
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 5
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &5654347094407411979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6548958457746408809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c83953c45b6f084a99446d88c1a95e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hpBar: {fileID: 0}
+  _lifeModule: {fileID: 0}
+--- !u!114 &5373213743209681124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6548958457746408809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0976ebe9aa25fa344af99466c0e4e237, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isImmune: 0
+  initYinYang:
+    yinAmt: 20
+    yangAmt: 20
+  initAdequity:
+    yinAmt: 1
+    yangAmt: 1
+  initSoul: 0
+  yy:
+    yinAmt: 0
+    yangAmt: 0
+  maxSoul: 0
+  regenMod: 1
+  regenThreshold: 10
+  applyMod: 1
+  _barrierEffect: {fileID: 6036363885242095341, guid: 761ce3f370c6bdd4491bb2246cf28e18, type: 3}
+  _visualPos: {fileID: 7856797209567409450}
 --- !u!1001 &7674778156736631489
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -310,7 +328,7 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: a1bcae98d7571eb49a8360d094abc99f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 9063221910583810997}
+      addedObject: {fileID: 8812894876193520735}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1bcae98d7571eb49a8360d094abc99f, type: 3}
 --- !u!4 &7856797209567409450 stripped
@@ -379,7 +397,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45989d21d4d2f7a469348cb13f7fa9a2, type: 3}
---- !u!4 &9063221910583810997 stripped
+--- !u!4 &8812894876193520735 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 45989d21d4d2f7a469348cb13f7fa9a2, type: 3}
   m_PrefabInstance: {fileID: 9063221910583810996}

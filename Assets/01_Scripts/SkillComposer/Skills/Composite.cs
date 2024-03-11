@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 [CreateAssetMenu(menuName = "Skills/Composite")]
 
-public class Composite : Compose, IComposer
+public class Composite : Compose, IComposer, IAnimationEventActor
 {
 	public List<Compose> childs;
 	public float composeDel;
@@ -54,7 +54,7 @@ public class Composite : Compose, IComposer
 		//Do nothing?
 	}
 
-	internal override void MyOperation(Actor self)
+	internal override void  MyOperation(Actor self)
 	{
 		GameManager.instance.StartCoroutine(DelOperate(self));
 		//for (int i = 0; i < childs.Count; i++)
@@ -134,5 +134,30 @@ public class Composite : Compose, IComposer
 			}
 			yield return new WaitForSeconds(composeDel);
 		}
+	}
+	
+	public virtual void OnAnimationStart(Actor self)
+	{
+		
+	}
+
+	public virtual void OnAnimationMove(Actor self)
+	{
+
+	}
+
+	public virtual void OnAnimationEvent(Actor self)
+	{
+
+	}
+
+	public virtual void OnAnimationStop(Actor self)
+	{
+
+	}
+
+	public virtual void OnAnimationEnd(Actor self)
+	{
+
 	}
 }
