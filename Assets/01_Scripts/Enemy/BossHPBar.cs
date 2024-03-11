@@ -19,8 +19,8 @@ public class BossHPBar : MonoBehaviour
     {
 		if(_lifeModule != null && _lifeModule.life.yy != null)
 		{
-			Debug.Log(_lifeModule.life.yy.yinAmt / _lifeModule.life.initYinYang.yinAmt);
-			_hpBar.fillAmount = _lifeModule.life.yy.yinAmt / _lifeModule.life.initYinYang.yinAmt;
+			Debug.Log(_lifeModule.life.yy.white / _lifeModule.life.initYinYang.white);
+			_hpBar.fillAmount = _lifeModule.life.yy.white / _lifeModule.life.initYinYang.white;
 		}
     }
 }

@@ -77,6 +77,9 @@ public class LifeModule : Module
 
 	protected bool regenOn = true;
 	float diff;
+	private bool _isFirstHit;
+
+	public bool IsFirstHit => _isFirstHit;
 
 	public virtual void Awake()
 	{
@@ -214,6 +217,8 @@ public class LifeModule : Module
 
 	public virtual void DamageYY(float black, float white, DamageType type, float dur = 0, float tick = 0)
 	{
+		_isFirstHit = true;
+		
 		YinYang data = new YinYang(black, white);
 		switch (type)
 		{
@@ -242,6 +247,8 @@ public class LifeModule : Module
 
 	public virtual void DamageYY(YinYang data, DamageType type, float dur = 0, float tick = 0)
 	{
+		_isFirstHit = true;
+		
 		switch (type)
 		{
 			case DamageType.DirectHit:
