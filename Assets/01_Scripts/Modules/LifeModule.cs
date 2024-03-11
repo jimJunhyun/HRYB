@@ -67,6 +67,9 @@ public class LifeModule : Module
 	
 	internal List<AppliedStatus> appliedDebuff = new List<AppliedStatus>();
 
+	//피격자, 공격자, 대미지
+	public Action<Actor, Actor, YinYang> onNextDamaged; 
+
 	public virtual bool isDead
 	{
 		get => yy.white <= 0;
@@ -194,7 +197,7 @@ public class LifeModule : Module
 	{
 		for (int i = 0; i < appliedDebuff.Count; i++)
 		{
-			if (((StatusEffect)GameManager.instance.statEff.idStatEffPairs[id]).Equals(appliedDebuff[i].eff))
+			if (((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]).Equals(appliedDebuff[i].eff))
 			{
 				AppliedStatus stat = appliedDebuff[i];
 				stat.dur = 0;
@@ -209,7 +212,7 @@ public class LifeModule : Module
 		DecreaseYY(data.white, YYInfo.White);
 	}
 
-	public virtual void DamageYY(float black, float white, DamageType type, float dur = 0, float tick = 0)
+	public virtual void DamageYY(float black, float white, DamageType type, float dur = 0, float tick = 0, Actor attacker = null)
 	{
 		YinYang data = new YinYang(black, white);
 		switch (type)
@@ -220,6 +223,7 @@ public class LifeModule : Module
 					DamageYYBase(data);
 					GetActor().anim.SetHitTrigger();
 					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+					onNextDamaged?.Invoke(GetActor(), attacker, data);
 				}
 				break;
 			case DamageType.DotDamage:
@@ -230,6 +234,7 @@ public class LifeModule : Module
 				DamageYYBase(data);
 				GetActor().anim.SetHitTrigger();
 				StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+				onNextDamaged?.Invoke(GetActor(), attacker, data);
 				break;
 			default:
 				break;
@@ -237,7 +242,7 @@ public class LifeModule : Module
 
 	}
 
-	public virtual void DamageYY(YinYang data, DamageType type, float dur = 0, float tick = 0)
+	public virtual void DamageYY(YinYang data, DamageType type, float dur = 0, float tick = 0, Actor attacker = null)
 	{
 		switch (type)
 		{
@@ -247,6 +252,7 @@ public class LifeModule : Module
 					DamageYYBase(data);
 					GetActor().anim.SetHitTrigger();
 					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+					onNextDamaged?.Invoke(GetActor(), attacker, data);
 				}
 				break;
 			case DamageType.DotDamage:
@@ -257,6 +263,7 @@ public class LifeModule : Module
 				DamageYYBase(data);
 				GetActor().anim.SetHitTrigger();
 				StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+				onNextDamaged?.Invoke(GetActor(), attacker, data);
 				break;
 			default:
 				break;

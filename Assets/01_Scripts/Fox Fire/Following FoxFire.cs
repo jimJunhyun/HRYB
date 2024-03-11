@@ -3,9 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
+public enum FoxFireMode
+{
+	FollowPlayer,
+	Flying,
+	Attatched,
+}
+
 public class FollowingFoxFire : MonoBehaviour
 {
 	private Transform playerTr;
+	private Transform orbittingTr;
+
+	FoxFireMode mode = FoxFireMode.FollowPlayer;
 
 	[Header("Following")]
 	public float XOffset = 0.4f;
@@ -13,6 +23,12 @@ public class FollowingFoxFire : MonoBehaviour
 	public float ZOffset = 0.3f;
 
 	public float FollowingSpeed = 1f;
+	public float flyMaxTime = 15f;
+	public float orbitRadius = 5f;
+	public float orbitSpeed = 5f;
+
+	private Vector3 flyDirPow;
+	private float flyStartT;
 
 	private Light light;
 	[Header("Lighting")]
@@ -33,7 +49,6 @@ public class FollowingFoxFire : MonoBehaviour
 		if (playerTr == null) playerTr = GameObject.Find("Player").transform;
 		if(light == null) light = GetComponentInChildren<Light>();
 		if (effect == null) effect = transform.GetChild(0);
-
     }
 
     void Update()
@@ -46,8 +61,56 @@ public class FollowingFoxFire : MonoBehaviour
 			SetEmissiveValue();
 		}
 
-		Following();
+		switch (mode)
+		{
+			case FoxFireMode.FollowPlayer:
+				Following();
+				break;
+			case FoxFireMode.Flying:
+				Flying();
+				break;
+			case FoxFireMode.Attatched:
+				Orbitting();
+				break;
+			default:
+				break;
+		}
 
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		if(mode == FoxFireMode.Flying)
+		{
+			Actor actor = other.GetComponent<Actor>();
+			if (actor && !(actor.move is PlayerMove))
+			{
+				Orbit(actor.transform);
+			}
+			else
+			{
+				Follow();
+			}
+		}
+		
+	}
+
+	public void Fly(Vector3 dir, float pow)
+	{
+		mode = FoxFireMode.Flying;
+		flyDirPow = dir * pow;
+		flyStartT = Time.time;
+	}
+
+	public void Orbit(Transform trm)
+	{
+		mode = FoxFireMode.Attatched;
+		orbittingTr = trm;
+	}
+
+	public void Follow()
+	{
+		mode = FoxFireMode.FollowPlayer;
 	}
 
 	private void Following()
@@ -56,6 +119,26 @@ public class FollowingFoxFire : MonoBehaviour
 
 		transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * FollowingSpeed);
 	}
+
+	private void Flying()
+	{
+		if(Time.time - flyStartT < flyMaxTime)
+		{
+			transform.position += flyDirPow * Time.deltaTime;
+		}
+		else
+		{
+			Follow();
+		}
+		
+	}
+
+	private void Orbitting()
+	{
+		float rad = (Time.time * orbitSpeed) % 360 * Mathf.Deg2Rad;
+		transform.position = orbittingTr.TransformPoint(new Vector3(Mathf.Cos(rad), 0, Mathf.Sin(rad)) * orbitRadius);
+	}
+
 	private void SetEmissiveValue()
 	{
 		float targetValue = CurrentEmissiveLevel == 0 ? 0 : Mathf.Lerp(minEmissive, maxEmissive, ((float)CurrentEmissiveLevel-1f) / (float)(MaxEmissiveLevel-1f));

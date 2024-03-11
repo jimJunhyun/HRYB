@@ -88,7 +88,7 @@ public class StatusEffects
 		idStatEffPairs.Add(((int)StatEffID.EnhanceFire), new StatusEffect("화상", "불로 인해 피해를 입습니다.", StatEffApplyMethod.NoOverwrite, OnEnhanceFireActivated, OnEnhanceFireUpdated, OnEnhanceFireEnded));
 		idStatEffPairs.Add(((int)StatEffID.Stun), new StatusEffect("기절", "행동할 수 없습니다.", StatEffApplyMethod.AddDuration, OnStunActivated, OnStunUpdated, OnStunEnded));
 		idStatEffPairs.Add(((int)StatEffID.FoxBewitched), new StatusEffect("여우홀림", "피해를 받으면, 여우를 빠르게 합니다.", StatEffApplyMethod.NoOverwrite, OnFoxBewitchedActivated, OnFoxBewitchedUpdated, OnFoxBewitchedEnded));
-		idStatEffPairs.Add(((int)StatEffID.SpeedUp), new StatusEffect("신속", "움직임이 날래집니다.", StatEffApplyMethod.Stackable, OnFoxBewitchedActivated, OnFoxBewitchedUpdated, OnFoxBewitchedEnded));
+		idStatEffPairs.Add(((int)StatEffID.SpeedUp), new StatusEffect("신속", "움직임이 날래집니다.", StatEffApplyMethod.Stackable, OnSpeedUpActivated, OnSpeedUpUpdated, OnSpeedUpEnded));
 
 		idStatEffPairs.Add(new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", StatEffApplyMethod.NoOverwrite, OnKnockbackActivated, OnKnockbackDebuffUpdated, OnKnockbackDebuffEnded), ((int)StatEffID.Knockback));
 		idStatEffPairs.Add(new StatusEffect("무적", "세계의 비호를 받고 있습니다.", StatEffApplyMethod.NoOverwrite, OnImmuneActivated, OnImmuneUpdated, OnImmuneEnded), ((int)StatEffID.Immune));
@@ -99,7 +99,7 @@ public class StatusEffects
 		idStatEffPairs.Add(new StatusEffect("화상", "불로 인해 피해를 입습니다.", StatEffApplyMethod.NoOverwrite, OnEnhanceFireActivated, OnEnhanceFireUpdated, OnEnhanceFireEnded), ((int)StatEffID.EnhanceFire));
 		idStatEffPairs.Add(new StatusEffect("기절", "행동할 수 없습니다.", StatEffApplyMethod.AddDuration, OnStunActivated, OnStunUpdated, OnStunEnded), ((int)StatEffID.Stun));
 		idStatEffPairs.Add(new StatusEffect("여우홀림", "피격시, 플레이어를 빠르게 합니다.", StatEffApplyMethod.NoOverwrite, OnFoxBewitchedActivated, OnFoxBewitchedUpdated, OnFoxBewitchedEnded), ((int)StatEffID.FoxBewitched));
-		idStatEffPairs.Add(new StatusEffect("신속", "움직임이 날래집니다.", StatEffApplyMethod.Stackable, OnFoxBewitchedActivated, OnFoxBewitchedUpdated, OnFoxBewitchedEnded), ((int)StatEffID.SpeedUp));
+		idStatEffPairs.Add(new StatusEffect("신속", "움직임이 날래집니다.", StatEffApplyMethod.Stackable, OnSpeedUpActivated, OnSpeedUpUpdated, OnSpeedUpEnded), ((int)StatEffID.SpeedUp));
 
 
 		effDict = Resources.Load<StatVfxDictionary>("StatEffList");
@@ -253,7 +253,7 @@ public class StatusEffects
 	{
 		if(inflicter.atk is PlayerAttack atk)
 		{
-			//@@@@@@@@@@@@@@@2피격시 이속증가시키기
+			self.life.onNextDamaged += Bewitched;
 		}
 	}
 	void OnFoxBewitchedUpdated(Actor self, float power)
@@ -262,10 +262,16 @@ public class StatusEffects
 	}
 	void OnFoxBewitchedEnded(Actor self, float power)
 	{
-
+		self.life.onNextDamaged -= Bewitched;
 	}
 
-
+	void Bewitched(Actor self, Actor attacker, YinYang dmg)
+	{
+		if(attacker.move is PlayerMove)
+		{
+			StatusEffects.ApplyStat(attacker, attacker, StatEffID.SpeedUp, 3);
+		}
+	}
 
 	void OnSpeedUpActivated(Actor self, Actor inflicter, float power)
 	{

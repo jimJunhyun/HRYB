@@ -528,6 +528,7 @@ public class PlayerInven : MonoBehaviour
 					if (attackable)
 					{
 						stat = HandStat.Weapon;
+						Debug.Log("WEAPONHOLD");
 						//(GameManager.instance.pActor.anim as PlayerAnim).SetEquipTrigger();
 					}
 					
@@ -536,6 +537,7 @@ public class PlayerInven : MonoBehaviour
 					if((GameManager.instance.pActor.atk is PlayerAttack atk) &&
 						!atk.clickL && !atk.clickR)
 					{
+						Debug.Log("ITEMHOLD");
 						stat = HandStat.Item;
 						//(GameManager.instance.pActor.anim as PlayerAnim).SetUnequipTrigger();
 					}
