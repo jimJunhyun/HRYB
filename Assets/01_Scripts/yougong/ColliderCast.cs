@@ -24,6 +24,9 @@ public abstract class ColliderCast : MonoBehaviour
 	private bool _isRunning = false;
 	
 	
+	private int _attackAbleCount = 0;
+	
+	
 	public abstract Collider[] ReturnColliders();
 	
 	public Action<LifeModule> CastAct;
@@ -33,10 +36,16 @@ public abstract class ColliderCast : MonoBehaviour
 		//Debug.LogError("업데이트 돌긴함");
 		if (_isRunning == false)
 			return;
+		
+		if(_attackAbleCount > 0 && CheckDic.Count > _attackAbleCount)
+			return;
+		
+		
 		//Debug.LogError("업데이트 들어옴");
 		// 생각해 봤는데 어차피 col있는 만큼만 돌아가기 때문에 큰 문제 없음
 		foreach (var col in ReturnColliders())
 		{
+			
 			Debug.LogWarning($"{col.name} 맞음");
 			if (CheckDic.ContainsKey(col))
 				return;
@@ -45,11 +54,12 @@ public abstract class ColliderCast : MonoBehaviour
 				CheckDic.Add(col, false);
 				Debug.LogError(col.name);
 			}
+			
 			if (col.TryGetComponent<LifeModule>(out LifeModule lf))
 			{
 				CastAct?.Invoke(lf);
 			}
-
+			
 		}
 	}
 
@@ -58,9 +68,11 @@ public abstract class ColliderCast : MonoBehaviour
 		StopAllCoroutines();
 	}
 
-	public void Now(Transform _owner, Action<LifeModule> act = null, float StartSec = -1, float EndSec = -1, float dieSec = -1)
+	public void Now(Transform _owner, Action<LifeModule> act = null, int attackAble = -1, float StartSec = -1, float EndSec = -1, float dieSec = -1)
 	{
 		this.Owner = _owner;
+		
+		_attackAbleCount = attackAble;
 		if(StartSec > 0)
 		{
 			StartCoroutine(StartSet(StartSec));
