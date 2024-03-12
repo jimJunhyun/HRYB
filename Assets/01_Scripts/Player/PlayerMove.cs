@@ -26,6 +26,8 @@ public class PlayerMove : MoveModule
 
 	public float lockOnDist = 15f;
 
+	public float nearRefreshDist = 3f;
+	public float nearRefreshTime = 5f;
 
 	public float angleXMin;
 	public float angleXMax;
@@ -53,11 +55,15 @@ public class PlayerMove : MoveModule
 	Vector3 ropeNormal = Vector3.zero;
 
 	Vector3 initPos;
+	Vector3 prevDetectPos;
+	float prevDetectTime;
 
 	Quaternion to;
 	Camera mainCam;
 
 	HashSet<Transform> already = new HashSet<Transform>();
+
+	HashSet<Actor> nearEnemies = new HashSet<Actor>();
 
 	Transform[] targets;
 	Transform[] prevTargets;
@@ -224,6 +230,11 @@ public class PlayerMove : MoveModule
 			ctrl.height = 2;
 			ctrl.radius = 0.5f;
 			ctrl.center = Vector3.up;
+		}
+
+		if(Time.time - prevDetectTime > nearRefreshTime)
+		{
+			DoDetection();
 		}
 	}
 	
@@ -453,6 +464,11 @@ public class PlayerMove : MoveModule
 			{
 				ResetTargets();
 			}
+
+			if((transform.position - prevDetectPos).sqrMagnitude > nearRefreshDist * nearRefreshDist)
+			{
+				DoDetection();
+			}
 		}
 		
 	}
@@ -540,6 +556,43 @@ public class PlayerMove : MoveModule
 				, CameraManager.instance.aimCam.transform.eulerAngles.y
 				, CameraManager.instance.aimCam.transform.eulerAngles.z);
 		}
+
+		if(CameraManager.instance.curCamStat == CamStatus.Freelook)
+		{
+			if(nearEnemies.Count == 0)
+			{
+				DoDetection();
+			}
+			if(nearEnemies.Count > 0)
+			{
+				float maxCosAngle = 0f;
+				float nearestDist = float.MaxValue;
+				Actor nearest = null;
+				PlayerAttack pAttack = GetActor().atk as PlayerAttack;
+				foreach (var item in nearEnemies)
+				{
+					Vector3 distVec = (item.transform.position - transform.position);
+					if (distVec.sqrMagnitude < pAttack.targetMaxDist * pAttack.targetMaxDist)
+					{
+						float cosAngle = Vector3.Dot(mainCam.transform.forward, distVec.normalized);
+
+						if (maxCosAngle < cosAngle || maxCosAngle - cosAngle <= pAttack.targetAngleErr)
+						{
+							if (maxCosAngle < cosAngle)
+							{
+								maxCosAngle = cosAngle;
+							}
+							if(distVec.sqrMagnitude < nearestDist)
+							{
+								nearestDist = distVec.sqrMagnitude;
+								nearest = item;
+							}
+						}
+					}
+						
+				}
+			}
+		}
 	}
 
 	public void Lock(InputAction.CallbackContext context)
@@ -623,6 +676,23 @@ public class PlayerMove : MoveModule
 		}
 		
 		
+	}
+
+	public void DoDetection()
+	{
+		nearEnemies.Clear();
+		Collider[] c = Physics.OverlapSphere(transform.position, lockOnDist, ~(1 << GameManager.PLAYERLAYER | 1 << GameManager.GROUNDLAYER));
+		for (int i = 0; i < c.Length; i++)
+		{
+			Actor ac = null;
+			if (ac = c[i].GetComponent<Actor>())
+			{
+				nearEnemies.Add(ac);
+			}
+		}
+
+		prevDetectPos = transform.position;
+		prevDetectTime = Time.time;
 	}
 
 	public float GetSneakDist()

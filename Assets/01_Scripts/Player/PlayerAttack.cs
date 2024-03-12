@@ -19,6 +19,10 @@ public class PlayerAttack : AttackModule
 	Ray camRay;
 	public Transform ShootPos { get; protected set;}
 
+	public Transform aimTarget;
+	public float targetMaxDist;
+	public float targetAngleErr = 0.1f;
+
 	UnityAction updateActs;
 
 	float AimTime { get => Time.time - aimStart;}
