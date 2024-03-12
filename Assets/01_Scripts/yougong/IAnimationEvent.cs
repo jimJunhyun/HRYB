@@ -1,8 +1,5 @@
 public interface IAnimationEvent
 {
-	public void SetAttackRange(int idx);
-	public void ResetAttackRange(int idx);
-
 	public void OnAnimationStart();
 
 	public void OnAnimationMove();
@@ -11,3 +8,15 @@ public interface IAnimationEvent
 	public void OnAnimationStop();
 	public void OnAnimationEnd();
 }
+
+public interface IAnimationEventActor
+{
+	public void OnAnimationStart(Actor self);
+
+	public void OnAnimationMove(Actor self);
+	public void OnAnimationEvent(Actor self);
+
+	public void OnAnimationStop(Actor self);
+	public void OnAnimationEnd(Actor self);
+}
+

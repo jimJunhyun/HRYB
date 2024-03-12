@@ -39,8 +39,8 @@ public class Moose_normalAttackModule : EnemyAttackModule
 			vec.y += 40;
 			
 			
-			_life.GetActor().move.AddForce(vec);
-			_life.GetActor().move.forceDir.y = 40;
+			_life.GetActor().move.forceDir += vec;
+			//_life.GetActor().move.forceDir.y = 40;
 			
 			Debug.LogError(_life.GetActor().move.forceDir);
 		});

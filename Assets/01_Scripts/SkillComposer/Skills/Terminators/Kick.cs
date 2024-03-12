@@ -22,17 +22,17 @@ public class Kick : AttackBase
 
 	}
 
-	public override void UpdateStatus()
+	public override void UpdateStatus()	// ?? 스킬 시전중
 	{
 		
 	}
 
-	internal override void MyDisoperation(Actor self)
+	internal override void MyDisoperation(Actor self) // 사라질 때
 	{
 		caster.End();
 	}
 
-	internal override void MyOperation(Actor self)
+	internal override void MyOperation(Actor self) // 애니메이션? 이밴트
 	{
 		caster.Now(life =>
 		{
@@ -60,4 +60,5 @@ public class Kick : AttackBase
 			
 		});
 	}
+	
 }

@@ -138,7 +138,8 @@ public class PlayerInter : SightModule
 
     public void Interact(InputAction.CallbackContext context)
 	{
-		if(GameManager.instance.pinven.stat == HandStat.Item)
+		// GameManager.instance.pinven.stat == PlayerForm.Magic || GameManager.instance.pinven.stat == PlayerForm.Yoho
+		if(true)
 		{
 			if (context.performed)
 			{

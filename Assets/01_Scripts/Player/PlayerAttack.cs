@@ -85,7 +85,7 @@ public class PlayerAttack : AttackModule
 		}
 	}
 
-	public void OnAttack(InputAction.CallbackContext context)
+	public void OnAttack(InputAction.CallbackContext context) // 좌 우클릭
 	{
 		if (GameManager.instance.pinven.stat == HandStat.Weapon)
 		{

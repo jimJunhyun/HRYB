@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public enum SkillUseType
 {
@@ -14,6 +15,8 @@ public enum SkillUseType
 [CreateAssetMenu(menuName = "Skills/Root")]
 public class SkillRoot : Composite
 {
+	[FormerlySerializedAs("_skillType")] public WXInfo wx;
+	
 	public SkillUseType useType;
 	public float castTime;
 	public float cooldown;
@@ -33,6 +36,4 @@ public class SkillRoot : Composite
 	{
 		base.Disoperate(self);
 	}
-
-	
 }

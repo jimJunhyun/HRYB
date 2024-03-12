@@ -142,7 +142,7 @@ public class WolfAI : AISetter
 	    if(self.life.isDead ==false && _isWake)
 			LookAt(player.transform);
 
-	    if ((self.life._isFirstHit == true || Vector3.Distance(player.transform.position, transform.position) < 7) && _isWake == false)
+	    if ((self.life.IsFirstHit == true || Vector3.Distance(player.transform.position, transform.position) < 7) && _isWake == false)
 	    {
 		    _isWake = true;
 		    self.anim.SetBoolModify("Sleep", false);
