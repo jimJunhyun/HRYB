@@ -22,7 +22,7 @@ public class PlayerAnimActions : MonoBehaviour, IAnimationEvent
 		holdingBow  = GameObject.Find("HoldingBow");
 		equipingBow = GameObject.Find("EquipingBow");
 
-		eBowRend = equipingBow.GetComponentInChildren<SkinnedMeshRenderer>();
+		//eBowRend = equipingBow.GetComponentInChildren<SkinnedMeshRenderer>();
 
 		animator = holdingBow.GetComponent<Animator>();
 		BowUnequip();
