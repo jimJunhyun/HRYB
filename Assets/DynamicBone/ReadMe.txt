@@ -159,3 +159,4 @@ Version History
       Parameters can be animated with Unity animation system.
 1.3.1 Fix "Gravity" bug in version 1.3.0
 1.3.2 Disable multithread in WebGL build.
+1.3.3 Disable multithread in Android with IL2CPP build after Unity 2022.
