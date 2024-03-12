@@ -8,13 +8,10 @@ public enum SkillTags
 {
 	None = 0,
 
-	AttackEnhance = 1,
-	NonAttackEnhance = 2,
-	AttackEnhancable = 4,
-	NonAttackEnhancable = 8,
-	AttackConstant = 16,
-	NonAttackConstant = 32,
-	Special = 64,
+	Attack= 1, 
+	SkillEnhance = 2, 
+	Enhancable = 4,
+	Special = 8,
 
 
 

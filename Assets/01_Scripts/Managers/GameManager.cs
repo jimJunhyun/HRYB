@@ -45,7 +45,8 @@ public class GameManager : MonoBehaviour
 	public ImageManager imageManager;
 	public CameraManager camManager;
 
-	public Arrow arrow;
+	//public Arrow arrow;
+	public FollowingFoxFire foxfire;
 
 	public AudioPlayer audioPlayer;
 
@@ -106,6 +107,7 @@ public class GameManager : MonoBehaviour
 		statEff = new StatusEffects();
 		skillLoader = new SkillLoader();
 
+		foxfire = GameObject.Find("Fox Fire").GetComponent<FollowingFoxFire>();
 
 		
 	}

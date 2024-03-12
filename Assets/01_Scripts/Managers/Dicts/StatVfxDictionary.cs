@@ -39,8 +39,14 @@ public class StatVfxDict : Dictionary<StatEffID, List<EffPosStrPair>>, ISerializ
 
 		for (int i = 0; i < idEff.Count; i++)
 		{
-			
-			this.Add(idEff[i].key, idEff[i].value);
+			if(!this.ContainsKey(idEff[i].key))
+			{
+				this.Add(idEff[i].key, idEff[i].value);
+			}
+			else
+			{
+				this.Add(StatEffID.Max, idEff[i].value);
+			}
 		}
 	}
 
