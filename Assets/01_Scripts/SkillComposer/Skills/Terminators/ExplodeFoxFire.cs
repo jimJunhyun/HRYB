@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Skills/Infos/ShootFoxFire")]
-public class ShootFoxFire : AttackBase
+[CreateAssetMenu(menuName = "Skills/Infos/ExplodeFoxFire")]
+public class ExplodeFoxFire : AttackBase
 {
-	public float shootSpeed;
-
 	public override void Operate(Actor self)
 	{
 		//base.Operate(self);
@@ -16,7 +14,6 @@ public class ShootFoxFire : AttackBase
 	{
 		//base.Disoperate(self);
 	}
-
 	public override void UpdateStatus()
 	{
 		
@@ -29,7 +26,9 @@ public class ShootFoxFire : AttackBase
 
 	internal override void MyOperation(Actor self)
 	{
-		GameManager.instance.foxfire.Fly(self.transform.forward, shootSpeed);
-		GameManager.instance.audioPlayer.PlayPoint(audioClipName, self.transform.position);
+		if(GameManager.instance.foxfire.Mode == FoxFireMode.Attatched)
+		{
+			GameManager.instance.foxfire.Explode();
+		}
 	}
 }

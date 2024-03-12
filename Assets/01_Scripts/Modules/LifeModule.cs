@@ -12,6 +12,7 @@ public enum DamageType
 	Continuous, //지속시간동안 지정된 만큼 변함. 매 틱마다 적용
 }
 
+[Serializable]
 public struct AppliedStatus
 {
 	public StatusEffect eff;
@@ -23,6 +24,10 @@ public struct AppliedStatus
 		dur = d;
 	}
 
+	public static AppliedStatus Empty
+	{
+		get => new AppliedStatus(new StatusEffect(), 0);
+	}
 	public override bool Equals(object obj)
 	{
 		return obj is AppliedStatus status &&
@@ -68,7 +73,7 @@ public class LifeModule : Module
 	public Action _dieEvent;
 	public Action _hitEvent;
 	
-	internal List<AppliedStatus> appliedDebuff = new List<AppliedStatus>();
+	internal Dictionary<string, AppliedStatus> appliedDebuff = new Dictionary<string, AppliedStatus>();
 
 	//피격자, 공격자, 대미지
 	public Action<Actor, Actor, YinYang> onNextDamaged; 
@@ -119,21 +124,35 @@ public class LifeModule : Module
 		}
 	}
 
-	public Action<Actor> ApplyStatus(StatusEffect eff, Actor applier, float power, float dur, out int effIndex)
+	public Action<Actor> ApplyStatus(StatusEffect eff, Actor applier, float power, float dur, out string outGuid)
 	{
-		int idx = appliedDebuff.FindIndex(item => item.eff.Equals(eff));
-
-		if(eff.method == StatEffApplyMethod.Overwrite)
+		bool cont = appliedDebuff.ContainsValue(new AppliedStatus(eff, 0));
+		string sameUid = null;
+		if (cont)
 		{
-			RemoveStatEff(idx);
+			foreach (var item in appliedDebuff)
+			{
+				if (item.Value.eff.Equals(eff))
+				{
+					sameUid = item.Key;
+					break;
+				}
+			}
 		}
-		if (idx == -1 || eff.method == StatEffApplyMethod.Stackable || eff.method == StatEffApplyMethod.Overwrite)
+
+		if(cont && eff.method == StatEffApplyMethod.Overwrite)
 		{
-			appliedDebuff.Add( new AppliedStatus(eff, dur));
+			RemoveStatEff(sameUid);
+		}
+		if (!cont || eff.method == StatEffApplyMethod.Stackable || eff.method == StatEffApplyMethod.Overwrite)
+		{
+			Guid g = Guid.NewGuid();
+			outGuid = g.ToString();
+			appliedDebuff.Add(outGuid, new AppliedStatus(eff, dur));
 			eff.onApplied.Invoke(GetActor(), applier, power);
 			Action<Actor> updAct = (self) => { eff.onUpdated(self, power);};
 			GetActor().updateActs += updAct;
-			effIndex = idx;
+
 
 			return updAct;
 		}
@@ -143,9 +162,9 @@ public class LifeModule : Module
 			{
 				case StatEffApplyMethod.AddDuration:
 					{
-						AppliedStatus stat = appliedDebuff[idx];
+						AppliedStatus stat = appliedDebuff[sameUid];
 						stat.dur += dur;
-						appliedDebuff[idx] = stat;
+						appliedDebuff[sameUid] = stat;
 					}
 					break;
 				case StatEffApplyMethod.AddPower:
@@ -155,10 +174,10 @@ public class LifeModule : Module
 					break;
 				case StatEffApplyMethod.AddDurationAndPower:
 					{
-						AppliedStatus stat = appliedDebuff[idx];
+						AppliedStatus stat = appliedDebuff[sameUid];
 						stat.dur += dur;
 						//?????????????
-						appliedDebuff[idx] = stat;
+						appliedDebuff[sameUid] = stat;
 					}
 					break;
 				case StatEffApplyMethod.Overwrite:
@@ -167,9 +186,8 @@ public class LifeModule : Module
 				default:
 					break;
 			}
-			
 
-			effIndex = -1;
+			outGuid = null;
 			return null;
 		}
 	}
@@ -178,22 +196,30 @@ public class LifeModule : Module
 	{
 
 		Debug.Log($"update act count : {GetActor().updateActs.GetInvocationList().Length}");
-		int idx = appliedDebuff.FindIndex(item=>item.eff.Equals(eff));
-		if (idx != -1 && appliedDebuff.Remove(appliedDebuff[idx]))
+		
+		if (appliedDebuff.ContainsValue(new AppliedStatus(eff, 0)))
 		{
-			Debug.Log($"{eff.name}사라짐");
-			GetActor().updateActs -= myUpdateAct;
+			foreach (var item in appliedDebuff)
+			{
+				if(item.Value.eff.Equals(eff))
+				{
+					Debug.Log($"{eff.name}사라짐");
+					GetActor().updateActs -= myUpdateAct;
+					eff.onEnded.Invoke(GetActor(), power);
+					break;
+				}
 
-			eff.onEnded.Invoke(GetActor(), power);
+
+			}
 		}
 
 		
 	}
 
-	public void RemoveStatEff(int idx)
+	public void RemoveStatEff(string idx)
 	{
 		Debug.Log(name + " EffectCount : " + appliedDebuff.Count);
-		Debug.Log("스탯제거중...");
+		Debug.Log("스d탯제거중...");
 		AppliedStatus stat = appliedDebuff[idx];
 		stat.dur = 0;
 		appliedDebuff[idx] = stat;
@@ -201,13 +227,13 @@ public class LifeModule : Module
 
 	public void RemoveAllStatEff(StatEffID id)
 	{
-		for (int i = 0; i < appliedDebuff.Count; i++)
+		foreach (var item in appliedDebuff)
 		{
-			if (((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]).Equals(appliedDebuff[i].eff))
+			if (((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]).Equals(item.Value))
 			{
-				AppliedStatus stat = appliedDebuff[i];
+				AppliedStatus stat = item.Value;
 				stat.dur = 0;
-				appliedDebuff[i] = stat;
+				appliedDebuff[item.Key] = stat;
 			}
 		}
 	}

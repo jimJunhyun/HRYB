@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,9 +14,15 @@ public enum FoxFireMode
 public class FollowingFoxFire : MonoBehaviour
 {
 	private Transform playerTr;
-	private Transform orbittingTr;
+	private Actor orbitTarget;
+
 
 	FoxFireMode mode = FoxFireMode.FollowPlayer;
+	public FoxFireMode Mode
+	{
+		get=>mode;
+		set=>mode = value;
+	}
 
 	[Header("Following")]
 	public float XOffset = 0.4f;
@@ -24,11 +31,21 @@ public class FollowingFoxFire : MonoBehaviour
 
 	public float FollowingSpeed = 1f;
 	public float flyMaxTime = 15f;
+	public float orbitMaxTime =7f;
 	public float orbitRadius = 5f;
 	public float orbitSpeed = 5f;
 
+	public float orbitJitterFreq = 1.3f;
+	public float orbitJitterPower = 0.3f;
+
+	public float maxAccDmg = 10000;
+	public float dmgRate = 0.2f;
+	public float maxExpDmg = 2000;
+
+	private float accDmg = 0;
 	private Vector3 flyDirPow;
-	private float flyStartT;
+	private float startT;
+
 
 	private Light light;
 	[Header("Lighting")]
@@ -43,6 +60,7 @@ public class FollowingFoxFire : MonoBehaviour
 
 	private WaitForSeconds wait = new WaitForSeconds(0.1f);
 	private WaitForSeconds stopWait = new WaitForSeconds(1f);
+	private SkillRoot prevLClickAttack;
 
     void Awake()
     {
@@ -99,18 +117,53 @@ public class FollowingFoxFire : MonoBehaviour
 	{
 		mode = FoxFireMode.Flying;
 		flyDirPow = dir * pow;
-		flyStartT = Time.time;
+		startT = Time.time;
+		if (orbitTarget)
+		{
+			orbitTarget.life.RemoveAllStatEff(StatEffID.FoxBewitched);
+		}
+
+		orbitTarget = null;
 	}
 
 	public void Orbit(Transform trm)
 	{
-		mode = FoxFireMode.Attatched;
-		orbittingTr = trm;
+		Actor target = trm.GetComponent<Actor>();
+		if (target)
+		{
+			orbitTarget = target;
+			startT = Time.time;
+			mode = FoxFireMode.Attatched;
+
+			StatusEffects.ApplyStat(target, GameManager.instance.pActor, StatEffID.FoxBewitched, -1);
+			prevLClickAttack = (GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ExplodeFoxFire"), SkillSlotInfo.LClick, PlayerForm.Magic);
+			Debug.Log($"CHANGED ATK TO : {GameManager.instance.skillLoader.GetHumenSkill("ExplodeFoxFire")} FROM : {prevLClickAttack}");
+		}
+	}
+
+	public void Explode()
+	{
+		float dmg = Mathf.Clamp(accDmg * dmgRate, 1, maxExpDmg);
+		orbitTarget.life.DamageYY(0, dmg, DamageType.NoEvadeHit, 0, 0, GameManager.instance.pActor);
+		
+		Debug.Log($"펑. {dmg}댐");
+		if (prevLClickAttack)
+		{
+			(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(prevLClickAttack, SkillSlotInfo.LClick, PlayerForm.Magic);
+		}
+
+		Follow();
 	}
 
 	public void Follow()
 	{
 		mode = FoxFireMode.FollowPlayer;
+		if (orbitTarget)
+		{
+			orbitTarget.life.RemoveAllStatEff(StatEffID.FoxBewitched);
+		}
+		accDmg = 0;
+		orbitTarget = null;
 	}
 
 	private void Following()
@@ -122,7 +175,7 @@ public class FollowingFoxFire : MonoBehaviour
 
 	private void Flying()
 	{
-		if(Time.time - flyStartT < flyMaxTime)
+		if(Time.time - startT < flyMaxTime)
 		{
 			transform.position += flyDirPow * Time.deltaTime;
 		}
@@ -136,7 +189,12 @@ public class FollowingFoxFire : MonoBehaviour
 	private void Orbitting()
 	{
 		float rad = (Time.time * orbitSpeed) % 360 * Mathf.Deg2Rad;
-		transform.position = orbittingTr.TransformPoint(new Vector3(Mathf.Cos(rad), 0, Mathf.Sin(rad)) * orbitRadius);
+		float rad2 = (Time.time * orbitSpeed * orbitJitterFreq) % 360 * Mathf.Deg2Rad;
+		transform.position = orbitTarget.transform.TransformPoint(new Vector3(Mathf.Cos(rad), 0f, Mathf.Sin(rad)) * orbitRadius + Vector3.up * (((Mathf.Cos(rad2) + Mathf.Sin(rad2)) * orbitJitterPower) + orbitTarget.transform.localScale.y * 0.5f));
+		if(Time.time - startT > orbitMaxTime)
+		{
+			Follow();
+		}
 	}
 
 	private void SetEmissiveValue()
@@ -168,5 +226,15 @@ public class FollowingFoxFire : MonoBehaviour
 			
 		}
 		isChanging = false;
+	}
+
+	internal void Accumulate(YinYang dmg)
+	{
+		Debug.Log("DAMAGE ADDED : " + dmg.white);
+		accDmg += dmg.white;
+		if(accDmg > maxAccDmg)
+		{
+			Explode();
+		}
 	}
 }

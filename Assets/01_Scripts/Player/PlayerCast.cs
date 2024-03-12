@@ -475,10 +475,11 @@ public class PlayerCast : CastModule
 	private void Update()
 	{
 		nowSkillSlot.Update();
-
+		
 		///
 		if (Input.GetKeyDown(KeyCode.Y))
 		{
+			
 			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("BackKick"), SkillSlotInfo.One, PlayerForm.Magic);
 		}
 		if (Input.GetKeyDown(KeyCode.H))

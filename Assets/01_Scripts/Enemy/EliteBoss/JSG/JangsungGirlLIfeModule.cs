@@ -20,7 +20,8 @@ public class JangsungGirlLifeModule : LifeModule
 		_isBarrier = true;
 	}
 
-	public override void DamageYY(float yin, float yang, DamageType type, float dur = 0, float tick = 0)
+
+	public override void DamageYY(float yin, float yang, DamageType type, float dur = 0, float tick = 0, Actor attacker = null)
 	{
 		if(_isBarrier == false)
 		{

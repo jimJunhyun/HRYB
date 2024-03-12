@@ -270,6 +270,7 @@ public class StatusEffects
 		if(attacker.move is PlayerMove)
 		{
 			StatusEffects.ApplyStat(attacker, attacker, StatEffID.SpeedUp, 3);
+			GameManager.instance.foxfire.Accumulate(dmg);
 		}
 	}
 
@@ -346,7 +347,7 @@ public class StatusEffects
 	{
 		Debug.Log("레벨 : "+ power);
 		Debug.Log("얼음공격 : " + skInfo.tags.ToString());
-		if(skInfo.tags.ContainsTag(SkillTags.AttackEnhancable))
+		if(skInfo.tags.ContainsTag(SkillTags.Enhancable))
 		{
 			Debug.Log("얼음공격으로 강화디ㅗㅁ.");
 			if((skInfo is AttackBase atk))
@@ -369,7 +370,7 @@ public class StatusEffects
 	void EnhanceFire(Actor self, Compose skInfo, int power)
 	{
 		Debug.Log("화염공격 : " + skInfo.tags.ToString());
-		if (skInfo.tags.ContainsTag(SkillTags.AttackEnhancable))
+		if (skInfo.tags.ContainsTag(SkillTags.Enhancable))
 		{
 			Debug.Log("화염공격으로 강화디ㅗㅁ.");
 			if ((skInfo is AttackBase atk))
@@ -393,8 +394,9 @@ public class StatusEffects
 			power /= dur;
 			power *= GameManager.instance.forceResistance;
 		}
-		Action<Actor> updateAct = to.life.ApplyStatus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], by, power, dur, out int idx);
-		if(updateAct != null && idx != -1)
+		Action<Actor> updateAct = to.life.ApplyStatus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], by, power, dur, out string guid);
+		//Debug.Log($"{updateAct != null} && {guid != null} => {updateAct != null && guid != null}" );
+		if(updateAct != null && guid != null)
 		{
 			List<GameObject> effs = new List<GameObject>();
 			for (int i = 0; i < GameManager.instance.statEff.effDict.data[id].Count; i++)
@@ -413,10 +415,14 @@ public class StatusEffects
 			}
 			
 			float t = 0;
-			while(to.life.appliedDebuff[idx].dur < 0)
-				yield return null;
-			while(t < to.life.appliedDebuff[idx].dur)
+			while(to.life.appliedDebuff[guid].dur < 0)
 			{
+				//Debug.Log( id + " : INFITITE : " + to.life.appliedDebuff[guid].dur);
+				yield return null;
+			}
+			while(t < to.life.appliedDebuff[guid].dur)
+			{
+				//Debug.Log(id + " : TIMEPASSING");
 				yield return null;
 				t += Time.deltaTime;
 			}
