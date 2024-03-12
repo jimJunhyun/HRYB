@@ -1,11 +1,28 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
+public enum FoxFireMode
+{
+	FollowPlayer,
+	Flying,
+	Attatched,
+}
+
 public class FollowingFoxFire : MonoBehaviour
 {
 	private Transform playerTr;
+	private Actor orbitTarget;
+
+
+	FoxFireMode mode = FoxFireMode.FollowPlayer;
+	public FoxFireMode Mode
+	{
+		get=>mode;
+		set=>mode = value;
+	}
 
 	[Header("Following")]
 	public float XOffset = 0.4f;
@@ -13,6 +30,22 @@ public class FollowingFoxFire : MonoBehaviour
 	public float ZOffset = 0.3f;
 
 	public float FollowingSpeed = 1f;
+	public float flyMaxTime = 15f;
+	public float orbitMaxTime =7f;
+	public float orbitRadius = 5f;
+	public float orbitSpeed = 5f;
+
+	public float orbitJitterFreq = 1.3f;
+	public float orbitJitterPower = 0.3f;
+
+	public float maxAccDmg = 10000;
+	public float dmgRate = 0.2f;
+	public float maxExpDmg = 2000;
+
+	private float accDmg = 0;
+	private Vector3 flyDirPow;
+	private float startT;
+
 
 	private Light light;
 	[Header("Lighting")]
@@ -27,13 +60,13 @@ public class FollowingFoxFire : MonoBehaviour
 
 	private WaitForSeconds wait = new WaitForSeconds(0.1f);
 	private WaitForSeconds stopWait = new WaitForSeconds(1f);
+	private SkillRoot prevLClickAttack;
 
     void Awake()
     {
 		if (playerTr == null) playerTr = GameObject.Find("Player").transform;
 		if(light == null) light = GetComponentInChildren<Light>();
 		if (effect == null) effect = transform.GetChild(0);
-
     }
 
     void Update()
@@ -46,8 +79,91 @@ public class FollowingFoxFire : MonoBehaviour
 			SetEmissiveValue();
 		}
 
-		Following();
+		switch (mode)
+		{
+			case FoxFireMode.FollowPlayer:
+				Following();
+				break;
+			case FoxFireMode.Flying:
+				Flying();
+				break;
+			case FoxFireMode.Attatched:
+				Orbitting();
+				break;
+			default:
+				break;
+		}
 
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		if(mode == FoxFireMode.Flying)
+		{
+			Actor actor = other.GetComponent<Actor>();
+			if (actor && !(actor.move is PlayerMove))
+			{
+				Orbit(actor.transform);
+			}
+			else
+			{
+				Follow();
+			}
+		}
+		
+	}
+
+	public void Fly(Vector3 dir, float pow)
+	{
+		mode = FoxFireMode.Flying;
+		flyDirPow = dir * pow;
+		startT = Time.time;
+		if (orbitTarget)
+		{
+			orbitTarget.life.RemoveAllStatEff(StatEffID.FoxBewitched);
+		}
+
+		orbitTarget = null;
+	}
+
+	public void Orbit(Transform trm)
+	{
+		Actor target = trm.GetComponent<Actor>();
+		if (target)
+		{
+			orbitTarget = target;
+			startT = Time.time;
+			mode = FoxFireMode.Attatched;
+
+			StatusEffects.ApplyStat(target, GameManager.instance.pActor, StatEffID.FoxBewitched, -1);
+			prevLClickAttack = (GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ExplodeFoxFire"), SkillSlotInfo.LClick, PlayerForm.Magic);
+			Debug.Log($"CHANGED ATK TO : {GameManager.instance.skillLoader.GetHumenSkill("ExplodeFoxFire")} FROM : {prevLClickAttack}");
+		}
+	}
+
+	public void Explode()
+	{
+		float dmg = Mathf.Clamp(accDmg * dmgRate, 1, maxExpDmg);
+		orbitTarget.life.DamageYY(0, dmg, DamageType.NoEvadeHit, 0, 0, GameManager.instance.pActor);
+		
+		Debug.Log($"펑. {dmg}댐");
+		if (prevLClickAttack)
+		{
+			(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(prevLClickAttack, SkillSlotInfo.LClick, PlayerForm.Magic);
+		}
+
+		Follow();
+	}
+
+	public void Follow()
+	{
+		mode = FoxFireMode.FollowPlayer;
+		if (orbitTarget)
+		{
+			orbitTarget.life.RemoveAllStatEff(StatEffID.FoxBewitched);
+		}
+		accDmg = 0;
+		orbitTarget = null;
 	}
 
 	private void Following()
@@ -56,6 +172,31 @@ public class FollowingFoxFire : MonoBehaviour
 
 		transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * FollowingSpeed);
 	}
+
+	private void Flying()
+	{
+		if(Time.time - startT < flyMaxTime)
+		{
+			transform.position += flyDirPow * Time.deltaTime;
+		}
+		else
+		{
+			Follow();
+		}
+		
+	}
+
+	private void Orbitting()
+	{
+		float rad = (Time.time * orbitSpeed) % 360 * Mathf.Deg2Rad;
+		float rad2 = (Time.time * orbitSpeed * orbitJitterFreq) % 360 * Mathf.Deg2Rad;
+		transform.position = orbitTarget.transform.TransformPoint(new Vector3(Mathf.Cos(rad), 0f, Mathf.Sin(rad)) * orbitRadius + Vector3.up * (((Mathf.Cos(rad2) + Mathf.Sin(rad2)) * orbitJitterPower) + orbitTarget.transform.localScale.y * 0.5f));
+		if(Time.time - startT > orbitMaxTime)
+		{
+			Follow();
+		}
+	}
+
 	private void SetEmissiveValue()
 	{
 		float targetValue = CurrentEmissiveLevel == 0 ? 0 : Mathf.Lerp(minEmissive, maxEmissive, ((float)CurrentEmissiveLevel-1f) / (float)(MaxEmissiveLevel-1f));
@@ -85,5 +226,15 @@ public class FollowingFoxFire : MonoBehaviour
 			
 		}
 		isChanging = false;
+	}
+
+	internal void Accumulate(YinYang dmg)
+	{
+		Debug.Log("DAMAGE ADDED : " + dmg.white);
+		accDmg += dmg.white;
+		if(accDmg > maxAccDmg)
+		{
+			Explode();
+		}
 	}
 }

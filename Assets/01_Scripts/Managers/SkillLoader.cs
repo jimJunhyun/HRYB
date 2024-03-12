@@ -11,14 +11,20 @@ public class SkillLoader
 	private SkillDatabase YohoSkillDb;
 	public SkillLoader()
 	{
-		var asset = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "skilldatabase"));
-		var asset2 = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "yohoSkilldataBase"));
-		if (asset == null && asset2 == null)
-			Debug.LogError("LOAD FAIL");
+		AssetBundle asset = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "skilldatabase"));
+		AssetBundle asset2 = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "yohoSkilldataBase"));
+		SkillDatabase database = null;
+		SkillDatabase database2 = null;
+		if (asset != null)
+		{
+			database= asset.LoadAsset<SkillDatabase>("SkillDatabase");
+		}
+		if(asset2 != null)
+		{
+			database2 = asset2.LoadAsset<SkillDatabase>("YohoSkilldataBase");
+		}
 
-		SkillDatabase database = asset.LoadAsset<SkillDatabase>("SkillDatabase");
-		SkillDatabase database2 = asset2.LoadAsset<SkillDatabase>("YohoSkilldataBase");
-		if(database != null)
+		if (database != null)
 		{
 			HumenSkillDb = database;
 			Debug.Log("Skill Database Load Successed.");
@@ -31,12 +37,16 @@ public class SkillLoader
 		if (database2 != null)
 		{
 			YohoSkillDb = database2;
-			Debug.Log("Skill Database Load Successed.");
+			Debug.Log("Skill Database2 Load Successed.");
 		}
 		else
 		{
-			Debug.LogError("Skill Database Load Failed.");
+			Debug.LogError("Skill Database2 Load Failed.");
 		}
+		if (asset == null || asset2 == null)
+			Debug.LogError($"LOAD FAIL : {asset == null}/{asset2 == null}");
+
+		
 	}
 
 	//public SkillRoot this[string name]

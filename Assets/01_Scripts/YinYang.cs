@@ -80,6 +80,18 @@ public class YinYang
         }
 	}
 
+	public override string ToString()
+	{
+		System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+		sb.Append('(');
+		sb.Append(black);
+		sb.Append(':');
+		sb.Append(white);
+		sb.Append(')');
+		return sb.ToString();
+	}
+
 	public static YinYang operator+(YinYang a, YinYang b)
 	{
 		return new YinYang(a.black + b.black, a.white + b.white);
