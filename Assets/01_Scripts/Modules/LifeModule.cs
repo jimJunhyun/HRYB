@@ -12,6 +12,14 @@ public enum DamageType
 	Continuous, //지속시간동안 지정된 만큼 변함. 매 틱마다 적용
 }
 
+public enum DamageChannel
+{
+	None,
+	Normal,
+	Bleeding,
+
+}
+
 [Serializable]
 public struct AppliedStatus
 {
@@ -74,6 +82,8 @@ public class LifeModule : Module
 	public Action _hitEvent;
 	
 	internal Dictionary<string, AppliedStatus> appliedDebuff = new Dictionary<string, AppliedStatus>();
+
+	internal Dictionary<int, List<Coroutine>> ongoingTickDamages = new Dictionary<int, List<Coroutine>>();
 
 	//피격자, 공격자, 대미지
 	public Action<Actor, Actor, YinYang> onNextDamaged; 
@@ -244,7 +254,7 @@ public class LifeModule : Module
 		DecreaseYY(data.white, YYInfo.White);
 	}
 
-	public virtual void DamageYY(float black, float white, DamageType type, float dur = 0, float tick = 0, Actor attacker = null)
+	public virtual void DamageYY(float black, float white, DamageType type, float dur = 0, float tick = 0, Actor attacker = null, DamageChannel channel= DamageChannel.None)
 	{
 		_isFirstHit = true;
 		
@@ -262,7 +272,7 @@ public class LifeModule : Module
 				break;
 			case DamageType.DotDamage:
 			case DamageType.Continuous:
-				StartCoroutine(DelDmgYYWX(data, dur, tick, type));
+				ongoingTickDamages[(int)channel].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type)));
 				break;
 			case DamageType.NoEvadeHit:
 				DamageYYBase(data);
@@ -273,10 +283,9 @@ public class LifeModule : Module
 			default:
 				break;
 		}
-
 	}
 
-	public virtual void DamageYY(YinYang data, DamageType type, float dur = 0, float tick = 0, Actor attacker = null)
+	public virtual void DamageYY(YinYang data, DamageType type, float dur = 0, float tick = 0, Actor attacker = null, DamageChannel channel = DamageChannel.None)
 	{
 		_isFirstHit = true;
 		
@@ -294,7 +303,7 @@ public class LifeModule : Module
 				break;
 			case DamageType.DotDamage:
 			case DamageType.Continuous:
-				StartCoroutine(DelDmgYYWX(data, dur, tick, type));
+				ongoingTickDamages[(int)channel].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type)));
 				break;
 			case DamageType.NoEvadeHit:
 				DamageYYBase(data);
@@ -306,9 +315,20 @@ public class LifeModule : Module
 			default:
 				break;
 		}
-		
 	}
 
+	public void StopDamagingFor(DamageChannel channel, int amt = 1)
+	{
+		for (int i = 0; i < amt; i++)
+		{
+			if(ongoingTickDamages.Count > 1)
+			{
+				ongoingTickDamages[((int)channel)].RemoveAt(ongoingTickDamages.Count - 1);
+			}
+			else
+				break;
+		}
+	}
 
 	protected IEnumerator DelDmgYYWX(YinYang data, float dur, float tick, DamageType type)
 	{
@@ -319,7 +339,10 @@ public class LifeModule : Module
 			case DamageType.DotDamage:
 				while (curT < dur)
 				{
-					curT += Time.deltaTime;
+					if(dur > 0)
+					{
+						curT += Time.deltaTime;
+					}
 					yield return w;
 					DamageYYBase(data);
 				}
