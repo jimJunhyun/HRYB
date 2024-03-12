@@ -19,6 +19,8 @@ public enum StatEffID
 	FoxBewitched,
 	SpeedUp,
 
+	Bleeding,
+
 	Max
 }
 
@@ -88,7 +90,8 @@ public class StatusEffects
 		idStatEffPairs.Add(((int)StatEffID.EnhanceFire), new StatusEffect("화상", "불로 인해 피해를 입습니다.", StatEffApplyMethod.NoOverwrite, OnEnhanceFireActivated, OnEnhanceFireUpdated, OnEnhanceFireEnded));
 		idStatEffPairs.Add(((int)StatEffID.Stun), new StatusEffect("기절", "행동할 수 없습니다.", StatEffApplyMethod.AddDuration, OnStunActivated, OnStunUpdated, OnStunEnded));
 		idStatEffPairs.Add(((int)StatEffID.FoxBewitched), new StatusEffect("여우홀림", "피해를 받으면, 여우를 빠르게 합니다.", StatEffApplyMethod.NoOverwrite, OnFoxBewitchedActivated, OnFoxBewitchedUpdated, OnFoxBewitchedEnded));
-		idStatEffPairs.Add(((int)StatEffID.SpeedUp), new StatusEffect("신속", "움직임이 날래집니다.", StatEffApplyMethod.Stackable, OnFoxBewitchedActivated, OnFoxBewitchedUpdated, OnFoxBewitchedEnded));
+		idStatEffPairs.Add(((int)StatEffID.SpeedUp), new StatusEffect("신속", "움직임이 날래집니다.", StatEffApplyMethod.Stackable, OnSpeedUpActivated, OnSpeedUpUpdated, OnSpeedUpEnded));
+		idStatEffPairs.Add(((int)StatEffID.Bleeding), new StatusEffect("출혈", "피가 누출됩니다.", StatEffApplyMethod.Stackable, OnBleedingActivated, OnBleedingUpdated, OnBleedingEnded));
 
 		idStatEffPairs.Add(new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", StatEffApplyMethod.NoOverwrite, OnKnockbackActivated, OnKnockbackDebuffUpdated, OnKnockbackDebuffEnded), ((int)StatEffID.Knockback));
 		idStatEffPairs.Add(new StatusEffect("무적", "세계의 비호를 받고 있습니다.", StatEffApplyMethod.NoOverwrite, OnImmuneActivated, OnImmuneUpdated, OnImmuneEnded), ((int)StatEffID.Immune));
@@ -99,7 +102,8 @@ public class StatusEffects
 		idStatEffPairs.Add(new StatusEffect("화상", "불로 인해 피해를 입습니다.", StatEffApplyMethod.NoOverwrite, OnEnhanceFireActivated, OnEnhanceFireUpdated, OnEnhanceFireEnded), ((int)StatEffID.EnhanceFire));
 		idStatEffPairs.Add(new StatusEffect("기절", "행동할 수 없습니다.", StatEffApplyMethod.AddDuration, OnStunActivated, OnStunUpdated, OnStunEnded), ((int)StatEffID.Stun));
 		idStatEffPairs.Add(new StatusEffect("여우홀림", "피격시, 플레이어를 빠르게 합니다.", StatEffApplyMethod.NoOverwrite, OnFoxBewitchedActivated, OnFoxBewitchedUpdated, OnFoxBewitchedEnded), ((int)StatEffID.FoxBewitched));
-		idStatEffPairs.Add(new StatusEffect("신속", "움직임이 날래집니다.", StatEffApplyMethod.Stackable, OnFoxBewitchedActivated, OnFoxBewitchedUpdated, OnFoxBewitchedEnded), ((int)StatEffID.SpeedUp));
+		idStatEffPairs.Add(new StatusEffect("신속", "움직임이 날래집니다.", StatEffApplyMethod.Stackable, OnSpeedUpActivated, OnSpeedUpUpdated, OnSpeedUpEnded), ((int)StatEffID.SpeedUp));
+		idStatEffPairs.Add(new StatusEffect("출혈", "피가 누출됩니다.", StatEffApplyMethod.Stackable, OnBleedingActivated, OnBleedingUpdated, OnBleedingEnded), ((int)StatEffID.Bleeding));
 
 
 		effDict = Resources.Load<StatVfxDictionary>("StatEffList");
@@ -253,7 +257,7 @@ public class StatusEffects
 	{
 		if(inflicter.atk is PlayerAttack atk)
 		{
-			//@@@@@@@@@@@@@@@2피격시 이속증가시키기
+			self.life.onNextDamaged += Bewitched;
 		}
 	}
 	void OnFoxBewitchedUpdated(Actor self, float power)
@@ -262,10 +266,17 @@ public class StatusEffects
 	}
 	void OnFoxBewitchedEnded(Actor self, float power)
 	{
-
+		self.life.onNextDamaged -= Bewitched;
 	}
 
-
+	void Bewitched(Actor self, Actor attacker, YinYang dmg)
+	{
+		if(attacker.move is PlayerMove)
+		{
+			StatusEffects.ApplyStat(attacker, attacker, StatEffID.SpeedUp, 3);
+			GameManager.instance.foxfire.Accumulate(dmg);
+		}
+	}
 
 	void OnSpeedUpActivated(Actor self, Actor inflicter, float power)
 	{
@@ -278,6 +289,19 @@ public class StatusEffects
 	void OnSpeedUpEnded(Actor self, float power)
 	{
 		self.move.speedMod -= 0.1f;
+	}
+
+	void OnBleedingActivated(Actor self, Actor inflicter, float power)
+	{
+		self.life.DamageYY(0, self.life.yy.white * 0.04f, DamageType.DotDamage, -1, 1, null, DamageChannel.Bleeding);
+	}
+	void OnBleedingUpdated(Actor self, float power)
+	{
+
+	}
+	void OnBleedingEnded(Actor self, float power)
+	{
+		self.life.StopDamagingFor(DamageChannel.Bleeding, 1);
 	}
 
 
@@ -340,7 +364,7 @@ public class StatusEffects
 	{
 		Debug.Log("레벨 : "+ power);
 		Debug.Log("얼음공격 : " + skInfo.tags.ToString());
-		if(skInfo.tags.ContainsTag(SkillTags.AttackEnhancable))
+		if(skInfo.tags.ContainsTag(SkillTags.Enhancable))
 		{
 			Debug.Log("얼음공격으로 강화디ㅗㅁ.");
 			if((skInfo is AttackBase atk))
@@ -363,7 +387,7 @@ public class StatusEffects
 	void EnhanceFire(Actor self, Compose skInfo, int power)
 	{
 		Debug.Log("화염공격 : " + skInfo.tags.ToString());
-		if (skInfo.tags.ContainsTag(SkillTags.AttackEnhancable))
+		if (skInfo.tags.ContainsTag(SkillTags.Enhancable))
 		{
 			Debug.Log("화염공격으로 강화디ㅗㅁ.");
 			if ((skInfo is AttackBase atk))
@@ -387,8 +411,9 @@ public class StatusEffects
 			power /= dur;
 			power *= GameManager.instance.forceResistance;
 		}
-		Action<Actor> updateAct = to.life.ApplyStatus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], by, power, dur, out int idx);
-		if(updateAct != null && idx != -1)
+		Action<Actor> updateAct = to.life.ApplyStatus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], by, power, dur, out string guid);
+		//Debug.Log($"{updateAct != null} && {guid != null} => {updateAct != null && guid != null}" );
+		if(updateAct != null && guid != null)
 		{
 			List<GameObject> effs = new List<GameObject>();
 			for (int i = 0; i < GameManager.instance.statEff.effDict.data[id].Count; i++)
@@ -407,10 +432,14 @@ public class StatusEffects
 			}
 			
 			float t = 0;
-			while(to.life.appliedDebuff[idx].dur < 0)
-				yield return null;
-			while(t < to.life.appliedDebuff[idx].dur)
+			while(to.life.appliedDebuff[guid].dur < 0)
 			{
+				//Debug.Log( id + " : INFITITE : " + to.life.appliedDebuff[guid].dur);
+				yield return null;
+			}
+			while(t < to.life.appliedDebuff[guid].dur)
+			{
+				//Debug.Log(id + " : TIMEPASSING");
 				yield return null;
 				t += Time.deltaTime;
 			}

@@ -9,18 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c4d49c88920b9e43ba285c4d0ea7cdb, type: 3}
-  m_Name: Kick
+  m_Script: {fileID: 11500000, guid: 23adbf644a197874e9ff9787ef8b221a, type: 3}
+  m_Name: ShootFoxFire
   m_EditorClassIdentifier: 
-  animClip: {fileID: 7400042, guid: b980acdd10793764c9362bf9ed9d12f8, type: 3}
+  animClip: {fileID: 0}
   animClipDisop: {fileID: 0}
   audioClipName: 
   tags:
-    value: 4
+    value: 0
   level: 0
-  damageMult: 200
-  relateTrmName: KickCaster
-  statEff:
-  - id: 0
-    power: 1
-    duration: 0.1
+  childs:
+  - {fileID: 11400000, guid: 147eaf41349e55646ad53446ded9a31f, type: 2}
+  composeDel: 0
+  isPlayAnim: 1
+  isPlayDisopAnim: 0
+  useType: 0
+  castTime: 0
+  cooldown: 0.2

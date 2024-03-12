@@ -53,7 +53,7 @@ public class Arrow : DamageObject
 
 	HashSet<StatusEffectApplyData> statData = new HashSet<StatusEffectApplyData>();
 	Action<Vector3> hitEffData;
-	//@@@@@@@@@@@@화살이 간헐적으로 사라지는 경우 발견
+
 	public override void OnTriggerEnter(Collider other)
 	{
 		if(!other.isTrigger && detectOn)
@@ -63,7 +63,7 @@ public class Arrow : DamageObject
 				if(hitEffData != null)
 				{
 					Vector3 hitPos = other.ClosestPointOnBounds(transform.position);
-					hitEffData(hitPos);
+					hitEffData?.Invoke(hitPos);
 				}
 				foreach (var item in statData)
 				{
@@ -76,6 +76,18 @@ public class Arrow : DamageObject
 			Returner();
 		}
 		
+	}
+
+	public override void Damage(LifeModule to)
+	{
+		if(owner.move is PlayerMove)
+		{
+			to.DamageYY(yy, DamageType.DirectHit, 0, 0, owner);
+		}
+		else
+		{
+			to.DamageYY(yy, DamageType.DirectHit);
+		}
 	}
 
 	private void Awake()
