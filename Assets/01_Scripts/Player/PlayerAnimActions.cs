@@ -6,8 +6,8 @@ public class PlayerAnimActions : MonoBehaviour, IAnimationEvent
 {
 	Actor self;
 
-	GameObject holdingBow;
-	GameObject equipingBow;
+	//GameObject holdingBow;
+	//GameObject equipingBow;
 	public SkinnedMeshRenderer eBowRend;
 
 	Animator animator;
@@ -19,13 +19,13 @@ public class PlayerAnimActions : MonoBehaviour, IAnimationEvent
 	{
 		self = GetComponentInParent<Actor>();
 
-		holdingBow  = GameObject.Find("HoldingBow");
-		equipingBow = GameObject.Find("EquipingBow");
+		//holdingBow  = GameObject.Find("HoldingBow");
+		//equipingBow = GameObject.Find("EquipingBow");
 
 		//eBowRend = equipingBow.GetComponentInChildren<SkinnedMeshRenderer>();
 
-		animator = holdingBow.GetComponent<Animator>();
-		BowUnequip();
+		//animator = holdingBow.GetComponent<Animator>();
+		//BowUnequip();
 	}
 
 
@@ -99,17 +99,17 @@ public class PlayerAnimActions : MonoBehaviour, IAnimationEvent
 		EnableMove();
 	}
 
-	public void BowEquip()
-	{
-		holdingBow.SetActive(true);
-		equipingBow.SetActive(false);
-	}
-
-	public void BowUnequip()
-	{
-		holdingBow.SetActive(false);
-		equipingBow.SetActive(true);
-	}
+	//public void BowEquip()
+	//{
+	//	holdingBow.SetActive(true);
+	//	equipingBow.SetActive(false);
+	//}
+	//
+	//public void BowUnequip()
+	//{
+	//	holdingBow.SetActive(false);
+	//	equipingBow.SetActive(true);
+	//}
 
 	public void SetBowAimState()
 	{
