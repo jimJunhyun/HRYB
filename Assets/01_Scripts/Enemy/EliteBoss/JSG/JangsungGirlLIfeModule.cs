@@ -21,7 +21,7 @@ public class JangsungGirlLifeModule : LifeModule
 	}
 
 
-	public override void DamageYY(float yin, float yang, DamageType type, float dur = 0, float tick = 0, Actor attacker = null)
+	public override void DamageYY(float yin, float yang, DamageType type, float dur = 0, float tick = 0, Actor attacker = null, DamageChannel channel = DamageChannel.None)
 	{
 		if(_isBarrier == false)
 		{
@@ -41,7 +41,7 @@ public class JangsungGirlLifeModule : LifeModule
 					break;
 				case DamageType.DotDamage:
 				case DamageType.Continuous:
-					StartCoroutine(DelDmgYYWX(data, dur, tick, type));
+					ongoingTickDamages[((int)channel)].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type)));
 					break;
 				case DamageType.NoEvadeHit:
 					DamageYYBase(data);
