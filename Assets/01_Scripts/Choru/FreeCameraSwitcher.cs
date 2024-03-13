@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Default = 기본, Free = 자유시점
@@ -28,6 +29,8 @@ public class FreeCameraSwitcher : MonoBehaviour
 	public FreeCameraMode freeCameraMode = FreeCameraMode.Default;
 	private KeyCode switchCameraModeKey = KeyCode.F8;
 	private KeyCode switchFreeCameraModeKey = KeyCode.F9;
+
+	private PlayerInput input;
 	private void Awake()
 	{
 		mainCam = Camera.main;
@@ -39,6 +42,15 @@ public class FreeCameraSwitcher : MonoBehaviour
 			freeCam.AddComponent<FreeCamera>();
 			Destroy(freeCam.GetComponent<AudioListener>());
 			Destroy(freeCam.GetComponent<CinemachineBrain>());
+		}
+
+		if(GameManager.instance != null)
+		{
+			input = GameManager.instance.pinp;
+		}
+		else
+		{
+			input = GameObject.Find("Player").GetComponent<PlayerInput>();
 		}
 	}
 	
@@ -84,12 +96,12 @@ public class FreeCameraSwitcher : MonoBehaviour
 				{
 					case FreeCameraMode.Default:
 						freeCam.GetComponent<FreeCamera>().enabled = true;
-						GameManager.instance.pinp.SwitchCurrentActionMap("FreeCamera");
+						input.SwitchCurrentActionMap("FreeCamera");
 
 						break;
 					case FreeCameraMode.Fixed:
 						freeCam.GetComponent<FreeCamera>().enabled = false;
-						GameManager.instance.pinp.SwitchCurrentActionMap("Player");
+						input.SwitchCurrentActionMap("Player");
 						break;
 				}
 				print($"Action Map = {GameManager.instance.pinp.currentActionMap}");
@@ -107,7 +119,7 @@ public class FreeCameraSwitcher : MonoBehaviour
 			freeCam.transform.position = mainCam.transform.position;
 			freeCam.transform.rotation = mainCam.transform.rotation;
 
-			GameManager.instance.pinp.SwitchCurrentActionMap("FreeCamera");
+			input.SwitchCurrentActionMap("FreeCamera");
 			freeCam.GetComponent<FreeCamera>().enabled = true;
 			freeCameraMode = FreeCameraMode.Default;
 		}
@@ -115,7 +127,7 @@ public class FreeCameraSwitcher : MonoBehaviour
 		{
 			freeCam.gameObject.SetActive(false);
 
-			GameManager.instance.pinp.SwitchCurrentActionMap("Player");
+			input.SwitchCurrentActionMap("Player");
 			freeCam.GetComponent<FreeCamera>().enabled = false;
 		}
 	}
