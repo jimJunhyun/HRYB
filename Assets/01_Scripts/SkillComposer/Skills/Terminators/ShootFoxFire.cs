@@ -29,7 +29,14 @@ public class ShootFoxFire : AttackBase
 
 	internal override void MyOperation(Actor self)
 	{
-		GameManager.instance.foxfire.Fly(self.transform.forward, shootSpeed);
-		GameManager.instance.audioPlayer.PlayPoint(audioClipName, self.transform.position);
+		if(GameManager.instance.foxfire.Mode == FoxFireMode.FollowPlayer)
+		{
+			GameManager.instance.foxfire.Fly(self.transform.forward, shootSpeed);
+			GameManager.instance.audioPlayer.PlayPoint(audioClipName, self.transform.position);
+		}
+		else
+		{
+			GameManager.instance.foxfire.Follow();
+		}
 	}
 }

@@ -13,6 +13,105 @@ public enum CamStatus
 
 }
 
+public enum ControlModuleMode
+{
+	Animated,
+	Status,
+	Timeline,
+	Flag,
+}
+
+public struct ModuleController
+{
+	int animPause;
+	int statPause;
+	int timelinePause;
+	bool stopFlag;
+
+	bool AnimPause
+	{
+		get => animPause > 0;
+	}
+	bool StatPause
+	{
+		get => statPause > 0;
+	}
+	bool TimelinePause
+	{
+		get => timelinePause > 0;
+	}
+
+	public bool Paused
+	{
+		get 
+		{
+			//Debug.Log($"{AnimPause} || {StatPause} || {TimelinePause} || {stopFlag} = {AnimPause || StatPause || TimelinePause || stopFlag}");
+			return AnimPause || StatPause || TimelinePause || stopFlag; 
+		}
+	}
+
+	public ModuleController(bool disabled)
+	{
+		animPause = 0;
+		statPause = 0;
+		timelinePause = 0;
+		stopFlag = disabled;
+		//Debug.Log("STF : " +stopFlag);
+	}
+
+	public void Pause(ControlModuleMode mode, bool stat)
+	{
+		switch (mode)
+		{
+			case ControlModuleMode.Animated:
+				if (stat && !AnimPause)
+				{
+					animPause += 1;
+				}
+				else if (!stat && animPause > 0)
+				{
+					animPause -= 1;
+				}
+				break;
+			case ControlModuleMode.Status:
+				if (stat)
+				{
+					statPause += 1;
+				}
+				else if (!stat && statPause > 0)
+				{
+					statPause -= 1;
+				}
+				break;
+			case ControlModuleMode.Timeline:
+				if (stat)
+				{
+					timelinePause += 1;
+				}
+				else if (!stat && timelinePause > 0)
+				{
+					timelinePause -= 1;
+				}
+				break;
+			case ControlModuleMode.Flag:
+				//Debug.Log("FLAG STOPPED!!!!!!!!!!");
+				stopFlag = stat;
+				break;
+			default:
+				Debug.LogError("NEW STAT HAVE BEEN CREATED?");
+				break;
+		}
+	}
+
+	public void CompleteReset()
+	{
+		animPause = 0;
+		statPause = 0;
+		timelinePause = 0;
+		stopFlag = false;
+	}
+}
+
 public class GameManager : MonoBehaviour
 {
 	public const float GRAVITY = 9.8f;
@@ -143,16 +242,16 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public void DisableCtrl()
+	public void DisableCtrl(ControlModuleMode mode)
 	{
-		(pActor.move as PlayerMove).NoInput = true;
-		pActor.atk.NoAttack = true;
+		(pActor.move as PlayerMove).NoInput.Pause(mode, true);
+		pActor.atk.NoAttack.Pause(mode, true);
 	}
 
-	public void EnableCtrl()
+	public void EnableCtrl(ControlModuleMode mode)
 	{
-		(pActor.move as PlayerMove).NoInput = false;
-		pActor.atk.NoAttack = false;
+		(pActor.move as PlayerMove).NoInput.Pause(mode, false);
+		pActor.atk.NoAttack.Pause(mode, false);
 	}
 
 

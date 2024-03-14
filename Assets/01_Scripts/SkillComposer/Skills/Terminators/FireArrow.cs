@@ -9,6 +9,8 @@ public class FireArrow : AttackBase
 	public string arrowPrefabName;
 	public float angleY;
 
+	public ArrowMode aMode;
+
 	internal override void MyDisoperation(Actor self)
 	{
 
@@ -18,7 +20,12 @@ public class FireArrow : AttackBase
 	{
 		//eff.Play();
 		Debug.Log($"화살발사");
-		Arrow r = PoolManager.GetObject(arrowPrefabName, relatedTransform.position, relatedTransform.forward).GetComponent<Arrow>();
+		GameObject g = PoolManager.GetObject(arrowPrefabName, relatedTransform.position, relatedTransform.forward);
+		if(!g.TryGetComponent<Arrow>(out Arrow r))
+		{
+
+			throw new System.Exception("Trying to shoot strange things");
+		}
 		Vector3 localRot = r.transform.localEulerAngles;
 		localRot.y += angleY;
 		r.transform.localEulerAngles = localRot;
@@ -33,7 +40,11 @@ public class FireArrow : AttackBase
 			r.AddStatusEffect(statEff[i]);
 		}
 
-		r.Shoot();
+		r.Shoot(aMode);
+		if (aMode == ArrowMode.Homing)
+		{
+			r.SetTarget(self.atk.target);
+		}
 		GameManager.instance.audioPlayer.PlayPoint(audioClipName, self.transform.position);
 		//self.anim.SetAttackTrigger();
 	}

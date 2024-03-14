@@ -35,6 +35,8 @@ public class FollowingFoxFire : MonoBehaviour
 	public float orbitRadius = 5f;
 	public float orbitSpeed = 5f;
 
+	public float maxDistance = 10;
+
 	public float orbitJitterFreq = 1.3f;
 	public float orbitJitterPower = 0.3f;
 
@@ -46,7 +48,7 @@ public class FollowingFoxFire : MonoBehaviour
 	private Vector3 flyDirPow;
 	private float startT;
 
-
+	private Rigidbody rig;
 	private Light light;
 	[Header("Lighting")]
 	public KeyCode LightKey = KeyCode.L;
@@ -67,6 +69,7 @@ public class FollowingFoxFire : MonoBehaviour
 		if (playerTr == null) playerTr = GameObject.Find("Player").transform;
 		if(light == null) light = GetComponentInChildren<Light>();
 		if (effect == null) effect = transform.GetChild(0);
+		if(rig == null) rig = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -137,22 +140,21 @@ public class FollowingFoxFire : MonoBehaviour
 
 			StatusEffects.ApplyStat(target, GameManager.instance.pActor, StatEffID.FoxBewitched, -1);
 			prevLClickAttack = (GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ExplodeFoxFire"), SkillSlotInfo.LClick, PlayerForm.Magic);
-			Debug.Log($"CHANGED ATK TO : {GameManager.instance.skillLoader.GetHumenSkill("ExplodeFoxFire")} FROM : {prevLClickAttack}");
+			Debug.Log($"CHANGED ATK TO : explode FROM : {prevLClickAttack}");
 		}
 	}
 
 	public void Explode()
 	{
 		float dmg = Mathf.Clamp(accDmg * dmgRate, 1, maxExpDmg);
-		orbitTarget.life.DamageYY(0, dmg, DamageType.NoEvadeHit, 0, 0, GameManager.instance.pActor);
+		Actor ac = orbitTarget;
+		Follow();
+
+		ac.life.DamageYY(0, dmg, DamageType.NoEvadeHit, 0, 0, GameManager.instance.pActor);
 		
 		Debug.Log($"펑. {dmg}댐");
-		if (prevLClickAttack)
-		{
-			(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(prevLClickAttack, SkillSlotInfo.LClick, PlayerForm.Magic);
-		}
+		
 
-		Follow();
 	}
 
 	public void Follow()
@@ -161,6 +163,12 @@ public class FollowingFoxFire : MonoBehaviour
 		if (orbitTarget)
 		{
 			orbitTarget.life.RemoveAllStatEff(StatEffID.FoxBewitched);
+		}
+		if (prevLClickAttack)
+		{
+			(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(prevLClickAttack, SkillSlotInfo.LClick, PlayerForm.Magic);
+			Debug.Log($"ATTACK ROLLBACK TO : {prevLClickAttack}");
+			prevLClickAttack = null;
 		}
 		accDmg = 0;
 		orbitTarget = null;
@@ -175,7 +183,7 @@ public class FollowingFoxFire : MonoBehaviour
 
 	private void Flying()
 	{
-		if(Time.time - startT < flyMaxTime)
+		if(Time.time - startT < flyMaxTime && (GameManager.instance.pActor.transform.position - transform.position).sqrMagnitude < maxDistance * maxDistance )
 		{
 			transform.position += flyDirPow * Time.deltaTime;
 		}
@@ -191,7 +199,7 @@ public class FollowingFoxFire : MonoBehaviour
 		float rad = (Time.time * orbitSpeed) % 360 * Mathf.Deg2Rad;
 		float rad2 = (Time.time * orbitSpeed * orbitJitterFreq) % 360 * Mathf.Deg2Rad;
 		transform.position = orbitTarget.transform.TransformPoint(new Vector3(Mathf.Cos(rad), 0f, Mathf.Sin(rad)) * orbitRadius + Vector3.up * (((Mathf.Cos(rad2) + Mathf.Sin(rad2)) * orbitJitterPower) + orbitTarget.transform.localScale.y * 0.5f));
-		if(Time.time - startT > orbitMaxTime)
+		if(Time.time - startT > orbitMaxTime || (GameManager.instance.pActor.transform.position - transform.position).sqrMagnitude > maxDistance * maxDistance)
 		{
 			Follow();
 		}
@@ -230,11 +238,14 @@ public class FollowingFoxFire : MonoBehaviour
 
 	internal void Accumulate(YinYang dmg)
 	{
-		Debug.Log("DAMAGE ADDED : " + dmg.white);
-		accDmg += dmg.white;
-		if(accDmg > maxAccDmg)
+		if(mode == FoxFireMode.Attatched)
 		{
-			Explode();
+			Debug.Log("DAMAGE ADDED : " + dmg.white);
+			accDmg += dmg.white;
+			if(accDmg > maxAccDmg)
+			{
+				Explode();
+			}
 		}
 	}
 }

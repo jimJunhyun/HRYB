@@ -173,7 +173,7 @@ public class StatusEffects
 
 	void OnBindActivated(Actor self, Actor inflicter, float power)
 	{
-		self.move.NoMove = true;
+		self.move.NoMove.Pause(ControlModuleMode.Status, true);
 	}
 	void OnBindUpdated(Actor self, float power)
 	{
@@ -181,7 +181,7 @@ public class StatusEffects
 	}
 	void OnBindEnded(Actor self, float power)
 	{
-		self.move.NoMove = false;
+		self.move.NoMove.Pause(ControlModuleMode.Status, false);
 	}
 
 	void OnEnhanceIceActivated(Actor self, Actor inflicter, float power)
@@ -238,9 +238,9 @@ public class StatusEffects
 
 	void OnStunActivated(Actor self, Actor inflicter, float power)
 	{
-		self.move.NoMove = true;
-		self.atk.NoAttack = true;
-		self.cast.NoCast = true;
+		self.move.NoMove.Pause(ControlModuleMode.Status, true);
+		self.atk.NoAttack.Pause(ControlModuleMode.Status, true);
+		self.cast.SetNoCastState(ControlModuleMode.Status, true);
 	}
 	void OnStunUpdated(Actor self, float power)
 	{
@@ -248,9 +248,9 @@ public class StatusEffects
 	}
 	void OnStunEnded(Actor self, float power)
 	{
-		self.move.NoMove = false;
-		self.atk.NoAttack = false;
-		self.cast.NoCast = false;
+		self.move.NoMove.Pause(ControlModuleMode.Status, false);
+		self.atk.NoAttack.Pause(ControlModuleMode.Status, false);
+		self.cast.SetNoCastState(ControlModuleMode.Status, false);
 	}
 
 	void OnFoxBewitchedActivated(Actor self, Actor inflicter, float power)

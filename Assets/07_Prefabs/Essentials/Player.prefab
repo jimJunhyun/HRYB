@@ -104,6 +104,8 @@ MonoBehaviour:
   climbThreshold: 80
   slipPower: 4
   lockOnDist: 30
+  nearRefreshDist: 3
+  nearRefreshTime: 5
   angleXMin: -20
   angleXMax: 20
   jumpable: 0
@@ -537,9 +539,11 @@ MonoBehaviour:
   initAtkDist: 60
   initAtkGap: 1
   initDamage:
-    black: 0
-    white: 0
+    black: 35
+    white: 35
   initSecPerCharge: 0.5
+  aimTarget: {fileID: 0}
+  targetMaxDist: 20
 --- !u!114 &3650084912648737930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -579,8 +583,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isImmune: 0
   initYinYang:
-    black: 0
-    white: 0
+    black: 50
+    white: 50
   initAdequity:
     black: 0
     white: 0
@@ -613,7 +617,7 @@ MonoBehaviour:
   sight: {fileID: 0}
   cast: {fileID: 0}
   anim: {fileID: 0}
-  ai: {fileID: 0}
+  _ai: {fileID: 0}
 --- !u!95 &4678642442708023600
 Animator:
   serializedVersion: 5
@@ -880,6 +884,7 @@ MonoBehaviour:
   _layer:
     serializedVersion: 2
     m_Bits: 731455
+  Owner: {fileID: 0}
 --- !u!1 &3655011478167333133
 GameObject:
   m_ObjectHideFlags: 0
