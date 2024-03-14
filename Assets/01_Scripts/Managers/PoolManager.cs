@@ -65,7 +65,7 @@ public class PoolManager : MonoBehaviour
 	{
 		StackWithName<GameObject> st;
 		int idx = pooleds.FindIndex(item => SimilarName(item.name, name));
-		if ((st = pooleds[idx]) != null)
+		if (idx != -1 && (st = pooleds[idx]) != null)
 		{
 			if(st.data.Count > 1)
 			{
@@ -109,7 +109,7 @@ public class PoolManager : MonoBehaviour
 	{
 		StackWithName<GameObject> st;
 		int idx = pooleds.FindIndex(item => SimilarName(item.name, name));
-		if ((st = pooleds[idx]) != null)
+		if (idx != -1 && (st = pooleds[idx]) != null)
 		{
 			if (st.data.Count > 1)
 			{
@@ -154,7 +154,7 @@ public class PoolManager : MonoBehaviour
 	{
 		StackWithName<GameObject> st;
 		int idx = pooleds.FindIndex(item => SimilarName(item.name, name));
-		if ((st = pooleds[idx]) != null)
+		if (idx != -1 && (st = pooleds[idx]) != null)
 		{
 			if(st.data.Count > 1)
 			{
@@ -200,7 +200,7 @@ public class PoolManager : MonoBehaviour
 	{
 		StackWithName<GameObject> st;
 		int idx = pooleds.FindIndex(item => SimilarName(item.name, name));
-		if ((st = pooleds[idx]) != null)
+		if (idx != -1 && (st = pooleds[idx]) != null)
 		{
 			if(st.data.Count > 1)
 			{
@@ -248,12 +248,8 @@ public class PoolManager : MonoBehaviour
 	{
 		StackWithName<GameObject> st;
 		int idx = pooleds.FindIndex(item => SimilarName(item.name, name));
-		if ((st = pooleds[idx]) != null)
+		if (idx != -1 && (st = pooleds[idx]) != null)
 		{
-			foreach (var item in st.data)
-			{
-				Debug.Log("Stack : " + item.name);
-			}
 
 			if(st.data.Count > 1)
 			{
@@ -296,7 +292,7 @@ public class PoolManager : MonoBehaviour
 	{
 		StackWithName<GameObject> st;
 		int idx = pooleds.FindIndex(item => SimilarName(item.name, name));
-		if ((st = pooleds[idx]) != null)
+		if (idx != -1 && (st = pooleds[idx]) != null)
 		{
 			if (st.data.Count > 0)
 			{
