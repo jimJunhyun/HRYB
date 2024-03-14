@@ -171,7 +171,8 @@ public class PlayerCast : CastModule
 	private void Start()
 	{
 		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("NormalBowAttack"), SkillSlotInfo.LClick, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
+		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YusungSmith"), SkillSlotInfo.RClick, PlayerForm.Magic);
 
 		nameCastPair.Add("interact" , new Preparation(
 		(self)=>
@@ -455,7 +456,7 @@ public class PlayerCast : CastModule
 
 	protected override IEnumerator DelCast(Preparation p)
 	{
-		GameManager.instance.DisableCtrl();
+		GameManager.instance.DisableCtrl(ControlModuleMode.Animated); //히트당하면 끊긴다...
 		GameManager.instance.uiManager.interingUI.On();
 		float t = 0;
 		float waitSec = p.Timefunc();
@@ -469,7 +470,7 @@ public class PlayerCast : CastModule
 		ongoing = null;
 		curName = null;
 		GameManager.instance.uiManager.interingUI.Off();
-		GameManager.instance.EnableCtrl();
+		GameManager.instance.EnableCtrl(ControlModuleMode.Animated);
 	}
 
 	private void Update()

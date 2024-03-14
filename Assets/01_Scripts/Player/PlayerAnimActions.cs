@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
-public class PlayerAnimActions : MonoBehaviour, IAnimationEvent
+public class PlayerAnimActions : MonoBehaviour
 {
 	Actor self;
 
+	[SerializeField] private AnimatorOverrideController _anim;
 	//GameObject holdingBow;
 	//GameObject equipingBow;
 	public SkinnedMeshRenderer eBowRend;
@@ -18,6 +20,8 @@ public class PlayerAnimActions : MonoBehaviour, IAnimationEvent
 	private void Awake()
 	{
 		self = GetComponentInParent<Actor>();
+		animator = GetComponent<Animator>();
+		animator.runtimeAnimatorController = _anim;
 
 		//holdingBow  = GameObject.Find("HoldingBow");
 		//equipingBow = GameObject.Find("EquipingBow");
@@ -85,12 +89,12 @@ public class PlayerAnimActions : MonoBehaviour, IAnimationEvent
 
 	public void DisableMove()
 	{
-		GameManager.instance.DisableCtrl();
+		GameManager.instance.DisableCtrl(ControlModuleMode.Animated);
 	}
 
 	public void EnableMove()
 	{
-		GameManager.instance.EnableCtrl();
+		GameManager.instance.EnableCtrl(ControlModuleMode.Animated);
 	}
 
 	public void EnableInput()
@@ -111,20 +115,20 @@ public class PlayerAnimActions : MonoBehaviour, IAnimationEvent
 	//	equipingBow.SetActive(true);
 	//}
 
-	public void SetBowAimState()
-	{
-		animator.SetBool(aimHash, true);
-	}
-
-	public void ResetBowAimState()
-	{
-		animator.SetBool(aimHash, false);
-	}
-
-	public void SetFireTrigger()
-	{
-		animator.SetTrigger(fireHash);
-	}
+	//public void SetBowAimState()
+	//{
+	//	animator.SetBool(aimHash, true);
+	//}
+	//
+	//public void ResetBowAimState()
+	//{
+	//	animator.SetBool(aimHash, false);
+	//}
+	//
+	//public void SetFireTrigger()
+	//{
+	//	animator.SetTrigger(fireHash);
+	//}
 
 	public void ResetRoll()
 	{
@@ -137,34 +141,36 @@ public class PlayerAnimActions : MonoBehaviour, IAnimationEvent
 			(self.move as PlayerMove).ctrl.center *= 2f;
 	}
 
-	public void OnAnimationStart()
+	public void OnAnimationStart(AnimationEvent evt)
 	{
 		if ((self.cast as PlayerCast).NowSkillUse != null)
-			(self.cast as PlayerCast).NowSkillUse.OnAnimationStart(self);
+			(self.cast as PlayerCast).NowSkillUse.OnAnimationStart(self, evt);
 
 	}
 
-	public void OnAnimationMove()
+	public void OnAnimationMove(AnimationEvent evt)
 	{
 		if ((self.cast as PlayerCast).NowSkillUse != null)
-			(self.cast as PlayerCast).NowSkillUse.OnAnimationMove(self);
+		{
+			(self.cast as PlayerCast).NowSkillUse.OnAnimationMove(self, evt);
+		}
 	}
 
-	public void OnAnimationEvent()
+	public void OnAnimationEvent(AnimationEvent evt)
 	{
 		if ((self.cast as PlayerCast).NowSkillUse != null)
-			(self.cast as PlayerCast).NowSkillUse.OnAnimationEvent(self);
+			(self.cast as PlayerCast).NowSkillUse.OnAnimationEvent(self, evt);
 	}
 
-	public void OnAnimationStop()
+	public void OnAnimationStop(AnimationEvent evt)
 	{
 		if ((self.cast as PlayerCast).NowSkillUse != null)
-			(self.cast as PlayerCast).NowSkillUse.OnAnimationStop(self);
+			(self.cast as PlayerCast).NowSkillUse.OnAnimationStop(self, evt);
 	}
 
-	public void OnAnimationEnd()
+	public void OnAnimationEnd(AnimationEvent evt)
 	{
 		if ((self.cast as PlayerCast).NowSkillUse != null)
-			(self.cast as PlayerCast).NowSkillUse.OnAnimationEnd(self);
+			(self.cast as PlayerCast).NowSkillUse.OnAnimationEnd(self, evt);
 	}
 }

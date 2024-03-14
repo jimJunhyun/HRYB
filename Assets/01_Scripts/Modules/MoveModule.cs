@@ -43,25 +43,7 @@ public class MoveModule : Module
 	{
 		get=>Physics.Raycast(transform.position, Vector3.down, groundThreshold, 1<< GameManager.GROUNDLAYER);
 	}
-	int noMove = 0;
-	public bool NoMove 
-	{
-		get => noMove > 0;
-		set
-		{
-			if (value)
-			{
-				noMove += 1;
-			}
-			else
-			{
-				if(noMove > 0)
-				{
-					noMove -= 1;
-				}
-			}
-		}
-	}
+	public ModuleController NoMove = new ModuleController(false);
 
 	protected MoveStates curStat;
 	public virtual MoveStates moveStat
@@ -147,6 +129,6 @@ public class MoveModule : Module
 		moveStat  =MoveStates.Walk;
 		moveDir = Vector3.zero;
 		forceDir = Vector3.zero;
-		noMove = 0;
+		NoMove.CompleteReset();
 	}
 }

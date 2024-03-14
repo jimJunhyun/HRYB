@@ -21,11 +21,17 @@ public class JangsungGirlLifeModule : LifeModule
 	}
 
 
-	public override void DamageYY(float yin, float yang, DamageType type, float dur = 0, float tick = 0, Actor attacker = null, DamageChannel channel = DamageChannel.None)
+	public override void DamageYY(YinYang data, DamageType type, float dur = 0, float tick = 0, Actor attacker = null, DamageChannel channel = DamageChannel.None)
 	{
+		DamageYY(data.black, data.white, type, dur,tick,attacker,channel);
+	}
+	
+	public override void DamageYY(float black, float white, DamageType type, float dur = 0, float tick = 0, Actor attacker = null, DamageChannel channel= DamageChannel.None)
+	{
+		Debug.Log("DD");
 		if(_isBarrier == false)
 		{
-			YinYang data = new YinYang(yin, yang);
+			YinYang data = new YinYang(black, white);
 			switch (type)
 			{
 				case DamageType.DirectHit:

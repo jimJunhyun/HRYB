@@ -28,30 +28,15 @@ public abstract class Compose : ScriptableObject, IComposer, IAnimationEventActo
 	internal abstract void MyOperation(Actor self);
 	internal abstract void MyDisoperation(Actor self);
 	public abstract void UpdateStatus();
+
+
+	public virtual void OnAnimationStart(Actor self, AnimationEvent evt){}
+
+	public virtual void OnAnimationMove(Actor self, AnimationEvent evt){}
+	public virtual void OnAnimationEvent(Actor self, AnimationEvent evt){}
+
+	public virtual void OnAnimationStop(Actor self, AnimationEvent evt){}
+
+	public virtual void OnAnimationEnd(Actor self, AnimationEvent evt){}
 	
-	
-	public virtual void OnAnimationStart(Actor self)
-	{
-		
-	}
-
-	public virtual void OnAnimationMove(Actor self)
-	{
-
-	}
-
-	public virtual void OnAnimationEvent(Actor self)
-	{
-
-	}
-
-	public virtual void OnAnimationStop(Actor self)
-	{
-
-	}
-
-	public virtual void OnAnimationEnd(Actor self)
-	{
-
-	}
 }
