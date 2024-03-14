@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 [CreateAssetMenu(menuName = "Skills/Composite")]
 
-public class Composite : Compose, IComposer, IAnimationEventActor
+public class Composite : Compose, IComposer
 {
 	public List<Compose> childs;
 	public float composeDel;
@@ -72,6 +72,32 @@ public class Composite : Compose, IComposer, IAnimationEventActor
 		}
 	}
 
+	public override void OnAnimationStart(Actor self, AnimationEvent evt)
+	{
+		//Debug.Log("LOGGS" + childs[evt.intParameter]);
+		childs[evt.intParameter].OnAnimationStart(self, evt);
+	}
+
+	public override void OnAnimationMove(Actor self, AnimationEvent evt)
+	{
+		childs[evt.intParameter].OnAnimationMove(self, evt);
+	}
+
+	public override void OnAnimationEvent(Actor self, AnimationEvent evt)
+	{
+		childs[evt.intParameter].OnAnimationEvent(self, evt);
+	}
+
+	public override void OnAnimationStop(Actor self, AnimationEvent evt)
+	{
+		childs[evt.intParameter].OnAnimationStop(self, evt);
+	}
+
+	public override void OnAnimationEnd(Actor self, AnimationEvent evt)
+	{
+		childs[evt.intParameter].OnAnimationEnd(self, evt);
+	}
+
 	public virtual void SetAnimations(Actor to, SkillSlotInfo info)
 	{
 		if((to.anim as PlayerAnim).curEquipped != this)
@@ -84,12 +110,18 @@ public class Composite : Compose, IComposer, IAnimationEventActor
 				Debug.Log("??????????");
 				if(clip != null)
 				{
-					AnimationEvent[] events = clip.events;
+					AnimationEvent[] events = clip.events;		// 한 클립에 이벤트 겟수
 
-					events[1].intParameter = i;
-					events[1].stringParameter = info.ToString();
-					events[2].intParameter = i;
-					events[2].stringParameter = info.ToString();
+					for (int t = 0; t < events.Length; t++)
+					{
+						events[t].intParameter = i;
+						events[t].stringParameter = info.ToString();
+					}
+					
+					//events[1].intParameter = i;
+					//events[1].stringParameter = info.ToString();
+					//events[2].intParameter = i;
+					//events[2].stringParameter = info.ToString();
 					clip.events = events;
 					
 					atoms.Add(clip);
@@ -136,28 +168,4 @@ public class Composite : Compose, IComposer, IAnimationEventActor
 		}
 	}
 	
-	public virtual void OnAnimationStart(Actor self)
-	{
-		
-	}
-
-	public virtual void OnAnimationMove(Actor self)
-	{
-
-	}
-
-	public virtual void OnAnimationEvent(Actor self)
-	{
-
-	}
-
-	public virtual void OnAnimationStop(Actor self)
-	{
-
-	}
-
-	public virtual void OnAnimationEnd(Actor self)
-	{
-
-	}
 }

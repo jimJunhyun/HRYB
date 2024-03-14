@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public interface IAnimationEvent
 {
 	public void OnAnimationStart();
@@ -11,12 +13,12 @@ public interface IAnimationEvent
 
 public interface IAnimationEventActor
 {
-	public void OnAnimationStart(Actor self);
+	public void OnAnimationStart(Actor self, AnimationEvent evt);
 
-	public void OnAnimationMove(Actor self);
-	public void OnAnimationEvent(Actor self);
+	public void OnAnimationMove(Actor self, AnimationEvent evt);
+	public void OnAnimationEvent(Actor self, AnimationEvent evt);
 
-	public void OnAnimationStop(Actor self);
-	public void OnAnimationEnd(Actor self);
+	public void OnAnimationStop(Actor self, AnimationEvent evt);
+	public void OnAnimationEnd(Actor self, AnimationEvent evt);
 }
 

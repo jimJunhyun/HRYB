@@ -171,7 +171,8 @@ public class PlayerCast : CastModule
 	private void Start()
 	{
 		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("NormalBowAttack"), SkillSlotInfo.LClick, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
+		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YusungSmith"), SkillSlotInfo.RClick, PlayerForm.Magic);
 
 		nameCastPair.Add("interact" , new Preparation(
 		(self)=>

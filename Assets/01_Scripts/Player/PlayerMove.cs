@@ -417,7 +417,7 @@ public class PlayerMove : MoveModule
 		}
 		catch
 		{
-			Debug.Log("사운드 혐오");
+//			Debug.Log("사운드 혐오");
 		}
 
 
