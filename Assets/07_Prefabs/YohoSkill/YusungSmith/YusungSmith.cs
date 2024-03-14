@@ -26,7 +26,7 @@ public class YusungSmith : AttackBase
     public override void OnAnimationStart(Actor self, AnimationEvent evt )
     {
 	    // 이팩트 기타등등셋팅
-	    GameManager.instance.DisableCtrl();
+	    GameManager.instance.DisableCtrl(ControlModuleMode.Animated);
 	    eventCount = 0;
 	    moveCount = 0;
     }
@@ -92,6 +92,6 @@ public class YusungSmith : AttackBase
     public override void OnAnimationStop(Actor self, AnimationEvent evt)
     {
 	    
-	    GameManager.instance.EnableCtrl();
+	    GameManager.instance.EnableCtrl(ControlModuleMode.Animated);
     }
 }
