@@ -86,9 +86,9 @@ public class CameraManager : MonoBehaviour
 		}
 	}
 	
-	public void ShakeCamFor(float dur)
+	public void ShakeCamFor(float dur, float ampGain = 0.5f, float frqGain = 1f)
 	{
-		StartCoroutine(DelShakeCam(dur));
+		StartCoroutine(DelShakeCam(dur,ampGain, frqGain));
 	}
 	
 	IEnumerator DelShakeCam(float dur, float ampGain = 0.5f, float frqGain = 1f)

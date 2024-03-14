@@ -36,7 +36,7 @@ public class YusungSmith : AttackBase
 	    {
 		    // 이동
 		    Vector3 dir = self.transform.forward;
-		    self.move.forceDir = dir * 12 + new Vector3(0, 32, 0);
+		    self.move.forceDir = dir * 48 + new Vector3(0, 24, 0);
 		    Debug.Log($"LOGG {dir}");
 	    }
 	    else if (moveCount == 1)
@@ -51,27 +51,26 @@ public class YusungSmith : AttackBase
     
     public override void OnAnimationEvent(Actor self, AnimationEvent evt)
     {
-	    Vector3 dir = self.transform.forward;
-	    self.move.forceDir.y = 0;
+	    Debug.Log(eventCount);
 	    
-	    if (eventCount == 1)
+	    Vector3 dir = self.transform.forward;
+	    self.move.forceDir = dir + new Vector3(0, -30, 0);
+	    
+	    if (_cols != null)
 	    {
-		    // 공격시마다 ColliderCast 배출
-		    if (_cols != null)
-		    {
-			    _cols.End();
-			    _cols = null;
-		    }
+		    _cols.End();
+		    _cols = null;
+	    }
+	    CameraManager.instance.ShakeCamFor(0.2f, 5, 5);
+	    GameObject obj = PoolManager.GetObject("YusungSmith", self.transform);
 
-		    GameObject obj = PoolManager.GetObject("YusungSmith", self.transform);
-
-		    if (obj.TryGetComponent<ColliderCast>(out _cols))
+	    if (obj.TryGetComponent<ColliderCast>(out _cols))
+	    {
+		    _cols.Now(self.transform, (_life) =>
 		    {
-			    _cols.Now(self.transform, (_life) =>
-			    {
-				    DoDamage(_life.GetActor(), self);
-			    });
-		    }
+			    DoDamage(_life.GetActor(), self);
+				    
+		    });
 	    }
 	    eventCount++;
     }
