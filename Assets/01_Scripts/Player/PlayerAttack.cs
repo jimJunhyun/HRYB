@@ -21,6 +21,11 @@ public class PlayerAttack : AttackModule
 
 	
 	public float targetMaxDist;
+	public float targetMaxAngle;
+	public float TargetMaxAngleCos
+	{
+		get=>Mathf.Cos(targetMaxAngle);
+	}
 
 	UnityAction updateActs;
 

@@ -48,9 +48,12 @@ public class Arrow : DamageObject
 
 	public float power = 60f;
 
+	public float maxSpeed = 50f;
+
 	Transform target;
 
 	ArrowMode mode = ArrowMode.Normal;
+	public float homingPower = 60f;
 
 	bool fired = false;
 	bool detectOn = true;
@@ -109,14 +112,32 @@ public class Arrow : DamageObject
 
 	private void Update()
 	{
-		if(rig.velocity.sqrMagnitude != 0)
+		switch (mode)
 		{
-			transform.rotation = Quaternion.LookRotation(rig.velocity);
+			case ArrowMode.Normal:
+				if (rig.velocity.sqrMagnitude != 0)
+				{
+					transform.rotation = Quaternion.LookRotation(rig.velocity);
+				}
+				break;
+			case ArrowMode.Homing:
+				if (fired)
+				{
+					if (target != null)
+					{
+						Vector3 dir = (target.position - transform.position);
+						transform.forward = dir.normalized;	
+						rig.AddForce(transform.forward * homingPower, ForceMode.VelocityChange);
+					}
+					//rig.AddForce(transform.forward * power, ForceMode.Force);
+				}
+				break;
+			default:
+				break;
 		}
-		if(mode == ArrowMode.Homing && fired)
-		{
-			rig.AddForce((target.position - transform.position).normalized * power * power, ForceMode.Force);
-		}
+		Vector3 vel = Vector3.ClampMagnitude(rig.velocity, maxSpeed);
+		rig.velocity = vel;
+
 	}
 
 	private void OnEnable()
@@ -174,14 +195,29 @@ public class Arrow : DamageObject
 
 	public void SetTarget(Transform targ)
 	{
-		target = targ;
+		if (targ)
+		{
+			target = targ.Find("Middle");
+			if (!target)
+			{
+				target = targ;
+			}
+		}
+		
 	}
 
 	public void Shoot(ArrowMode mode)
 	{
 		SetDisappearTimer();
-
-		rig.AddForce(power * transform.forward, ForceMode.Impulse);
+		
+		if(mode == ArrowMode.Homing && target != null)
+		{
+			rig.AddForce(transform.forward * power * 0.1f, ForceMode.Impulse);
+		}
+		else
+		{
+			rig.AddForce(power * transform.forward, ForceMode.Impulse);
+		}
 
 		this.mode = mode;
 		fired = true;
@@ -215,6 +251,7 @@ public class Arrow : DamageObject
 		PoolManager.ReturnAllChilds(gameObject);
 		mode = ArrowMode.Normal;
 		fired = false;
+		target = null;
 	}
 
 	
