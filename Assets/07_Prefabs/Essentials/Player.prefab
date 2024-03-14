@@ -104,6 +104,8 @@ MonoBehaviour:
   climbThreshold: 80
   slipPower: 4
   lockOnDist: 30
+  nearRefreshDist: 3
+  nearRefreshTime: 5
   angleXMin: -20
   angleXMax: 20
   jumpable: 0
@@ -540,6 +542,8 @@ MonoBehaviour:
     black: 35
     white: 35
   initSecPerCharge: 0.5
+  aimTarget: {fileID: 0}
+  targetMaxDist: 20
 --- !u!114 &3650084912648737930
 MonoBehaviour:
   m_ObjectHideFlags: 0

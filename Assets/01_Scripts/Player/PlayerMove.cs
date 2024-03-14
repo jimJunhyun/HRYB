@@ -5,6 +5,10 @@ using UnityEngine.InputSystem;
 using System.Linq;
 using System;
 
+
+
+
+
 public class PlayerMove : MoveModule
 {
 	
@@ -59,7 +63,6 @@ public class PlayerMove : MoveModule
 	float prevDetectTime;
 
 	Quaternion to;
-	Camera mainCam;
 
 	HashSet<Transform> already = new HashSet<Transform>();
 
@@ -74,25 +77,9 @@ public class PlayerMove : MoveModule
 
 	RaycastHit hitCache;
 
-	int noInput = 0;
-	public bool NoInput
-	{
-		get =>noInput > 0;
-		set
-		{
-			if (value)
-			{ 
-				noInput += 1;
-			}
-			else
-			{
-				if(noInput > 0)
-				{
-					noInput -=1 ;
-				}
-			}
-		}
-	}
+	public ModuleController NoInput = new ModuleController(false);
+
+	PlayerAttack pAttack;
 
 	bool IsActualGrounded
 	{
@@ -179,9 +166,13 @@ public class PlayerMove : MoveModule
 	private void Awake()
 	{
 		ctrl = GetComponent<CharacterController>();
-		mainCam = Camera.main;
 		middle = transform.Find("Middle");
 		initPos = transform.position;
+	}
+
+	private void Start()
+	{
+		pAttack = GetActor().atk as PlayerAttack;
 	}
 
 	private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -250,7 +241,7 @@ public class PlayerMove : MoveModule
 
 	public override void Move()
 	{
-		if (!NoMove)
+		if (!NoMove.Paused)
 		{
 			if (moveStat != MoveStates.Climb)
 			{
@@ -423,7 +414,7 @@ public class PlayerMove : MoveModule
 			}
 			else if (GameManager.instance.audioPlayer.IsPlaying)
 			{
-				GameManager.instance.audioPlayer.StopGlobal();
+				GameManager.instance.audioPlayer.StopGlobal(); //추후 수정 필요%%%%%%%%%%%%
 			}
 		}
 		catch
@@ -431,7 +422,20 @@ public class PlayerMove : MoveModule
 			Debug.Log("사운드 혐오");
 		}
 
+		if (target != null && (target.position - transform.position).sqrMagnitude >= lockOnDist * lockOnDist)
+		{
+			ResetTargets();
+		}
 
+		if ((transform.position - prevDetectPos).sqrMagnitude > nearRefreshDist * nearRefreshDist)
+		{
+			DoDetection();
+		}
+
+		if(pAttack.target != null && (transform.position - pAttack.target.position).sqrMagnitude > pAttack.targetMaxDist * pAttack.targetMaxDist)
+		{
+			pAttack.target = null;
+		}
 
 		if (moveStat != MoveStates.Climb)
 		{
@@ -446,7 +450,7 @@ public class PlayerMove : MoveModule
 
 	public void Move(InputAction.CallbackContext context)
 	{
-		if (!NoInput)
+		if (!NoInput.Paused)
 		{
 			Vector2 inp = context.ReadValue<Vector2>();
 			if (moveStat != MoveStates.Climb)
@@ -460,15 +464,7 @@ public class PlayerMove : MoveModule
 
 			}
 
-			if (target != null && (target.position - transform.position).sqrMagnitude >= lockOnDist * lockOnDist)
-			{
-				ResetTargets();
-			}
-
-			if((transform.position - prevDetectPos).sqrMagnitude > nearRefreshDist * nearRefreshDist)
-			{
-				DoDetection();
-			}
+			
 		}
 		
 	}
@@ -518,7 +514,7 @@ public class PlayerMove : MoveModule
 
 	public void Jump(InputAction.CallbackContext context)
 	{
-		if (!NoInput)
+		if (!NoInput.Paused)
 		{
 			if (context.performed && jumpable)
 			{
@@ -565,39 +561,14 @@ public class PlayerMove : MoveModule
 			}
 			if(nearEnemies.Count > 0)
 			{
-				float maxCosAngle = 0f;
-				float nearestDist = float.MaxValue;
-				Actor nearest = null;
-				PlayerAttack pAttack = GetActor().atk as PlayerAttack;
-				foreach (var item in nearEnemies)
-				{
-					Vector3 distVec = (item.transform.position - transform.position);
-					if (distVec.sqrMagnitude < pAttack.targetMaxDist * pAttack.targetMaxDist)
-					{
-						float cosAngle = Vector3.Dot(mainCam.transform.forward, distVec.normalized);
-
-						if (maxCosAngle < cosAngle || maxCosAngle - cosAngle <= pAttack.targetAngleErr)
-						{
-							if (maxCosAngle < cosAngle)
-							{
-								maxCosAngle = cosAngle;
-							}
-							if(distVec.sqrMagnitude < nearestDist)
-							{
-								nearestDist = distVec.sqrMagnitude;
-								nearest = item;
-							}
-						}
-					}
-						
-				}
+				SetNearestEnemy();
 			}
 		}
 	}
 
 	public void Lock(InputAction.CallbackContext context)
 	{
-		if (!NoInput)
+		if (!NoInput.Paused)
 		{
 			if (context.started)
 			{
@@ -634,6 +605,7 @@ public class PlayerMove : MoveModule
 						if (!already.Contains(targets[i]))
 						{
 							target = targets[i];
+							pAttack.target = target;
 
 							CameraManager.instance.SwitchTo(CamStatus.Locked);
 
@@ -658,7 +630,7 @@ public class PlayerMove : MoveModule
 
 	public void Roll(InputAction.CallbackContext context)
 	{
-		if (!NoInput)
+		if (!NoInput.Paused)
 		{
 			if (context.started && moveStat != MoveStates.Climb && rollable && IsActualGrounded)
 			{
@@ -680,19 +652,41 @@ public class PlayerMove : MoveModule
 
 	public void DoDetection()
 	{
+		Debug.Log("DETECTED");
 		nearEnemies.Clear();
 		Collider[] c = Physics.OverlapSphere(transform.position, lockOnDist, ~(1 << GameManager.PLAYERLAYER | 1 << GameManager.GROUNDLAYER));
 		for (int i = 0; i < c.Length; i++)
 		{
-			Actor ac = null;
-			if (ac = c[i].GetComponent<Actor>())
+			if(c[i].TryGetComponent<Actor>(out Actor actor))
 			{
-				nearEnemies.Add(ac);
+				nearEnemies.Add(actor);
 			}
 		}
 
 		prevDetectPos = transform.position;
 		prevDetectTime = Time.time;
+
+		SetNearestEnemy();
+	}
+
+	public void SetNearestEnemy()
+	{
+		pAttack.target = null;
+
+		float nearestDist = float.MaxValue;
+
+		foreach (var item in nearEnemies)
+		{
+			Vector3 distVec = (item.transform.position - transform.position);
+			if (distVec.sqrMagnitude < pAttack.targetMaxDist * pAttack.targetMaxDist)
+			{
+				if (distVec.sqrMagnitude < nearestDist)
+				{
+					nearestDist = distVec.sqrMagnitude;
+					pAttack.target = item.transform;
+				}
+			}
+		}
 	}
 
 	public float GetSneakDist()
@@ -762,5 +756,6 @@ public class PlayerMove : MoveModule
 		ctrl.height = 2;
 		ctrl.radius = 0.5f;
 		ctrl.center = Vector3.up;
+		
 	}
 }

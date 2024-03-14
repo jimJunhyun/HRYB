@@ -10,6 +10,8 @@ public class FireStrongArrow : AttackBase
 
 	public float scaleDiff;
 
+	public ArrowMode aMode;
+
 	public override void UpdateStatus()
 	{
 		//
@@ -38,7 +40,11 @@ public class FireStrongArrow : AttackBase
 		{
 			r.AddStatusEffect(statEff[i]);
 		}
-		r.Shoot();
+		r.Shoot(aMode);
+		if (aMode == ArrowMode.Homing)
+		{
+			r.SetTarget(self.atk.target);
+		}
 		GameManager.instance.audioPlayer.PlayPoint(audioClipName, self.transform.position);
 	}
 }

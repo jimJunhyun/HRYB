@@ -5,6 +5,12 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
+public enum ArrowMode
+{
+	Normal,
+	Homing,
+
+}
 
 [System.Serializable]
 public struct StatusEffectApplyData
@@ -42,6 +48,11 @@ public class Arrow : DamageObject
 
 	public float power = 60f;
 
+	Transform target;
+
+	ArrowMode mode = ArrowMode.Normal;
+
+	bool fired = false;
 	bool detectOn = true;
 
 	Actor owner;
@@ -101,7 +112,10 @@ public class Arrow : DamageObject
 		if(rig.velocity.sqrMagnitude != 0)
 		{
 			transform.rotation = Quaternion.LookRotation(rig.velocity);
-
+		}
+		if(mode == ArrowMode.Homing && fired)
+		{
+			rig.AddForce((target.position - transform.position).normalized * power * power, ForceMode.Force);
 		}
 	}
 
@@ -158,12 +172,19 @@ public class Arrow : DamageObject
 		hitEffData = (onHit);
 	}
 
-	public void Shoot()
+	public void SetTarget(Transform targ)
 	{
+		target = targ;
+	}
 
+	public void Shoot(ArrowMode mode)
+	{
 		SetDisappearTimer();
+
 		rig.AddForce(power * transform.forward, ForceMode.Impulse);
 
+		this.mode = mode;
+		fired = true;
 	}
 
 	public void AddStatusEffect(StatusEffectApplyData data)
@@ -180,7 +201,6 @@ public class Arrow : DamageObject
 	IEnumerator DelReturn()
 	{
 		yield return waitTillDisappear;
-		Debug.Log("!!!!!!!!!!!!!!!!!!!!!!!!");
 		Returner();
 		c = null;
 	}
@@ -193,6 +213,8 @@ public class Arrow : DamageObject
 		ResetOwner();
 		statData.Clear();
 		PoolManager.ReturnAllChilds(gameObject);
+		mode = ArrowMode.Normal;
+		fired = false;
 	}
 
 	

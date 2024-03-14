@@ -31,26 +31,7 @@ public class CastModule : Module
 	protected Coroutine ongoing;
 	protected string curName;
 
-	int noCast = 0;
-	public bool NoCast
-	{
-		get => noCast > 0;
-		set
-		{
-			if (value)
-			{
-				noCast += 1;
-				StopCoroutine(ongoing);
-			}
-			else
-			{
-				if(noCast > 0)
-				{
-					noCast -= 1;
-				}
-			}
-		}
-	}
+	ModuleController NoCast = new ModuleController(false);
 
 	public void Cast(string name)
 	{
@@ -71,7 +52,7 @@ public class CastModule : Module
 
 	protected virtual IEnumerator DelCast(Preparation p)
 	{
-		if (!NoCast)
+		if (!NoCast.Paused)
 		{
 			float t = 0;
 			float waitSec = p.Timefunc();
@@ -88,6 +69,17 @@ public class CastModule : Module
 
 	public override void ResetStatus()
 	{
+		CastCancel();
+		NoCast.CompleteReset();
 		base.ResetStatus();
+	}
+
+	public void SetNoCastState(ControlModuleMode mode, bool stat)
+	{
+		NoCast.Pause(mode, stat);
+		if (NoCast.Paused)
+		{
+			CastCancel();
+		}
 	}
 }

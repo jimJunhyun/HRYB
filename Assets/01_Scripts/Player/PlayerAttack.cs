@@ -19,9 +19,8 @@ public class PlayerAttack : AttackModule
 	Ray camRay;
 	public Transform ShootPos { get; protected set;}
 
-	public Transform aimTarget;
+	
 	public float targetMaxDist;
-	public float targetAngleErr = 0.1f;
 
 	UnityAction updateActs;
 
@@ -67,7 +66,7 @@ public class PlayerAttack : AttackModule
 		//{
 			if (!clickL)
 			{
-				if (NoAttack && !clickR)
+				if (NoAttack.Paused && !clickR)
 					return;
 				//Debug.LogWarning("phase : " +context.phase  + " : " + context.started + " : " + context.canceled);
 				if (!clickR && context.started)
@@ -96,7 +95,7 @@ public class PlayerAttack : AttackModule
 		//{
 			if (!clickR)
 			{
-				if (NoAttack && !clickL)
+				if (NoAttack.Paused && !clickL)
 					return;
 				if (context.started && !clickL)
 				{

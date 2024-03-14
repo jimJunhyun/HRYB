@@ -85,12 +85,12 @@ public class PlayerAnimActions : MonoBehaviour, IAnimationEvent
 
 	public void DisableMove()
 	{
-		GameManager.instance.DisableCtrl();
+		GameManager.instance.DisableCtrl(ControlModuleMode.Animated);
 	}
 
 	public void EnableMove()
 	{
-		GameManager.instance.EnableCtrl();
+		GameManager.instance.EnableCtrl(ControlModuleMode.Animated);
 	}
 
 	public void EnableInput()

@@ -10,6 +10,8 @@ public class FireArrowAtOnce : AttackBase
 	public float circularRad;
 	public float circularAngle;
 
+	public ArrowMode aMode;
+
 	Arrow arrow;
 
 	internal override void MyDisoperation(Actor self)
@@ -19,8 +21,9 @@ public class FireArrowAtOnce : AttackBase
 		if(arrow != null)
 		{
 			//Debug.Log($"화살발사, {arrow.transform.position} : {arrow.transform.forward}");
+			arrow.SetTarget(self.atk.target);
 			GameManager.instance.audioPlayer.PlayPoint(audioClipName, self.transform.position);
-			arrow.Shoot();
+			arrow.Shoot(aMode);
 			arrow.SetDisappearTimer();
 			arrow.ResumeCheck();
 			arrow = null;

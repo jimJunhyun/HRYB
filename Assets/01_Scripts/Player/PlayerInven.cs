@@ -624,7 +624,7 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (stat == PlayerForm.Magic)
 		{
-			if(GameManager.instance.pActor.atk.NoAttack && !clickWood)
+			if(GameManager.instance.pActor.atk.NoAttack.Paused && !clickWood)
 				return;
 			if (context.started && !clickWood)
 			{
@@ -649,7 +649,7 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (stat == PlayerForm.Magic)
 		{
-			if (GameManager.instance.pActor.atk.NoAttack && !clickFire)
+			if (GameManager.instance.pActor.atk.NoAttack.Paused && !clickFire)
 				return;
 			if (context.started && !clickFire)
 			{
@@ -674,7 +674,7 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (stat == PlayerForm.Magic)
 		{
-			if (GameManager.instance.pActor.atk.NoAttack && !clickEarth)
+			if (GameManager.instance.pActor.atk.NoAttack.Paused && !clickEarth)
 				return;
 			if (context.started && !clickEarth)
 			{
@@ -707,7 +707,7 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (stat == PlayerForm.Magic)
 		{
-			if (GameManager.instance.pActor.atk.NoAttack && !clickMetal)
+			if (GameManager.instance.pActor.atk.NoAttack.Paused && !clickMetal)
 				return;
 			if (context.started && !clickMetal)
 			{
@@ -735,7 +735,7 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (stat == PlayerForm.Magic)
 		{
-			if (GameManager.instance.pActor.atk.NoAttack && !clickWater)
+			if (GameManager.instance.pActor.atk.NoAttack.Paused && !clickWater)
 				return;
 			if (context.started && !clickWater)
 			{

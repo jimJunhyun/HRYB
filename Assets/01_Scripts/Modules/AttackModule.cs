@@ -16,25 +16,9 @@ public class AttackModule : Module, IAnimationEvent
 
 	protected float curPrepMod = 1;
 
-	int noAttack = 0;
-	public bool NoAttack
-	{
-		get => noAttack > 0;
-		set
-		{
-			if (value)
-			{
-				noAttack += 1;
-			}
-			else
-			{
-				if (noAttack > 0)
-				{
-					noAttack -= 1;
-				}
-			}
-		}
-	}
+	public Transform target;
+
+	public ModuleController NoAttack = new ModuleController(false);
 
 	public virtual float prepMod
 	{
@@ -75,6 +59,7 @@ public class AttackModule : Module, IAnimationEvent
 		fixedPrepMod = null;
 		fixedAtkGap = null;
 		damage = initDamage;
+		NoAttack.CompleteReset();
 	}
 
 	public virtual void SetAttackRange(int idx)
