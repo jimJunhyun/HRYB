@@ -491,6 +491,10 @@ public class PlayerCast : CastModule
 		{
 			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("EnhanceIce"), SkillSlotInfo.Three, PlayerForm.Magic);
 		}
+		if (Input.GetKeyDown(KeyCode.RightShift))
+		{
+			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
+		}
 		///
 	}
 
