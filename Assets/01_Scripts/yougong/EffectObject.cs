@@ -36,6 +36,9 @@ public class EffectObject : MonoBehaviour
 	{
 		_isPlay = true;
 		
+		transform.localPosition = _originPosision;
+		transform.localEulerAngles = _originQuaternion;
+		
 		Particle.Play();
 	}
 
