@@ -22,5 +22,14 @@ public class HPBar : MonoBehaviour
 	private void FixedUpdate()
 	{		
 		HPSlider.value = lf.yy.white / maxHP;
+
+		if(lf.yy.white == maxHP || lf.yy.white == 0)
+		{
+			this.GetComponentInParent<Canvas>().enabled = false;
+		}
+		else
+		{
+			this.GetComponentInParent<Canvas>().enabled = true;
+		}
 	}
 }
