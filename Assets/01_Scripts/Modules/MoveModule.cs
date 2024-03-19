@@ -41,7 +41,7 @@ public class MoveModule : Module
 
 	public virtual bool isGrounded
 	{
-		get=>Physics.Raycast(transform.position, Vector3.down, groundThreshold, 1<< GameManager.GROUNDLAYER);
+		get=>Physics.Raycast(transform.position + new Vector3(0, 0.1f,0), Vector3.down, groundThreshold, 1<< GameManager.GROUNDLAYER);
 	}
 	public ModuleController NoMove = new ModuleController(false);
 
@@ -95,7 +95,7 @@ public class MoveModule : Module
 		{
 			forceDir.y -= GameManager.GRAVITY * Time.deltaTime;
 		}
-		else if (isGrounded)
+		else if (isGrounded && forceDir.y <0)
 		{
 			forceDir.y = 0f;
 		}

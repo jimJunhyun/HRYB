@@ -244,7 +244,62 @@ public class PoolManager : MonoBehaviour
 		return null;
 	}
 
-	public static GameObject GetObject(string name, Vector3 pos, Vector3 forward)
+
+	#region Effectmanager
+
+	public static EffectObject GetEffect(string name, Transform parent)
+	{
+		StackWithName<GameObject> st;
+		int idx = pooleds.FindIndex(item => SimilarName(item.name, name));
+		if (idx != -1 && (st = pooleds[idx]) != null)
+		{
+			if(st.data.Count > 1)
+			{
+				EffectObject res = st.data.Pop().GetComponent<EffectObject>();
+				res.gameObject.SetActive(true);
+				res.transform.SetParent(parent);
+				res.transform.localPosition = res._originPosision;
+				res.transform.localEulerAngles = res._originQuaternion;
+				//res.transform.parent = null;
+				return res;
+			}
+			else
+			{
+				GameObject resd = st.data.Peek();
+
+				GameObject added = Instantiate(resd, Vector3.zero, Quaternion.identity, self);
+			
+				string[] str = resd.name.Trim('&').Split('&');
+				sb.Append(str[0]);
+				sb.Append('&');
+				sb.Append(int.Parse(str[1]) + 1);
+				sb.Append('&');
+				sb.Append('&');
+				added.name = sb.ToString();
+				sb.Clear();
+				added.SetActive(false);
+
+				EffectObject res = resd.GetComponent<EffectObject>();
+				res.gameObject.SetActive(true);
+				res.transform.SetParent(parent);
+				res.transform.localPosition = res._originPosision;
+				res.transform.localEulerAngles = res._originQuaternion;
+				//res.transform.parent = null;
+				return res;
+			
+			}
+		}
+		
+		
+		Debug.LogError($"Item named {name} doesn't exist!");
+		return null;
+	}
+	
+
+	#endregion
+	
+
+	public static GameObject GetObject(string name, Vector3 pos, Vector3 forward)                     
 	{
 		StackWithName<GameObject> st;
 		int idx = pooleds.FindIndex(item => SimilarName(item.name, name));

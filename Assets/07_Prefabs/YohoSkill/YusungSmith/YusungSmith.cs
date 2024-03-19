@@ -6,7 +6,12 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Skills/Yoho/유성강타")]
 public class YusungSmith : AttackBase
 {
-	internal override void MyOperation(Actor self)
+    
+	
+	ColliderCast _cols = null;
+	
+    
+    internal override void MyOperation(Actor self)
     {
 
     }
@@ -20,7 +25,6 @@ public class YusungSmith : AttackBase
 	    
     }
 
-    ColliderCast _cols = null;
     public override void OnAnimationStart(Actor self, AnimationEvent evt )
     {
 	    // 이팩트 기타등등셋팅
@@ -30,7 +34,7 @@ public class YusungSmith : AttackBase
     {
 
 		    Vector3 dir = self.transform.forward;
-		    self.move.forceDir = dir * 48 + new Vector3(0, 24, 0);
+		    self.move.forceDir = dir * 16 + new Vector3(0, 40, 0);
 		    Debug.Log($"LOGG {dir}");
 
 
@@ -39,11 +43,11 @@ public class YusungSmith : AttackBase
     
     public override void OnAnimationEvent(Actor self, AnimationEvent evt)
     {
-
-	    if (evt.stringParameter == "ATK")
+	    string[] tt = evt.stringParameter.Split("$");
+	    if (tt[0] == "ATK")
 	    {
 		    Vector3 dir = self.transform.forward;
-		    self.move.forceDir = dir + new Vector3(0, -30, 0);
+		    self.move.forceDir = dir + new Vector3(0, -120, 0);
 	    
 		    if (_cols != null)
 		    {
@@ -58,11 +62,28 @@ public class YusungSmith : AttackBase
 			    _cols.Now(self.transform, (_life) =>
 			    {
 				    DoDamage(_life.GetActor(), self);
+					
+				    _life.GetActor().move.forceDir += new Vector3(0, 32, 0);
 				    
+
+			    }, (me, enemy) =>
+			    {
+				    RaycastHit ray;
+
+				    if (Physics.Raycast(self.transform.position, Vector3.down, out ray, 100, 1 << 21))
+				    {
+					    GameObject obj = PoolManager.GetObject("YusungSmithEnd", self.transform);
+					    self.StartCoroutine(DeleteObj(obj, 9));
+					    obj.transform.parent = null;
+					    obj.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+					    obj.transform.position = ray.point;
+				    }
+				    
+
 			    });
 		    }
 	    }
-	    else if (evt.stringParameter == "EffectOne")
+	    else if (tt[0] == "EffectOne")
 	    {
 		    GameObject obj1 = PoolManager.GetObject("YusungSmithleft", self.transform);
 		    if (obj1.TryGetComponent<EffectObject>(out EffectObject eff1))
@@ -78,12 +99,6 @@ public class YusungSmith : AttackBase
 			    self.StartCoroutine(DeleteObj(obj2));
 		    }
 		    
-	    }
-	    else if (evt.stringParameter == "EffectTwo")
-	    {
-		    GameObject obj = PoolManager.GetObject("YusungSmithEnd", self.transform);
-		    self.StartCoroutine(DeleteObj(obj, 9));
-		    obj.transform.parent = null;
 	    }
 	    
 		
