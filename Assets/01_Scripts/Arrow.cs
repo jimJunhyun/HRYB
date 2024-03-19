@@ -75,12 +75,13 @@ public class Arrow : DamageObject
 			if (other.TryGetComponent<LifeModule>(out LifeModule hit) && hit.GetActor() != owner)
 			{
 				
+				Vector3 hitPos = other.ClosestPointOnBounds(transform.position);
 				if(hitEffData != null)
 				{
-					Vector3 hitPos = other.ClosestPointOnBounds(transform.position);
 					//차격 지점을 알아내야만 함.
 					hitEffData?.Invoke(hitPos);
 					//타격 위치에 이펙트
+
 				}
 				foreach (var item in statData)
 				{

@@ -237,15 +237,23 @@ public class LifeModule : Module
 
 	public void RemoveAllStatEff(StatEffID id)
 	{
+		Dictionary<string, AppliedStatus> debuffCopy = new Dictionary<string, AppliedStatus>();
 		foreach (var item in appliedDebuff)
 		{
-			if (((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]).Equals(item.Value))
+			Debug.Log("상태 : " + item.Value.eff.name);
+			if (((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]).Equals(item.Value.eff))
 			{
 				AppliedStatus stat = item.Value;
 				stat.dur = 0;
-				appliedDebuff[item.Key] = stat;
+				debuffCopy[item.Key] = stat;
+				Debug.Log("지속시간 0으로 : " + stat.eff.name);
+			}
+			else
+			{
+				debuffCopy[item.Key] = item.Value;
 			}
 		}
+		appliedDebuff = debuffCopy;
 	}
 
 	protected virtual void DamageYYBase(YinYang data)

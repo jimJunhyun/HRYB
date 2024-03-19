@@ -121,7 +121,7 @@ public class HoldRoot : SkillRoot
 
 			curMode = 0;
 			Debug.Log($"과열, 1/{childs.Count}, 발사시작");
-			childs[curMode].Operate(self);
+			//childs[curMode].Operate(self);
 			owner = self;
 
 			if(self.move is PlayerMove pm)

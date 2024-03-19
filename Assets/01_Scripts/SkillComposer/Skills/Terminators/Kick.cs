@@ -19,7 +19,6 @@ public class Kick : AttackBase
 
 	public override void Operate(Actor self)
 	{
-		Debug.Log("!@!@!@!@!@!@");
 		(self.atk as PlayerAttack).onNextUse?.Invoke(relatedTransform.gameObject);
 	}
 

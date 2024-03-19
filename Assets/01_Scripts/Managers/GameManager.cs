@@ -239,6 +239,8 @@ public class GameManager : MonoBehaviour
 	public ImageManager imageManager;
 	public CameraManager camManager;
 
+	public DamageTextShower shower;
+
 	//public Arrow arrow;
 	public FollowingFoxFire foxfire;
 
@@ -302,6 +304,7 @@ public class GameManager : MonoBehaviour
 		skillLoader = new SkillLoader();
 
 		foxfire = GameObject.Find("Fox Fire").GetComponent<FollowingFoxFire>();
+		shower = GameObject.Find("DamageTextManager").GetComponent<DamageTextShower>();
 
 		
 	}

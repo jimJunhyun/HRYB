@@ -57,7 +57,7 @@ public class PlayerAnimActions : MonoBehaviour
 		SkillSlotInfo info;
 		if(str.Length > 1)
 		{
-			info = System.Enum.Parse<SkillSlotInfo>(str[2]);
+			info = System.Enum.Parse<SkillSlotInfo>(str[1]);
 		}
 		else
 		{
@@ -73,7 +73,7 @@ public class PlayerAnimActions : MonoBehaviour
 		SkillSlotInfo info;
 		if (str.Length > 1)
 		{
-			info = System.Enum.Parse<SkillSlotInfo>(str[2]);
+			info = System.Enum.Parse<SkillSlotInfo>(str[1]);
 		}
 		else
 		{
@@ -88,7 +88,7 @@ public class PlayerAnimActions : MonoBehaviour
 		SkillSlotInfo info;
 		if (str.Length > 1)
 		{
-			info = System.Enum.Parse<SkillSlotInfo>(str[2]);
+			info = System.Enum.Parse<SkillSlotInfo>(str[1]);
 		}
 		else
 		{
