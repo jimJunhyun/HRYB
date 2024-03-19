@@ -25,13 +25,11 @@ public class CastModule : Module
 {
     public Dictionary<string, Preparation> nameCastPair = new Dictionary<string, Preparation>();
 
-	public virtual float castMod{ get;set;} = 1;
-	public float? fixedCastMod = null ;
 
 	protected Coroutine ongoing;
 	protected string curName;
 
-	ModuleController NoCast = new ModuleController(false);
+	public ModuleController castModuleStat = new ModuleController(false);
 
 	public void Cast(string name)
 	{
@@ -52,11 +50,11 @@ public class CastModule : Module
 
 	protected virtual IEnumerator DelCast(Preparation p)
 	{
-		if (!NoCast.Paused)
+		if (!castModuleStat.Paused)
 		{
 			float t = 0;
 			float waitSec = p.Timefunc();
-			while (waitSec * (fixedCastMod == null ? castMod : (float)fixedCastMod) > t)
+			while (waitSec * castModuleStat.Speed > t)
 			{
 				t += Time.deltaTime;
 				yield return null;
@@ -70,14 +68,14 @@ public class CastModule : Module
 	public override void ResetStatus()
 	{
 		CastCancel();
-		NoCast.CompleteReset();
+		castModuleStat.CompleteReset();
 		base.ResetStatus();
 	}
 
 	public void SetNoCastState(ControlModuleMode mode, bool stat)
 	{
-		NoCast.Pause(mode, stat);
-		if (NoCast.Paused)
+		castModuleStat.Pause(mode, stat);
+		if (castModuleStat.Paused)
 		{
 			CastCancel();
 		}

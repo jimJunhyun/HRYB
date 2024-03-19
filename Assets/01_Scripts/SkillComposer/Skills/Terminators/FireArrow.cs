@@ -40,11 +40,11 @@ public class FireArrow : AttackBase
 			r.AddStatusEffect(statEff[i]);
 		}
 
-		r.Shoot(aMode);
 		if (aMode == ArrowMode.Homing)
 		{
 			r.SetTarget(self.atk.target);
 		}
+		r.Shoot(aMode);
 		GameManager.instance.audioPlayer.PlayPoint(audioClipName, self.transform.position);
 		//self.anim.SetAttackTrigger();
 	}
