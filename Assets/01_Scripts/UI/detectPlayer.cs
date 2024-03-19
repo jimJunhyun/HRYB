@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using GSpawn;
 
 public class detectPlayer : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class detectPlayer : MonoBehaviour
 
 		if(other.gameObject.layer == 7)
 		{
-			GameManager.instance.bHPManager.makeHP(bossName, lf);
+			obj = GameManager.instance.bHPManager.makeHP(bossName, lf);
 		}
 	}
 
@@ -31,6 +32,6 @@ public class detectPlayer : MonoBehaviour
 		if (other.gameObject.layer == 7)
 		{
 			Destroy(obj);
-		}
+		}	 
 	}
 }
