@@ -355,6 +355,24 @@ public class PlayerMove : MoveModule
 		}
 	}
 
+	public override void ForceCalc()
+	{
+		if (forceDir.sqrMagnitude > 0.01f)
+		{
+			Vector3 v = forceDir;
+			v.y = 0;
+			if (slip || v.sqrMagnitude > 0.01f)
+			{
+				Vector3 antiForce = -(v) * GameManager.instance.forceResistance * Time.deltaTime;
+				forceDir += antiForce;
+			}
+		}
+		else
+		{
+			forceDir = Vector3.zero;
+		}
+	}
+
 	Vector3 GetDir(Transform to)
 	{
 		Vector3 v = to.position - transform.position;
@@ -711,6 +729,7 @@ public class PlayerMove : MoveModule
 		else if (IsActualGrounded)
 		{
 			forceDir.y = 0f;
+			jumpComplete = false;
 		}
 		if (jumped && !isGrounded)
 		{

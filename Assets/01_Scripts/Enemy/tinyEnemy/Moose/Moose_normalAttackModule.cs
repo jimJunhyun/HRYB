@@ -44,7 +44,7 @@ public class Moose_normalAttackModule : EnemyAttackModule
 			
 			Debug.LogError(_life.GetActor().move.forceDir);
 		});
-		EffectObject eff =  EffectManager.Instance.GetObject($"SandBoomb", transform);
+		EffectObject eff =  PoolManager.GetObject($"SandBoomb", transform).GetComponent<EffectObject>();
 		eff.Begin();
 	}
 

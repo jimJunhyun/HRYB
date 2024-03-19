@@ -53,20 +53,47 @@ public class PlayerAnimActions : MonoBehaviour
 
 	public void DoAttack(AnimationEvent evt)
 	{
-		SkillSlotInfo info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter);
+		string[] str = evt.stringParameter.Split('$');
+		SkillSlotInfo info;
+		if(str.Length > 1)
+		{
+			info = System.Enum.Parse<SkillSlotInfo>(str[2]);
+		}
+		else
+		{
+			info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter.Trim('$'));
+		}
 		(self.cast as PlayerCast).ActualSkillOperate(info);
 	}
 
 	public void SetAttackRange(AnimationEvent evt)
 	{
 		Debug.Log(evt.animatorClipInfo.clip.name + " : " + evt.stringParameter);
-		SkillSlotInfo info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter);
+		string[] str = evt.stringParameter.Split('$');
+		SkillSlotInfo info;
+		if (str.Length > 1)
+		{
+			info = System.Enum.Parse<SkillSlotInfo>(str[2]);
+		}
+		else
+		{
+			info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter.Trim('$'));
+		}
 		(self.cast as PlayerCast).ActualSkillOperate(info, evt.intParameter);
 	}
 
 	public void ResetAttackRange(AnimationEvent evt)
 	{
-		SkillSlotInfo info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter);
+		string[] str = evt.stringParameter.Split('$');
+		SkillSlotInfo info;
+		if (str.Length > 1)
+		{
+			info = System.Enum.Parse<SkillSlotInfo>(str[2]);
+		}
+		else
+		{
+			info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter.Trim('$'));
+		}
 		(self.cast as PlayerCast).ActualSkillDisoperate(info, evt.intParameter);
 	}
 

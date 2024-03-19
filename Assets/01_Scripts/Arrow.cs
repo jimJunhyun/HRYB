@@ -87,11 +87,12 @@ public class Arrow : DamageObject
 					StatusEffects.ApplyStat(hit.GetActor(), owner, item.id, item.duration, item.power);
 				}
 				base.OnTriggerEnter(other);
+				
 				CameraManager.instance.ShakeCamFor(0.1f);
 			}
-			Debug.Log(other.name + " 과 충돌");
-			if(other.transform != owner)
+			if(other?.transform != owner?.transform)
 			{
+				Debug.Log(other.name + " 과 충돌해서 지움");
 				Returner();
 			}
 		}

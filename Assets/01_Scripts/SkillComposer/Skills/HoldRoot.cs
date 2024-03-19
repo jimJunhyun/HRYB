@@ -108,7 +108,7 @@ public class HoldRoot : SkillRoot
 			operCnt = 0;
 			if (self.move is PlayerMove pm)
 			{
-				pm.moveModuleStat.HandleSpeed(0.5f, ModuleController.SpeedMode.Slow);
+				pm.moveModuleStat.HandleSpeed(-0.5f, ModuleController.SpeedMode.Slow);
 			}
 		}
 	}
@@ -126,7 +126,7 @@ public class HoldRoot : SkillRoot
 
 			if(self.move is PlayerMove pm)
 			{
-				pm.moveModuleStat.HandleSpeed(-0.5f, ModuleController.SpeedMode.Slow);
+				pm.moveModuleStat.HandleSpeed(0.5f, ModuleController.SpeedMode.Slow);
 			}
 		}
 	}
