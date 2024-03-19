@@ -62,15 +62,18 @@ public class YusungSmith : AttackBase
 			    _cols.Now(self.transform, (_life) =>
 			    {
 				    DoDamage(_life.GetActor(), self);
+				    Vector3 dir = self.transform.position - _life.transform.position;
+				    dir.y = 0;
+				    dir.Normalize();
 					
-				    _life.GetActor().move.forceDir += new Vector3(0, 32, 0);
+				    _life.GetActor().move.forceDir += dir*2 + new Vector3(0, 15, 0);
 				    
 
 			    }, (me, enemy) =>
 			    {
 				    RaycastHit ray;
 
-				    if (Physics.Raycast(self.transform.position, Vector3.down, out ray, 100, 1 << 21))
+				    if (Physics.Raycast(self.transform.position, Vector3.down, out ray, 100, 1 << 11))
 				    {
 					    GameObject obj = PoolManager.GetObject("YusungSmithEnd", self.transform);
 					    self.StartCoroutine(DeleteObj(obj, 9));

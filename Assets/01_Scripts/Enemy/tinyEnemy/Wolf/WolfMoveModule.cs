@@ -55,7 +55,7 @@ public class WolfMoveModule : MoveModule
 
 	private void Update()
 	{
-		if (_isMove==true && _target != null)
+		if (_isMove==true && _target != null && agent.enabled==true)
 		{
 			self.anim.SetMoveState(true);
 //			Debug.LogError(_target.transform.position);

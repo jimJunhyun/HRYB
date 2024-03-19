@@ -49,25 +49,24 @@ public class SkyBirtgh : AttackBase
 	    {
 		    case "1":
 			    {
-				    self.move.forceDir += self.transform.forward * 2 + new Vector3(0, 20, 0);
+				    Vector3 dir = self.transform.forward;
+				    self.move.forceDir = dir * 5 + new Vector3(0, 20, 0);
 
-				    
+				    Debug.LogError("스카이브릿지");
 				    GameObject obj = PoolManager.GetObject("YohoNormalAttack", self.transform);
 				    if (obj.TryGetComponent<ColliderCast>(out _cols))
 				    {
 					    _cols.Now(self.transform, (_life) =>
 					    {
 						    CameraManager.instance.ShakeCamFor(0.08f, 2, 2);
-						    _life.GetActor().move.forceDir += self.transform.forward * 2 + new Vector3(0, 20, 0);
+						    _life.GetActor().move.forceDir = self.transform.forward * 2 + new Vector3(0, 20, 0);
 						    
 						    Actor to = _life.GetActor();
 						    Actor by = self;
 						    to.life.DamageYY(by.atk.initDamage * damageMult * 0.4f, DamageType.DirectHit, 0, 0, by);
-						    Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.initDamage} * {damageMult} * 0.4f = {(by.atk.initDamage * damageMult* 0.4f)}");
 						    for (int i = 0; i < statEff.Count; i++)
 						    {
-							    StatusEffects.ApplyStat(to, by, statEff[i].id, statEff[i].duration, statEff[i].power);
-			
+							    StatusEffects.ApplyStat(to, by, statEff[i].id, 0.1f, statEff[i].power);
 						    }
 						    
 					    });
@@ -88,11 +87,9 @@ public class SkyBirtgh : AttackBase
 						    Actor to = _life.GetActor();
 						    Actor by = self;
 						    to.life.DamageYY(by.atk.initDamage * damageMult * 0.8f, DamageType.DirectHit, 0, 0, by);
-						    Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.initDamage} * {damageMult} * 0.8f = {(by.atk.initDamage * damageMult *  0.8f)}");
 						    for (int i = 0; i < statEff.Count; i++)
 						    {
-							    StatusEffects.ApplyStat(to, by, statEff[i].id, statEff[i].duration, statEff[i].power);
-			
+							    StatusEffects.ApplyStat(to, by, statEff[i].id, 0.4f, statEff[i].power);
 						    }
 					    });
 				    }
@@ -111,11 +108,9 @@ public class SkyBirtgh : AttackBase
 						    Actor to = _life.GetActor();
 						    Actor by = self;
 						    to.life.DamageYY(by.atk.initDamage * damageMult * 1.5f, DamageType.DirectHit, 0, 0, by);
-						    Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.initDamage} * {damageMult}  * 1.5f= {(by.atk.initDamage * damageMult * 1.5f)}");
 						    for (int i = 0; i < statEff.Count; i++)
 						    {
-							    StatusEffects.ApplyStat(to, by, statEff[i].id, statEff[i].duration, statEff[i].power);
-			
+							    StatusEffects.ApplyStat(to, by, statEff[i].id, 0.5f, statEff[i].power);
 						    }
 					    });
 				    }
