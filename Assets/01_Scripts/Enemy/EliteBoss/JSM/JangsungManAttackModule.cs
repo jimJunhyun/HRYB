@@ -170,7 +170,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 					{
 						_curCols.Now(transform, (player) =>
 						{
-							player.DamageYY(new YinYang(5, 0), DamageType.DirectHit);
+							player.DamageYY(new YinYang(0, 20), DamageType.DirectHit);
 							CameraManager.instance.ShakeCamFor(0.5f);
 						});
 					}
@@ -184,7 +184,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 					{
 						_curCols.Now(transform, (player) =>
 						{
-							player.DamageYY(new YinYang(10, 0), DamageType.DirectHit); 
+							player.DamageYY(new YinYang(0, 20), DamageType.DirectHit); 
 							CameraManager.instance.ShakeCamFor(0.8f);
 						});
 					}
@@ -196,7 +196,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 					{
 						_curCols.Now(transform,(player) =>
 						{
-							player.DamageYY(new YinYang(4, 0), DamageType.DirectHit);
+							player.DamageYY(new YinYang(0, 20), DamageType.DirectHit);
 							CameraManager.instance.ShakeCamFor(0.3f);
 						});
 					}
