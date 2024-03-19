@@ -138,6 +138,8 @@ public class GameManager : MonoBehaviour
 	
 	public PrefabManager pManager;
 
+	public BossHPManager bHPManager;
+
 	public PlayableDirector timeliner;
 	public PlayableDirector timeliner2;
 
@@ -192,7 +194,7 @@ public class GameManager : MonoBehaviour
 		pActor = player.GetComponent<Actor>();
 
 
-		
+		bHPManager = GameObject.Find("bossHPGroup").GetComponent<BossHPManager>();
 		craftManager = GameObject.Find("CraftManager").GetComponent<CraftManager>();
 		imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
 		uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
