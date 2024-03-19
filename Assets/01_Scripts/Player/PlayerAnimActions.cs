@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
+using Quaternion = System.Numerics.Quaternion;
 
 public class PlayerAnimActions : MonoBehaviour
 {
@@ -33,6 +35,11 @@ public class PlayerAnimActions : MonoBehaviour
 	}
 
 
+	private void Update()
+	{
+		transform.localPosition = new Vector3(0, 0, 0);
+		transform.localRotation = UnityEngine.Quaternion.identity;
+	}
 
 	public void LoadArrow()
 	{
