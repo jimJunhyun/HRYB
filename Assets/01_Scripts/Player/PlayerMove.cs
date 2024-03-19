@@ -442,6 +442,7 @@ public class PlayerMove : MoveModule
 			dir -= Vector3.up * GameManager.GRAVITY; //최초중력
 			dir += forceDir;
 		}
+		
 		ctrl.Move( (dir) * Time.deltaTime);
 		GetActor().anim.SetIdleState(idling);
 		
@@ -708,7 +709,7 @@ public class PlayerMove : MoveModule
 		{
 			forceDir.y -= GameManager.GRAVITY * Time.deltaTime;
 		}
-		else if (IsActualGrounded)
+		else if (IsActualGrounded  && forceDir.y <0)
 		{
 			forceDir.y = 0f;
 		}

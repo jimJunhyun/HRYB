@@ -36,7 +36,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 
 	public override void Attack()
 	{
-		//Debug.LogWarning("1");
+		Debug.LogWarning("Jangsung" + AttackStd);
 		GameObject obj = PoolManager.GetObject("Jangsung" + AttackStd, transform);
 
 		//Debug.LogWarning(obj);

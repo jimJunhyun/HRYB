@@ -367,7 +367,7 @@ public class LifeModule : Module
 
 	public virtual void OnDead()
 	{
-		Debug.LogError($"{gameObject.name} : 사망");
+//		Debug.LogError($"{gameObject.name} : 사망");
 		StopAllCoroutines();
 		GetActor().anim.SetDieTrigger();
 		_dieEvent?.Invoke();

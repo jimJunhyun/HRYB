@@ -1709,7 +1709,6 @@ GameObject:
   - component: {fileID: 928664243527324861}
   - component: {fileID: 496748621045770597}
   - component: {fileID: 4203293574204152503}
-  - component: {fileID: 8767209468545744606}
   - component: {fileID: 1049981481372807327}
   m_Layer: 0
   m_Name: Wolf
@@ -1769,7 +1768,6 @@ MonoBehaviour:
   runSpeed: 0
   walkSpeed: 0
   crouchSpeed: 0
-  speedMod: 1
   gravity: 0
   groundThreshold: 0.5
   Speed: 15
@@ -1790,6 +1788,7 @@ MonoBehaviour:
   initDamage:
     black: 0
     white: 0
+  target: {fileID: 0}
 --- !u!114 &7391269502004937797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1899,27 +1898,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!65 &8767209468545744606
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7946079460378918665}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.35, y: 1.3, z: 1.7}
-  m_Center: {x: 0, y: 0.48, z: 0}
 --- !u!195 &1049981481372807327
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -62,11 +62,11 @@ public class YusungSmith : AttackBase
 			    _cols.Now(self.transform, (_life) =>
 			    {
 				    DoDamage(_life.GetActor(), self);
-				    Vector3 dir = self.transform.position - _life.transform.position;
+				    Vector3 dir = _life.transform.position-self.transform.position;
 				    dir.y = 0;
 				    dir.Normalize();
 					
-				    _life.GetActor().move.forceDir += dir*2 + new Vector3(0, 15, 0);
+				    _life.GetActor().move.forceDir += dir*6 + new Vector3(0, 15, 0);
 				    
 
 			    }, (me, enemy) =>

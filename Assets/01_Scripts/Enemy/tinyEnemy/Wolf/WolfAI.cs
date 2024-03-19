@@ -122,7 +122,7 @@ public class WolfAI : AISetter
 		    ShowIdler.connecteds.Add(Idler);
 		    ShowIdler.connecteds.Add(idles);
 
-		    head.connecteds.Add(normalATK);
+		    //head.connecteds.Add(normalATK);
 		    head.connecteds.Add(ShowIdler);
 		    head.connecteds.Add(Moved);
 		    head.connecteds.Add(Faridler);
@@ -142,6 +142,8 @@ public class WolfAI : AISetter
 	    if(self.life.isDead ==false && _isWake)
 			LookAt(player.transform);
 
+	    transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
+	    
 	    if ((self.life.IsFirstHit == true || Vector3.Distance(player.transform.position, transform.position) < 7) && _isWake == false)
 	    {
 		    _isWake = true;
