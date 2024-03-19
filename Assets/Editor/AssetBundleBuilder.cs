@@ -4,6 +4,9 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
+// #if UNITY_EDITOR
+// [InitializeOnLoad]
+// #endif
 public class AssetBundleBuilder
 {
 	[MenuItem("Assets/Build AssetBundles")]
@@ -15,5 +18,12 @@ public class AssetBundleBuilder
 			Directory.CreateDirectory(assetBundleDirectory);
 		}
 		BuildPipeline.BuildAssetBundles(assetBundleDirectory, BuildAssetBundleOptions.ChunkBasedCompression, EditorUserBuildSettings.activeBuildTarget);
+		Debug.Log("BUILDED");
+	}
+
+	static AssetBundleBuilder()
+	{
+		Debug.Log("BUILDING");
+		BuildAllAssetBundles();
 	}
 }

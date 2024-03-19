@@ -241,7 +241,7 @@ public class PlayerMove : MoveModule
 
 	public override void Move()
 	{
-		if (!NoMove.Paused)
+		if (!moveModuleStat.Paused)
 		{
 			if (moveStat != MoveStates.Climb)
 			{

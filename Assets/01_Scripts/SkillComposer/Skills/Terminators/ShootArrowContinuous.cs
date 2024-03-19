@@ -18,9 +18,15 @@ public class ShootArrowContinuous : AttackBase
 		
 	}
 
+	public override void Operate(Actor self)
+	{
+		base.Operate(self);
+		MyOperation(self);
+	}
+
 	internal override void MyOperation(Actor self)
 	{
-		Debug.Log($"화살발사");
+		//Debug.Log($"화살발사");
 		GameObject g = PoolManager.GetObject(arrowPrefabName, relatedTransform.position, relatedTransform.forward);
 		if (!g.TryGetComponent<Arrow>(out Arrow r))
 		{

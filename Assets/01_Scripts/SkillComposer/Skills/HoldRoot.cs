@@ -5,18 +5,30 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Skills/HoldRoot")]
 public class HoldRoot : SkillRoot
 {
-	public float holdingMaxSec;
+	//public float holdingMaxSec;
 
-	public List<float> nextChildSecs;
+	public List<int> nextChildOps;
+
+	public float clickBanSec = 5;
+
+	public int maxAmmo = 35;
+
+	public float reloadSec = 0.2f;
 
 	bool holding = false;
 
-	float holdingStartSec;
-	float prevUpgradeSec;
+	//float holdingStartSec;
+	//float prevUpgradeSec;
 
 	float prevOperateSec;
 
+	float prevReloadSec;
+
 	int curMode = 0;
+
+	int ammo = 35;
+
+	int operCnt = 0;
 
 	Actor owner;
 
@@ -29,8 +41,8 @@ public class HoldRoot : SkillRoot
 				pa.SetDisopTrigger(curMode);
 				pa.ResetStopState();
 			}
-			MyDisoperation(self);
 		}
+		MyDisoperation(self);
 
 	}
 
@@ -40,7 +52,8 @@ public class HoldRoot : SkillRoot
 		{
 			if (self.anim is PlayerAnim pa)
 			{
-				pa.SetAttackTrigger(0);
+				MyOperation(self);
+				//prevUpgradeSec = Time.time;
 			}
 		}
 
@@ -51,18 +64,28 @@ public class HoldRoot : SkillRoot
 		if (holding && Time.time - prevOperateSec >= composeDel)
 		{
 			childs[curMode].Operate(owner);
+			++operCnt;
+			ammo -= 1;
 			prevOperateSec = Time.time;
-			if(curMode + 1 < childs.Count && nextChildSecs[curMode] > 0 && Time.time - prevUpgradeSec >= nextChildSecs[curMode])
+			if(curMode + 1 < childs.Count && nextChildOps[curMode] > 0 && operCnt >= nextChildOps[curMode] /*Time.time - prevUpgradeSec >= nextChildSecs[curMode]*/)
 			{
-				Debug.Log($"과열 {curMode + 1}/{childs.Count}");
+				operCnt -= nextChildOps[curMode];
 				curMode += 1;
-				prevUpgradeSec = Time.time;
+				Debug.Log($"과열 {curMode + 1}/{childs.Count}, 단계 업그레이드");
+				//prevUpgradeSec = Time.time;
 			}
 		}
 		base.UpdateStatus();
-		if(Time.time - holdingStartSec >= holdingMaxSec)
+		if(ammo < 1)
 		{
 			Disoperate(owner);
+		}
+
+		if(!holding && Time.time - prevReloadSec >= reloadSec && ammo < maxAmmo)
+		{
+			ammo += 1;
+			Debug.Log($"장전 {ammo}/{maxAmmo}");
+			prevReloadSec = Time.time;
 		}
 	}
 
@@ -74,8 +97,19 @@ public class HoldRoot : SkillRoot
 			Debug.Log("hold Ended");
 			holding = false;
 
+			if(curMode == childs.Count - 1 && self.atk is PlayerAttack pa)
+			{
+				Debug.Log("PAUSED FOR : " + clickBanSec);
+				pa.NoClick.Pause(ControlModuleMode.Status, true, clickBanSec);
+			}
+
 			owner = null;
 			curMode = 0;
+			operCnt = 0;
+			if (self.move is PlayerMove pm)
+			{
+				pm.moveModuleStat.HandleSpeed(0.5f, ModuleController.SpeedMode.Slow);
+			}
 		}
 	}
 
@@ -84,11 +118,16 @@ public class HoldRoot : SkillRoot
 		if (!holding)
 		{
 			holding = true;
-			holdingStartSec = Time.time;
+
 			curMode = 0;
-			Debug.Log($"과열, 1/{childs.Count}");
-			childs[curMode].Operate(owner);
+			Debug.Log($"과열, 1/{childs.Count}, 발사시작");
+			childs[curMode].Operate(self);
 			owner = self;
+
+			if(self.move is PlayerMove pm)
+			{
+				pm.moveModuleStat.HandleSpeed(-0.5f, ModuleController.SpeedMode.Slow);
+			}
 		}
 	}
 

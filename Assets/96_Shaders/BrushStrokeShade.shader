@@ -15,6 +15,11 @@ Shader "Custom/BrushStrokeShade"
 		[Header(Interior)]
 		_Ramp("Ramp Texture", 2D) = "white" {}
 		_MainTex("Main Texture", 2D) = "white" {}
+		_NormalTex("Normal Texture", 2D) = "white" {}
+		_MOSRGATex("MOS Map (RGA)", 2D) = "white" {}
+		_Metallic("Metallic", Range(0, 1)) = 0
+		_Occlusion("Occlusion", Range(0, 1)) = 0
+		_Smoothness("Smoothness", Range(0, 1)) = 0
 		// Stroke Map
 		_StrokeTex("Stroke Noise Tex", 2D) = "white" {}
 		_InteriorNoise("Interior Noise Map", 2D) = "white" {}
@@ -29,7 +34,7 @@ Shader "Custom/BrushStrokeShade"
 	SubShader
 	{
 		Tags { "RenderType" = "Opaque" "Queue" = "Geometry" "RenderPipeline" = "UniversalPipeline" "UniversalMaterialType" = "Lit"}
-
+		
 		// the first outline pass
 		Pass
 		{
@@ -194,11 +199,20 @@ Shader "Custom/BrushStrokeShade"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
+			//#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/SurfaceInput.hlsl"
+
+			TEXTURE2D(_NormalTex);
+			SAMPLER(sampler_NormalTex);
 
 			CBUFFER_START(UnityPerMaterial)
 			sampler2D _Ramp;
 			sampler2D _MainTex;
+			//sampler2D _NormalTex;
+			sampler2D _MOSRGATex;
 			float4 _Ramp_ST;
+			float _Metallic;
+			float _Occlusion;
+			float _Smoothness;
 			sampler2D _StrokeTex;
 			float4 _StrokeTex_ST;
 			float radius;
@@ -214,6 +228,8 @@ Shader "Custom/BrushStrokeShade"
 			float _InteriorNoiseLevel;
 			sampler2D _InteriorNoise;
 			CBUFFER_END
+
+				
 
 			struct Attributes
 			{
@@ -232,7 +248,6 @@ Shader "Custom/BrushStrokeShade"
 				float2 uv2 : TEXCOORD3;
 				float4 shadowCoord : TEXCOORD4;
 			};
-
 
 			Varying vert(Attributes v)
 			{
@@ -288,6 +303,36 @@ Shader "Custom/BrushStrokeShade"
 				sum += tex2D(_Ramp, float2(tc.x + 2.0 * blur * hstep, tc.y + 2.0 * blur * vstep)) * 0.1216216216;
 				sum += tex2D(_Ramp, float2(tc.x + 3.0 * blur * hstep, tc.y + 3.0 * blur * vstep)) * 0.0540540541;
 				sum += tex2D(_Ramp, float2(tc.x + 4.0 * blur * hstep, tc.y + 4.0 * blur * vstep)) * 0.0162162162;
+
+				/*InputData inputData = (InputData)0;
+				inputData.positionWS = i.worldPos;
+				half3 viewDirWS = GetWorldSpaceNormalizeViewDir(inputData.positionWS);
+				inputData.normalWS = i.worldNormal;
+				inputData.normalWS = NormalizeNormalPerPixel(inputData.normalWS);
+				viewDirWS = SafeNormalize(viewDirWS);
+				inputData.viewDirectionWS = viewDirWS;
+
+#if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
+				inputData.shadowCoord = i.shadowCoord;
+#elif defined(MAIN_LIGHT_CALCULATE_SHADOWS)
+				inputData.shadowCoord = TransformWorldToShadowCoord(inputData.positionWS);
+#else
+				inputData.shadowCoord = float4(0, 0, 0, 0);
+#endif*/
+
+				//SurfaceData surfData = (SurfaceData)0;
+				//surfData.albedo = sum.rgb * tex;
+				//surfData.normalTS = SampleNormal(i.uv, TEXTURE2D_ARGS(_NormalTex, sampler_NormalTex));
+				////Albedo,
+				////Metallic,
+				////	Specular,
+				////	Smoothness,
+				////	Occlusion,
+				////	Emission,
+				////	Alpha
+
+				//half4 color = UniversalFragmentPBR(inputData, surfData);
+				
 
 				return half4(sum.rgb * tex, 1.0);
 			}

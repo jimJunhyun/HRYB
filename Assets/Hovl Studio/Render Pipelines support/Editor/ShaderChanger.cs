@@ -12,12 +12,14 @@ namespace HovlStudio
     [InitializeOnLoad]
     public class RPChanger : EditorWindow
     {
-        static RPChanger()
+        [InitializeOnLoadMethod]
+        private static void LoadWindow()
         {
-            if (File.Exists(AssetDatabase.GUIDToAssetPath("840fe54da571a73489cfb0206103fe17")))
+            string[] checkAsset = AssetDatabase.FindAssets("HSstartupCheck");
+            foreach (var guid in checkAsset)
             {
                 ShowWindow();
-                AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath("840fe54da571a73489cfb0206103fe17"));
+                AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(guid));
             }
         }
 
@@ -27,8 +29,8 @@ namespace HovlStudio
         public static void ShowWindow()
         {
             RPChanger window = (RPChanger)EditorWindow.GetWindow(typeof(RPChanger));
-            window.minSize = new Vector2(250, 120);
-            window.maxSize = new Vector2(250, 120);
+            window.minSize = new Vector2(250, 140);
+            window.maxSize = new Vector2(250, 140);
         }
 
 
@@ -43,6 +45,11 @@ namespace HovlStudio
             if (GUILayout.Button("Universal RP"))
             {
                 pipeline = 1;
+                ImportPipelinePackage();
+            }
+            if (GUILayout.Button("Universal RP 2D or orthographic camera"))
+            {
+                pipeline = 3;
                 ImportPipelinePackage();
             }
             GUILayout.Label("Don't forget to enable Depth and Opaque\ncheck-buttons in your URP asset seeting.", GUILayout.ExpandWidth(true));
@@ -124,63 +131,77 @@ namespace HovlStudio
         {
 #if UNITY_2019_2
         switch (pipeline)
-        {
-            case 1:
-                if (AssetDatabase.GUIDToAssetPath("f84b1a03ad7e89847a42377fdc96d921") != null)
-                    AssetDatabase.ImportPackage(AssetDatabase.GUIDToAssetPath("f84b1a03ad7e89847a42377fdc96d921"), false);
-                else
-                    AssetDatabase.ImportPackage("Assets/Hovl Studio/Render Pipelines support/Unity 2019.2+ URP.unitypackage", false);
-                AssetDatabase.importPackageCompleted += OnImportPackageCompleted;
-                break;
-            case 2:
-                if (AssetDatabase.GUIDToAssetPath("d3b0d4375975afb4abf9fc745a5c788b") != null)
-                    AssetDatabase.ImportPackage(AssetDatabase.GUIDToAssetPath("d3b0d4375975afb4abf9fc745a5c788b"), false);
-                else
-                    AssetDatabase.ImportPackage("Assets/Hovl Studio/Render Pipelines support/Unity 2019.2+ HDRP.unitypackage", false);
-                AssetDatabase.importPackageCompleted += OnImportPackageCompleted;
-                break;
-            default:
-                Debug.Log("You didn't choose pipeline");
-                break;
-        }
+            {
+                case 1:
+                    string[] unityPackagesURP = AssetDatabase.FindAssets("Unity 2019.2+ URPHS");
+                    foreach (var guid in unityPackagesURP)
+                    {
+                        AssetDatabase.ImportPackage(AssetDatabase.GUIDToAssetPath(guid), false);
+                    }
+                    AssetDatabase.importPackageCompleted += OnImportPackageCompleted;
+                    break;
+                case 2:
+                    string[] unityPackagesHD = AssetDatabase.FindAssets("Unity 2019.2+ HDRPHS");
+                    foreach (var guid in unityPackagesHD)
+                    {
+                        AssetDatabase.ImportPackage(AssetDatabase.GUIDToAssetPath(guid), false);
+                    }
+                    AssetDatabase.importPackageCompleted += OnImportPackageCompleted;
+                    break;
+                default:
+                    Debug.Log("You didn't choose pipeline");
+                    break;
+            }
 #endif
 #if (UNITY_2019_3_OR_NEWER && UNITY_2019)
-        switch (pipeline)
-        {
-            case 1:
-                if (AssetDatabase.GUIDToAssetPath("ed9c841398c7fc1459cc7ad939bda692") != null)
-                    AssetDatabase.ImportPackage(AssetDatabase.GUIDToAssetPath("ed9c841398c7fc1459cc7ad939bda692"), false);
-                else
-                    AssetDatabase.ImportPackage("Assets/Hovl Studio/Render Pipelines support/Unity 2019.3+ URP.unitypackage", false);
-                AssetDatabase.importPackageCompleted += OnImportPackageCompleted;
-                break;
-            case 2:
-                if (AssetDatabase.GUIDToAssetPath("dbb762d9e9eb76343b2843640c4ede68") != null)
-                    AssetDatabase.ImportPackage(AssetDatabase.GUIDToAssetPath("dbb762d9e9eb76343b2843640c4ede68"), false);
-                else
-                    AssetDatabase.ImportPackage("Assets/Hovl Studio/Render Pipelines support/Unity 2019.3+ HDRP.unitypackage", false);
-                AssetDatabase.importPackageCompleted += OnImportPackageCompleted;
-                break;
-            default:
-                Debug.Log("You didn't choose pipeline");
-                break;
-        }
+            switch (pipeline)
+            {
+                case 1:
+                    string[] unityPackagesURP = AssetDatabase.FindAssets("Unity 2019.3+ URPHS");
+                    foreach (var guid in unityPackagesURP)
+                    {
+                        AssetDatabase.ImportPackage(AssetDatabase.GUIDToAssetPath(guid), false);
+                    }
+                    AssetDatabase.importPackageCompleted += OnImportPackageCompleted;
+                    break;
+                case 2:
+                    string[] unityPackagesHD = AssetDatabase.FindAssets("Unity 2019.3+ HDRPHS");
+                    foreach (var guid in unityPackagesHD)
+                    {
+                        AssetDatabase.ImportPackage(AssetDatabase.GUIDToAssetPath(guid), false);
+                    }
+                    AssetDatabase.importPackageCompleted += OnImportPackageCompleted;
+                    break;
+                default:
+                    Debug.Log("You didn't choose pipeline");
+                    break;
+            }
 #endif
 #if UNITY_2020_1_OR_NEWER
             switch (pipeline)
             {
                 case 1:
-                    if (AssetDatabase.GUIDToAssetPath("e7ce4ef7e809f0e489f5dd61cfe34b01") != null)
-                        AssetDatabase.ImportPackage(AssetDatabase.GUIDToAssetPath("e7ce4ef7e809f0e489f5dd61cfe34b01"), false);
-                    else
-                        AssetDatabase.ImportPackage("Assets/Hovl Studio/Render Pipelines support/Unity 2020+ URP.unitypackage", false);
+                    string[] unityPackagesURP = AssetDatabase.FindAssets("Unity 2020+ URPHS");
+                    foreach (var guid in unityPackagesURP)
+                    {
+                        AssetDatabase.ImportPackage(AssetDatabase.GUIDToAssetPath(guid), false);
+                    }
                     AssetDatabase.importPackageCompleted += OnImportPackageCompleted;
                     break;
                 case 2:
-                    if (AssetDatabase.GUIDToAssetPath("1c827ac5cb1890a488436295a34d4d25") != null)
-                        AssetDatabase.ImportPackage(AssetDatabase.GUIDToAssetPath("1c827ac5cb1890a488436295a34d4d25"), false);
-                    else
-                        AssetDatabase.ImportPackage("Assets/Hovl Studio/Render Pipelines support/Unity 2020+ HDRP.unitypackage", false);
+                    string[] unityPackagesHD = AssetDatabase.FindAssets("Unity 2020+ HDRPHS");
+                    foreach (var guid in unityPackagesHD)
+                    {
+                        AssetDatabase.ImportPackage(AssetDatabase.GUIDToAssetPath(guid), false);
+                    }
+                    AssetDatabase.importPackageCompleted += OnImportPackageCompleted;
+                    break;
+                case 3:
+                    string[] unityPackagesURP2D = AssetDatabase.FindAssets("Solves transparent problem Unity 2020+ URPHS");
+                    foreach (var guid in unityPackagesURP2D)
+                    {
+                        AssetDatabase.ImportPackage(AssetDatabase.GUIDToAssetPath(guid), false);
+                    }
                     AssetDatabase.importPackageCompleted += OnImportPackageCompleted;
                     break;
                 default:
@@ -200,6 +221,9 @@ namespace HovlStudio
                     break;
                 case 2:
                     ChangeToHDRP();
+                    break;
+                case 3:
+                    ChangeToURP();
                     break;
                 default:
                     Debug.Log("You didn't choose pipeline");
