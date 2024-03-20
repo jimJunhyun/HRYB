@@ -105,12 +105,12 @@ public class PlayerAnimActions : MonoBehaviour
 
 	public void PauseAnimation()
 	{
-		(self.anim as PlayerAnim).SetStopState();
+		(self.anim as PlayerAnim).SetLoopState();
 	}
 
 	public void ResumeAnimation()
 	{
-		(self.anim as PlayerAnim).ResetStopState();
+		(self.anim as PlayerAnim).ResetLoopState();
 	}
 
 	public void DisableInput()

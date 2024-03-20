@@ -2,68 +2,71 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Skills/ChargeRoot")]
-public class ChargeRoot : SkillRoot
+public enum AreaShapeMode
 {
-	public float secPerCharge;
+	None,
+	Circle,
+	Rectangle,
+	Triangle,
 
-	public bool isAimMode = false;
+}
 
-	int curCharge = 0;
-	float chargeStartSec;
+/// <summary>
+/// 항상 1번 슬롯에 장착된 스킬의 opAnim, durAnim, DisopAnim을 사용할 것.
+/// 여러개를 꽂기보다는 여러개를 컴포지트로 묶고 꽂기.
+/// </summary>
+
+public class ChargeCastRoot : SkillRoot
+{
+
+	public float maxChargeSec;
+	public float chargeThreshold;
+	
+	public float maxDist;
+
+	public AreaShapeMode shape;
 
 	bool charging = false;
+	float chargeStartSec;
 
-	Actor owner;
+	float chargeT => Time.time - chargeStartSec;
+	bool overcooked => chargeT >= maxChargeSec;
+	bool prepared => chargeT >= chargeThreshold && !overcooked;
 
-	float prevOperateSec;
+
+	public override void Operate(Actor self)
+	{
+		if (self.anim is PlayerAnim pa)
+		{
+			GameManager.instance.uiManager.aimUI.On();
+			pa.SetAttackTrigger(0);
+		}
+	}
 
 	public override void Disoperate(Actor self)
 	{
 		if (isPlayDisopAnim)
 		{
-			if (self.anim is PlayerAnim pa)
+			if(self.anim is PlayerAnim pa)
 			{
-				pa.SetDisopTrigger(curCharge);
 				pa.ResetLoopState();
-			}
-			if (isAimMode)
-			{
-				//CameraManager.instance.SwitchTo(CamStatus.Freelook);
-				GameManager.instance.uiManager.aimUI.Off();
+				pa.SetDisopTrigger(0);
 			}
 		}
 		else
 		{
 			MyDisoperation(self);
 		}
-		
 	}
 
-	public override void Operate(Actor self)
+	internal override void MyOperation(Actor self)
 	{
-		if (Time.time - prevOperateSec >= composeDel)
-		{
-			if (self.anim is PlayerAnim pa)
-			{
-				
-				GameManager.instance.uiManager.aimUI.On();
-				pa.SetAttackTrigger(0);
-			}
-		}
-		
+		base.MyOperation(self);
 	}
 
-	public override void UpdateStatus()
+	internal override void MyDisoperation(Actor self)
 	{
-		if (charging && Time.time - chargeStartSec >= secPerCharge && curCharge < childs.Count - 1)
-		{
-			curCharge += 1;
-			Debug.Log($"충전 {curCharge + 1}/{childs.Count}");
-			childs[curCharge].Operate(owner);
-			chargeStartSec = Time.time;
-		}
-		base.UpdateStatus();
+		base.MyDisoperation(self);
 	}
 
 	public override void SetAnimations(Actor to, SkillSlotInfo info)
@@ -76,11 +79,11 @@ public class ChargeRoot : SkillRoot
 				if (childs[i].animClip != null)
 				{
 					AnimationEvent[] events = childs[i].animClip.events;
-					if(events.Length > 1)
+					if (events.Length > 1)
 					{
 						events[1].stringParameter = info.ToString();
 					}
-					if(events.Length > 2)
+					if (events.Length > 2)
 					{
 						events[2].stringParameter = info.ToString();
 					}
@@ -135,56 +138,11 @@ public class ChargeRoot : SkillRoot
 				clips.Add(null);
 			}
 			to.anim.SetAnimationOverrides(new List<string>() { 
-				"Zero", "One", "Two", "Three", "Four", 
+				"Zero", "One", "Two", "Three", "Four",
 				"Zero" + PlayerCast.DISOPERATE, "One" + PlayerCast.DISOPERATE, "Two" + PlayerCast.DISOPERATE, "Three" + PlayerCast.DISOPERATE, "Four" + PlayerCast.DISOPERATE,
 				"Zero" + PlayerCast.LOOP, "One" + PlayerCast.LOOP, "Two" + PlayerCast.LOOP, "Three" + PlayerCast.LOOP, "Four" + PlayerCast.LOOP}, clips);
 
 			(to.anim as PlayerAnim).curEquipped = this;
-		}
-	}
-
-	internal override void MyDisoperation(Actor self)
-	{
-		if (charging)
-		{
-			(self.anim as PlayerAnim).ResetLoopState();
-			Debug.Log("Charge Ended");
-			charging = false;
-			//base.Disoperate(self);
-			GameManager.instance.StartCoroutine(DelDisoperater(self));
-
-			owner = null;
-			if (isAimMode)
-			{
-				GameManager.instance.uiManager.aimUI.Off();
-			}
-			curCharge = 0;
-		}
-	}
-
-	internal override void MyOperation(Actor self)
-	{
-		if (!charging)
-		{
-			charging = true;
-			chargeStartSec = Time.time;
-			curCharge = 0;
-			Debug.Log($"CHARGE STARTED, 1/{childs.Count}");
-			childs[curCharge].Operate(owner);
-			owner = self;
-			if (isAimMode)
-			{
-				GameManager.instance.uiManager.aimUI.On();
-			}
-		}
-	}
-
-	IEnumerator DelDisoperater(Actor self)
-	{
-		for (int i = 0; i < childs.Count; i++)
-		{
-			childs[i].Disoperate(self);
-			yield return new WaitForSeconds(composeDel);
 		}
 	}
 }

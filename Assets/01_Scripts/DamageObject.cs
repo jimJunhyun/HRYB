@@ -12,7 +12,14 @@ public class DamageObject : MonoBehaviour
 		if (other.TryGetComponent<LifeModule>(out yc))
 		{
 			Vector3 hitPos = other.ClosestPointOnBounds(transform.position);
-			GameManager.instance.shower.GenerateDamageText(hitPos, yy.white, YYInfo.White);
+			if(yy.white > 0)
+			{
+				GameManager.instance.shower.GenerateDamageText(hitPos, yy.white, YYInfo.White);
+			}
+			if(yy.black > 0)
+			{
+				GameManager.instance.shower.GenerateDamageText(hitPos, yy.black, YYInfo.Black);
+			}
 
 			PoolManager.GetObject("Hit 26", hitPos, Quaternion.LookRotation(other.transform.forward), 2.5f);
 			Damage(yc);
