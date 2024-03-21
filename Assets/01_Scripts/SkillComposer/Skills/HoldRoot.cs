@@ -39,7 +39,7 @@ public class HoldRoot : SkillRoot
 			if (self.anim is PlayerAnim pa)
 			{
 				pa.SetDisopTrigger(curMode);
-				pa.ResetStopState();
+				pa.ResetLoopState();
 			}
 		}
 		MyDisoperation(self);
@@ -84,7 +84,7 @@ public class HoldRoot : SkillRoot
 		if(!holding && Time.time - prevReloadSec >= reloadSec && ammo < maxAmmo)
 		{
 			ammo += 1;
-			Debug.Log($"장전 {ammo}/{maxAmmo}");
+			//Debug.Log($"장전 {ammo}/{maxAmmo}");
 			prevReloadSec = Time.time;
 		}
 	}
@@ -94,7 +94,7 @@ public class HoldRoot : SkillRoot
 	{
 		if (holding)
 		{
-			Debug.Log("hold Ended");
+			//Debug.Log("hold Ended with " + curMode);
 			holding = false;
 
 			if(curMode == childs.Count - 1 && self.atk is PlayerAttack pa)
@@ -108,7 +108,7 @@ public class HoldRoot : SkillRoot
 			operCnt = 0;
 			if (self.move is PlayerMove pm)
 			{
-				pm.moveModuleStat.HandleSpeed(0.5f, ModuleController.SpeedMode.Slow);
+				pm.moveModuleStat.HandleSpeed(-0.5f, ModuleController.SpeedMode.Slow);
 			}
 		}
 	}
@@ -121,12 +121,12 @@ public class HoldRoot : SkillRoot
 
 			curMode = 0;
 			Debug.Log($"과열, 1/{childs.Count}, 발사시작");
-			childs[curMode].Operate(self);
+			//childs[curMode].Operate(self);
 			owner = self;
 
 			if(self.move is PlayerMove pm)
 			{
-				pm.moveModuleStat.HandleSpeed(-0.5f, ModuleController.SpeedMode.Slow);
+				pm.moveModuleStat.HandleSpeed(0.5f, ModuleController.SpeedMode.Slow);
 			}
 		}
 	}
@@ -136,6 +136,7 @@ public class HoldRoot : SkillRoot
 	{
 		if ((to.anim as PlayerAnim).curEquipped != this)
 		{
+			//op
 			List<AnimationClip> clips = new List<AnimationClip>();
 			for (int i = 0; i < childs.Count; i++)
 			{
@@ -156,6 +157,7 @@ public class HoldRoot : SkillRoot
 			{
 				clips.Add(null);
 			}
+			//disop
 			for (int i = 0; i < childs.Count; i++)
 			{
 				if (childs[i].animClipDisop != null)
@@ -174,7 +176,29 @@ public class HoldRoot : SkillRoot
 			{
 				clips.Add(null);
 			}
-			to.anim.SetAnimationOverrides(new List<string>() { "Zero", "One", "Two", "Three", "Four", "Zero" + PlayerCast.DISOPERATE, "One" + PlayerCast.DISOPERATE, "Two" + PlayerCast.DISOPERATE, "Three" + PlayerCast.DISOPERATE, "Four" + PlayerCast.DISOPERATE }, clips);
+			//dur
+			for (int i = 0; i < childs.Count; i++)
+			{
+				if (childs[i].animClipLoopings != null)
+				{
+					AnimationEvent[] events = childs[i].animClipLoopings.events;
+					for (int j = 0; j < events.Length; j++)
+					{
+						events[j].stringParameter = info.ToString();
+					}
+					childs[i].animClipLoopings.events = events;
+					clips.Add(childs[i].animClipLoopings);
+					Debug.Log($"New Clip : {childs[i].animClipLoopings}");
+				}
+			}
+			for (int i = 0; i < 5 - childs.Count; i++)
+			{
+				clips.Add(null);
+			}
+			to.anim.SetAnimationOverrides(new List<string>() { 
+				"Zero", "One", "Two", "Three", "Four",
+				"Zero" + PlayerCast.DISOPERATE, "One" + PlayerCast.DISOPERATE, "Two" + PlayerCast.DISOPERATE, "Three" + PlayerCast.DISOPERATE, "Four" + PlayerCast.DISOPERATE,
+				"Zero" + PlayerCast.LOOP, "One" + PlayerCast.LOOP, "Two" + PlayerCast.LOOP, "Three" + PlayerCast.LOOP, "Four" + PlayerCast.LOOP}, clips);
 
 			(to.anim as PlayerAnim).curEquipped = this;
 		}

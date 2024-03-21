@@ -135,7 +135,7 @@ public class Composite : Compose, IComposer
 		}
 	}
 
-	IEnumerator DelOperate(Actor self)
+	protected virtual IEnumerator DelOperate(Actor self)
 	{
 		for (int i = 0; i < childs.Count; i++)
 		{
@@ -154,10 +154,10 @@ public class Composite : Compose, IComposer
 			}
 			yield return new WaitForSeconds(composeDel);
 		}
-		//onOperateSelf = null;
+		
 	}
 
-	IEnumerator DelDisoperate(Actor self)
+	protected virtual IEnumerator DelDisoperate(Actor self)
 	{
 		for (int i = 0; i < childs.Count; i++)
 		{

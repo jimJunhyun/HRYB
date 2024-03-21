@@ -31,7 +31,8 @@ public class PlayerAnim : AnimModule
 	protected readonly int disop2Hash = Animator.StringToHash("Disop2");
 	protected readonly int disop3Hash = Animator.StringToHash("Disop3");
 	protected readonly int disop4Hash = Animator.StringToHash("Disop4");
-	protected readonly int attackStopStateHash= Animator.StringToHash("AttackStopState");
+	protected readonly int loopAfterHash = Animator.StringToHash("LoopAfter");
+
 
 	PlayerMove pmove;
 
@@ -48,14 +49,14 @@ public class PlayerAnim : AnimModule
 		pmove = GetActor().move as PlayerMove;
 	}
 
-	internal void SetStopState()
+	internal void SetLoopState()
 	{
-		anim.SetFloat(attackStopStateHash, 0);
+		anim.SetBool(loopAfterHash, true);
 	}
 
-	internal void ResetStopState()
+	internal void ResetLoopState()
 	{
-		anim.SetFloat(attackStopStateHash, 1);
+		anim.SetBool(loopAfterHash, false);
 	}
 
 	private void LateUpdate()

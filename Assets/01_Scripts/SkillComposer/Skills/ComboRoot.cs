@@ -142,8 +142,29 @@ public class ComboRoot : SkillRoot
 			{
 				clips.Add(null);
 			}
+			//dur
+			for (int i = 0; i < childs.Count; i++)
+			{
+				if (childs[i].animClipLoopings != null)
+				{
+					AnimationEvent[] events = childs[i].animClipLoopings.events;
+					for (int j = 0; j < events.Length; j++)
+					{
+						events[j].stringParameter = info.ToString();
+					}
+					childs[i].animClipLoopings.events = events;
+					clips.Add(childs[i].animClipLoopings);
+					Debug.Log($"New Clip : {childs[i].animClipLoopings}");
+				}
+			}
+			for (int i = 0; i < 5 - childs.Count; i++)
+			{
+				clips.Add(null);
+			}
+
 			to.anim.SetAnimationOverrides(
-				new List<string>() { "Zero", "One", "Two", "Three", "Four", "Zero" + PlayerCast.DISOPERATE, "One" + PlayerCast.DISOPERATE, "Two" + PlayerCast.DISOPERATE, "Three" + PlayerCast.DISOPERATE, "Four" + PlayerCast.DISOPERATE },
+				new List<string>() { "Zero", "One", "Two", "Three", "Four", "Zero" + PlayerCast.DISOPERATE, "One" + PlayerCast.DISOPERATE, "Two" + PlayerCast.DISOPERATE, "Three" + PlayerCast.DISOPERATE, "Four" + PlayerCast.DISOPERATE ,
+				"Zero" + PlayerCast.LOOP, "One" + PlayerCast.LOOP, "Two" + PlayerCast.LOOP, "Three" + PlayerCast.LOOP, "Four" + PlayerCast.LOOP},
 				clips);
 
 			(to.anim as PlayerAnim).curEquipped = this;
@@ -168,6 +189,12 @@ public class ComboRoot : SkillRoot
 			Debug.Log("다음콤보");
 			curCombo += 1; 
 			prevOperateSec = Time.time;
+		}
+
+		if (self.atk is PlayerAttack atk)
+		{
+			Debug.Log("각종강화효과지우기");
+			atk.HandleRemoveCall();
 		}
 	}
 

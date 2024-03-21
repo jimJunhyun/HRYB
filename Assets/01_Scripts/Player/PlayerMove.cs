@@ -442,8 +442,7 @@ public class PlayerMove : MoveModule
 			dir -= Vector3.up * GameManager.GRAVITY; //최초중력
 			dir += forceDir;
 		}
-		
-		ctrl.Move( (dir) * Time.deltaTime);
+		ctrl.Move( (dir) * Time.fixedDeltaTime);
 		GetActor().anim.SetIdleState(idling);
 		
 		
