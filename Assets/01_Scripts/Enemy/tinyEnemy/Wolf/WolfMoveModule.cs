@@ -12,12 +12,15 @@ public class WolfMoveModule : MoveModule
 
 	private bool _isMove = false;
 	UnityEngine.AI.NavMeshAgent agent;
+	private CharacterController _char;
 
 	public NavMeshAgent Agent => agent;
+	public CharacterController Character => _char;
 
 	private void Awake()
 	{
 		agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+		_char = GetComponent<CharacterController>();
 		agent.speed = Speed;
 	}
 	
@@ -29,25 +32,28 @@ public class WolfMoveModule : MoveModule
 	
 	public override void Move()
 	{
-
-		
 		_isMove = true;
 	}
 	
 	public override void FixedUpdate()
 	{
-		ForceCalc();
-		GravityCalc();
-		transform.Translate(forceDir * Time.deltaTime, Space.World);
 
 		
 		
-		if (( forceDir.x > 0 && forceDir.y > 0 && forceDir.z > 0 ) || isGrounded == false)
+		if (( forceDir.y > 0 ) || isGrounded == false)
 		{
+			Character.enabled = true;
 			agent.enabled =false;
+			
+			ForceCalc();
+			GravityCalc();
+			//transform.Translate(forceDir * Time.deltaTime, Space.World);
+			Character.Move( (forceDir) * Time.deltaTime);
+//			Debug.LogError(forceDir);
 		}
 		else
 		{
+			Character.enabled = false;
 			agent.enabled =true;
 		}
 		

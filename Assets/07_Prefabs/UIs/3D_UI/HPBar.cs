@@ -7,20 +7,23 @@ using UnityEngine.UI;
 
 public class HPBar : MonoBehaviour
 {
-	private Image _hpBar;
+	public float maxHP;
 	public LifeModule lf;
+	public Slider HPSlider;
 
 	private void Awake()
 	{
-		_hpBar = this.GetComponent<Image>();
+		
+		HPSlider = GetComponent<Slider>();
 		lf = GetComponentInParent<LifeModule>(); 
+		maxHP =lf.initYinYang.white;
 	}
 
 	private void FixedUpdate()
 	{		
-		_hpBar.fillAmount = lf.yy.white / lf.initYinYang.white;
+		HPSlider.value = lf.yy.white / maxHP;
 
-		if (lf.yy.white == lf.initYinYang.white || lf.yy.white == 0)
+		if(lf.yy.white == maxHP || lf.yy.white == 0)
 		{
 			this.GetComponentInParent<Canvas>().enabled = false;
 		}

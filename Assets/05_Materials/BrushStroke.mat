@@ -14,7 +14,7 @@ Material:
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2000
   stringTagMap:
@@ -52,19 +52,11 @@ Material:
         m_Texture: {fileID: 2800000, guid: 73d72f1b08321bf4d8fd1498828be939, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _MOSRGATex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 50aae0c98587db146a01b1e3c6d06694, type: 3}
+        m_Texture: {fileID: 2800000, guid: a9abc4ecc6b62ca4f9543e441e5895fa, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _NormalTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -82,7 +74,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _Ramp:
         m_Texture: {fileID: 2800000, guid: a6da33c17813b6644aa541205a2d312f, type: 3}
-        m_Scale: {x: 2.5, y: 2.5}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
@@ -123,17 +115,16 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _InteriorNoiseLevel: 0.656
+    - _InteriorNoiseLevel: 0.79
     - _MaxOutlineZOffset: 0
     - _Metallic: 0
-    - _Occlusion: 0
     - _OcclusionStrength: 1
-    - _Outline: 0.355
-    - _OutsideNoiseWidth: 2
+    - _Outline: 0.5
+    - _OutsideNoiseWidth: 1.45
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.533
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -141,10 +132,10 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - hstep: 0.764
-    - radius: 39.5
+    - hstep: 0.79
+    - radius: 52
     - resolution: 500
-    - vstep: 0.679
+    - vstep: 0.6
     m_Colors:
     - _BaseColor: {r: 0.07169801, g: 0.06642212, b: 0.06642212, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}

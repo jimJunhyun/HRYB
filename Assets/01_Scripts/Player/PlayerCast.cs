@@ -155,7 +155,6 @@ public class PlayerCast : CastModule
 	public const string RCLICKSKILL = "rClickSkill";
 
 	public const string DISOPERATE = "disop";
-	public const string LOOP = "Loop";
 
 	private SkillRoot _nowSkillUse= null;
 	public SkillRoot NowSkillUse => _nowSkillUse;
@@ -174,8 +173,8 @@ public class PlayerCast : CastModule
 		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("NormalBowAttack"), SkillSlotInfo.LClick, PlayerForm.Magic);
 		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
 		
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("SkyBritgh"), SkillSlotInfo.RClick, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YusungSmith"), SkillSlotInfo.LClick, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YohoSharpnessAtt"), SkillSlotInfo.RClick, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("NextEnter"), SkillSlotInfo.LClick, PlayerForm.Magic);
 		// YohoNormalAttack
 		
 		nameCastPair.Add("interact" , new Preparation(

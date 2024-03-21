@@ -196,8 +196,6 @@ GameObject:
   - component: {fileID: 5799382353248487146}
   - component: {fileID: 9190380120647970038}
   - component: {fileID: 7359776289472502642}
-  - component: {fileID: 4819845403868347067}
-  - component: {fileID: 6349437914381528895}
   m_Layer: 0
   m_Name: JangSungGirl
   m_TagString: Untagged
@@ -251,6 +249,7 @@ MonoBehaviour:
   speedMod: 1
   gravity: 0
   groundThreshold: 0.5
+  immovable: 0
 --- !u!114 &2293863065939411816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,20 +357,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isImmune: 0
   initYinYang:
-    black: 0
-    white: 1000
+    yinAmt: 1500
+    yangAmt: 1500
   initAdequity:
-    black: 0
-    white: 0
+    yinAmt: 1
+    yangAmt: 1
+  initSoul: 0
   yy:
-    black: 0
-    white: 1000
-  regenMod:
-    black: 1
-    white: 1
-  fixedRegenMod:
-    black: 0
-    white: 0
+    yinAmt: 0
+    yangAmt: 0
+  maxSoul: 0
+  regenMod: 1
   regenThreshold: 10
   applyMod: 1
   _barrierEffect: {fileID: 6036363885242095341, guid: 761ce3f370c6bdd4491bb2246cf28e18, type: 3}
@@ -390,9 +386,8 @@ MonoBehaviour:
   initAtkDist: 0
   initAtkGap: 0
   initDamage:
-    black: 0
-    white: 0
-  target: {fileID: 0}
+    yinAmt: 0
+    yangAmt: 0
   mumukPos:
   - {fileID: 9131894513350919181}
   - {fileID: 2950110755487932837}
@@ -424,43 +419,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 7, z: 2}
   m_Center: {x: 0, y: 3.5, z: 0}
---- !u!114 &4819845403868347067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3905693945725910127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f00205e3f6672f842b725828d8dbabd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  layer:
-    serializedVersion: 2
-    m_Bits: 128
-  bossName: "\uC9C0\uD558\uC5EC\uC7A5\uAD70"
---- !u!135 &6349437914381528895
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3905693945725910127}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 40
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4701536389832943330
 GameObject:
   m_ObjectHideFlags: 0

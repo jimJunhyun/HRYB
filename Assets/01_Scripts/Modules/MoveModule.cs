@@ -102,13 +102,8 @@ public class MoveModule : Module
 	{
 		if(forceDir.sqrMagnitude > 0.01f)
 		{
-			Vector3 v = forceDir;
-			v.y = 0;
-			if(v.sqrMagnitude > 0.01f)
-			{
-				Vector3 antiForce = -(v) * GameManager.instance.forceResistance * Time.deltaTime;
-				forceDir += antiForce;
-			}
+			Vector3 antiForce = -(forceDir) * GameManager.instance.forceResistance * Time.deltaTime;
+			forceDir += antiForce;
 		}
 		else
 		{

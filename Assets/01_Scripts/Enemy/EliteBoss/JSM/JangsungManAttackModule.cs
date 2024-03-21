@@ -36,7 +36,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 
 	public override void Attack()
 	{
-		//Debug.LogWarning("1");
+		Debug.LogWarning("Jangsung" + AttackStd);
 		GameObject obj = PoolManager.GetObject("Jangsung" + AttackStd, transform);
 
 		//Debug.LogWarning(obj);
@@ -55,16 +55,16 @@ public class JangsungManAttackModule : EnemyAttackModule
 		switch (AttackStd)
 		{
 			case "DownAttack":
-				ef = PoolManager.GetObject("JangsungEffect1", transform).GetComponent<EffectObject>();
+				ef = EffectManager.Instance.GetObject("JangsungEffect1", transform);
 				ef.Begin();
 				break;
 			case "FallDownAttack":
-				ef = PoolManager.GetObject("JangsungEffect1", transform).GetComponent<EffectObject>();
+				ef = EffectManager.Instance.GetObject("JangsungEffect1", transform);
 				ef.Begin();
 				break;
 			case "MoveAttack":
 				
-				ef = PoolManager.GetObject("JangsungEffect1", transform).GetComponent<EffectObject>();
+				ef = EffectManager.Instance.GetObject("JangsungEffect1", transform);
 				ef.Begin();
 				break;
 		}
@@ -152,12 +152,12 @@ public class JangsungManAttackModule : EnemyAttackModule
 
 				break;
 			case "FallDownAttack":
-				ef = PoolManager.GetObject("JangsungEffect1", transform).GetComponent<EffectObject>();
+				ef = EffectManager.Instance.GetObject("JangsungEffect1", transform);
 				ef.Begin();
 				break;
 			case "MoveAttack":
 				
-				ef = PoolManager.GetObject("JangsungEffect1", transform).GetComponent<EffectObject>();
+				ef = EffectManager.Instance.GetObject("JangsungEffect1", transform);
 				ef.Begin();
 				break;
 		}
@@ -174,7 +174,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 							CameraManager.instance.ShakeCamFor(0.5f);
 						});
 					}
-					ef = PoolManager.GetObject("JangsungEffect2", transform).GetComponent<EffectObject>();
+					ef = EffectManager.Instance.GetObject("JangsungEffect2", transform);
 					ef.Begin();
 					
 					
@@ -188,7 +188,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 							CameraManager.instance.ShakeCamFor(0.8f);
 						});
 					}
-					ef = PoolManager.GetObject("JangsungEffect2", transform).GetComponent<EffectObject>();
+					ef = EffectManager.Instance.GetObject("JangsungEffect2", transform);
 					ef.Begin();
 					break;
 				case "MoveAttack":
@@ -201,7 +201,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 						});
 					}
 					
-					ef = PoolManager.GetObject("JangsungEffect2", transform).GetComponent<EffectObject>();
+					ef = EffectManager.Instance.GetObject("JangsungEffect2", transform);
 					ef.Begin();
 					break;
 			}

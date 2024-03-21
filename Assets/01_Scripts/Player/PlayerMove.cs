@@ -77,7 +77,7 @@ public class PlayerMove : MoveModule
 
 	RaycastHit hitCache;
 
-	public ModuleController inputStatus = new ModuleController(false);
+	public ModuleController NoInput = new ModuleController(false);
 
 	PlayerAttack pAttack;
 
@@ -355,24 +355,6 @@ public class PlayerMove : MoveModule
 		}
 	}
 
-	public override void ForceCalc()
-	{
-		if (forceDir.sqrMagnitude > 0.01f)
-		{
-			Vector3 v = forceDir;
-			v.y = 0;
-			if (slip || v.sqrMagnitude > 0.01f)
-			{
-				Vector3 antiForce = -(v) * GameManager.instance.forceResistance * Time.deltaTime;
-				forceDir += antiForce;
-			}
-		}
-		else
-		{
-			forceDir = Vector3.zero;
-		}
-	}
-
 	Vector3 GetDir(Transform to)
 	{
 		Vector3 v = to.position - transform.position;
@@ -460,6 +442,7 @@ public class PlayerMove : MoveModule
 			dir -= Vector3.up * GameManager.GRAVITY; //최초중력
 			dir += forceDir;
 		}
+		
 		ctrl.Move( (dir) * Time.deltaTime);
 		GetActor().anim.SetIdleState(idling);
 		
@@ -468,7 +451,7 @@ public class PlayerMove : MoveModule
 
 	public void Move(InputAction.CallbackContext context)
 	{
-		if (!inputStatus.Paused)
+		if (!NoInput.Paused)
 		{
 			Vector2 inp = context.ReadValue<Vector2>();
 			if (moveStat != MoveStates.Climb)
@@ -532,7 +515,7 @@ public class PlayerMove : MoveModule
 
 	public void Jump(InputAction.CallbackContext context)
 	{
-		if (!inputStatus.Paused)
+		if (!NoInput.Paused)
 		{
 			if (context.performed && jumpable)
 			{
@@ -586,7 +569,7 @@ public class PlayerMove : MoveModule
 
 	public void Lock(InputAction.CallbackContext context)
 	{
-		if (!inputStatus.Paused)
+		if (!NoInput.Paused)
 		{
 			if (context.started)
 			{
@@ -648,7 +631,7 @@ public class PlayerMove : MoveModule
 
 	public void Roll(InputAction.CallbackContext context)
 	{
-		if (!inputStatus.Paused)
+		if (!NoInput.Paused)
 		{
 			if (context.started && moveStat != MoveStates.Climb && rollable && IsActualGrounded)
 			{
@@ -726,10 +709,9 @@ public class PlayerMove : MoveModule
 		{
 			forceDir.y -= GameManager.GRAVITY * Time.deltaTime;
 		}
-		else if (IsActualGrounded)
+		else if (IsActualGrounded  && forceDir.y <0)
 		{
 			forceDir.y = 0f;
-			jumpComplete = false;
 		}
 		if (jumped && !isGrounded)
 		{

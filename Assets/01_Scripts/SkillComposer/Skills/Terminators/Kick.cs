@@ -19,6 +19,7 @@ public class Kick : AttackBase
 
 	public override void Operate(Actor self)
 	{
+		Debug.Log("!@!@!@!@!@!@");
 		(self.atk as PlayerAttack).onNextUse?.Invoke(relatedTransform.gameObject);
 	}
 
@@ -41,22 +42,13 @@ public class Kick : AttackBase
 			if(life != null)
 			{
 				
-				YinYang yy = DoDamage(life.GetActor(), self);
+				DoDamage(life.GetActor(), self);
 				CameraManager.instance.ShakeCamFor(0.1f);
 				//Debug.Log(hitEffs.Count);
-				Vector3 hitPos = life.transform.GetComponent<Collider>().ClosestPointOnBounds(caster.transform.position);
-				if (yy.white > 0)
-				{
-					GameManager.instance.shower.GenerateDamageText(hitPos, yy.white, YYInfo.White);
-				}
-				if (yy.black > 0)
-				{
-					GameManager.instance.shower.GenerateDamageText(hitPos, yy.black, YYInfo.Black);
-				}
-
+				Vector3 effPos = life.transform.GetComponent<Collider>().ClosestPointOnBounds(caster.transform.position);
 				(self.atk as PlayerAttack).onNextSkill?.Invoke(self, this);
-				(self.atk as PlayerAttack).onNextHit?.Invoke(hitPos);
-				PoolManager.GetObject("Hit 26", hitPos, -caster.transform.forward, 2.5f);
+				(self.atk as PlayerAttack).onNextHit?.Invoke(effPos);
+				PoolManager.GetObject("Hit 26", effPos, -caster.transform.forward, 2.5f);
 			}
 			
 		});

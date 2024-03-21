@@ -237,23 +237,15 @@ public class LifeModule : Module
 
 	public void RemoveAllStatEff(StatEffID id)
 	{
-		Dictionary<string, AppliedStatus> debuffCopy = new Dictionary<string, AppliedStatus>();
 		foreach (var item in appliedDebuff)
 		{
-			Debug.Log("상태 : " + item.Value.eff.name);
-			if (((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]).Equals(item.Value.eff))
+			if (((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]).Equals(item.Value))
 			{
 				AppliedStatus stat = item.Value;
 				stat.dur = 0;
-				debuffCopy[item.Key] = stat;
-				Debug.Log("지속시간 0으로 : " + stat.eff.name);
-			}
-			else
-			{
-				debuffCopy[item.Key] = item.Value;
+				appliedDebuff[item.Key] = stat;
 			}
 		}
-		appliedDebuff = debuffCopy;
 	}
 
 	protected virtual void DamageYYBase(YinYang data)
@@ -375,7 +367,7 @@ public class LifeModule : Module
 
 	public virtual void OnDead()
 	{
-		Debug.LogError($"{gameObject.name} : 사망");
+//		Debug.LogError($"{gameObject.name} : 사망");
 		StopAllCoroutines();
 		GetActor().anim.SetDieTrigger();
 		_dieEvent?.Invoke();

@@ -10,7 +10,6 @@ using UnityEngine.Events;
 public abstract class Compose : ScriptableObject, IComposer, IAnimationEventActor
 {
 	public AnimationClip animClip;
-	public AnimationClip animClipLoop;
 	public AnimationClip animClipDisop;
 	public string audioClipName;
 

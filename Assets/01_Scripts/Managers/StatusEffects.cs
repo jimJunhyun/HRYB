@@ -266,7 +266,6 @@ public class StatusEffects
 	}
 	void OnFoxBewitchedEnded(Actor self, float power)
 	{
-		Debug.Log("구슬뗌");
 		self.life.onNextDamaged -= Bewitched;
 	}
 

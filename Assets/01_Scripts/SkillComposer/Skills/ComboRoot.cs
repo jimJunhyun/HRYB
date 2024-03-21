@@ -142,29 +142,8 @@ public class ComboRoot : SkillRoot
 			{
 				clips.Add(null);
 			}
-			//dur
-			for (int i = 0; i < childs.Count; i++)
-			{
-				if (childs[i].animClipLoop != null)
-				{
-					AnimationEvent[] events = childs[i].animClipLoop.events;
-					for (int j = 0; j < events.Length; j++)
-					{
-						events[j].stringParameter = info.ToString();
-					}
-					childs[i].animClipLoop.events = events;
-					clips.Add(childs[i].animClipLoop);
-					Debug.Log($"New Clip : {childs[i].animClipLoop}");
-				}
-			}
-			for (int i = 0; i < 5 - childs.Count; i++)
-			{
-				clips.Add(null);
-			}
-
 			to.anim.SetAnimationOverrides(
-				new List<string>() { "Zero", "One", "Two", "Three", "Four", "Zero" + PlayerCast.DISOPERATE, "One" + PlayerCast.DISOPERATE, "Two" + PlayerCast.DISOPERATE, "Three" + PlayerCast.DISOPERATE, "Four" + PlayerCast.DISOPERATE ,
-				"Zero" + PlayerCast.LOOP, "One" + PlayerCast.LOOP, "Two" + PlayerCast.LOOP, "Three" + PlayerCast.LOOP, "Four" + PlayerCast.LOOP},
+				new List<string>() { "Zero", "One", "Two", "Three", "Four", "Zero" + PlayerCast.DISOPERATE, "One" + PlayerCast.DISOPERATE, "Two" + PlayerCast.DISOPERATE, "Three" + PlayerCast.DISOPERATE, "Four" + PlayerCast.DISOPERATE },
 				clips);
 
 			(to.anim as PlayerAnim).curEquipped = this;

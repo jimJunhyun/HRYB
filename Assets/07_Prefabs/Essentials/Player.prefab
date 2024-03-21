@@ -92,12 +92,13 @@ MonoBehaviour:
   runSpeed: 8
   walkSpeed: 4
   crouchSpeed: 2
-  gravity: 1
+  speedMod: 1
+  gravity: 0
   groundThreshold: 0.5
   climbSpeed: 3
   climbDistance: 0.3
   spinSpd: 10
-  jumpPwer: 15
+  jumpPwer: 23
   jumpGap: 1
   sneakPower: 4
   slipThreshold: 45
@@ -544,7 +545,7 @@ MonoBehaviour:
   target: {fileID: 0}
   initSecPerCharge: 0
   targetMaxDist: 20
-  targetMaxAngle: 45
+  targetMaxAngle: 65
 --- !u!114 &3650084912648737930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -665,7 +666,7 @@ Transform:
   m_GameObject: {fileID: 220605965769024690}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.388, z: 0.961}
+  m_LocalPosition: {x: 0, y: 1.057, z: 1.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -884,7 +885,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _layer:
     serializedVersion: 2
-    m_Bits: 575
+    m_Bits: 731455
   Owner: {fileID: 0}
 --- !u!1 &3655011478167333133
 GameObject:

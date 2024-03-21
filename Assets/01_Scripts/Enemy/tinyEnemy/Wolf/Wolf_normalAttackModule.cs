@@ -35,7 +35,7 @@ public class Wolf_normalAttackModule : EnemyAttackModule
 		{
 			_life.DamageYY(new YinYang(20,0), DamageType.DirectHit);
 		});
-		EffectObject eff =  PoolManager.GetObject($"Wolf_noraml_Attack{a}", transform.GetChild(0)).GetComponent<EffectObject>();
+		EffectObject eff =  EffectManager.Instance.GetObject($"Wolf_noraml_Attack{a}", transform.GetChild(0));
 		eff.Begin();
 	}
 
