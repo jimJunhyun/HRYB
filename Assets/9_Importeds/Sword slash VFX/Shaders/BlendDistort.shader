@@ -28,7 +28,7 @@ Shader "Hovl/Particles/BlendDistort"
 		Tags{ "RenderType" = "Transparent"  "Queue" = "Transparent+0" "IgnoreProjector" = "True" "IsEmissive" = "true"  }
 		Cull Off
 		GrabPass{ }
-		CGPROGRAM
+		HLSLPROGRAM
 		#ifndef UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX
 		#define UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input)
 		#endif
@@ -143,7 +143,7 @@ Shader "Hovl/Particles/BlendDistort"
 			o.Alpha = lerp(lerp(temp_output_151_0,( temp_output_151_0 * saturate( distanceDepth134 ) ),_Usedepth),( lerp(temp_output_151_0,( temp_output_151_0 * saturate( distanceDepth134 ) ),_Usedepth) * clampResult186 ),_Softedges);
 		}
 
-		ENDCG
+		ENDHLSL
 	}
 }
 /*ASEBEGIN
