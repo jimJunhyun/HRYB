@@ -77,7 +77,7 @@ public class PlayerMove : MoveModule
 
 	RaycastHit hitCache;
 
-	public ModuleController NoInput = new ModuleController(false);
+	public ModuleController inputStatus = new ModuleController(false);
 
 	PlayerAttack pAttack;
 
@@ -468,7 +468,7 @@ public class PlayerMove : MoveModule
 
 	public void Move(InputAction.CallbackContext context)
 	{
-		if (!NoInput.Paused)
+		if (!inputStatus.Paused)
 		{
 			Vector2 inp = context.ReadValue<Vector2>();
 			if (moveStat != MoveStates.Climb)
@@ -532,7 +532,7 @@ public class PlayerMove : MoveModule
 
 	public void Jump(InputAction.CallbackContext context)
 	{
-		if (!NoInput.Paused)
+		if (!inputStatus.Paused)
 		{
 			if (context.performed && jumpable)
 			{
@@ -586,7 +586,7 @@ public class PlayerMove : MoveModule
 
 	public void Lock(InputAction.CallbackContext context)
 	{
-		if (!NoInput.Paused)
+		if (!inputStatus.Paused)
 		{
 			if (context.started)
 			{
@@ -648,7 +648,7 @@ public class PlayerMove : MoveModule
 
 	public void Roll(InputAction.CallbackContext context)
 	{
-		if (!NoInput.Paused)
+		if (!inputStatus.Paused)
 		{
 			if (context.started && moveStat != MoveStates.Climb && rollable && IsActualGrounded)
 			{

@@ -115,9 +115,9 @@ public class PlayerAnimActions : MonoBehaviour
 
 	public void DisableInput()
 	{
-		GameManager.instance.pinp.DeactivateInput();
-		self.move.moveDir = Vector3.zero;
-		self.move.forceDir = Vector3.zero;
+		//GameManager.instance.pinp.DeactivateInput();
+		
+		//self.move.forceDir = Vector3.zero;
 		DisableMove();
 	}
 

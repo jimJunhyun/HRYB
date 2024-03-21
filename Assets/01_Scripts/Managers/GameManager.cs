@@ -342,13 +342,15 @@ public class GameManager : MonoBehaviour
 
 	public void DisableCtrl(ControlModuleMode mode)
 	{
-		(pActor.move as PlayerMove).NoInput.Pause(mode, true);
+		pActor.move.moveDir = Vector3.zero;
+		(pActor.move as PlayerMove).inputStatus.Pause(mode, true);
 		pActor.atk.attackModuleStat.Pause(mode, true);
 	}
 
 	public void EnableCtrl(ControlModuleMode mode)
 	{
-		(pActor.move as PlayerMove).NoInput.Pause(mode, false);
+		//pActor.move.moveDir = Vector3.zero;
+		(pActor.move as PlayerMove).inputStatus.Pause(mode, false);
 		pActor.atk.attackModuleStat.Pause(mode, false);
 	}
 
