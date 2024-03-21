@@ -12,6 +12,11 @@ public class AttackModule : Module, IAnimationEvent
 
 	protected YinYang damage;
 
+	public YinYang Damage
+	{
+		get => damage;
+	}
+
 	protected float atkDist;
 
 

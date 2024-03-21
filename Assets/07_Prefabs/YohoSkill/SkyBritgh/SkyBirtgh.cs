@@ -71,7 +71,8 @@ public class SkyBirtgh : AttackBase
 						    
 						    Actor to = _life.GetActor();
 						    Actor by = self;
-						    to.life.DamageYY(by.atk.initDamage * damageMult * 0.4f, DamageType.DirectHit, 0, 0, by);
+						    to.life.DamageYY(by.atk.Damage * damageMult * 0.4f, DamageType.DirectHit, 0, 0, by);
+						    Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.Damage} * {damageMult} * 0.4f = {(by.atk.Damage * damageMult* 0.4f)}");
 						    for (int i = 0; i < statEff.Count; i++)
 						    {
 							    StatusEffects.ApplyStat(to, by, statEff[i].id, 0.1f, statEff[i].power);
@@ -109,7 +110,8 @@ public class SkyBirtgh : AttackBase
 						    
 						    Actor to = _life.GetActor();
 						    Actor by = self;
-						    to.life.DamageYY(by.atk.initDamage * damageMult * 0.8f, DamageType.DirectHit, 0, 0, by);
+						    to.life.DamageYY(by.atk.Damage * damageMult * 0.8f, DamageType.DirectHit, 0, 0, by);
+						    Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.Damage} * {damageMult} * 0.8f = {(by.atk.Damage * damageMult *  0.8f)}");
 						    for (int i = 0; i < statEff.Count; i++)
 						    {
 							    StatusEffects.ApplyStat(to, by, statEff[i].id, 0.4f, statEff[i].power);
@@ -146,7 +148,8 @@ public class SkyBirtgh : AttackBase
 						    _life.GetActor().move.forceDir = self.transform.forward * 18 + new Vector3(0, -24, 0);
 						    Actor to = _life.GetActor();
 						    Actor by = self;
-						    to.life.DamageYY(by.atk.initDamage * damageMult * 1.5f, DamageType.DirectHit, 0, 0, by);
+						    to.life.DamageYY(by.atk.Damage * damageMult * 1.5f, DamageType.DirectHit, 0, 0, by);
+						    Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.Damage} * {damageMult}  * 1.5f= {(by.atk.Damage * damageMult * 1.5f)}");
 						    for (int i = 0; i < statEff.Count; i++)
 						    {
 							    StatusEffects.ApplyStat(to, by, statEff[i].id, 0.5f, statEff[i].power);

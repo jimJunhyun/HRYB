@@ -30,8 +30,9 @@ public abstract class AttackBase : Leaf
 
 	protected virtual void DoDamage(Actor to, Actor by)
 	{
-		to.life.DamageYY(by.atk.initDamage * damageMult, DamageType.DirectHit, 0, 0, by);
-		Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.initDamage} * {damageMult} = {(by.atk.initDamage * damageMult)}");
+		YinYang dmg = by.atk.Damage * damageMult;
+		to.life.DamageYY(by.atk.Damage * damageMult, DamageType.DirectHit, 0, 0, by);
+		Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.Damage} * {damageMult} = {(by.atk.Damage * damageMult)}");
 		for (int i = 0; i < statEff.Count; i++)
 		{
 			StatusEffects.ApplyStat(to, by, statEff[i].id, statEff[i].duration, statEff[i].power);
