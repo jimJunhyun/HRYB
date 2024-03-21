@@ -35,7 +35,7 @@ Shader "Hovl/Particles/Blend_TwoSides"
 		Cull Off
 		Blend SrcAlpha OneMinusSrcAlpha
 		
-		HLSLPROGRAM
+		CGPROGRAM
 		#include "UnityShaderVariables.cginc"
 		#pragma target 3.0
 		#pragma surface surf Unlit keepalpha noshadow 
@@ -109,7 +109,7 @@ Shader "Hovl/Particles/Blend_TwoSides"
 			clip( temp_output_70_0.r - _Cutoff );
 		}
 
-		ENDHLSL
+		ENDCG
 	}
 }
 /*ASEBEGIN
