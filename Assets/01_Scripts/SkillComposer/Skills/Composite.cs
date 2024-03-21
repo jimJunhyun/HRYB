@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -116,8 +115,7 @@ public class Composite : Compose, IComposer
 					for (int t = 0; t < events.Length; t++)
 					{
 						events[t].intParameter = i;
-						string h = events[t].stringParameter.Split("$")[0];
-						events[t].stringParameter = h + "$" + info.ToString();
+						//events[t].stringParameter = info.ToString();
 					}
 					
 					//events[1].intParameter = i;

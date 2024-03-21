@@ -69,7 +69,7 @@ public class Wolf_normalAttackModule : EnemyAttackModule
 		
 		//GetActor().anim.SetAttackTrigger();
 		
-		GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"normallAtt{a}"));
+		GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"Attack{a}"));
 
 	}
 	

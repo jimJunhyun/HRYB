@@ -14,10 +14,24 @@ public class AttackModule : Module, IAnimationEvent
 
 	protected float atkDist;
 
+	protected float curPrepMod = 1;
 
 	public Transform target;
 
-	public ModuleController attackModuleStat = new ModuleController(false);
+	public ModuleController NoAttack = new ModuleController(false);
+
+	public virtual float prepMod
+	{
+		get
+		{
+			return fixedPrepMod == null ? curPrepMod : (float)fixedPrepMod;
+		}
+		set
+		{
+			curPrepMod = value;
+		}
+	}
+	public float? fixedPrepMod = null;
 
 	protected float curAtkGap;
 	public float? fixedAtkGap = null;
@@ -40,10 +54,12 @@ public class AttackModule : Module, IAnimationEvent
 	{
 		base.ResetStatus();
 		atkDist = initAtkDist;
+		curPrepMod = 1;
 		curAtkGap = initAtkGap;
+		fixedPrepMod = null;
 		fixedAtkGap = null;
 		damage = initDamage;
-		attackModuleStat.CompleteReset();
+		NoAttack.CompleteReset();
 	}
 
 	public virtual void SetAttackRange(int idx)

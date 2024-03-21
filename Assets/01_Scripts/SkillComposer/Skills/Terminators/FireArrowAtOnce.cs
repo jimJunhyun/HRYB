@@ -21,13 +21,10 @@ public class FireArrowAtOnce : AttackBase
 		if(arrow != null)
 		{
 			//Debug.Log($"화살발사, {arrow.transform.position} : {arrow.transform.forward}");
-			if(aMode == ArrowMode.Homing)
-			{
-				arrow.SetTarget(self.atk.target);
-			}
+			arrow.SetTarget(self.atk.target);
 			GameManager.instance.audioPlayer.PlayPoint(audioClipName, self.transform.position);
 			arrow.Shoot(aMode);
-			//arrow.SetDisappearTimer();
+			arrow.SetDisappearTimer();
 			arrow.ResumeCheck();
 			arrow = null;
 		}

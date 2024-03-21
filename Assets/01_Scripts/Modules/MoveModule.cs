@@ -21,7 +21,7 @@ public class MoveModule : Module
 	public virtual float Speed
 	{
 
-		get => speed * moveModuleStat.Speed;
+		get => speed * (fixedSpeedMod == null ? speedMod : (float)fixedSpeedMod);
 		set => speed = value;
 	}
 
@@ -33,14 +33,17 @@ public class MoveModule : Module
 	public float walkSpeed;
 	public float crouchSpeed;
 
+	public float speedMod = 1.0f;
+	public float? fixedSpeedMod = null;
+
 	public bool gravity = false;
 	public float groundThreshold = 0.5f;
 
 	public virtual bool isGrounded
 	{
-		get=>Physics.Raycast(transform.position + new Vector3(0, 0.1f,0), Vector3.down, groundThreshold, 1<< GameManager.GROUNDLAYER);
+		get=>Physics.Raycast(transform.position, Vector3.down, groundThreshold, 1<< GameManager.GROUNDLAYER);
 	}
-	public ModuleController moveModuleStat = new ModuleController(false);
+	public ModuleController NoMove = new ModuleController(false);
 
 	protected MoveStates curStat;
 	public virtual MoveStates moveStat
@@ -92,7 +95,7 @@ public class MoveModule : Module
 		{
 			forceDir.y -= GameManager.GRAVITY * Time.deltaTime;
 		}
-		else if (isGrounded && forceDir.y <0)
+		else if (isGrounded)
 		{
 			forceDir.y = 0f;
 		}
@@ -126,9 +129,11 @@ public class MoveModule : Module
 	public override void ResetStatus()
 	{
 		base.ResetStatus();
+		speedMod = 1;
+		fixedSpeedMod = null;
 		moveStat  =MoveStates.Walk;
 		moveDir = Vector3.zero;
 		forceDir = Vector3.zero;
-		moveModuleStat.CompleteReset();
+		NoMove.CompleteReset();
 	}
 }

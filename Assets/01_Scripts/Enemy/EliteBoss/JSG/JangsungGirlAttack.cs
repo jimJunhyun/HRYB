@@ -160,7 +160,7 @@ public class JangsungGirlAttack : EnemyAttackModule
 		objs.GetComponent<ColliderCast>().Now(transform,(player) =>
 		{
 			player.DamageYY(3, 0, DamageType.DirectHit);
-		}, null, -1, 2f, 3f);
+		}, -1, 2f, 3f);
 	}
 
 	public override void OnAnimationMove()

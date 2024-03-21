@@ -6,15 +6,21 @@ using UnityEngine.UI;
 public class BossHPBar : MonoBehaviour
 {
 	[SerializeField] Image _hpBar;
-	public LifeModule lf;
+	[SerializeField] Actor _lifeModule;
 
-	private void Awake()
+
+
+	public void Init(Actor lf)
 	{
-		_hpBar = GetComponent<Image>();
+		_lifeModule = lf;
 	}
 
 	void Update()
     {
-		_hpBar.fillAmount = lf.yy.white / lf.initYinYang.white;
-	}
+		if(_lifeModule != null && _lifeModule.life.yy != null)
+		{
+			Debug.Log(_lifeModule.life.yy.white / _lifeModule.life.initYinYang.white);
+			_hpBar.fillAmount = _lifeModule.life.yy.white / _lifeModule.life.initYinYang.white;
+		}
+    }
 }
