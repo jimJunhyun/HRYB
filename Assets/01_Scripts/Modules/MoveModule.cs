@@ -78,7 +78,7 @@ public class MoveModule : Module
 	{
 		ForceCalc();
 		GravityCalc();
-		transform.Translate(forceDir * Time.deltaTime, Space.World);
+		transform.Translate(forceDir * Time.fixedDeltaTime, Space.World);
 	}
 
 	public virtual void FixedUpdate()

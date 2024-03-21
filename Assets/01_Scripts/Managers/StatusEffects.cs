@@ -364,12 +364,10 @@ public class StatusEffects
 
 	void EnhanceIce(Actor self, Compose skInfo, int power)
 	{
-		Debug.Log("레벨 : "+ power);
-		Debug.Log("얼음공격 : " + skInfo.tags.ToString());
-		if(skInfo.tags.ContainsTag(SkillTags.Enhancable))
+		if(skInfo.tags.ContainsTag(SkillTags.Enhancable, SkillTags.Attack))
 		{
-			Debug.Log("얼음공격으로 강화디ㅗㅁ.");
-			if((skInfo is AttackBase atk))
+			Debug.Log(skInfo.name + " 얼음공격으로 강화");
+			if((skInfo is Leaf atk))
 			{
 				if(power >= 6)
 				{
@@ -377,11 +375,14 @@ public class StatusEffects
 				}
 				else
 				{
-					atk.statEff.Add(new StatusEffectApplyData(StatEffID.Slow, (10 + 5 * (power * (power - 1) / 2)) * 0.01f, 5));; //더하긴 했는데, 언제 지우지?
+					atk.statEff.Add(new StatusEffectApplyData(StatEffID.Slow, (10 + 5 * (power * (power - 1) / 2)) * 0.01f, 5)); //더하긴 했는데, 언제 지우지?
 					//lastEnhancedSkill = atk;
 				}
 				Debug.Log("REMOVING STAT : " + self.life.name);
-				self.life.RemoveAllStatEff(StatEffID.EnhanceIce);
+				if(self.atk is PlayerAttack pa)
+				{
+					pa.AddRemoveCall(StatEffID.EnhanceIce);
+				}
 			}
 		}
 	}

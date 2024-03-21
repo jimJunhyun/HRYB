@@ -622,8 +622,8 @@ public class PlayerInven : MonoBehaviour
 
 	public void OnPressOne(InputAction.CallbackContext context)
 	{
-		if (stat == PlayerForm.Magic)
-		{
+		//if (stat == PlayerForm.Magic)
+		//{
 			if(GameManager.instance.pActor.atk.attackModuleStat.Paused && !clickWood)
 				return;
 			if (context.started && !clickWood)
@@ -636,7 +636,7 @@ public class PlayerInven : MonoBehaviour
 				clickWood = false;
 				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.One);
 			}
-		}
+		//}
 		// else if (context.started && stat == HandStat.Yoho)
 		// {
 		// 	Hold(HandStat.Item, 0);
@@ -647,8 +647,8 @@ public class PlayerInven : MonoBehaviour
 
 	public void OnPressTwo(InputAction.CallbackContext context)
 	{
-		if (stat == PlayerForm.Magic)
-		{
+		//if (stat == PlayerForm.Magic)
+		//{
 			if (GameManager.instance.pActor.atk.attackModuleStat.Paused && !clickFire)
 				return;
 			if (context.started && !clickFire)
@@ -661,7 +661,7 @@ public class PlayerInven : MonoBehaviour
 				clickFire = false;
 				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Two);
 			}
-		}
+		//}
 		// else if (stat == HandStat.Yoho && context.started)
 		// {
 		// 	Hold(HandStat.Yoho, 1);
@@ -672,8 +672,8 @@ public class PlayerInven : MonoBehaviour
 
 	public void OnPressThree(InputAction.CallbackContext context)
 	{
-		if (stat == PlayerForm.Magic)
-		{
+		//if (stat == PlayerForm.Magic)
+		//{
 			if (GameManager.instance.pActor.atk.attackModuleStat.Paused && !clickEarth)
 				return;
 			if (context.started && !clickEarth)
@@ -686,7 +686,7 @@ public class PlayerInven : MonoBehaviour
 				clickEarth = false;
 				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Three);
 			}
-		}
+		//}
 		// else if (stat == HandStat.Item && context.started)
 		// {
 		// 	Hold(HandStat.Item, 2);
@@ -705,8 +705,8 @@ public class PlayerInven : MonoBehaviour
 
 	public void OnPressQ(InputAction.CallbackContext context)
 	{
-		if (stat == PlayerForm.Magic)
-		{
+		//if (stat == PlayerForm.Magic)
+		//{
 			if (GameManager.instance.pActor.atk.attackModuleStat.Paused && !clickMetal)
 				return;
 			if (context.started && !clickMetal)
@@ -719,7 +719,7 @@ public class PlayerInven : MonoBehaviour
 				clickMetal = false;
 				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Q);
 			}
-		}
+		//}
 	}
 
 	public void OnPressFive(InputAction.CallbackContext context)
@@ -733,8 +733,8 @@ public class PlayerInven : MonoBehaviour
 
 	public void OnPressE(InputAction.CallbackContext context)
 	{
-		if (stat == PlayerForm.Magic)
-		{
+		//if (stat == PlayerForm.Magic)
+		//{
 			if (GameManager.instance.pActor.atk.attackModuleStat.Paused && !clickWater)
 				return;
 			if (context.started && !clickWater)
@@ -747,6 +747,6 @@ public class PlayerInven : MonoBehaviour
 				clickWater = false;
 				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.E);
 			}
-		}
+		//}
 	}
 }

@@ -38,4 +38,14 @@ public class SkillRoot : Composite
 	{
 		base.Disoperate(self);
 	}
+
+	protected override IEnumerator DelOperate(Actor self)
+	{
+		yield return base.DelOperate(self);
+		if (self.atk is PlayerAttack atk)
+		{
+			Debug.Log("각종강화효과지우기");
+			atk.HandleRemoveCall();
+		}
+	}
 }

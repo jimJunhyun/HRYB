@@ -43,6 +43,7 @@ public class PlayerAttack : AttackModule
 	public Action<Actor, Compose> onNextSkill = default; //자신, 스킬정보
 	public Action<Vector3> onNextHit = default;
 
+	List<StatEffID> skillEndRemovers = new List<StatEffID>(); //사용 종료시 제거되는 효과
 
 	PlayerAnimActions animActions;
 
@@ -188,5 +189,18 @@ public class PlayerAttack : AttackModule
 		secPerCharge = initSecPerCharge;
 	}
 
-	
+	public void AddRemoveCall(StatEffID id)
+	{
+		skillEndRemovers.Add(id);
+	}
+
+	public void HandleRemoveCall()
+	{
+		for (int i = 0; i < skillEndRemovers.Count; i++)
+		{
+			GetActor().life.RemoveAllStatEff(skillEndRemovers[i], 1);
+		}
+
+		skillEndRemovers.Clear();
+	}
 }

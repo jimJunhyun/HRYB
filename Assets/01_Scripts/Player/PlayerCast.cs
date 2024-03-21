@@ -85,6 +85,16 @@ public class SkillSlots
 		skInfo = null;
 	}
 
+	public void CooldownReductionSolid(float amt)
+	{
+		curCooledTime += amt;
+	}
+
+	public void CooldownReductionPercent(float amt)
+	{
+		curCooledTime += skInfo.cooldown * amt;
+	}
+
 	public SkillSlots(SkillRoot exec, Actor from, SkillSlotInfo? info = null)
 	{
 		skInfo = exec;

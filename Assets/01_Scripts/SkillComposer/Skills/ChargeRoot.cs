@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// 충전하면서 N초마다 지속적으로 무언가를 해주다가, 
+/// 충전을 종료할 경우 자신 모든 자식을 종료해주는 역할.
+/// 
+/// 누르고있을때마다 모이고, 떼서 발사, 위력이나 발사 수 등이 달라지는 계열에 적합함.
+/// </summary>
 [CreateAssetMenu(menuName = "Skills/ChargeRoot")]
 public class ChargeRoot : SkillRoot
 {
@@ -185,6 +192,11 @@ public class ChargeRoot : SkillRoot
 		{
 			childs[i].Disoperate(self);
 			yield return new WaitForSeconds(composeDel);
+		}
+		if (self.atk is PlayerAttack atk)
+		{
+			Debug.Log("각종강화효과지우기");
+			atk.HandleRemoveCall();
 		}
 	}
 }

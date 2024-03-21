@@ -2,32 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum AreaShapeMode
-{
-	None,
-	Circle,
-	Rectangle,
-	Triangle,
-
-}
 
 /// <summary>
 /// 항상 1번 슬롯에 장착된 스킬의 opAnim, durAnim, DisopAnim을 사용할 것.
 /// 여러개를 꽂기보다는 여러개를 컴포지트로 묶고 꽂기.
+/// 
+/// 일정 시간 충전한ㄴ 뒤 묶여있는 스킬들을 전부 사용하는 형태.
+/// 충전중엔 모으기 말고 아무것도 안함.
+/// 
+/// 일정 시간 모으기가 발동하지 않으면 사용할 수 없는 스킬에 어울림.
 /// </summary>
 
+[CreateAssetMenu(fileName = "Skills/ChargeCastRoot")]
 public class ChargeCastRoot : SkillRoot
 {
-
 	public float maxChargeSec;
 	public float chargeThreshold;
 	
 	public float maxDist;
 
-	public AreaShapeMode shape;
-
 	bool charging = false;
 	float chargeStartSec;
+
+	Actor owner;
 
 	float chargeT => Time.time - chargeStartSec;
 	bool overcooked => chargeT >= maxChargeSec;
@@ -36,11 +33,20 @@ public class ChargeCastRoot : SkillRoot
 
 	public override void Operate(Actor self)
 	{
-		if (self.anim is PlayerAnim pa)
+		if (isPlayAnim)
 		{
-			pa.SetAttackTrigger(0);
-			pa.SetLoopState();
+			if (self.anim is PlayerAnim pa)
+			{
+				pa.SetAttackTrigger(0); //애니메이션트리거로 PauseAnimation 발동
+				charging = true;
+				chargeStartSec = Time.time;
+			}
 		}
+		else
+		{
+			MyOperation(self);
+		}
+		owner = self;
 	}
 
 	public override void Disoperate(Actor self)
@@ -51,22 +57,50 @@ public class ChargeCastRoot : SkillRoot
 			{
 				pa.ResetLoopState();
 				pa.SetDisopTrigger(0);
+				charging = false;
 			}
 		}
 		else
 		{
 			MyDisoperation(self);
 		}
+		owner = null;
 	}
 
 	internal override void MyOperation(Actor self)
 	{
-		base.MyOperation(self);
+		//이펙트를 띄우나?
 	}
 
 	internal override void MyDisoperation(Actor self)
 	{
-		base.MyDisoperation(self);
+		if (prepared)
+		{
+			GameManager.instance.StartCoroutine(DelOperate(self));
+		}
+	}
+
+	public override void UpdateStatus()
+	{
+		base.UpdateStatus();
+		if (charging)
+		{
+			//게이지바
+		}
+		if (overcooked)
+		{
+			Disoperate(owner);
+		}
+	}
+
+	protected override IEnumerator DelOperate(Actor self)
+	{
+		yield return base.DelOperate(self);
+		if (self.atk is PlayerAttack atk)
+		{
+			Debug.Log("각종강화효과지우기");
+			atk.HandleRemoveCall();
+		}
 	}
 
 	public override void SetAnimations(Actor to, SkillSlotInfo info)
