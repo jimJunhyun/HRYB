@@ -13,13 +13,12 @@ using UnityEngine;
 /// 일정 시간 모으기가 발동하지 않으면 사용할 수 없는 스킬에 어울림.
 /// </summary>
 
-[CreateAssetMenu(fileName = "Skills/ChargeCastRoot")]
+[CreateAssetMenu(menuName = "Skills/ChargeCastRoot")]
 public class ChargeCastRoot : SkillRoot
 {
 	public float maxChargeSec;
 	public float chargeThreshold;
-	
-	public float maxDist;
+
 
 	bool charging = false;
 	float chargeStartSec;
@@ -37,9 +36,10 @@ public class ChargeCastRoot : SkillRoot
 		{
 			if (self.anim is PlayerAnim pa)
 			{
-				pa.SetAttackTrigger(0); //애니메이션트리거로 PauseAnimation 발동
+				pa.SetAttackTrigger(0); //애니메이션트리거로 PauseAnimation 및 MyOperation (SetAttackRange) 발동
 				charging = true;
 				chargeStartSec = Time.time;
+				GameManager.instance.uiManager.interingUI.On();
 			}
 		}
 		else
@@ -58,6 +58,7 @@ public class ChargeCastRoot : SkillRoot
 				pa.ResetLoopState();
 				pa.SetDisopTrigger(0);
 				charging = false;
+				GameManager.instance.uiManager.interingUI.Off();
 			}
 		}
 		else
@@ -69,14 +70,17 @@ public class ChargeCastRoot : SkillRoot
 
 	internal override void MyOperation(Actor self)
 	{
-		//이펙트를 띄우나?
+		for (int i = 0; i < childs.Count; i++)
+		{
+			childs[i].Operate(self);
+		}
 	}
 
 	internal override void MyDisoperation(Actor self)
 	{
 		if (prepared)
 		{
-			GameManager.instance.StartCoroutine(DelOperate(self));
+			GameManager.instance.StartCoroutine(DelDisoperate(self));
 		}
 	}
 
@@ -85,7 +89,7 @@ public class ChargeCastRoot : SkillRoot
 		base.UpdateStatus();
 		if (charging)
 		{
-			//게이지바
+			GameManager.instance.uiManager.interingUI.SetGaugeValue(chargeT / chargeThreshold);
 		}
 		if (overcooked)
 		{
@@ -93,9 +97,9 @@ public class ChargeCastRoot : SkillRoot
 		}
 	}
 
-	protected override IEnumerator DelOperate(Actor self)
+	protected override IEnumerator DelDisoperate(Actor self)
 	{
-		yield return base.DelOperate(self);
+		yield return base.DelDisoperate(self);
 		if (self.atk is PlayerAttack atk)
 		{
 			Debug.Log("각종강화효과지우기");

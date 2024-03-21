@@ -62,8 +62,8 @@ public class SkyBirtgh : AttackBase
 						    
 						    Actor to = _life.GetActor();
 						    Actor by = self;
-						    to.life.DamageYY(by.atk.initDamage * damageMult * 0.4f, DamageType.DirectHit, 0, 0, by);
-						    Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.initDamage} * {damageMult} * 0.4f = {(by.atk.initDamage * damageMult* 0.4f)}");
+						    to.life.DamageYY(by.atk.Damage * damageMult * 0.4f, DamageType.DirectHit, 0, 0, by);
+						    Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.Damage} * {damageMult} * 0.4f = {(by.atk.Damage * damageMult* 0.4f)}");
 						    for (int i = 0; i < statEff.Count; i++)
 						    {
 							    StatusEffects.ApplyStat(to, by, statEff[i].id, statEff[i].duration, statEff[i].power);
@@ -87,8 +87,8 @@ public class SkyBirtgh : AttackBase
 						    
 						    Actor to = _life.GetActor();
 						    Actor by = self;
-						    to.life.DamageYY(by.atk.initDamage * damageMult * 0.8f, DamageType.DirectHit, 0, 0, by);
-						    Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.initDamage} * {damageMult} * 0.8f = {(by.atk.initDamage * damageMult *  0.8f)}");
+						    to.life.DamageYY(by.atk.Damage * damageMult * 0.8f, DamageType.DirectHit, 0, 0, by);
+						    Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.Damage} * {damageMult} * 0.8f = {(by.atk.Damage * damageMult *  0.8f)}");
 						    for (int i = 0; i < statEff.Count; i++)
 						    {
 							    StatusEffects.ApplyStat(to, by, statEff[i].id, statEff[i].duration, statEff[i].power);
@@ -110,8 +110,8 @@ public class SkyBirtgh : AttackBase
 						    
 						    Actor to = _life.GetActor();
 						    Actor by = self;
-						    to.life.DamageYY(by.atk.initDamage * damageMult * 1.5f, DamageType.DirectHit, 0, 0, by);
-						    Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.initDamage} * {damageMult}  * 1.5f= {(by.atk.initDamage * damageMult * 1.5f)}");
+						    to.life.DamageYY(by.atk.Damage * damageMult * 1.5f, DamageType.DirectHit, 0, 0, by);
+						    Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.Damage} * {damageMult}  * 1.5f= {(by.atk.Damage * damageMult * 1.5f)}");
 						    for (int i = 0; i < statEff.Count; i++)
 						    {
 							    StatusEffects.ApplyStat(to, by, statEff[i].id, statEff[i].duration, statEff[i].power);
