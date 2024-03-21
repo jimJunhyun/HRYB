@@ -165,6 +165,7 @@ public class PlayerCast : CastModule
 	public const string RCLICKSKILL = "rClickSkill";
 
 	public const string DISOPERATE = "disop";
+	public const string LOOP = "Loop";
 
 	private SkillRoot _nowSkillUse= null;
 	public SkillRoot NowSkillUse => _nowSkillUse;

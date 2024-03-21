@@ -239,6 +239,7 @@ public class LifeModule : Module
 
 	public void RemoveAllStatEff(StatEffID id, int count = -1)
 	{
+		Dictionary<string, AppliedStatus> debuffCopy = new Dictionary<string, AppliedStatus>();
 		foreach (var item in appliedDebuff)
 		{
 			if (((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]).Equals(item.Value))
