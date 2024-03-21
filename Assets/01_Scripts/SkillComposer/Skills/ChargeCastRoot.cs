@@ -38,8 +38,8 @@ public class ChargeCastRoot : SkillRoot
 	{
 		if (self.anim is PlayerAnim pa)
 		{
-			GameManager.instance.uiManager.aimUI.On();
 			pa.SetAttackTrigger(0);
+			pa.SetLoopState();
 		}
 	}
 
