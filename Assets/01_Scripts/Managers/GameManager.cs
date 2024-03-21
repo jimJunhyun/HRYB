@@ -241,6 +241,8 @@ public class GameManager : MonoBehaviour
 	public ImageManager imageManager;
 	public CameraManager camManager;
 
+	public DamageTextShower shower;
+
 	//public Arrow arrow;
 	public FollowingFoxFire foxfire;
 
@@ -304,6 +306,7 @@ public class GameManager : MonoBehaviour
 		skillLoader = new SkillLoader();
 
 		foxfire = GameObject.Find("Fox Fire").GetComponent<FollowingFoxFire>();
+		shower = GameObject.Find("DamageTextManager").GetComponent<DamageTextShower>();
 
 		
 	}
@@ -341,13 +344,15 @@ public class GameManager : MonoBehaviour
 
 	public void DisableCtrl(ControlModuleMode mode)
 	{
-		(pActor.move as PlayerMove).NoInput.Pause(mode, true);
+		pActor.move.moveDir = Vector3.zero;
+		(pActor.move as PlayerMove).inputStatus.Pause(mode, true);
 		pActor.atk.attackModuleStat.Pause(mode, true);
 	}
 
 	public void EnableCtrl(ControlModuleMode mode)
 	{
-		(pActor.move as PlayerMove).NoInput.Pause(mode, false);
+		//pActor.move.moveDir = Vector3.zero;
+		(pActor.move as PlayerMove).inputStatus.Pause(mode, false);
 		pActor.atk.attackModuleStat.Pause(mode, false);
 	}
 

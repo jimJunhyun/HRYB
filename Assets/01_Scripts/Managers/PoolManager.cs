@@ -274,7 +274,7 @@ public class PoolManager : MonoBehaviour
 				sb.Append('&');
 				sb.Append(int.Parse(str[1]) + 1);
 				sb.Append('&');
-				sb.Append('&');
+				//sb.Append('&');
 				added.name = sb.ToString();
 				sb.Clear();
 				added.SetActive(false);

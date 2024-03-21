@@ -77,7 +77,7 @@ public class PlayerMove : MoveModule
 
 	RaycastHit hitCache;
 
-	public ModuleController NoInput = new ModuleController(false);
+	public ModuleController inputStatus = new ModuleController(false);
 
 	PlayerAttack pAttack;
 
@@ -355,6 +355,24 @@ public class PlayerMove : MoveModule
 		}
 	}
 
+	public override void ForceCalc()
+	{
+		if (forceDir.sqrMagnitude > 0.01f)
+		{
+			Vector3 v = forceDir;
+			v.y = 0;
+			if (slip || v.sqrMagnitude > 0.01f)
+			{
+				Vector3 antiForce = -(v) * GameManager.instance.forceResistance * Time.deltaTime;
+				forceDir += antiForce;
+			}
+		}
+		else
+		{
+			forceDir = Vector3.zero;
+		}
+	}
+
 	Vector3 GetDir(Transform to)
 	{
 		Vector3 v = to.position - transform.position;
@@ -450,7 +468,7 @@ public class PlayerMove : MoveModule
 
 	public void Move(InputAction.CallbackContext context)
 	{
-		if (!NoInput.Paused)
+		if (!inputStatus.Paused)
 		{
 			Vector2 inp = context.ReadValue<Vector2>();
 			if (moveStat != MoveStates.Climb)
@@ -514,7 +532,7 @@ public class PlayerMove : MoveModule
 
 	public void Jump(InputAction.CallbackContext context)
 	{
-		if (!NoInput.Paused)
+		if (!inputStatus.Paused)
 		{
 			if (context.performed && jumpable)
 			{
@@ -568,7 +586,7 @@ public class PlayerMove : MoveModule
 
 	public void Lock(InputAction.CallbackContext context)
 	{
-		if (!NoInput.Paused)
+		if (!inputStatus.Paused)
 		{
 			if (context.started)
 			{
@@ -630,7 +648,7 @@ public class PlayerMove : MoveModule
 
 	public void Roll(InputAction.CallbackContext context)
 	{
-		if (!NoInput.Paused)
+		if (!inputStatus.Paused)
 		{
 			if (context.started && moveStat != MoveStates.Climb && rollable && IsActualGrounded)
 			{
@@ -711,6 +729,7 @@ public class PlayerMove : MoveModule
 		else if (IsActualGrounded)
 		{
 			forceDir.y = 0f;
+			jumpComplete = false;
 		}
 		if (jumped && !isGrounded)
 		{
