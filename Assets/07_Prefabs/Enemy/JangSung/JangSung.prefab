@@ -19,8 +19,9 @@ GameObject:
   - component: {fileID: 2719180598335837514}
   - component: {fileID: 5216959805318715878}
   - component: {fileID: 2178317243217670839}
-  - component: {fileID: 5654347094407411979}
   - component: {fileID: 5373213743209681124}
+  - component: {fileID: 119962802420935432}
+  - component: {fileID: 891224687365898331}
   m_Layer: 0
   m_Name: JangSung
   m_TagString: Untagged
@@ -152,8 +153,9 @@ MonoBehaviour:
   initAtkDist: 0
   initAtkGap: 0
   initDamage:
-    yinAmt: 0
-    yangAmt: 0
+    black: 0
+    white: 0
+  target: {fileID: 0}
   DownAttackDist: 10
   FallDownAttackDist: 15
   MoveAttackDist: 100
@@ -177,7 +179,6 @@ MonoBehaviour:
   speedMod: 1
   gravity: 0
   groundThreshold: 0.5
-  immovable: 0
   _findPlayerRange: 30
   _normalSpeed: 7
   _fallDownMoveSpeed: 20
@@ -224,20 +225,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5654347094407411979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6548958457746408809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c83953c45b6f084a99446d88c1a95e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hpBar: {fileID: 0}
-  _lifeModule: {fileID: 0}
 --- !u!114 &5373213743209681124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,21 +239,61 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isImmune: 0
   initYinYang:
-    yinAmt: 20
-    yangAmt: 20
+    black: 0
+    white: 1000
   initAdequity:
-    yinAmt: 1
-    yangAmt: 1
-  initSoul: 0
+    black: 0
+    white: 0
   yy:
-    yinAmt: 0
-    yangAmt: 0
-  maxSoul: 0
-  regenMod: 1
+    black: 0
+    white: 500
+  regenMod:
+    black: 1
+    white: 1
+  fixedRegenMod:
+    black: 0
+    white: 0
   regenThreshold: 10
   applyMod: 1
   _barrierEffect: {fileID: 6036363885242095341, guid: 761ce3f370c6bdd4491bb2246cf28e18, type: 3}
   _visualPos: {fileID: 7856797209567409450}
+--- !u!135 &119962802420935432
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6548958457746408809}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 40
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &891224687365898331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6548958457746408809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f00205e3f6672f842b725828d8dbabd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layer:
+    serializedVersion: 2
+    m_Bits: 128
+  bossName: "\uCC9C\uD558\uB300\uC7A5"
 --- !u!1001 &7674778156736631489
 PrefabInstance:
   m_ObjectHideFlags: 0
