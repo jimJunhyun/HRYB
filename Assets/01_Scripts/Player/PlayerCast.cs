@@ -497,12 +497,11 @@ public class PlayerCast : CastModule
 		///
 		if (Input.GetKeyDown(KeyCode.Y))
 		{
-			
 			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("BackKick"), SkillSlotInfo.One, PlayerForm.Magic);
 		}
 		if (Input.GetKeyDown(KeyCode.H))
 		{
-			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("IceMultishot"), SkillSlotInfo.Two, PlayerForm.Magic);
+			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("FireWall"), SkillSlotInfo.Two, PlayerForm.Magic);
 		}
 		if (Input.GetKeyDown(KeyCode.N))
 		{

@@ -130,6 +130,7 @@ public class StatusEffects
 		{
 			GameManager.instance.pinp.ActivateInput();
 		}
+		Debug.Log("넉백끝");
 	}
 
 	void OnImmuneActivated(Actor self, Actor inflicter, float power)
