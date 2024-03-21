@@ -75,23 +75,25 @@ public class Arrow : DamageObject
 			if (other.TryGetComponent<LifeModule>(out LifeModule hit) && hit.GetActor() != owner)
 			{
 				
+				Vector3 hitPos = other.ClosestPointOnBounds(transform.position);
 				if(hitEffData != null)
 				{
-					Vector3 hitPos = other.ClosestPointOnBounds(transform.position);
 					//차격 지점을 알아내야만 함.
 					hitEffData?.Invoke(hitPos);
 					//타격 위치에 이펙트
+
 				}
 				foreach (var item in statData)
 				{
 					StatusEffects.ApplyStat(hit.GetActor(), owner, item.id, item.duration, item.power);
 				}
 				base.OnTriggerEnter(other);
+				
 				CameraManager.instance.ShakeCamFor(0.1f);
 			}
-			Debug.Log(other.name + " 과 충돌");
-			if(other.transform != owner)
+			if(other?.transform != owner?.transform)
 			{
+				Debug.Log(other.name + " 과 충돌해서 지움");
 				Returner();
 			}
 		}

@@ -53,20 +53,47 @@ public class PlayerAnimActions : MonoBehaviour
 
 	public void DoAttack(AnimationEvent evt)
 	{
-		SkillSlotInfo info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter);
+		string[] str = evt.stringParameter.Split('$');
+		SkillSlotInfo info;
+		if(str.Length > 1)
+		{
+			info = System.Enum.Parse<SkillSlotInfo>(str[1]);
+		}
+		else
+		{
+			info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter.Trim('$'));
+		}
 		(self.cast as PlayerCast).ActualSkillOperate(info);
 	}
 
 	public void SetAttackRange(AnimationEvent evt)
 	{
 		Debug.Log(evt.animatorClipInfo.clip.name + " : " + evt.stringParameter);
-		SkillSlotInfo info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter);
+		string[] str = evt.stringParameter.Split('$');
+		SkillSlotInfo info;
+		if (str.Length > 1)
+		{
+			info = System.Enum.Parse<SkillSlotInfo>(str[1]);
+		}
+		else
+		{
+			info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter.Trim('$'));
+		}
 		(self.cast as PlayerCast).ActualSkillOperate(info, evt.intParameter);
 	}
 
 	public void ResetAttackRange(AnimationEvent evt)
 	{
-		SkillSlotInfo info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter);
+		string[] str = evt.stringParameter.Split('$');
+		SkillSlotInfo info;
+		if (str.Length > 1)
+		{
+			info = System.Enum.Parse<SkillSlotInfo>(str[1]);
+		}
+		else
+		{
+			info = System.Enum.Parse<SkillSlotInfo>(evt.stringParameter.Trim('$'));
+		}
 		(self.cast as PlayerCast).ActualSkillDisoperate(info, evt.intParameter);
 	}
 
@@ -78,19 +105,19 @@ public class PlayerAnimActions : MonoBehaviour
 
 	public void PauseAnimation()
 	{
-		(self.anim as PlayerAnim).SetStopState();
+		(self.anim as PlayerAnim).SetLoopState();
 	}
 
 	public void ResumeAnimation()
 	{
-		(self.anim as PlayerAnim).ResetStopState();
+		(self.anim as PlayerAnim).ResetLoopState();
 	}
 
 	public void DisableInput()
 	{
-		GameManager.instance.pinp.DeactivateInput();
-		self.move.moveDir = Vector3.zero;
-		self.move.forceDir = Vector3.zero;
+		//GameManager.instance.pinp.DeactivateInput();
+		
+		//self.move.forceDir = Vector3.zero;
 		DisableMove();
 	}
 
