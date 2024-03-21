@@ -16,4 +16,13 @@ public class BossHPManager : MonoBehaviour
 
 		return obj;
 	}
+
+	public GameObject HideHP(Transform trm)
+	{
+
+		GameObject obj;
+		obj = Instantiate(GameManager.instance.pManager.HPBar, trm);	
+
+		return obj;
+	}
 }
