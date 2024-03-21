@@ -29,33 +29,17 @@ public class WolfMoveModule : MoveModule
 	
 	public override void Move()
 	{
-
-		
 		_isMove = true;
 	}
 	
 	public override void FixedUpdate()
 	{
-		ForceCalc();
-		GravityCalc();
-		transform.Translate(forceDir * Time.deltaTime, Space.World);
-
-		
-		
-		if (( forceDir.x > 0 && forceDir.y > 0 && forceDir.z > 0 ) || isGrounded == false)
-		{
-			agent.enabled =false;
-		}
-		else
-		{
-			agent.enabled =true;
-		}
-		
+		// Move();
 	}
 
 	private void Update()
 	{
-		if (_isMove==true && _target != null && agent.enabled==true)
+		if (_isMove==true && _target != null)
 		{
 			self.anim.SetMoveState(true);
 //			Debug.LogError(_target.transform.position);

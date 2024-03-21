@@ -29,7 +29,6 @@ public class ExplodeFoxFire : AttackBase
 		if(GameManager.instance.foxfire.Mode == FoxFireMode.Attatched)
 		{
 			GameManager.instance.foxfire.Explode();
-			PoolManager.GetObject("Lvl up", GameManager.instance.foxfire.transform.position, Quaternion.identity, 0.5f);
 		}
 	}
 }

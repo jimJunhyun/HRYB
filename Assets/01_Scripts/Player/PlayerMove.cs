@@ -241,7 +241,7 @@ public class PlayerMove : MoveModule
 
 	public override void Move()
 	{
-		if (!moveModuleStat.Paused)
+		if (!NoMove.Paused)
 		{
 			if (moveStat != MoveStates.Climb)
 			{
@@ -264,11 +264,11 @@ public class PlayerMove : MoveModule
 						{
 							Vector3 vec = MoveDirCalced;
 
-							if (vec.sqrMagnitude > 0.01f)
+							if (vec.sqrMagnitude != 0)
 							{
 								to = Quaternion.LookRotation(vec, Vector3.up);
-								RotateTo();
 							}
+							RotateTo();
 							PlayerControllerMove(vec);
 						}
 
@@ -672,7 +672,7 @@ public class PlayerMove : MoveModule
 	{
 		Debug.Log("DETECTED");
 		nearEnemies.Clear();
-		Collider[] c = Physics.OverlapSphere(transform.position, pAttack.targetMaxDist, ~(1 << GameManager.PLAYERLAYER | 1 << GameManager.GROUNDLAYER));
+		Collider[] c = Physics.OverlapSphere(transform.position, lockOnDist, ~(1 << GameManager.PLAYERLAYER | 1 << GameManager.GROUNDLAYER));
 		for (int i = 0; i < c.Length; i++)
 		{
 			if(c[i].TryGetComponent<Actor>(out Actor actor))
@@ -696,16 +696,14 @@ public class PlayerMove : MoveModule
 		foreach (var item in nearEnemies)
 		{
 			Vector3 distVec = (item.transform.position - transform.position);
-			if(Vector3.Dot(distVec.normalized,  Camera.main.transform.forward) > pAttack.TargetMaxAngleCos)
+			if (distVec.sqrMagnitude < pAttack.targetMaxDist * pAttack.targetMaxDist)
 			{
 				if (distVec.sqrMagnitude < nearestDist)
 				{
 					nearestDist = distVec.sqrMagnitude;
 					pAttack.target = item.transform;
 				}
-
 			}
-			
 		}
 	}
 

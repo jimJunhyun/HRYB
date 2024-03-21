@@ -160,7 +160,7 @@ public class StatusEffects
 
 	void OnSlowActivated(Actor self, Actor inflicter, float power)
 	{
-		self.move.moveModuleStat.HandleSpeed(power, ModuleController.SpeedMode.Slow);
+		self.move.speedMod -= power;
 	}
 	void OnSlowUpdated(Actor self, float power)
 	{
@@ -168,12 +168,12 @@ public class StatusEffects
 	}
 	void OnSlowEnded(Actor self, float power)
 	{
-		self.move.moveModuleStat.HandleSpeed(-power, ModuleController.SpeedMode.Slow);
+		self.move.speedMod += power;
 	}
 
 	void OnBindActivated(Actor self, Actor inflicter, float power)
 	{
-		self.move.moveModuleStat.Pause(ControlModuleMode.Status, true);
+		self.move.NoMove.Pause(ControlModuleMode.Status, true);
 	}
 	void OnBindUpdated(Actor self, float power)
 	{
@@ -181,7 +181,7 @@ public class StatusEffects
 	}
 	void OnBindEnded(Actor self, float power)
 	{
-		self.move.moveModuleStat.Pause(ControlModuleMode.Status, false);
+		self.move.NoMove.Pause(ControlModuleMode.Status, false);
 	}
 
 	void OnEnhanceIceActivated(Actor self, Actor inflicter, float power)
@@ -238,8 +238,8 @@ public class StatusEffects
 
 	void OnStunActivated(Actor self, Actor inflicter, float power)
 	{
-		self.move.moveModuleStat.Pause(ControlModuleMode.Status, true);
-		self.atk.attackModuleStat.Pause(ControlModuleMode.Status, true);
+		self.move.NoMove.Pause(ControlModuleMode.Status, true);
+		self.atk.NoAttack.Pause(ControlModuleMode.Status, true);
 		self.cast.SetNoCastState(ControlModuleMode.Status, true);
 	}
 	void OnStunUpdated(Actor self, float power)
@@ -248,8 +248,8 @@ public class StatusEffects
 	}
 	void OnStunEnded(Actor self, float power)
 	{
-		self.move.moveModuleStat.Pause(ControlModuleMode.Status, false);
-		self.atk.attackModuleStat.Pause(ControlModuleMode.Status, false);
+		self.move.NoMove.Pause(ControlModuleMode.Status, false);
+		self.atk.NoAttack.Pause(ControlModuleMode.Status, false);
 		self.cast.SetNoCastState(ControlModuleMode.Status, false);
 	}
 
@@ -274,15 +274,14 @@ public class StatusEffects
 	{
 		if(attacker.move is PlayerMove)
 		{
-			StatusEffects.ApplyStat(attacker, attacker, StatEffID.SpeedUp, 3, 0.1f);
+			StatusEffects.ApplyStat(attacker, attacker, StatEffID.SpeedUp, 3);
 			GameManager.instance.foxfire.Accumulate(dmg);
 		}
 	}
 
 	void OnSpeedUpActivated(Actor self, Actor inflicter, float power)
 	{
-		self.move.moveModuleStat.HandleSpeed(-power, ModuleController.SpeedMode.Slow);
-
+		self.move.speedMod += 0.1f;
 	}
 	void OnSpeedUpUpdated(Actor self, float power)
 	{
@@ -290,7 +289,7 @@ public class StatusEffects
 	}
 	void OnSpeedUpEnded(Actor self, float power)
 	{
-		self.move.moveModuleStat.HandleSpeed(power, ModuleController.SpeedMode.Slow);
+		self.move.speedMod -= 0.1f;
 	}
 
 	void OnBleedingActivated(Actor self, Actor inflicter, float power)

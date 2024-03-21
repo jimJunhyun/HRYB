@@ -21,23 +21,17 @@ public class PlayerAttack : AttackModule
 
 	
 	public float targetMaxDist;
-	public float targetMaxAngle;
-	public float TargetMaxAngleCos
-	{
-		get=>Mathf.Cos(targetMaxAngle);
-	}
 
 	UnityAction updateActs;
 
-	//float AimTime { get => Time.time - aimStart;}
+	float AimTime { get => Time.time - aimStart;}
 
-	//float aimStart = 0;
+	float aimStart = 0;
 
 	Coroutine ongoingResetter;
 
 	internal bool clickL = false;
 	internal bool clickR = false;
-	public ModuleController NoClick;
 
 	public Action<GameObject> onNextUse = default; //사용 시점에서 등장하는 이펙트 관련.
 	public Action<Actor, Compose> onNextSkill = default; //자신, 스킬정보
@@ -45,7 +39,6 @@ public class PlayerAttack : AttackModule
 
 
 	PlayerAnimActions animActions;
-
 
 	private void Awake()
 	{
@@ -73,7 +66,7 @@ public class PlayerAttack : AttackModule
 		//{
 			if (!clickL)
 			{
-				if ((NoClick.Paused || attackModuleStat.Paused) && !clickR)
+				if (NoAttack.Paused && !clickR)
 					return;
 				//Debug.LogWarning("phase : " +context.phase  + " : " + context.started + " : " + context.canceled);
 				if (!clickR && context.started)
@@ -102,7 +95,7 @@ public class PlayerAttack : AttackModule
 		//{
 			if (!clickR)
 			{
-				if ((NoClick.Paused || attackModuleStat.Paused) && !clickL)
+				if (NoAttack.Paused && !clickL)
 					return;
 				if (context.started && !clickL)
 				{
@@ -164,7 +157,7 @@ public class PlayerAttack : AttackModule
 	public void SetBowStat()
 	{
 		//loaded = true;
-		//aimStart = Time.time;
+		aimStart = Time.time;
 	}
 
 	//public void ObtainBowRender()

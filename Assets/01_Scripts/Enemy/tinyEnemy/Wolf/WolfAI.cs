@@ -78,7 +78,7 @@ public class WolfAI : AISetter
 		    Attacker normalAttack = new Attacker(self, () =>
 		    {
 			    _normalAtt.ResetReady();
-				
+
 			    StopExamine();
 		    });
 
@@ -94,7 +94,7 @@ public class WolfAI : AISetter
 		    {
 
 			    _moveModule.SetTarget(player.transform);
-				
+
 
 		    });
 		    Mover move = new Mover(self);
