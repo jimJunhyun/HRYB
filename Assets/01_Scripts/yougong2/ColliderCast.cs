@@ -30,6 +30,8 @@ public abstract class ColliderCast : MonoBehaviour
 	public abstract Collider[] ReturnColliders();
 	
 	public Action<LifeModule> CastAct;
+	private Action<Transform, LifeModule> FirstAct;
+	private bool isFirst = false;
 	
 	protected void Update()
 	{
@@ -58,6 +60,12 @@ public abstract class ColliderCast : MonoBehaviour
 			if (col.TryGetComponent<LifeModule>(out LifeModule lf))
 			{
 				CastAct?.Invoke(lf);
+				
+				if (isFirst == false)
+				{
+					FirstAct?.Invoke(Owner, lf);
+					isFirst = true;
+				}
 			}
 			
 		}
@@ -68,9 +76,12 @@ public abstract class ColliderCast : MonoBehaviour
 		StopAllCoroutines();
 	}
 
-	public void Now(Transform _owner, Action<LifeModule> act = null, int attackAble = -1, float StartSec = -1, float EndSec = -1, float dieSec = -1)
+	public void Now(Transform _owner, Action<LifeModule> act = null, Action<Transform, LifeModule> act2=null, int attackAble = -1, float StartSec = -1, float EndSec = -1, float dieSec = -1)
 	{
 		this.Owner = _owner;
+
+		FirstAct = act2;
+		isFirst = false;
 		
 		_attackAbleCount = attackAble;
 		if(StartSec > 0)

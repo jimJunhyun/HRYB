@@ -23,10 +23,25 @@ public enum ControlModuleMode
 
 public struct ModuleController
 {
+	public enum SpeedMode
+	{
+		Slow, //+감소  -증가
+		Save, //+저장 -불러오기
+		Fix, //+고정 설정 -고정 해제
+	}
+
 	int animPause;
 	int statPause;
 	int timelinePause;
 	bool stopFlag;
+
+	float? fixedSpeed;
+	float speed;
+	Stack<float> prevSpeeds;
+	//공격이면 공격속도
+	//이동이면 이동속도
+	//뭐면 뭔속도
+	//배율임.
 
 	bool AnimPause
 	{
@@ -50,12 +65,23 @@ public struct ModuleController
 		}
 	}
 
+	public float Speed
+	{
+		get
+		{
+			return fixedSpeed == null ? speed : (float)fixedSpeed;
+		}
+	}
+
 	public ModuleController(bool disabled)
 	{
 		animPause = 0;
 		statPause = 0;
 		timelinePause = 0;
 		stopFlag = disabled;
+		speed = 1;
+		fixedSpeed = null;
+		prevSpeeds = new Stack<float>();
 		//Debug.Log("STF : " +stopFlag);
 	}
 
@@ -103,12 +129,81 @@ public struct ModuleController
 		}
 	}
 
+	public void Pause(ControlModuleMode mode, bool stat, float dur)
+	{
+		GameManager.instance.StartCoroutine(DelPauser(mode, stat, dur));
+	}
+
+	public void HandleSpeed(float amt, SpeedMode mode)
+	{
+		switch (mode)
+		{
+			case SpeedMode.Slow:
+				speed -= amt;
+				break;
+			case SpeedMode.Save:
+				if(amt > 0)
+				{
+					prevSpeeds.Push(speed);
+				}
+				else
+				{
+					if (prevSpeeds.Count > 0)
+					{
+						speed = prevSpeeds.Pop();
+					}
+					else
+					{
+						Debug.Log("NOTHING TO LOAD!:");
+					}
+				}
+				break;
+			case SpeedMode.Fix:
+				if(amt > 0)
+				{
+					fixedSpeed = amt;
+				}
+				else
+				{
+					fixedSpeed = null;
+				}
+				break;
+			default:
+				Debug.Log("NEW SPEEDMODE CREATED?!");
+				break;
+		}
+	}
+
+	public void HandleSpeed(float amt, float dur, SpeedMode mode)
+	{
+		GameManager.instance.StartCoroutine(DelHandler(amt, dur, mode));
+	}
+
 	public void CompleteReset()
 	{
 		animPause = 0;
 		statPause = 0;
 		timelinePause = 0;
 		stopFlag = false;
+
+		speed = 1;
+		prevSpeeds.Clear();
+		fixedSpeed = null;
+	}
+
+	IEnumerator DelPauser(ControlModuleMode mode, bool stat, float delSec)
+	{
+		Pause(mode, stat);
+		yield return new WaitForSeconds(delSec);
+		Pause(mode, !stat);
+
+	}
+
+	IEnumerator DelHandler(float amt, float dur, SpeedMode mode)
+	{
+		HandleSpeed(amt, mode);
+		yield return new WaitForSeconds(dur);
+		HandleSpeed(-amt, mode);
 	}
 }
 
@@ -138,11 +233,15 @@ public class GameManager : MonoBehaviour
 	
 	public PrefabManager pManager;
 
+	public BossHPManager bHPManager;
+
 	public PlayableDirector timeliner;
 	public PlayableDirector timeliner2;
 
 	public ImageManager imageManager;
 	public CameraManager camManager;
+
+	public DamageTextShower shower;
 
 	//public Arrow arrow;
 	public FollowingFoxFire foxfire;
@@ -192,7 +291,7 @@ public class GameManager : MonoBehaviour
 		pActor = player.GetComponent<Actor>();
 
 
-		
+		bHPManager = GameObject.Find("bossHPGroup").GetComponent<BossHPManager>();
 		craftManager = GameObject.Find("CraftManager").GetComponent<CraftManager>();
 		imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
 		uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
@@ -207,6 +306,7 @@ public class GameManager : MonoBehaviour
 		skillLoader = new SkillLoader();
 
 		foxfire = GameObject.Find("Fox Fire").GetComponent<FollowingFoxFire>();
+		shower = GameObject.Find("DamageTextManager").GetComponent<DamageTextShower>();
 
 		
 	}
@@ -244,14 +344,16 @@ public class GameManager : MonoBehaviour
 
 	public void DisableCtrl(ControlModuleMode mode)
 	{
-		(pActor.move as PlayerMove).NoInput.Pause(mode, true);
-		pActor.atk.NoAttack.Pause(mode, true);
+		pActor.move.moveDir = Vector3.zero;
+		(pActor.move as PlayerMove).inputStatus.Pause(mode, true);
+		pActor.atk.attackModuleStat.Pause(mode, true);
 	}
 
 	public void EnableCtrl(ControlModuleMode mode)
 	{
-		(pActor.move as PlayerMove).NoInput.Pause(mode, false);
-		pActor.atk.NoAttack.Pause(mode, false);
+		//pActor.move.moveDir = Vector3.zero;
+		(pActor.move as PlayerMove).inputStatus.Pause(mode, false);
+		pActor.atk.attackModuleStat.Pause(mode, false);
 	}
 
 

@@ -67,6 +67,24 @@ public class ComboRoot : SkillRoot
 		NextCombo(true, self);
 	}
 
+	public override void OnAnimationStart(Actor self, AnimationEvent evt)
+	{
+		if (curCombo >= childs.Count)
+		{
+			ResetCombo();
+			Debug.Log("콤보 최대, 초기화");
+		}
+		Debug.Log($"콤보 {curCombo + 1}/{childs.Count}");
+		
+		//childs[curCombo].MyOperation(self);
+		childs[evt.intParameter].OnAnimationStart(self, evt);
+		
+
+		NextCombo(true, self);
+		
+	}
+	
+
 	public override void SetAnimations(Actor to, SkillSlotInfo info)
 	{
 		if ((to.anim as PlayerAnim).curEquipped != this)
@@ -82,7 +100,9 @@ public class ComboRoot : SkillRoot
 					{
 						for (int j = 0; j < events.Length; j++)
 						{
-							events[j].stringParameter = info.ToString();
+							string t = events[j].stringParameter.Split("$")[0];
+							
+							events[j].stringParameter = t + "$" + info.ToString();
 							events[j].intParameter = i;
 						}
 						clip.events = events;

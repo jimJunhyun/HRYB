@@ -11,13 +11,13 @@ public class SpeedUp : Leaf
 
 	internal override void MyOperation(Actor self)
 	{
-		self.move.speedMod += 0.5f;
+		self.move.moveModuleStat.HandleSpeed(-level, ModuleController.SpeedMode.Slow);
 		Debug.Log("이속증가");
 		GameManager.instance.StartCoroutine(DelDisoperate(self));
 	}
 	internal override void MyDisoperation(Actor self)
 	{
-		self.move.speedMod -= 0.5f;
+		self.move.moveModuleStat.HandleSpeed(level, ModuleController.SpeedMode.Slow);
 	}
 
 	

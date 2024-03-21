@@ -171,10 +171,13 @@ public class PlayerCast : CastModule
 
 	private void Start()
 	{
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("NormalBowAttack"), SkillSlotInfo.LClick, PlayerForm.Magic);
+		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("NormalBowAttack"), SkillSlotInfo.LClick, PlayerForm.Magic);
 		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YusungSmith"), SkillSlotInfo.RClick, PlayerForm.Magic);
-
+		
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("SkyBritgh"), SkillSlotInfo.RClick, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YusungSmith"), SkillSlotInfo.LClick, PlayerForm.Magic);
+		// YohoNormalAttack
+		
 		nameCastPair.Add("interact" , new Preparation(
 		(self)=>
 		{
@@ -192,7 +195,7 @@ public class PlayerCast : CastModule
 			{
 				//Debug.Log($"delSec : {GameManager.instance.pinter.curFocused.InterTime}");
 				float t = (GetActor().sight as PlayerInter).curFocused.InterTime;
-				(GetActor().anim as PlayerAnim).SetInterSpeed((1 / t) * castMod);
+				(GetActor().anim as PlayerAnim).SetInterSpeed((1 / t) * castModuleStat.Speed);
 				return t;
 			}
 			return 0;
@@ -212,7 +215,7 @@ public class PlayerCast : CastModule
 			if ((GetActor().sight as PlayerInter).curFocused != null)
 			{
 				float t = (GetActor().sight as PlayerInter).curFocused.InterTime;
-				(GetActor().anim as PlayerAnim).SetInterSpeed((1 / t) * castMod);
+				(GetActor().anim as PlayerAnim).SetInterSpeed((1 / t) * castModuleStat.Speed);
 				return t;
 			}
 			return 0;
@@ -390,6 +393,7 @@ public class PlayerCast : CastModule
 		{
 			if (self.TryGetComponent<Actor>(out Actor a))
 			{
+				//Debug.Log("CASTED");
 				nowSkillSlot[(int)SkillSlotInfo.LClick].Execute(a);
 				_nowSkillUse = nowSkillSlot[((int)SkillSlotInfo.LClick)].skInfo;
 			}
@@ -461,10 +465,10 @@ public class PlayerCast : CastModule
 		GameManager.instance.uiManager.interingUI.On();
 		float t = 0;
 		float waitSec = p.Timefunc();
-		while (waitSec * castMod > t)
+		while (waitSec * castModuleStat.Speed > t)
 		{
 			t += Time.deltaTime;
-			GameManager.instance.uiManager.interingUI.SetGaugeValue(t / (waitSec * castMod));
+			GameManager.instance.uiManager.interingUI.SetGaugeValue(t / (waitSec * castModuleStat.Speed));
 			yield return null;
 		}
 		p.onPrepComp?.Invoke(transform);
@@ -491,6 +495,10 @@ public class PlayerCast : CastModule
 		if (Input.GetKeyDown(KeyCode.N))
 		{
 			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("EnhanceIce"), SkillSlotInfo.Three, PlayerForm.Magic);
+		}
+		if (Input.GetKeyDown(KeyCode.RightShift))
+		{
+			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
 		}
 		///
 	}
