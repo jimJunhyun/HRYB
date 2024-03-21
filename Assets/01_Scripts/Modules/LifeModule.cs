@@ -215,20 +215,21 @@ public class LifeModule : Module
 		
 		if (appliedDebuff.ContainsValue(new AppliedStatus(eff, 0)))
 		{
-			foreach (var item in appliedDebuff)
+			Dictionary<string, AppliedStatus> statCopy = new Dictionary<string, AppliedStatus>(appliedDebuff);
+			foreach (var item in statCopy)
 			{
 				if(item.Value.eff.Equals(eff))
 				{
 					Debug.Log($"{eff.name}사라짐");
 					GetActor().updateActs -= myUpdateAct;
 					eff.onEnded.Invoke(GetActor(), power);
+					statCopy.Remove(item.Key);
 					break;
 				}
 
-
 			}
+			appliedDebuff = statCopy;
 		}
-
 		
 	}
 
@@ -370,6 +371,14 @@ public class LifeModule : Module
 					}
 					yield return w;
 					DamageYYBase(data);
+					if (data.white > 0)
+					{
+						GameManager.instance.shower.GenerateDamageText(transform.position, data.white, YYInfo.White);
+					}
+					if (data.black > 0)
+					{
+						GameManager.instance.shower.GenerateDamageText(transform.position, data.black, YYInfo.Black);
+					}
 				}
 				break;
 			case DamageType.Continuous:
@@ -381,6 +390,14 @@ public class LifeModule : Module
 					curT += Time.deltaTime;
 					yield return w;
 					DamageYYBase(incPerSec * Time.deltaTime);
+					if (incPerSec.white > 0)
+					{
+						GameManager.instance.shower.GenerateDamageText(transform.position, incPerSec.white, YYInfo.White);
+					}
+					if (incPerSec.black > 0)
+					{
+						GameManager.instance.shower.GenerateDamageText(transform.position, incPerSec.black, YYInfo.Black);
+					}
 				}
 				break;
 			default:

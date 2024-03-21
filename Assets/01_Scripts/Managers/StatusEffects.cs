@@ -239,6 +239,7 @@ public class StatusEffects
 
 	void OnStunActivated(Actor self, Actor inflicter, float power)
 	{
+		Debug.Log("기젌했다.");
 		self.move.moveModuleStat.Pause(ControlModuleMode.Status, true);
 		self.atk.attackModuleStat.Pause(ControlModuleMode.Status, true);
 		self.cast.SetNoCastState(ControlModuleMode.Status, true);
@@ -249,6 +250,7 @@ public class StatusEffects
 	}
 	void OnStunEnded(Actor self, float power)
 	{
+		Debug.Log("기젌풀했다.");
 		self.move.moveModuleStat.Pause(ControlModuleMode.Status, false);
 		self.atk.attackModuleStat.Pause(ControlModuleMode.Status, false);
 		self.cast.SetNoCastState(ControlModuleMode.Status, false);
@@ -415,8 +417,8 @@ public class StatusEffects
 			power *= GameManager.instance.forceResistance;
 		}
 		Action<Actor> updateAct = to.life.ApplyStatus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], by, power, dur, out string guid);
-		//Debug.Log($"{updateAct != null} && {guid != null} => {updateAct != null && guid != null}" );
-		if(updateAct != null && guid != null)
+		Debug.Log($"{updateAct != null} && {guid != null} => {updateAct != null && guid != null}");
+		if (updateAct != null && guid != null)
 		{
 			List<GameObject> effs = new List<GameObject>();
 			for (int i = 0; i < GameManager.instance.statEff.effDict.data[id].Count; i++)

@@ -30,6 +30,7 @@ public class ExplodeFoxFire : AttackBase
 		{
 			GameManager.instance.foxfire.Explode();
 			PoolManager.GetObject("Lvl up", GameManager.instance.foxfire.transform.position, Quaternion.identity, 0.5f);
+			
 		}
 	}
 }

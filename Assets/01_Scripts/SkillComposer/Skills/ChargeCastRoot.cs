@@ -26,7 +26,7 @@ public class ChargeCastRoot : SkillRoot
 	Actor owner;
 
 	float chargeT => Time.time - chargeStartSec;
-	bool overcooked => chargeT >= maxChargeSec;
+	bool overcooked => charging && chargeT >= maxChargeSec;
 	bool prepared => chargeT >= chargeThreshold && !overcooked;
 
 
@@ -37,9 +37,8 @@ public class ChargeCastRoot : SkillRoot
 			if (self.anim is PlayerAnim pa)
 			{
 				pa.SetAttackTrigger(0); //애니메이션트리거로 PauseAnimation 및 MyOperation (SetAttackRange) 발동
-				charging = true;
 				chargeStartSec = Time.time;
-				GameManager.instance.uiManager.interingUI.On();
+				
 			}
 		}
 		else
@@ -57,8 +56,8 @@ public class ChargeCastRoot : SkillRoot
 			{
 				pa.ResetLoopState();
 				pa.SetDisopTrigger(0);
-				charging = false;
-				GameManager.instance.uiManager.interingUI.Off();
+				
+				
 			}
 		}
 		else
@@ -74,6 +73,9 @@ public class ChargeCastRoot : SkillRoot
 		{
 			childs[i].Operate(self);
 		}
+		charging  = true;
+		GameManager.instance.uiManager.interingUI.On();
+		Debug.Log("INTERINGNGNGNGN");
 	}
 
 	internal override void MyDisoperation(Actor self)
@@ -82,6 +84,9 @@ public class ChargeCastRoot : SkillRoot
 		{
 			GameManager.instance.StartCoroutine(DelDisoperate(self));
 		}
+		GameManager.instance.uiManager.interingUI.Off();
+		Debug.Log("충전종료, 스킬을 사용했는가? : " + prepared);
+		charging = false;
 	}
 
 	public override void UpdateStatus()
@@ -90,6 +95,7 @@ public class ChargeCastRoot : SkillRoot
 		if (charging)
 		{
 			GameManager.instance.uiManager.interingUI.SetGaugeValue(chargeT / chargeThreshold);
+			Debug.Log("충전중우");
 		}
 		if (overcooked)
 		{
