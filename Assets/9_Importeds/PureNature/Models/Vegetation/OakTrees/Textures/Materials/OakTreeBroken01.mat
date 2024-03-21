@@ -11,9 +11,11 @@ Material:
   m_Shader: {fileID: 4800000, guid: d9d09221179189a449fe37a0ddad2931, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords:
+  m_ValidKeywords:
   - _BASEWINDCHANNEL_B
+  - _LAYERCHANNEL_G
+  - _VERTEXCOLORCHANNEL_RGBA
+  m_InvalidKeywords:
   - _BLENDNORMALS_ON
   - _DEPOSITCHANNEL_R
   - _NORMALMAP
@@ -138,6 +140,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _InvertMask: 0
+    - _LayerChannel: 1
     - _LayerContrast: 0
     - _LayerMetallicPower: 0.5
     - _LayerOcclusionPower: 1
