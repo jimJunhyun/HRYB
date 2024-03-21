@@ -5,7 +5,7 @@ using UnityEngine;
 public class Wolf_normalAttackModule : EnemyAttackModule
 {
 	private bool left = false;
-	private ColliderCast _nowCols;
+
 	
 	public override void SetAttackRange(int idx)
 	{

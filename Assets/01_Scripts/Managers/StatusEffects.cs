@@ -400,6 +400,9 @@ public class StatusEffects
 		}
 	}
 
+	public static Dictionary<StatEffID, float> _bufferDurations = new();
+	
+
 	public static void ApplyStat(Actor to, Actor by, StatEffID id, float dur, float pow = 1)
 	{
 		GameManager.instance.StartCoroutine(DelApplier(to, by, id, dur, pow));
@@ -443,6 +446,8 @@ public class StatusEffects
 				//Debug.Log(id + " : TIMEPASSING");
 				yield return null;
 				t += Time.deltaTime;
+				Debug.LogError(t);
+				_bufferDurations[id] = dur - t;
 			}
 			to.life.EndStaus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], updateAct, power);
 			if (effs.Count > 0)

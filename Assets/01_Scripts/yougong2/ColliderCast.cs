@@ -25,6 +25,9 @@ public abstract class ColliderCast : MonoBehaviour
 	
 	
 	private int _attackAbleCount = 0;
+
+	private bool _isDamaged = false;
+	public bool IsDamaged => _isDamaged;
 	
 	
 	public abstract Collider[] ReturnColliders();
@@ -60,7 +63,7 @@ public abstract class ColliderCast : MonoBehaviour
 			if (col.TryGetComponent<LifeModule>(out LifeModule lf))
 			{
 				CastAct?.Invoke(lf);
-				
+				_isDamaged = true;
 				if (isFirst == false)
 				{
 					FirstAct?.Invoke(Owner, lf);
@@ -79,7 +82,7 @@ public abstract class ColliderCast : MonoBehaviour
 	public void Now(Transform _owner, Action<LifeModule> act = null, Action<Transform, LifeModule> act2=null, int attackAble = -1, float StartSec = -1, float EndSec = -1, float dieSec = -1)
 	{
 		this.Owner = _owner;
-
+		_isDamaged = false;
 		FirstAct = act2;
 		isFirst = false;
 		

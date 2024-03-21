@@ -6,9 +6,18 @@ using UnityEngine;
 public abstract class EnemyAttackModule : AttackModule
 {
 	Actor _target;
-
+	protected ColliderCast _nowCols;
 	public Actor Target => _target;
 
+
+	public void ResetCols()
+	{
+		if (_nowCols != null)
+		{
+			_nowCols.End();
+			_nowCols = null;
+		}
+	}
 	
 	protected string AttackStd;
 	public override void Attack() { }

@@ -61,11 +61,19 @@ public class WolfAI : AISetter
 		    self.anim.SetIdleState(true);
 
 
+		    StunNode _ishaveStun = new StunNode(self, () =>
+		    {
+				Debug.LogError(gameObject.name + " 일어남");
+		    });
+		    Sequencer stunSeq = new Sequencer();
 
-
+		    stunSeq.connecteds.Add(_ishaveStun);
+		    
+		    
 		    #region 평타
 
 		    Waiter _normalAtt = new Waiter(1.5f);
+		    
 		    IsInRange noramlRange = new IsInRange(self, player.transform, Attackrange, null, () =>
 		    {
 
@@ -75,6 +83,7 @@ public class WolfAI : AISetter
 			    
 
 		    });
+		    
 		    Attacker normalAttack = new Attacker(self, () =>
 		    {
 			    _normalAtt.ResetReady();
@@ -122,7 +131,8 @@ public class WolfAI : AISetter
 		    ShowIdler.connecteds.Add(Idler);
 		    ShowIdler.connecteds.Add(idles);
 
-		    //head.connecteds.Add(normalATK);
+		    head.connecteds.Add(stunSeq);
+		    head.connecteds.Add(normalATK);
 		    head.connecteds.Add(ShowIdler);
 		    head.connecteds.Add(Moved);
 		    head.connecteds.Add(Faridler);

@@ -12,7 +12,17 @@ public class PlayerAttack : AttackModule
 {
 	protected float secPerCharge;
 	public float initSecPerCharge;
+	
+	[Header("GrabPos")]
+	[SerializeField] public Transform _grabPos;
 
+	public GameObject _grabedEnemy;
+
+	bool _NoInterect = false;
+
+	public Coroutine _grabCO;
+	public int BleedValue = 0;
+	 
 	public float SecPerCharge { get => secPerCharge; }
 
 	//VisualEffect chargeEff;
@@ -46,7 +56,6 @@ public class PlayerAttack : AttackModule
 
 	PlayerAnimActions animActions;
 
-
 	private void Awake()
 	{
 		ShootPos = GameObject.Find("ShootPos").transform;
@@ -65,6 +74,23 @@ public class PlayerAttack : AttackModule
 	private void Update()
 	{
 		updateActs?.Invoke();
+		if (_grabPos.childCount != 0 && _grabedEnemy != null)
+		{
+			if (_NoInterect == false)
+			{
+				_NoInterect = true;
+				_grabCO = StartCoroutine(GrabCorotine());
+			}
+		}
+	}
+
+
+	IEnumerator GrabCorotine()
+	{
+		yield return new WaitForSeconds(3.0f);
+		_grabedEnemy.transform.parent = null;
+		_grabedEnemy = null;
+		_NoInterect = false;
 	}
 
 	public void OnAim(InputAction.CallbackContext context)

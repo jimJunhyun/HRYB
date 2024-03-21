@@ -83,8 +83,7 @@ public class EffectManager : Singleton<EffectManager>
 			obj.transform.parent = transform;
 		}
 		else
-		{
-			Debug.LogError($"{obj.name} doesn't exist in pool!");
+		{ Debug.LogError($"{obj.name} doesn't exist in pool!");
 		}
 	}
 	

@@ -38,24 +38,29 @@ public class WolfMoveModule : MoveModule
 	public override void FixedUpdate()
 	{
 
-		
-		
-		if (( forceDir.y > 0 ) || isGrounded == false)
+		if (_isCanMove != true)
 		{
-			Character.enabled = true;
-			agent.enabled =false;
+			if (( forceDir.y > 0 ) || isGrounded == false)
+			{
+				Character.enabled = true;
+				agent.enabled =false;
 			
-			ForceCalc();
-			GravityCalc();
-			//transform.Translate(forceDir * Time.deltaTime, Space.World);
-			Character.Move( (forceDir) * Time.deltaTime);
+				ForceCalc();
+				GravityCalc();
+				//transform.Translate(forceDir * Time.deltaTime, Space.World);
+				if (_isCanMove == false)
+				{
+					Character.Move((forceDir) * Time.deltaTime);
+				}
 //			Debug.LogError(forceDir);
+			}
+			else
+			{
+				Character.enabled = false;
+				agent.enabled =true;
+			}
 		}
-		else
-		{
-			Character.enabled = false;
-			agent.enabled =true;
-		}
+
 		
 	}
 
