@@ -179,16 +179,16 @@ public class HoldRoot : SkillRoot
 			//dur
 			for (int i = 0; i < childs.Count; i++)
 			{
-				if (childs[i].animClipLoop != null)
+				if (childs[i].animClipLoopings != null)
 				{
-					AnimationEvent[] events = childs[i].animClipLoop.events;
+					AnimationEvent[] events = childs[i].animClipLoopings.events;
 					for (int j = 0; j < events.Length; j++)
 					{
 						events[j].stringParameter = info.ToString();
 					}
-					childs[i].animClipLoop.events = events;
-					clips.Add(childs[i].animClipLoop);
-					Debug.Log($"New Clip : {childs[i].animClipLoop}");
+					childs[i].animClipLoopings.events = events;
+					clips.Add(childs[i].animClipLoopings);
+					Debug.Log($"New Clip : {childs[i].animClipLoopings}");
 				}
 			}
 			for (int i = 0; i < 5 - childs.Count; i++)

@@ -31,7 +31,8 @@ public class PlayerAnim : AnimModule
 	protected readonly int disop2Hash = Animator.StringToHash("Disop2");
 	protected readonly int disop3Hash = Animator.StringToHash("Disop3");
 	protected readonly int disop4Hash = Animator.StringToHash("Disop4");
-	protected readonly int doLoopHash = Animator.StringToHash("DoLoop");
+	protected readonly int loopAfterHash = Animator.StringToHash("LoopAfter");
+
 
 	PlayerMove pmove;
 
@@ -50,12 +51,12 @@ public class PlayerAnim : AnimModule
 
 	internal void SetLoopState()
 	{
-		anim.SetBool(doLoopHash, true);
+		anim.SetBool(loopAfterHash, true);
 	}
 
 	internal void ResetLoopState()
 	{
-		anim.SetBool(doLoopHash, false);
+		anim.SetBool(loopAfterHash, false);
 	}
 
 	private void LateUpdate()
