@@ -6,7 +6,7 @@ public abstract class AttackBase : Leaf
 {
 	public float damageMult;
 	public string relateTrmName;
-	public List<StatusEffectApplyData> statEff;
+	
 
 	protected Transform relatedTransform;
 

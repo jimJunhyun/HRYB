@@ -84,7 +84,7 @@ public class HoldRoot : SkillRoot
 		if(!holding && Time.time - prevReloadSec >= reloadSec && ammo < maxAmmo)
 		{
 			ammo += 1;
-			Debug.Log($"장전 {ammo}/{maxAmmo}");
+			//Debug.Log($"장전 {ammo}/{maxAmmo}");
 			prevReloadSec = Time.time;
 		}
 	}
@@ -94,7 +94,7 @@ public class HoldRoot : SkillRoot
 	{
 		if (holding)
 		{
-			Debug.Log("hold Ended");
+			//Debug.Log("hold Ended with " + curMode);
 			holding = false;
 
 			if(curMode == childs.Count - 1 && self.atk is PlayerAttack pa)

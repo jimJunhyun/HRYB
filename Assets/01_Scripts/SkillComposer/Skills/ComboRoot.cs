@@ -169,6 +169,12 @@ public class ComboRoot : SkillRoot
 			curCombo += 1; 
 			prevOperateSec = Time.time;
 		}
+
+		if (self.atk is PlayerAttack atk)
+		{
+			Debug.Log("각종강화효과지우기");
+			atk.HandleRemoveCall();
+		}
 	}
 
 	public void ResetCombo()

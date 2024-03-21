@@ -93,6 +93,8 @@ public class LifeModule : Module
 		get => yy.white <= 0;
 	}
 
+	public bool superArmor = false;
+
 	protected bool regenOn = true;
 	float diff;
 	private bool _isFirstHit;
@@ -226,24 +228,34 @@ public class LifeModule : Module
 		
 	}
 
-	public void RemoveStatEff(string idx)
+	public void RemoveStatEff(string guid)
 	{
 		Debug.Log(name + " EffectCount : " + appliedDebuff.Count);
 		Debug.Log("스d탯제거중...");
-		AppliedStatus stat = appliedDebuff[idx];
+		AppliedStatus stat = appliedDebuff[guid];
 		stat.dur = 0;
-		appliedDebuff[idx] = stat;
+		appliedDebuff[guid] = stat;
 	}
 
-	public void RemoveAllStatEff(StatEffID id)
+	public void RemoveAllStatEff(StatEffID id, int count = -1)
 	{
 		foreach (var item in appliedDebuff)
 		{
 			if (((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]).Equals(item.Value))
 			{
-				AppliedStatus stat = item.Value;
-				stat.dur = 0;
-				appliedDebuff[item.Key] = stat;
+				if(count > 0 || count == -1)
+				{
+					AppliedStatus stat = item.Value;
+					stat.dur = 0;
+					debuffCopy[item.Key] = stat;
+					Debug.Log("지속시간 0으로 : " + stat.eff.name);
+					--count;
+				}
+				
+			}
+			else
+			{
+				debuffCopy[item.Key] = item.Value;
 			}
 		}
 	}
@@ -265,7 +277,10 @@ public class LifeModule : Module
 				if (!(isImmune))
 				{
 					DamageYYBase(data);
-					GetActor().anim.SetHitTrigger();
+					if (!superArmor)
+					{
+						GetActor().anim.SetHitTrigger();
+					}
 					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 					onNextDamaged?.Invoke(GetActor(), attacker, data);
 				}
@@ -276,7 +291,10 @@ public class LifeModule : Module
 				break;
 			case DamageType.NoEvadeHit:
 				DamageYYBase(data);
-				GetActor().anim.SetHitTrigger();
+				if (!superArmor)
+				{
+					GetActor().anim.SetHitTrigger();
+				}
 				StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 				onNextDamaged?.Invoke(GetActor(), attacker, data);
 				break;
