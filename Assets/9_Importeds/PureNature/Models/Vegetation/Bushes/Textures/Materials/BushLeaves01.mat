@@ -41,6 +41,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: f702406db7a985649ade93cb60009e67, type: 3}
         m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: b682954e37440984fa4135be917ccf68, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseTexture:
         m_Texture: {fileID: 2800000, guid: b682954e37440984fa4135be917ccf68, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -105,7 +109,15 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Occlusion_Map:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Smoothness_Map:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -182,6 +194,7 @@ Material:
     - _Keyword0: 0
     - _Metalic: 0
     - _Metallic: 0
+    - _Metallic_Multiply: 0
     - _MicroFrequency: 5
     - _MicroPower: 0.1
     - _MicroSpeed: 2
@@ -211,6 +224,7 @@ Material:
     - _Shininess: 0.1
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
+    - _Smoothness_Multiply: 0
     - _SpecularHighlights: 1
     - _Speed: 0.5
     - _SrcBlend: 1
