@@ -103,4 +103,9 @@ public class AnimModule : Module
 		anim.runtimeAnimatorController = ctrl;
 		
 	}
+	
+	public void StartExampled()
+	{
+		self._ai.StartExamine();
+	}
 }

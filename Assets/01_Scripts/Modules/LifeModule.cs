@@ -284,6 +284,10 @@ public class LifeModule : Module
 					}
 					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 					onNextDamaged?.Invoke(GetActor(), attacker, data);
+					if (GetActor()._ai != null)
+					{
+						GetActor()._ai.StartExamine();
+					}
 				}
 				break;
 			case DamageType.DotDamage:
@@ -318,6 +322,10 @@ public class LifeModule : Module
 					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 					onNextDamaged?.Invoke(GetActor(), attacker, data);
 					_hitEvent?.Invoke();
+					if (GetActor()._ai != null)
+					{
+						GetActor()._ai.StartExamine();
+					}
 				}
 				break;
 			case DamageType.DotDamage:
@@ -384,12 +392,20 @@ public class LifeModule : Module
 		
 	}
 
+	private bool _isOneDie = false;
+	
 	public virtual void OnDead()
 	{
 //		Debug.LogError($"{gameObject.name} : 사망");
-		StopAllCoroutines();
-		GetActor().anim.SetDieTrigger();
-		_dieEvent?.Invoke();
+		if (_isOneDie == false)
+		{
+			_isOneDie = true;
+			StopAllCoroutines();
+			GetActor().anim.SetDieTrigger();
+			_dieEvent?.Invoke();
+			
+		}
+
 		//PoolManager.ReturnObject(gameObject);
 	}
 

@@ -44,7 +44,7 @@ public class Moose_normalAttackModule : EnemyAttackModule
 			
 			Debug.LogError(_life.GetActor().move.forceDir);
 		});
-		EffectObject eff =  EffectManager.Instance.GetObject($"SandBoomb", transform);
+		EffectObject eff =  PoolManager.GetEffect($"SandBoomb", transform);
 		eff.Begin();
 	}
 
@@ -55,7 +55,7 @@ public class Moose_normalAttackModule : EnemyAttackModule
 
 	public override void OnAnimationSound()
 	{
-
+		
 	}
 
 	public override void OnAnimationStop()

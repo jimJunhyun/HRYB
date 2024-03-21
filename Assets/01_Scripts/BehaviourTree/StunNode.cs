@@ -21,7 +21,7 @@ public class StunNode : INode
 	    {
 		    if (StatusEffects._bufferDurations[StatEffID.Stun] >= 0)
 		    {
-			    Debug.LogError($"스턴상태 : {StatusEffects._bufferDurations[StatEffID.Stun]} | {F}");
+				
 			    self.anim.SetBoolModify("Stun", true);
 			    if (F == false || self.anim.Animators.GetBool("Stun") == false)
 			    {
@@ -33,7 +33,6 @@ public class StunNode : INode
 			    return NodeStatus.Run;
 		    }
 	    }
-
 	    if (F)
 	    {
 		    self.anim.SetBoolModify("Stun", false);

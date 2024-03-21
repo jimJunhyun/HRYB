@@ -19,7 +19,8 @@ GameObject:
   - component: {fileID: 5685831916571396881}
   - component: {fileID: 6464763268537851122}
   - component: {fileID: 7910250136290250172}
-  - component: {fileID: 5789941360700571784}
+  - component: {fileID: 7731814549929840718}
+  - component: {fileID: 2114137238261717427}
   m_Layer: 0
   m_Name: Moose
   m_TagString: Untagged
@@ -82,6 +83,7 @@ MonoBehaviour:
   initDamage:
     black: 0
     white: 0
+  target: {fileID: 0}
 --- !u!114 &1028486988875783229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,9 +101,10 @@ MonoBehaviour:
   runSpeed: 0
   walkSpeed: 0
   crouchSpeed: 0
-  speedMod: 1
-  gravity: 0
+  gravity: 1
   groundThreshold: 0.5
+  _isCanMove: 0
+  Speed: 10
   Speed: 10
 --- !u!114 &1757168886258243897
 MonoBehaviour:
@@ -156,8 +159,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isImmune: 0
   initYinYang:
-    black: 0
-    white: 0
+    black: 2000
+    white: 2000
   initAdequity:
     black: 0
     white: 0
@@ -172,6 +175,7 @@ MonoBehaviour:
     white: 0
   regenThreshold: 10
   applyMod: 1
+  superArmor: 0
 --- !u!114 &5366181968401801725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,7 +234,33 @@ MonoBehaviour:
   cast: {fileID: 0}
   anim: {fileID: 0}
   _ai: {fileID: 0}
---- !u!65 &5789941360700571784
+--- !u!143 &7731814549929840718
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2238219135556919863}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &2114137238261717427
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -249,8 +279,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 1.85, z: 2.4}
-  m_Center: {x: 0, y: 1, z: 0.39}
+  m_Size: {x: 1, y: 2, z: 1.9}
+  m_Center: {x: 0, y: 1.2, z: 0}
 --- !u!1001 &4746526249151192872
 PrefabInstance:
   m_ObjectHideFlags: 0

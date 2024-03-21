@@ -407,6 +407,7 @@ public class StatusEffects
 
 	public static void ApplyStat(Actor to, Actor by, StatEffID id, float dur, float pow = 1)
 	{
+		Debug.LogError($"AAA : {to}, {by}, {id}, {dur}, {pow}");
 		GameManager.instance.StartCoroutine(DelApplier(to, by, id, dur, pow));
 	}
 
@@ -436,8 +437,9 @@ public class StatusEffects
 					}
 				}
 			}
-			
 			float t = 0;
+			_bufferDurations[id] = dur - t;
+			Debug.LogError($"dddd : " + _bufferDurations[id] + " " + id);
 			while(to.life.appliedDebuff[guid].dur < 0)
 			{
 				//Debug.Log( id + " : INFITITE : " + to.life.appliedDebuff[guid].dur);
@@ -448,8 +450,8 @@ public class StatusEffects
 				//Debug.Log(id + " : TIMEPASSING");
 				yield return null;
 				t += Time.deltaTime;
-				Debug.LogError(t);
 				_bufferDurations[id] = dur - t;
+
 			}
 			to.life.EndStaus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], updateAct, power);
 			if (effs.Count > 0)

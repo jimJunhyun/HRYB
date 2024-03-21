@@ -29,13 +29,13 @@ public class Wolf_normalAttackModule : EnemyAttackModule
 
 	public override void OnAnimationEvent()
 	{
-		int a = left ? 1 : 2;
+		int a = left ? 2 : 1;
 		
 		_nowCols.Now(transform,(_life) =>
 		{
 			_life.DamageYY(new YinYang(20,0), DamageType.DirectHit);
 		});
-		EffectObject eff =  EffectManager.Instance.GetObject($"Wolf_noraml_Attack{a}", transform.GetChild(0));
+		EffectObject eff =  PoolManager.GetEffect($"Wolf_noraml_Attack{a}", transform.GetChild(0));
 		eff.Begin();
 	}
 

@@ -46,7 +46,7 @@ public class WolfAI : AISetter
 	{
 		Vector3 lookPos = t.position - transform.position;
 		lookPos.y = transform.position.y;
-		transform.rotation = Quaternion.LookRotation(lookPos);
+		transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.LookRotation(lookPos), Time.deltaTime * 40);
 	}
 	
     protected override void StartInvoke()
@@ -149,9 +149,12 @@ public class WolfAI : AISetter
 
     protected override void UpdateInvoke()
     {
-	    if(self.life.isDead ==false && _isWake)
+	    if (self.life.isDead == false && _isWake && self.life.isDead == false && self.anim.Animators.GetBool("Stun") == false)
+	    {
 			LookAt(player.transform);
-
+		    
+	    }
+	    
 	    transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
 	    
 	    if ((self.life.IsFirstHit == true || Vector3.Distance(player.transform.position, transform.position) < 7) && _isWake == false)
