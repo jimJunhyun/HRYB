@@ -428,6 +428,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 891224687365898331, guid: b3cef04dfd46fe74ca37c7061eb027bf, type: 3}
+      propertyPath: bossName
+      value: "\uCC9C\uD558\uB300\uC7A5\uAD70"
+      objectReference: {fileID: 0}
     - target: {fileID: 933205084412357019, guid: b3cef04dfd46fe74ca37c7061eb027bf, type: 3}
       propertyPath: m_LocalPosition.x
       value: -21.68
@@ -468,12 +472,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5373213743209681124, guid: b3cef04dfd46fe74ca37c7061eb027bf, type: 3}
+      propertyPath: yy.white
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 6548958457746408809, guid: b3cef04dfd46fe74ca37c7061eb027bf, type: 3}
       propertyPath: m_Name
       value: JangSung
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1597001780595996370, guid: b3cef04dfd46fe74ca37c7061eb027bf, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1272,11 +1279,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1480622149016750883, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.00000001569635
+      value: 0.00000001569635
       objectReference: {fileID: 0}
     - target: {fileID: 1480622149016750883, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0000000070486967
+      value: 0.0000000070486967
       objectReference: {fileID: 0}
     - target: {fileID: 2109712079635487170, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_Follow
@@ -1400,11 +1407,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5427353396124325487, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00000001569635
+      value: -0.00000001569635
       objectReference: {fileID: 0}
     - target: {fileID: 5427353396124325487, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000070486967
+      value: -0.0000000070486967
       objectReference: {fileID: 0}
     - target: {fileID: 5676069116628508807, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_Name
@@ -1660,13 +1667,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: JangSungGirl
       objectReference: {fileID: 0}
+    - target: {fileID: 5799382353248487146, guid: a40c579984cdbfd42aa20a35dcee35fa, type: 3}
+      propertyPath: yy.white
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5799382353248487146, guid: a40c579984cdbfd42aa20a35dcee35fa, type: 3}
+      propertyPath: initYinYang.white
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657746863476612385, guid: a40c579984cdbfd42aa20a35dcee35fa, type: 3}
+      propertyPath: bossName
+      value: "\uC9C0\uD558\uC5EC\uC7A5\uAD70"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3905693945725910127, guid: a40c579984cdbfd42aa20a35dcee35fa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1767195871}
+      addedObject: {fileID: 1767195884}
   m_SourcePrefab: {fileID: 100100000, guid: a40c579984cdbfd42aa20a35dcee35fa, type: 3}
 --- !u!1001 &1201686738
 PrefabInstance:
@@ -2240,22 +2259,27 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3905693945725910127, guid: a40c579984cdbfd42aa20a35dcee35fa, type: 3}
   m_PrefabInstance: {fileID: 1158822840}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1767195871
-MonoBehaviour:
+--- !u!135 &1767195884
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1767195859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f00205e3f6672f842b725828d8dbabd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  layer:
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 128
-  bossName: "\uC9C0\uD558\uC5EC\uC7A5\uAD70"
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 40
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1865908255
 PrefabInstance:
   m_ObjectHideFlags: 0
