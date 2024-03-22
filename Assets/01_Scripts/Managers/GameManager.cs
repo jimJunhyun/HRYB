@@ -232,6 +232,7 @@ public class GameManager : MonoBehaviour
 	public SkillLoader skillLoader;
 	
 	public PrefabManager pManager;
+	public BossHPManager bHPManager;
 
 	public PlayableDirector timeliner;
 	public PlayableDirector timeliner2;
@@ -298,6 +299,8 @@ public class GameManager : MonoBehaviour
 		timeliner2 = GameObject.Find("Timeliner2").GetComponent<PlayableDirector>();
 		camManager = GameObject.Find("PCam").GetComponent<CameraManager>();
 		pManager = GameObject.Find("PrefabManager").GetComponent<PrefabManager>();
+		bHPManager = GameObject.Find("bossHPGroup").GetComponent<BossHPManager>();
+
 		statEff = new StatusEffects();
 		skillLoader = new SkillLoader();
 

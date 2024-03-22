@@ -83,7 +83,11 @@ public class LifeModule : Module
 	
 	internal Dictionary<string, AppliedStatus> appliedDebuff = new Dictionary<string, AppliedStatus>();
 
-	internal Dictionary<int, List<Coroutine>> ongoingTickDamages = new Dictionary<int, List<Coroutine>>();
+	internal Dictionary<int, List<Coroutine>> ongoingTickDamages = new Dictionary<int, List<Coroutine>>()
+	{
+		{ ((int)DamageChannel.Normal), new List<Coroutine>()},
+		{ ((int)DamageChannel.Bleeding), new List<Coroutine>()},
+	};
 
 	//피격자, 공격자, 대미지
 	public Action<Actor, Actor, YinYang> onNextDamaged; 
@@ -292,7 +296,8 @@ public class LifeModule : Module
 				break;
 			case DamageType.DotDamage:
 			case DamageType.Continuous:
-				ongoingTickDamages[(int)channel].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type)));
+				//
+				ongoingTickDamages[((int)channel)].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type)));
 				break;
 			case DamageType.NoEvadeHit:
 				DamageYYBase(data);
@@ -330,6 +335,7 @@ public class LifeModule : Module
 				break;
 			case DamageType.DotDamage:
 			case DamageType.Continuous:
+				Debug.Log(((int)channel));
 				ongoingTickDamages[(int)channel].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type)));
 				break;
 			case DamageType.NoEvadeHit:
@@ -350,7 +356,7 @@ public class LifeModule : Module
 		{
 			if(ongoingTickDamages.Count > 1)
 			{
-				ongoingTickDamages[((int)channel)].RemoveAt(ongoingTickDamages.Count - 1);
+				ongoingTickDamages[((int)channel)].RemoveAt(ongoingTickDamages[((int)channel)].Count - 1);
 			}
 			else
 				break;
