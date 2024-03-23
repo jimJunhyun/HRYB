@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: chest_wooden
-  m_Shader: {fileID: -6465566751694194690, guid: 96da765062faee74e990480609ed0463, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 215dacf7bd7821641816de8e53a828a2, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -72,7 +72,15 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Occlusion_Map:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Smoothness_Map:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -113,22 +121,30 @@ Material:
     - _GlossyReflections: 1
     - _GlowOn: 0
     - _GlowPower: 0.5
+    - _HidePower: 2.5
+    - _Hide_Sides: 1
     - _IsGlowOn: 0
     - _Metalic: 0
     - _Metallic: 0
+    - _Metallic_Multiply: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _Shake: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
+    - _Smoothness_Multiply: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
     - _UVSec: 0
+    - _Wiggle_Offset: 0
+    - _Wind_Speed: 0
+    - _Wind_Strength: 0
     - _WorkflowMode: 0
     - _ZWrite: 1
     m_Colors:
@@ -137,6 +153,7 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GlowColor: {r: 0, g: 8, b: 0.7222748, a: 0}
     - _SpecColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Wind_Direction: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2045369065091557776
 MonoBehaviour:
