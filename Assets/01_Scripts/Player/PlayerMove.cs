@@ -652,7 +652,7 @@ public class PlayerMove : MoveModule
 
 	public void DoDetection()
 	{
-		Debug.Log("DETECTED");
+		//Debug.Log("DETECTED");
 		nearEnemies.Clear();
 		Collider[] c = Physics.OverlapSphere(transform.position, pAttack.targetMaxDist, ~(1 << GameManager.PLAYERLAYER | 1 << GameManager.GROUNDLAYER));
 		for (int i = 0; i < c.Length; i++)

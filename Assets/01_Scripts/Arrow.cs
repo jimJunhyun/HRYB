@@ -90,7 +90,7 @@ public class Arrow : DamageObject
 				CameraManager.instance.ShakeCamFor(0.1f);
 			}
 			Debug.Log(other.name + " 과 충돌");
-			if(other.transform != owner)
+			if(other.transform != owner.transform)
 			{
 				Returner();
 			}
