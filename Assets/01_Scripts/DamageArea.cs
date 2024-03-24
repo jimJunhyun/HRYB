@@ -13,9 +13,8 @@ public class DamageArea : DamageObject
 	bool first = true;
 	bool checking;
 
-	bool already = false;
-
 	float lifetime;
+	float spawnSec;
 
 	public void SetInfo(float time, YinYang dmg, bool isOnce, float checkGap, float checkDur)
 	{
@@ -25,10 +24,11 @@ public class DamageArea : DamageObject
 		calcGap= checkGap;
 		calcRemainSec = checkDur;
 
-		already = false;
 		first=  true;
 		prevCalcSec = 0;
 		checking =  false;
+
+		spawnSec = Time.time;
 	}
 
 	private void Update()
@@ -38,7 +38,6 @@ public class DamageArea : DamageObject
 			if(first || !isOnce)
 			{
 				checking = true;
-				already = false;
 				prevCalcSec = Time.time;
 			}
 			if (first)
@@ -49,19 +48,27 @@ public class DamageArea : DamageObject
 			checking = false;
 			prevCalcSec = Time.time;
 		}
+		if(Time.time - spawnSec >= lifetime)
+		{
+			Returner();
+		}
 	}
 
 	public override void OnTriggerEnter(Collider other)
 	{
-		if (checking && !already)
+		if (checking)
 		{
 			base.OnTriggerEnter(other);
-			already = true;
 		}
 	}
 
 	public override void Damage(LifeModule to)
 	{
 		to.DamageYY(yy, DamageType.NoEvadeHit);
+	}
+
+	public void Returner()
+	{
+		PoolManager.ReturnObject(gameObject);
 	}
 }
