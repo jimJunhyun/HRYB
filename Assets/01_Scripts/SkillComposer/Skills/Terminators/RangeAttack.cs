@@ -12,11 +12,17 @@ public class RangeAttack : AttackBase
 	public float maxDistance;
 	public Vector3 offSet;
 
+	public Vector2 decalScale;
+
+	public float totalRemainSec;
+	public bool isOnce;
+	public float checkGap;
+	public float checkDur;
+
 	Vector3 targetPt;
 
 	bool holding;
 	GameObject rngDecal;
-
 
 
 	public override void Operate(Actor self)
@@ -30,7 +36,7 @@ public class RangeAttack : AttackBase
 		try
 		{
 			DamageArea ar = PoolManager.GetObject(prefName, targetPt + (relatedTransform.rotation * offSet), Quaternion.Euler(-90, 0, 0), 3f).GetComponent<DamageArea>();
-			ar.SetInfo(self.atk.Damage * damageMult);
+			ar.SetInfo(totalRemainSec ,self.atk.Damage * damageMult, isOnce, checkGap, checkDur);
 		}
 		catch
 		{
@@ -49,7 +55,7 @@ public class RangeAttack : AttackBase
 			if (!rngDecal)
 			{
 				rngDecal = PoolManager.GetObject("PlayerDecalCircle", targetPt, Quaternion.Euler(90,0, 0));
-				rngDecal.transform.localScale = Vector3.one * 5;
+				rngDecal.transform.localScale = Vector3.right * decalScale.x + Vector3.up * decalScale.y;
 			}
 
 			if (Physics.Raycast(relatedTransform.position, (relatedTransform.forward + offSet).normalized, out RaycastHit hit, maxDistance, ~(1 << GameManager.PLAYERLAYER), QueryTriggerInteraction.Ignore))
