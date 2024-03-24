@@ -151,6 +151,8 @@ public class GameManager : MonoBehaviour
 
 	public Terrain terrain;
 
+	public DamageTextShower shower;
+
 	[Header("따로 설정이 필요함")]
 	public Sprite uiBase;
 	public TMPro.TMP_FontAsset tmpText;
@@ -207,7 +209,7 @@ public class GameManager : MonoBehaviour
 		skillLoader = new SkillLoader();
 
 		foxfire = GameObject.Find("Fox Fire").GetComponent<FollowingFoxFire>();
-
+		shower = GameObject.Find("DamageTextManager").GetComponent<DamageTextShower>();
 		
 	}
 

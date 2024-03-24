@@ -151,7 +151,12 @@ public class FollowingFoxFire : MonoBehaviour
 		Follow();
 
 		ac.life.DamageYY(0, dmg, DamageType.NoEvadeHit, 0, 0, GameManager.instance.pActor);
-		
+
+		if (dmg > 0)
+		{
+			GameManager.instance.shower.GenerateDamageText(transform.position, dmg, YYInfo.White);
+		}
+
 		Debug.Log($"펑. {dmg}댐");
 		
 

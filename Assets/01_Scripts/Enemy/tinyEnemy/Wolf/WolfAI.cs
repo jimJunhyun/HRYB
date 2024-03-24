@@ -46,7 +46,7 @@ public class WolfAI : AISetter
 	{
 		Vector3 lookPos = t.position - transform.position;
 		lookPos.y = transform.position.y;
-		transform.rotation = Quaternion.LookRotation(lookPos);
+		transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.LookRotation(lookPos), Time.deltaTime * 40);
 	}
 	
     protected override void StartInvoke()
@@ -61,11 +61,19 @@ public class WolfAI : AISetter
 		    self.anim.SetIdleState(true);
 
 
+		    StunNode _ishaveStun = new StunNode(self, () =>
+		    {
+				Debug.LogError(gameObject.name + " 일어남");
+		    });
+		    Sequencer stunSeq = new Sequencer();
 
-
+		    stunSeq.connecteds.Add(_ishaveStun);
+		    
+		    
 		    #region 평타
 
 		    Waiter _normalAtt = new Waiter(1.5f);
+		    
 		    IsInRange noramlRange = new IsInRange(self, player.transform, Attackrange, null, () =>
 		    {
 
@@ -75,10 +83,11 @@ public class WolfAI : AISetter
 			    
 
 		    });
+		    
 		    Attacker normalAttack = new Attacker(self, () =>
 		    {
 			    _normalAtt.ResetReady();
-
+				
 			    StopExamine();
 		    });
 
@@ -94,7 +103,7 @@ public class WolfAI : AISetter
 		    {
 
 			    _moveModule.SetTarget(player.transform);
-
+				
 
 		    });
 		    Mover move = new Mover(self);
@@ -122,6 +131,7 @@ public class WolfAI : AISetter
 		    ShowIdler.connecteds.Add(Idler);
 		    ShowIdler.connecteds.Add(idles);
 
+		    head.connecteds.Add(stunSeq);
 		    head.connecteds.Add(normalATK);
 		    head.connecteds.Add(ShowIdler);
 		    head.connecteds.Add(Moved);
@@ -139,9 +149,14 @@ public class WolfAI : AISetter
 
     protected override void UpdateInvoke()
     {
-	    if(self.life.isDead ==false && _isWake)
+	    if (self.life.isDead == false && _isWake && self.life.isDead == false && self.anim.Animators.GetBool("Stun") == false)
+	    {
 			LookAt(player.transform);
-
+		    
+	    }
+	    
+	    transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
+	    
 	    if ((self.life.IsFirstHit == true || Vector3.Distance(player.transform.position, transform.position) < 7) && _isWake == false)
 	    {
 		    _isWake = true;

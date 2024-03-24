@@ -83,7 +83,11 @@ public class LifeModule : Module
 	
 	internal Dictionary<string, AppliedStatus> appliedDebuff = new Dictionary<string, AppliedStatus>();
 
-	internal Dictionary<int, List<Coroutine>> ongoingTickDamages = new Dictionary<int, List<Coroutine>>();
+	internal Dictionary<int, List<Coroutine>> ongoingTickDamages = new Dictionary<int, List<Coroutine>>()
+	{
+		{ ((int)DamageChannel.Normal), new List<Coroutine>()},
+		{ ((int)DamageChannel.Bleeding), new List<Coroutine>()},
+	};
 
 	//피격자, 공격자, 대미지
 	public Action<Actor, Actor, YinYang> onNextDamaged; 
@@ -92,6 +96,8 @@ public class LifeModule : Module
 	{
 		get => yy.white <= 0;
 	}
+
+	public bool superArmor = false;
 
 	protected bool regenOn = true;
 	float diff;
@@ -209,41 +215,53 @@ public class LifeModule : Module
 		
 		if (appliedDebuff.ContainsValue(new AppliedStatus(eff, 0)))
 		{
-			foreach (var item in appliedDebuff)
+			Dictionary<string, AppliedStatus> statCopy = new Dictionary<string, AppliedStatus>(appliedDebuff);
+			foreach (var item in statCopy)
 			{
 				if(item.Value.eff.Equals(eff))
 				{
 					Debug.Log($"{eff.name}사라짐");
 					GetActor().updateActs -= myUpdateAct;
 					eff.onEnded.Invoke(GetActor(), power);
+					statCopy.Remove(item.Key);
 					break;
 				}
 
-
 			}
+			appliedDebuff = statCopy;
 		}
-
 		
 	}
 
-	public void RemoveStatEff(string idx)
+	public void RemoveStatEff(string guid)
 	{
 		Debug.Log(name + " EffectCount : " + appliedDebuff.Count);
 		Debug.Log("스d탯제거중...");
-		AppliedStatus stat = appliedDebuff[idx];
+		AppliedStatus stat = appliedDebuff[guid];
 		stat.dur = 0;
-		appliedDebuff[idx] = stat;
+		appliedDebuff[guid] = stat;
 	}
 
-	public void RemoveAllStatEff(StatEffID id)
+	public void RemoveAllStatEff(StatEffID id, int count = -1)
 	{
+		Dictionary<string, AppliedStatus> debuffCopy = new Dictionary<string, AppliedStatus>();
 		foreach (var item in appliedDebuff)
 		{
 			if (((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)]).Equals(item.Value))
 			{
-				AppliedStatus stat = item.Value;
-				stat.dur = 0;
-				appliedDebuff[item.Key] = stat;
+				if(count > 0 || count == -1)
+				{
+					AppliedStatus stat = item.Value;
+					stat.dur = 0;
+					debuffCopy[item.Key] = stat;
+					Debug.Log("지속시간 0으로 : " + stat.eff.name);
+					--count;
+				}
+				
+			}
+			else
+			{
+				debuffCopy[item.Key] = item.Value;
 			}
 		}
 	}
@@ -265,18 +283,29 @@ public class LifeModule : Module
 				if (!(isImmune))
 				{
 					DamageYYBase(data);
-					GetActor().anim.SetHitTrigger();
+					if (!superArmor)
+					{
+						GetActor().anim.SetHitTrigger();
+					}
 					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 					onNextDamaged?.Invoke(GetActor(), attacker, data);
+					if (GetActor()._ai != null)
+					{
+						GetActor()._ai.StartExamine();
+					}
 				}
 				break;
 			case DamageType.DotDamage:
 			case DamageType.Continuous:
-				ongoingTickDamages[(int)channel].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type)));
+				//
+				ongoingTickDamages[((int)channel)].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type)));
 				break;
 			case DamageType.NoEvadeHit:
 				DamageYYBase(data);
-				GetActor().anim.SetHitTrigger();
+				if (!superArmor)
+				{
+					GetActor().anim.SetHitTrigger();
+				}
 				StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 				onNextDamaged?.Invoke(GetActor(), attacker, data);
 				break;
@@ -299,10 +328,15 @@ public class LifeModule : Module
 					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 					onNextDamaged?.Invoke(GetActor(), attacker, data);
 					_hitEvent?.Invoke();
+					if (GetActor()._ai != null)
+					{
+						GetActor()._ai.StartExamine();
+					}
 				}
 				break;
 			case DamageType.DotDamage:
 			case DamageType.Continuous:
+				Debug.Log(((int)channel));
 				ongoingTickDamages[(int)channel].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type)));
 				break;
 			case DamageType.NoEvadeHit:
@@ -323,7 +357,7 @@ public class LifeModule : Module
 		{
 			if(ongoingTickDamages.Count > 1)
 			{
-				ongoingTickDamages[((int)channel)].RemoveAt(ongoingTickDamages.Count - 1);
+				ongoingTickDamages[((int)channel)].RemoveAt(ongoingTickDamages[((int)channel)].Count - 1);
 			}
 			else
 				break;
@@ -345,6 +379,14 @@ public class LifeModule : Module
 					}
 					yield return w;
 					DamageYYBase(data);
+					if (data.white > 0)
+					{
+						GameManager.instance.shower.GenerateDamageText(transform.position, data.white, YYInfo.White);
+					}
+					if (data.black > 0)
+					{
+						GameManager.instance.shower.GenerateDamageText(transform.position, data.black, YYInfo.Black);
+					}
 				}
 				break;
 			case DamageType.Continuous:
@@ -356,6 +398,14 @@ public class LifeModule : Module
 					curT += Time.deltaTime;
 					yield return w;
 					DamageYYBase(incPerSec * Time.deltaTime);
+					if (incPerSec.white > 0)
+					{
+						GameManager.instance.shower.GenerateDamageText(transform.position, incPerSec.white, YYInfo.White);
+					}
+					if (incPerSec.black > 0)
+					{
+						GameManager.instance.shower.GenerateDamageText(transform.position, incPerSec.black, YYInfo.Black);
+					}
 				}
 				break;
 			default:
@@ -365,12 +415,20 @@ public class LifeModule : Module
 		
 	}
 
+	private bool _isOneDie = false;
+	
 	public virtual void OnDead()
 	{
-		Debug.LogError($"{gameObject.name} : 사망");
-		StopAllCoroutines();
-		GetActor().anim.SetDieTrigger();
-		_dieEvent?.Invoke();
+//		Debug.LogError($"{gameObject.name} : 사망");
+		if (_isOneDie == false)
+		{
+			_isOneDie = true;
+			StopAllCoroutines();
+			GetActor().anim.SetDieTrigger();
+			_dieEvent?.Invoke();
+			
+		}
+
 		//PoolManager.ReturnObject(gameObject);
 	}
 

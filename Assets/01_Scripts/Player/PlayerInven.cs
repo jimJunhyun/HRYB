@@ -653,11 +653,13 @@ public class PlayerInven : MonoBehaviour
 				return;
 			if (context.started && !clickFire)
 			{
+			Debug.Log("ㅁㅁㅁㅁㅁㅁㅁㅁ");
 				clickFire = true;
 				(GameManager.instance.pActor.cast as PlayerCast).SetSkillUse(SkillSlotInfo.Two);
 			}
 			else if (context.canceled && clickFire)
 			{
+			Debug.Log("ㅊㅊㅊㅊㅊㅊㅊㅊ");
 				clickFire = false;
 				(GameManager.instance.pActor.cast as PlayerCast).ResetSkillUse(SkillSlotInfo.Two);
 			}

@@ -55,16 +55,16 @@ public class JangsungManAttackModule : EnemyAttackModule
 		switch (AttackStd)
 		{
 			case "DownAttack":
-				ef = EffectManager.Instance.GetObject("JangsungEffect1", transform);
+				ef = PoolManager.GetEffect("JangsungEffect1", transform);
 				ef.Begin();
 				break;
 			case "FallDownAttack":
-				ef = EffectManager.Instance.GetObject("JangsungEffect1", transform);
+				ef = PoolManager.GetEffect("JangsungEffect1", transform);
 				ef.Begin();
 				break;
 			case "MoveAttack":
 				
-				ef = EffectManager.Instance.GetObject("JangsungEffect1", transform);
+				ef = PoolManager.GetEffect("JangsungEffect1", transform);
 				ef.Begin();
 				break;
 		}
@@ -152,12 +152,12 @@ public class JangsungManAttackModule : EnemyAttackModule
 
 				break;
 			case "FallDownAttack":
-				ef = EffectManager.Instance.GetObject("JangsungEffect1", transform);
+				ef = PoolManager.GetEffect("JangsungEffect1", transform);
 				ef.Begin();
 				break;
 			case "MoveAttack":
 				
-				ef = EffectManager.Instance.GetObject("JangsungEffect1", transform);
+				ef = PoolManager.GetEffect("JangsungEffect1", transform);
 				ef.Begin();
 				break;
 		}
@@ -174,7 +174,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 							CameraManager.instance.ShakeCamFor(0.5f);
 						});
 					}
-					ef = EffectManager.Instance.GetObject("JangsungEffect2", transform);
+					ef = PoolManager.GetEffect("JangsungEffect2", transform);
 					ef.Begin();
 					
 					
@@ -188,7 +188,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 							CameraManager.instance.ShakeCamFor(0.8f);
 						});
 					}
-					ef = EffectManager.Instance.GetObject("JangsungEffect2", transform);
+					ef = PoolManager.GetEffect("JangsungEffect2", transform);
 					ef.Begin();
 					break;
 				case "MoveAttack":
@@ -201,7 +201,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 						});
 					}
 					
-					ef = EffectManager.Instance.GetObject("JangsungEffect2", transform);
+					ef = PoolManager.GetEffect("JangsungEffect2", transform);
 					ef.Begin();
 					break;
 			}

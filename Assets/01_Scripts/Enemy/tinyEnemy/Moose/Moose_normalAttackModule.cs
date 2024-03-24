@@ -34,17 +34,17 @@ public class Moose_normalAttackModule : EnemyAttackModule
 			_life.DamageYY(new YinYang(50,0), DamageType.DirectHit);
 			// 기절 ++
 			Vector3 vec = _life.transform.position - transform.position;
+			vec.y = 0;
 			vec.Normalize();
-			vec *= 20;
-			vec.y += 40;
+
 			
 			
-			_life.GetActor().move.forceDir += vec;
+			_life.GetActor().move.forceDir = vec * 20 + new Vector3(0,20,0);
 			//_life.GetActor().move.forceDir.y = 40;
 			
-			Debug.LogError(_life.GetActor().move.forceDir);
+			Debug.LogError("시발시발시발시발" + _life.GetActor().move.forceDir);
 		});
-		EffectObject eff =  EffectManager.Instance.GetObject($"SandBoomb", transform);
+		EffectObject eff =  PoolManager.GetEffect($"SandBoomb", transform);
 		eff.Begin();
 	}
 
@@ -55,7 +55,7 @@ public class Moose_normalAttackModule : EnemyAttackModule
 
 	public override void OnAnimationSound()
 	{
-
+		
 	}
 
 	public override void OnAnimationStop()

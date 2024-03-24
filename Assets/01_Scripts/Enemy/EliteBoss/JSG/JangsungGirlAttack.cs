@@ -181,11 +181,9 @@ public class JangsungGirlAttack : EnemyAttackModule
 
 	public override void ResetAttackRange(int idx)
 	{
-		throw new System.NotImplementedException();
 	}
 
 	public override void SetAttackRange(int idx)
 	{
-		throw new System.NotImplementedException();
 	}
 }

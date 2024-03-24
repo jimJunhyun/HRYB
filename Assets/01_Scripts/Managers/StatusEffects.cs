@@ -130,6 +130,7 @@ public class StatusEffects
 		{
 			GameManager.instance.pinp.ActivateInput();
 		}
+		Debug.Log("넉백끝");
 	}
 
 	void OnImmuneActivated(Actor self, Actor inflicter, float power)
@@ -160,7 +161,7 @@ public class StatusEffects
 
 	void OnSlowActivated(Actor self, Actor inflicter, float power)
 	{
-		self.move.speedMod -= power;
+		self.move.moveModuleStat.HandleSpeed(power, ModuleController.SpeedMode.Slow);
 	}
 	void OnSlowUpdated(Actor self, float power)
 	{
@@ -168,12 +169,12 @@ public class StatusEffects
 	}
 	void OnSlowEnded(Actor self, float power)
 	{
-		self.move.speedMod += power;
+		self.move.moveModuleStat.HandleSpeed(-power, ModuleController.SpeedMode.Slow);
 	}
 
 	void OnBindActivated(Actor self, Actor inflicter, float power)
 	{
-		self.move.NoMove.Pause(ControlModuleMode.Status, true);
+		self.move.moveModuleStat.Pause(ControlModuleMode.Status, true);
 	}
 	void OnBindUpdated(Actor self, float power)
 	{
@@ -181,7 +182,7 @@ public class StatusEffects
 	}
 	void OnBindEnded(Actor self, float power)
 	{
-		self.move.NoMove.Pause(ControlModuleMode.Status, false);
+		self.move.moveModuleStat.Pause(ControlModuleMode.Status, false);
 	}
 
 	void OnEnhanceIceActivated(Actor self, Actor inflicter, float power)
@@ -238,8 +239,9 @@ public class StatusEffects
 
 	void OnStunActivated(Actor self, Actor inflicter, float power)
 	{
-		self.move.NoMove.Pause(ControlModuleMode.Status, true);
-		self.atk.NoAttack.Pause(ControlModuleMode.Status, true);
+		Debug.Log("기젌했다.");
+		self.move.moveModuleStat.Pause(ControlModuleMode.Status, true);
+		self.atk.attackModuleStat.Pause(ControlModuleMode.Status, true);
 		self.cast.SetNoCastState(ControlModuleMode.Status, true);
 	}
 	void OnStunUpdated(Actor self, float power)
@@ -248,8 +250,9 @@ public class StatusEffects
 	}
 	void OnStunEnded(Actor self, float power)
 	{
-		self.move.NoMove.Pause(ControlModuleMode.Status, false);
-		self.atk.NoAttack.Pause(ControlModuleMode.Status, false);
+		Debug.Log("기젌풀했다.");
+		self.move.moveModuleStat.Pause(ControlModuleMode.Status, false);
+		self.atk.attackModuleStat.Pause(ControlModuleMode.Status, false);
 		self.cast.SetNoCastState(ControlModuleMode.Status, false);
 	}
 
@@ -273,14 +276,15 @@ public class StatusEffects
 	{
 		if(attacker.move is PlayerMove)
 		{
-			StatusEffects.ApplyStat(attacker, attacker, StatEffID.SpeedUp, 3);
+			StatusEffects.ApplyStat(attacker, attacker, StatEffID.SpeedUp, 3, 0.1f);
 			GameManager.instance.foxfire.Accumulate(dmg);
 		}
 	}
 
 	void OnSpeedUpActivated(Actor self, Actor inflicter, float power)
 	{
-		self.move.speedMod += 0.1f;
+		self.move.moveModuleStat.HandleSpeed(-power, ModuleController.SpeedMode.Slow);
+
 	}
 	void OnSpeedUpUpdated(Actor self, float power)
 	{
@@ -288,7 +292,7 @@ public class StatusEffects
 	}
 	void OnSpeedUpEnded(Actor self, float power)
 	{
-		self.move.speedMod -= 0.1f;
+		self.move.moveModuleStat.HandleSpeed(power, ModuleController.SpeedMode.Slow);
 	}
 
 	void OnBleedingActivated(Actor self, Actor inflicter, float power)
@@ -362,12 +366,10 @@ public class StatusEffects
 
 	void EnhanceIce(Actor self, Compose skInfo, int power)
 	{
-		Debug.Log("레벨 : "+ power);
-		Debug.Log("얼음공격 : " + skInfo.tags.ToString());
-		if(skInfo.tags.ContainsTag(SkillTags.Enhancable))
+		if(skInfo.tags.ContainsTag(SkillTags.Enhancable, SkillTags.Attack))
 		{
-			Debug.Log("얼음공격으로 강화디ㅗㅁ.");
-			if((skInfo is AttackBase atk))
+			Debug.Log(skInfo.name + " 얼음공격으로 강화");
+			if((skInfo is Leaf atk))
 			{
 				if(power >= 6)
 				{
@@ -375,11 +377,14 @@ public class StatusEffects
 				}
 				else
 				{
-					atk.statEff.Add(new StatusEffectApplyData(StatEffID.Slow, (10 + 5 * (power * (power - 1) / 2)) * 0.01f, 5));; //더하긴 했는데, 언제 지우지?
+					atk.statEff.Add(new StatusEffectApplyData(StatEffID.Slow, (10 + 5 * (power * (power - 1) / 2)) * 0.01f, 5)); //더하긴 했는데, 언제 지우지?
 					//lastEnhancedSkill = atk;
 				}
 				Debug.Log("REMOVING STAT : " + self.life.name);
-				self.life.RemoveAllStatEff(StatEffID.EnhanceIce);
+				if(self.atk is PlayerAttack pa)
+				{
+					pa.AddRemoveCall(StatEffID.EnhanceIce);
+				}
 			}
 		}
 	}
@@ -399,8 +404,12 @@ public class StatusEffects
 		}
 	}
 
+	public static Dictionary<StatEffID, float> _bufferDurations = new();
+	
+
 	public static void ApplyStat(Actor to, Actor by, StatEffID id, float dur, float pow = 1)
 	{
+		Debug.LogError($"AAA : {to}, {by}, {id}, {dur}, {pow}");
 		GameManager.instance.StartCoroutine(DelApplier(to, by, id, dur, pow));
 	}
 
@@ -412,8 +421,8 @@ public class StatusEffects
 			power *= GameManager.instance.forceResistance;
 		}
 		Action<Actor> updateAct = to.life.ApplyStatus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], by, power, dur, out string guid);
-		//Debug.Log($"{updateAct != null} && {guid != null} => {updateAct != null && guid != null}" );
-		if(updateAct != null && guid != null)
+		Debug.Log($"{updateAct != null} && {guid != null} => {updateAct != null && guid != null}");
+		if (updateAct != null && guid != null)
 		{
 			List<GameObject> effs = new List<GameObject>();
 			for (int i = 0; i < GameManager.instance.statEff.effDict.data[id].Count; i++)
@@ -430,8 +439,9 @@ public class StatusEffects
 					}
 				}
 			}
-			
 			float t = 0;
+			_bufferDurations[id] = dur - t;
+			Debug.LogError($"dddd : " + _bufferDurations[id] + " " + id);
 			while(to.life.appliedDebuff[guid].dur < 0)
 			{
 				//Debug.Log( id + " : INFITITE : " + to.life.appliedDebuff[guid].dur);
@@ -442,6 +452,8 @@ public class StatusEffects
 				//Debug.Log(id + " : TIMEPASSING");
 				yield return null;
 				t += Time.deltaTime;
+				_bufferDurations[id] = dur - t;
+
 			}
 			to.life.EndStaus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], updateAct, power);
 			if (effs.Count > 0)

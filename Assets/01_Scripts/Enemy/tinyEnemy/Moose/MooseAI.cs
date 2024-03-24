@@ -40,7 +40,7 @@ public class MooseAI : AISetter
 	{
 		Vector3 lookPos = t.position - transform.position;
 		lookPos.y = transform.position.y;
-		transform.rotation = Quaternion.LookRotation(lookPos);
+		transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.LookRotation(lookPos), Time.deltaTime * 40);
 	}
 	
     protected override void StartInvoke()
@@ -55,7 +55,13 @@ public class MooseAI : AISetter
 		    self.anim.SetIdleState(true);
 
 
+		    StunNode _ishaveStun = new StunNode(self, () =>
+		    {
+			    Debug.LogError(gameObject.name + " 일어남");
+		    });
+		    Sequencer stunSeq = new Sequencer();
 
+		    stunSeq.connecteds.Add(_ishaveStun);
 
 		    #region 평타
 
@@ -99,13 +105,11 @@ public class MooseAI : AISetter
 
 		    IsOutRange LongaRange = new IsOutRange(self, player.transform, OutSectionRanged, null, () =>
 		    {
-			    _moveModule.StopMove();
 		    });
 		    IsInRange Idler = new IsInRange(self, player.transform, Attackrange, null, () =>
 		    {
 			    _moveModule.StopMove();
 		    });
-
 		    Idler idles = new Idler(self);
 
 		    Sequencer Faridler = new Sequencer();
@@ -134,9 +138,14 @@ public class MooseAI : AISetter
 
     protected override void UpdateInvoke()
     {
-	    if(self.life.isDead ==false && _isWake)
+	    if (self.life.isDead == false && _isWake && self.life.isDead == false && self.anim.Animators.GetBool("Stun") == false)
+	    {
 		    LookAt(player.transform);
+		    
+	    }
 
+	    transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
+	    
 	    if ((self.life.IsFirstHit == true || Vector3.Distance(player.transform.position, transform.position) < 7) && _isWake == false)
 	    {
 		    _isWake = true;
