@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName  = "Skills/Infos/Range/HorizontalFire")]
-public class HorizontalFire : AttackBase
+[CreateAssetMenu(menuName  = "Skills/Infos/RangeAttack")]
+public class RangeAttack : AttackBase
 {
 	public string rangeName;
+
+	public string prefName;
 
 	public float maxDistance;
 	public Vector3 offSet;
@@ -25,8 +27,15 @@ public class HorizontalFire : AttackBase
 
 	public override void Disoperate(Actor self)
 	{
-		DamageArea ar = PoolManager.GetObject("Magic circle 10", targetPt + (relatedTransform.rotation * offSet), Quaternion.Euler(-90, 0, 0), 3f).GetComponent<DamageArea>();
-		ar.SetInfo(self.atk.Damage * damageMult);
+		try
+		{
+			DamageArea ar = PoolManager.GetObject(prefName, targetPt + (relatedTransform.rotation * offSet), Quaternion.Euler(-90, 0, 0), 3f).GetComponent<DamageArea>();
+			ar.SetInfo(self.atk.Damage * damageMult);
+		}
+		catch
+		{
+			Debug.LogError("Trying To Create Strange Object.");
+		}
 		holding = false;
 		PoolManager.ReturnObject(rngDecal);
 		rngDecal = null;
