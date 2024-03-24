@@ -19,11 +19,20 @@ MonoBehaviour:
   tags:
     value: 1
   level: 0
-  statEff: []
+  statEff:
+  - id: 7
+    power: 0
+    duration: 1
   damageMult: 3
   relateTrmName: Main Camera (1)
   rangeName: PlayerDecalCircle
-  prefName: 
+  prefName: Lightning strike
   maxDistance: 10
   offSet: {x: 0, y: 0, z: 0}
-  decalScale: {x: 0, y: 0}
+  isOffsetRandom: 0
+  randomOffsetRange: 0
+  decalScale: {x: 4, y: 4}
+  totalRemainSec: 0.7
+  isOnce: 1
+  checkGap: 0.4
+  checkDur: 0.1

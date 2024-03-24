@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 198653594240738746}
   - component: {fileID: 199618308807169046}
   - component: {fileID: 108449018989435228}
-  m_Layer: 0
+  - component: {fileID: 7083871293556972538}
+  m_Layer: 16
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5038,7 +5039,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5153,6 +5153,29 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &7083871293556972538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1098599165382216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &1224761096294642
 GameObject:
   m_ObjectHideFlags: 0
@@ -5164,7 +5187,7 @@ GameObject:
   - component: {fileID: 4684183482949688}
   - component: {fileID: 198149753040526594}
   - component: {fileID: 199716463914205374}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10001,7 +10024,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 9aaa13d175bcf1c4b8acc4d930ee06ee, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10066,7 +10088,8 @@ GameObject:
   - component: {fileID: 198731044792222040}
   - component: {fileID: 199467975844714000}
   - component: {fileID: 158269025395050836}
-  m_Layer: 0
+  - component: {fileID: 188970430846721734}
+  m_Layer: 16
   m_Name: Magic circle 10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14909,7 +14932,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 9eab677f82769b44682705e7a6c0c076, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14980,6 +15002,27 @@ MonoBehaviour:
   isOnce: 1
   calcGap: 0.25
   calcRemainSec: 2.5
+--- !u!135 &188970430846721734
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282723261638982}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2
+  m_Center: {x: 0, y: 0, z: 0.7500002}
 --- !u!1 &1398453074217992
 GameObject:
   m_ObjectHideFlags: 0
@@ -14991,7 +15034,7 @@ GameObject:
   - component: {fileID: 4074500787454326}
   - component: {fileID: 198197328411571424}
   - component: {fileID: 199003160992440590}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: GroundNoise
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19828,7 +19871,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 2e554b9a8a972ba4fb64c5ce512230f7, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -19892,7 +19934,7 @@ GameObject:
   - component: {fileID: 4398733686723306}
   - component: {fileID: 198845666198429244}
   - component: {fileID: 199942675292499542}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: GroundGlow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24729,7 +24771,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 38f885e4ae2b4e74b85ed321e5394417, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -24793,7 +24834,7 @@ GameObject:
   - component: {fileID: 4044905150281550}
   - component: {fileID: 198917506686959220}
   - component: {fileID: 199921953117684090}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: GroundWave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29639,7 +29680,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: ca370df8d8c80334e91ddb011e79085a, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -29703,7 +29743,7 @@ GameObject:
   - component: {fileID: 4955719024088198}
   - component: {fileID: 198732025943950382}
   - component: {fileID: 199385517809037396}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Trails
   m_TagString: Untagged
   m_Icon: {fileID: 0}

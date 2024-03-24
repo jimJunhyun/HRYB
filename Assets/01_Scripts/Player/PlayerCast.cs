@@ -510,7 +510,7 @@ public class PlayerCast : CastModule
 		}
 		if (Input.GetKeyDown(KeyCode.RightShift))
 		{
-			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ChargeBowAttack"), SkillSlotInfo.Q, PlayerForm.Magic);
+			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ThunderStorm"), SkillSlotInfo.Q, PlayerForm.Magic);
 		}
 		///
 	}
