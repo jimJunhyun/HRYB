@@ -2,19 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName  = "Skills/Infos/Range/HorizontalFire")]
-public class HorizontalFire : AttackBase
+[CreateAssetMenu(menuName  = "Skills/Infos/RangeAttack")]
+public class RangeAttack : AttackBase
 {
 	public string rangeName;
 
+	public string prefName;
+
 	public float maxDistance;
 	public Vector3 offSet;
+
+	public Vector2 decalScale;
+
+	public float totalRemainSec;
+	public bool isOnce;
+	public float checkGap;
+	public float checkDur;
 
 	Vector3 targetPt;
 
 	bool holding;
 	GameObject rngDecal;
-
 
 
 	public override void Operate(Actor self)
@@ -25,8 +33,15 @@ public class HorizontalFire : AttackBase
 
 	public override void Disoperate(Actor self)
 	{
-		DamageArea ar = PoolManager.GetObject("Magic circle 10", targetPt + (relatedTransform.rotation * offSet), Quaternion.Euler(-90, 0, 0), 3f).GetComponent<DamageArea>();
-		ar.SetInfo(self.atk.Damage * damageMult);
+		try
+		{
+			DamageArea ar = PoolManager.GetObject(prefName, targetPt + (relatedTransform.rotation * offSet), Quaternion.Euler(-90, 0, 0), 3f).GetComponent<DamageArea>();
+			ar.SetInfo(totalRemainSec ,self.atk.Damage * damageMult, isOnce, checkGap, checkDur);
+		}
+		catch
+		{
+			Debug.LogError("Trying To Create Strange Object.");
+		}
 		holding = false;
 		PoolManager.ReturnObject(rngDecal);
 		rngDecal = null;
@@ -40,7 +55,7 @@ public class HorizontalFire : AttackBase
 			if (!rngDecal)
 			{
 				rngDecal = PoolManager.GetObject("PlayerDecalCircle", targetPt, Quaternion.Euler(90,0, 0));
-				rngDecal.transform.localScale = Vector3.one * 5;
+				rngDecal.transform.localScale = Vector3.right * decalScale.x + Vector3.up * decalScale.y;
 			}
 
 			if (Physics.Raycast(relatedTransform.position, (relatedTransform.forward + offSet).normalized, out RaycastHit hit, maxDistance, ~(1 << GameManager.PLAYERLAYER), QueryTriggerInteraction.Ignore))

@@ -19,7 +19,6 @@ public class ChargeCastRoot : SkillRoot
 	public float maxChargeSec;
 	public float chargeThreshold;
 
-
 	bool charging = false;
 	float chargeStartSec;
 
