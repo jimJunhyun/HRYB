@@ -23,11 +23,18 @@ public abstract class AISetter : MonoBehaviour
 	protected Selecter head;
 	
 	protected bool stopped = false;
-	
-	
-	
-    // Start is called before the first frame update
-    void Start()
+
+	public virtual void LookAt(Transform t)
+	{
+		Vector3 lookPos = t.position - transform.position;
+		lookPos.y = transform.position.y;
+		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(lookPos), Time.deltaTime * 40);
+	}
+
+
+
+	// Start is called before the first frame update
+	void Start()
     {
 
 	    self = GetComponent<Actor>();

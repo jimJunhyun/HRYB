@@ -117,11 +117,12 @@ public class PlayerAnimActions : MonoBehaviour
 		(self.anim as PlayerAnim).SetLoopState();
 	}
 
+
 	public void ResumeAnimation()
 	{
 		(self.anim as PlayerAnim).ResetLoopState();
 	}
-
+	
 	public void DisableInput()
 	{
 		GameManager.instance.pinp.DeactivateInput();
@@ -129,7 +130,7 @@ public class PlayerAnimActions : MonoBehaviour
 		//self.move.forceDir = Vector3.zero;
 		DisableMove();
 	}
-
+	 
 	public void DisableMove()
 	{
 		GameManager.instance.DisableCtrl(ControlModuleMode.Animated);

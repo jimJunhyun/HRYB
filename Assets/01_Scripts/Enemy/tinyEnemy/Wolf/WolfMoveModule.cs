@@ -7,7 +7,6 @@ using UnityEngine.AI;
 public class WolfMoveModule : MoveModule
 {
 	Transform _target;
-	[SerializeField] private float Speed = 15f;
 
 
 	private bool _isMove = false;
@@ -17,7 +16,7 @@ public class WolfMoveModule : MoveModule
 	public NavMeshAgent Agent => agent;
 	public CharacterController Character => _char;
 
-	private void Awake()
+	protected void Awake()
 	{
 		agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
 		_char = GetComponent<CharacterController>();
@@ -64,7 +63,7 @@ public class WolfMoveModule : MoveModule
 		
 	}
 
-	private void Update()
+	protected virtual void Update()
 	{
 		if (_isMove==true && _target != null && agent.enabled==true)
 		{

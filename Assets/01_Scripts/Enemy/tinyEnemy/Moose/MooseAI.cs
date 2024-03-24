@@ -36,12 +36,6 @@ public class MooseAI : AISetter
 		_moveModule.StopMove();
 	}
     	
-	public void LookAt(Transform t)
-	{
-		Vector3 lookPos = t.position - transform.position;
-		lookPos.y = transform.position.y;
-		transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.LookRotation(lookPos), Time.deltaTime * 40);
-	}
 	
     protected override void StartInvoke()
     {
@@ -121,7 +115,9 @@ public class MooseAI : AISetter
 		    ShowIdler.connecteds.Add(Idler);
 		    ShowIdler.connecteds.Add(idles);
 
-		    head.connecteds.Add(normalATK);
+
+			head.connecteds.Add(stunSeq);
+			head.connecteds.Add(normalATK);
 		    head.connecteds.Add(ShowIdler);
 		    head.connecteds.Add(Moved);
 		    head.connecteds.Add(Faridler);

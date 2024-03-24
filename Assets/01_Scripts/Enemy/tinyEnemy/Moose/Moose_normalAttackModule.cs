@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Moose_normalAttackModule : EnemyAttackModule
 {
-	private ColliderCast _nowCols;
 	
 	public override void SetAttackRange(int idx)
 	{
