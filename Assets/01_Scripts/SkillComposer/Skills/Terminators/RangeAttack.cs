@@ -12,6 +12,7 @@ public class RangeAttack : AttackBase
 	public float maxDistance;
 	public Vector3 offSet;
 	public Vector3 rotationOffset;
+	public Vector3 scaleOffset = Vector3.one;
 
 	public bool isOffsetRandom;
 	public Vector2 randomOffsetRange;
@@ -40,6 +41,7 @@ public class RangeAttack : AttackBase
 		try
 		{
 			DamageArea ar = PoolManager.GetObject(prefName, targetPt, Quaternion.Euler(rotationOffset)).GetComponent<DamageArea>();
+			ar.transform.localScale = scaleOffset;
 			ar.SetInfo(totalRemainSec ,self.atk.Damage * damageMult, isOnce, checkGap, checkDur, self, statEff);
 		}
 		catch
