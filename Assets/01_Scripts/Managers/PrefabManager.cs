@@ -9,6 +9,7 @@ public class PrefabManager : MonoBehaviour
 	public GameObject quickSlot;
 	public GameObject bossHPBar;
 	public GameObject HPBar;
+	public GameObject jangsungHP;
 	public void Awake()
 	{
 		var inven = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "inven"));
@@ -34,5 +35,11 @@ public class PrefabManager : MonoBehaviour
 			Debug.LogError("LOAD FAIL");
 
 		HPBar = HP.LoadAsset<GameObject>("UI_HPBar");
+
+		var jangsung = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "jangsungHP"));
+		if (jangsung == null)
+			Debug.LogError("LOAD FAIL");
+
+		jangsungHP = HP.LoadAsset<GameObject>("JangsungHP");
 	}
 }
