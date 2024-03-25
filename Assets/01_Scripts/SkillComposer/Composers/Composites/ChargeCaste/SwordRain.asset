@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6db35a0702a236f4d9c27fbdf17798e8, type: 3}
-  m_Name: Lightnings
+  m_Script: {fileID: 11500000, guid: 7c4d7c4e1260ae741beae1d7a0efc6bf, type: 3}
+  m_Name: SwordRain
   m_EditorClassIdentifier: 
   animClip: {fileID: 0}
   animClipLoopings: {fileID: 0}
@@ -20,11 +20,13 @@ MonoBehaviour:
     value: 1
   level: 0
   childs:
-  - {fileID: 11400000, guid: 7b008046bd4c0364ea9540bd2f81fba4, type: 2}
-  - {fileID: 11400000, guid: ca3a21dc349fea34ba35be4325dfd3ac, type: 2}
-  - {fileID: 11400000, guid: b384688ac3e958140bd7f8a1da1d1250, type: 2}
-  - {fileID: 11400000, guid: 9409758aed79b4048b0cbd5010913f7b, type: 2}
-  - {fileID: 11400000, guid: b4fb9018b36caaa45aa3a4f54cd44c8c, type: 2}
-  composeDel: 0.2
+  - {fileID: 11400000, guid: 32719b52513c323428ce35e4eed0b016, type: 2}
+  composeDel: 0
   isPlayAnim: 0
   isPlayDisopAnim: 0
+  wx: 0
+  useType: 0
+  castTime: 0
+  cooldown: 1
+  maxChargeSec: 15
+  chargeThreshold: 2

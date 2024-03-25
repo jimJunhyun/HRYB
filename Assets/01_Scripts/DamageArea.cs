@@ -8,15 +8,24 @@ public class DamageArea : DamageObject
     public float calcGap; //n초 간격으로
 	public float calcRemainSec; //n초간 판정
 
-
 	float prevCalcSec = 0;
 	bool first = true;
 	bool checking;
 
-	float lifetime;
+	float lifetime = Mathf.Infinity;
 	float spawnSec;
 
-	public void SetInfo(float time, YinYang dmg, bool isOnce, float checkGap, float checkDur)
+	Actor owner;
+	List<StatusEffectApplyData> statData = new List<StatusEffectApplyData>();
+
+	Collider col;
+
+	private void Awake()
+	{
+		col = GetComponent<Collider>();
+	}
+
+	public void SetInfo(float time, YinYang dmg, bool isOnce, float checkGap, float checkDur, Actor self, List<StatusEffectApplyData> stat)
 	{
 		lifetime = time;
 		yy = dmg;
@@ -29,6 +38,9 @@ public class DamageArea : DamageObject
 		checking =  false;
 
 		spawnSec = Time.time;
+
+		owner = self;
+		statData = stat;
 	}
 
 	private void Update()
@@ -38,13 +50,19 @@ public class DamageArea : DamageObject
 			if(first || !isOnce)
 			{
 				checking = true;
+				col.enabled = true;
 				prevCalcSec = Time.time;
 			}
 			if (first)
 				first = false;
 		}
+		if (checking)
+		{
+			transform.position += Vector3.zero;
+		}
 		if(checking && Time.time - prevCalcSec >= calcRemainSec)
 		{
+			col.enabled = false;
 			checking = false;
 			prevCalcSec = Time.time;
 		}
@@ -56,9 +74,17 @@ public class DamageArea : DamageObject
 
 	public override void OnTriggerEnter(Collider other)
 	{
-		if (checking)
+		if (checking && other.transform != owner.transform)
 		{
-			base.OnTriggerEnter(other);
+			LifeModule lf;
+			if(lf = other.GetComponent<LifeModule>())
+			{
+				foreach (var item in statData)
+				{
+					StatusEffects.ApplyStat(lf.GetActor(), owner, item.id, item.duration, item.power);
+				}
+				base.OnTriggerEnter(other);
+			}
 		}
 	}
 
