@@ -24,7 +24,7 @@ public class TwoPunchGrabSkill : AttackBase
 
 	public override void OnAnimationStart(Actor self, AnimationEvent evt)
 	{
-		GameManager.instance.DisableCtrl(ControlModuleMode.Animated);
+		GameManager.instance.DisableCtrl();
 		
 		
 		PlayerAttack tt = self.atk as PlayerAttack;
@@ -83,25 +83,10 @@ public class TwoPunchGrabSkill : AttackBase
 
 	public override void OnAnimationStop(Actor self, AnimationEvent evt)
 	{
-		GameManager.instance.EnableCtrl(ControlModuleMode.Animated);
+		GameManager.instance.EnableCtrl();
 		
 	}
 
 
-	protected override void DoDamage(Actor to, Actor by)
-	{
-		if (value <= 0)
-		{
-
-			value = 1;
-		}
-		
-		to.life.DamageYY(by.atk.initDamage * damageMult * value * 0.8f, DamageType.DirectHit, 0, 0, by);
-		Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.initDamage} * {damageMult} * {value} = {(by.atk.initDamage * damageMult * value * 0.8f)}");
-		for (int i = 0; i < statEff.Count; i++)
-		{
-			StatusEffects.ApplyStat(to, by, statEff[i].id, statEff[i].duration, statEff[i].power);
-		}
-	}
 	
 }
