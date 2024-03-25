@@ -181,14 +181,14 @@ public class PlayerCast : CastModule
 
 	private void Start()
 	{
-		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("NormalBowAttack"), SkillSlotInfo.LClick, PlayerForm.Magic);
-		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("NormalBowAttack"), SkillSlotInfo.LClick, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
 		
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YohoNormalAttack"), SkillSlotInfo.LClick, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("NextEnter"), SkillSlotInfo.RClick, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("SkyBritgh"), SkillSlotInfo.One, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YusungSmith"), SkillSlotInfo.Three, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YohoSharpnessAtt"), SkillSlotInfo.Two, PlayerForm.Magic);
+		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YohoNormalAttack"), SkillSlotInfo.LClick, PlayerForm.Magic);
+		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("NextEnter"), SkillSlotInfo.RClick, PlayerForm.Magic);
+		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("SkyBritgh"), SkillSlotInfo.One, PlayerForm.Magic);
+		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YusungSmith"), SkillSlotInfo.Three, PlayerForm.Magic);
+		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YohoSharpnessAtt"), SkillSlotInfo.Two, PlayerForm.Magic);
 		// YohoNormalAttack
 		
 		nameCastPair.Add("interact" , new Preparation(
@@ -474,10 +474,13 @@ public class PlayerCast : CastModule
 
 	protected override IEnumerator DelCast(Preparation p)
 	{
-		GameManager.instance.DisableCtrl(ControlModuleMode.Animated); //히트당하면 끊긴다...
-		GameManager.instance.uiManager.interingUI.On();
-		float t = 0;
 		float waitSec = p.Timefunc();
+		if(waitSec > 0)
+		{
+			GameManager.instance.DisableCtrl(ControlModuleMode.Animated); //히트당하면 끊긴다...
+			GameManager.instance.uiManager.interingUI.On();
+		}
+		float t = 0;
 		while (waitSec * castModuleStat.Speed > t)
 		{
 			t += Time.deltaTime;
@@ -487,8 +490,11 @@ public class PlayerCast : CastModule
 		p.onPrepComp?.Invoke(transform);
 		ongoing = null;
 		curName = null;
-		GameManager.instance.uiManager.interingUI.Off();
-		GameManager.instance.EnableCtrl(ControlModuleMode.Animated);
+		if(waitSec > 0)
+		{
+			GameManager.instance.uiManager.interingUI.Off();
+			GameManager.instance.EnableCtrl(ControlModuleMode.Animated);
+		}
 	}
 
 	private void Update()
@@ -510,7 +516,8 @@ public class PlayerCast : CastModule
 		}
 		if (Input.GetKeyDown(KeyCode.RightShift))
 		{
-			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
+			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ThunderStorm"), SkillSlotInfo.Q, PlayerForm.Magic);
+			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("SwordRain"), SkillSlotInfo.E, PlayerForm.Magic);
 		}
 		///
 	}
