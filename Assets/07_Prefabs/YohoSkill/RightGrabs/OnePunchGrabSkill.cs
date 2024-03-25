@@ -8,7 +8,7 @@ public class OnePunchGrabSkill : YGComboAttackBase
 
 	public override void OnAnimationStart(Actor self, AnimationEvent evt)
 	{
-		GameManager.instance.DisableCtrl(ControlModuleMode.Animated);
+		GameManager.instance.DisableCtrl();
 	}
 
 	public override void OnAnimationMove(Actor self, AnimationEvent evt)
@@ -91,30 +91,10 @@ public class OnePunchGrabSkill : YGComboAttackBase
 
 	public override void OnAnimationStop(Actor self, AnimationEvent evt)
 	{
-		GameManager.instance.EnableCtrl(ControlModuleMode.Animated);
+		GameManager.instance.EnableCtrl();
 	}
+	
 
-	protected override void DoDamage(Actor to, Actor by)
-	{
-		to.life.DamageYY(by.atk.initDamage * damageMult, DamageType.DirectHit, 0, 0, by);
-		Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.initDamage} * {damageMult} = {(by.atk.initDamage * damageMult)}");
-		for (int i = 0; i < statEff.Count; i++)
-		{
-			StatusEffects.ApplyStat(to, by, statEff[i].id, statEff[i].duration, statEff[i].power);
-		}
-	}
 
-	protected void DoDamage(Actor to, Actor by, float t)
-	{
-		if (t == 0)
-			t = 1;
-		
-		to.life.DamageYY(by.atk.initDamage * damageMult * t * 0.4f, DamageType.DirectHit, 0, 0, by);
-		Debug.Log($"[데미지] {to.gameObject.name} 에게 데미지 : {by.atk.initDamage} * {damageMult} = {(by.atk.initDamage * damageMult)}");
-		for (int i = 0; i < statEff.Count; i++)
-		{
-			StatusEffects.ApplyStat(to, by, statEff[i].id, statEff[i].duration, statEff[i].power);
-		}
-	}
 	
 }

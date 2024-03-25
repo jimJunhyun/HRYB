@@ -342,6 +342,20 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	public void DisableCtrl()
+	{
+		pinp.DeactivateInput();
+		pActor.move.moveDir = Vector3.zero;
+		//self.move.forceDir = Vector3.zero;
+		DisableCtrl(ControlModuleMode.Animated);
+	}
+	
+	public void EnableCtrl()
+	{
+		GameManager.instance.pinp.ActivateInput();
+		EnableCtrl(ControlModuleMode.Animated);
+	}
+	
 	public void DisableCtrl(ControlModuleMode mode)
 	{
 		(pActor.move as PlayerMove).NoInput.Pause(mode, true);

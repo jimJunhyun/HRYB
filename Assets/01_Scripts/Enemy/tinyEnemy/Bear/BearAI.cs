@@ -12,7 +12,7 @@ public class BearAI : AISetter
 	[Header("탐색 범위")][SerializeField] public float _sectionRange = 10f;
 	[Header("초기화 범위")][SerializeField] public float _section2Range = 15f;
 
-	const string NormalAttack = "normal";
+	const string NormalAttack = "Normal";
 	const string EXAttack = "EX";
 
 	public float Attackrange()

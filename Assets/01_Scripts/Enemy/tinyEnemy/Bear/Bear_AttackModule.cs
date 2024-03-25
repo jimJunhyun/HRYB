@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class Bear_AttackModule : EnemyAttackModule
 {
+	private bool left = false;
+
+	
 	public override void OnAnimationEnd()
 	{
 	}
 
 	public override void OnAnimationEvent()
 	{
+		
+
+		
 		switch(AttackStd)
 		{
 			case "normal":
 				{
+					int a = left ? 1 : 2;	
 					_nowCols.Now(transform, (_life) =>
 					{
 						_life.DamageYY(new YinYang(50, 0), DamageType.DirectHit);
@@ -31,7 +38,7 @@ public class Bear_AttackModule : EnemyAttackModule
 					});
 
 
-					EffectObject eff = PoolManager.GetEffect($"SandBoomb", transform);
+					EffectObject eff = PoolManager.GetEffect($"BearNoraml{a}", transform);
 					eff.Begin();
 				}
 				break;
@@ -55,13 +62,13 @@ public class Bear_AttackModule : EnemyAttackModule
 					});
 
 
-					EffectObject eff = PoolManager.GetEffect($"SandBoomb", transform);
+					EffectObject eff = PoolManager.GetEffect($"BearEX", transform);
 
 				}
 				break;
 		}
-
-
+		
+		
 	}
 
 	public override void OnAnimationMove()
@@ -92,19 +99,45 @@ public class Bear_AttackModule : EnemyAttackModule
 
 	public override void Attack()
 	{
+		
+		left = !left;
+		int a = left ? 1 : 2;
 		string t = AttackStd;
-
-		GameObject obj = PoolManager.GetObject($"BearAttack{t}", transform);
-
-		if (obj.TryGetComponent(out ColliderCast cols))
+		
+		switch(AttackStd)
 		{
-			_nowCols = cols;
+			case "normal":
+				{
+					GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"Attack{AttackStd}"));
+					
+					
+					GameObject obj = PoolManager.GetObject($"BearNormalCollider", transform);
+
+					if (obj.TryGetComponent(out ColliderCast cols))
+					{
+						_nowCols = cols;
+					}
+				}
+				break;
+
+			case "EX":
+				{
+					GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"Attack{AttackStd}{a}"));
+					
+					
+										
+					GameObject obj = PoolManager.GetObject($"BearEXCollider", transform);
+
+					if (obj.TryGetComponent(out ColliderCast cols))
+					{
+						_nowCols = cols;
+					}
+				}
+				break;
 		}
 
 
 		//GetActor().anim.SetAttackTrigger();
-
-		GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"AttackStd"));
 
 	}
 
