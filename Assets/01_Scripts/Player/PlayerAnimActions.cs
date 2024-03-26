@@ -195,11 +195,43 @@ public class PlayerAnimActions : MonoBehaviour
 		{
 			(self.cast as PlayerCast).NowSkillUse.OnAnimationMove(self, evt);
 		}
-
-		if(evt.stringParameter == "Foot")
+		if(evt.stringParameter.Contains("Foot"))
 		{
+			string layerName = GameManager.GetLayerName(transform.position, GameManager.instance.terrain);
+			switch (evt.stringParameter)
+			{
+				case ("FootWalk"):
+					if (layerName.Contains("Grass"))
+					{
+						GameManager.instance.audioPlayer.PlayPoint("GrassWalk", transform.position, 1.0f);
+					}
+					else if(layerName.Contains("Sand"))
+					{
+						GameManager.instance.audioPlayer.PlayPoint("SandWalk", transform.position, 1.0f);
+					}
+					else
+					{
+						GameManager.instance.audioPlayer.PlayPoint("StoneWalk", transform.position, 1.0f);
+					}
+					break;
 
+				case ("FootRun"):
+					if (layerName.Contains("Grass"))
+					{
+						GameManager.instance.audioPlayer.PlayPoint("GrassRun", transform.position, 0.1f);
+					}
+					else if (layerName.Contains("Sand"))
+					{
+						GameManager.instance.audioPlayer.PlayPoint("SandRun", transform.position, 0.1f);
+					}
+					else 
+					{
+						GameManager.instance.audioPlayer.PlayPoint("StoneRun", transform.position, 0.1f);
+					}
+					break;
+			}
 		}
+
 	}
 
 	public void OnAnimationEvent(AnimationEvent evt)
