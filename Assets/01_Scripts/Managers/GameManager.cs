@@ -344,6 +344,7 @@ public class GameManager : MonoBehaviour
 
 	public void DisableCtrl()
 	{
+		player.layer = LayerMask.NameToLayer("PlayerAttacker");
 		pinp.DeactivateInput();
 		pActor.move.moveDir = Vector3.zero;
 		//self.move.forceDir = Vector3.zero;
@@ -352,6 +353,7 @@ public class GameManager : MonoBehaviour
 	
 	public void EnableCtrl()
 	{
+		player.layer = LayerMask.NameToLayer("Player");
 		GameManager.instance.pinp.ActivateInput();
 		EnableCtrl(ControlModuleMode.Animated);
 	}

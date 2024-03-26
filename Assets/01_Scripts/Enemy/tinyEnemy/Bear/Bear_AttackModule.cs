@@ -5,8 +5,8 @@ using UnityEngine;
 public class Bear_AttackModule : EnemyAttackModule
 {
 	private bool left = false;
-
 	
+	[SerializeField] GameObject _firePos;
 	public override void OnAnimationEnd()
 	{
 		if (_nowCols != null)
@@ -50,6 +50,52 @@ public class Bear_AttackModule : EnemyAttackModule
 
 			case "EX":
 				{
+					
+					GameObject obj = PoolManager.GetObject($"BearFire", _firePos.transform); ;
+
+					if (obj.TryGetComponent(out ColliderCast cols))
+					{
+						_nowCols = cols;
+					}
+
+					if (obj.TryGetComponent(out EffectObject eff))
+					{
+						eff.Begin();
+					}
+					
+					obj.transform.position = _firePos.transform.position;
+					obj.transform.LookAt(self.ai.player.transform);
+					obj.transform.parent = null;
+					
+					_nowCols.Now(transform, (_life) =>
+					{
+						_life.DamageYY(new YinYang(50, 0), DamageType.DirectHit);
+						// 기절 ++
+						Vector3 vec = transform.position - _life.transform.position;
+						vec.y = 0;
+						vec.Normalize();
+						
+						GiveBuff(_life.GetActor(), StatEffID.Stun, 0.1f);
+
+
+						_life.GetActor().move.forceDir = vec * 2; //+ new Vector3(0, 32, 0);
+						//_life.GetActor().move.forceDir.y = 40;
+					});
+					//EffectObject eff = PoolManager.GetEffect($"BearFire", transform);
+					//eff.Begin();
+				}
+				break;
+			
+			case "EX2":
+				{
+					
+					GameObject obj = PoolManager.GetObject($"BearEXCollider", transform); ;
+
+					if (obj.TryGetComponent(out ColliderCast cols))
+					{
+						_nowCols = cols;
+					}
+					
 					_nowCols.Now(transform, (_life) =>
 					{
 						_life.DamageYY(new YinYang(50, 0), DamageType.DirectHit);
@@ -58,13 +104,11 @@ public class Bear_AttackModule : EnemyAttackModule
 						vec.y = 0;
 						vec.Normalize();
 						
-						GiveBuff(_life.GetActor(), StatEffID.Stun, 0.8f);
+						//GiveBuff(_life.GetActor(), StatEffID.Stun, 0.8f);
 
 
 						_life.GetActor().move.forceDir = vec + new Vector3(0, 32, 0);
 						//_life.GetActor().move.forceDir.y = 40;
-
-						Debug.LogError("시발시발시발시발" + _life.GetActor().move.forceDir);
 					});
 					EffectObject eff = PoolManager.GetEffect($"SandBoomb", transform);
 					eff.Begin();
@@ -134,16 +178,16 @@ public class Bear_AttackModule : EnemyAttackModule
 
 			case "EX":
 				{
-					GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"Attack{AttackStd}"));
+					//GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"Attack{AttackStd}"));
+					GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"Buff"));
 					
+				}
+				break;
+			case "EX2":
+				{
+					//GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"Attack{AttackStd}"));
+					GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"AttackEX"));
 					
-										
-					GameObject obj = PoolManager.GetObject($"BearEXCollider", transform);
-
-					if (obj.TryGetComponent(out ColliderCast cols))
-					{
-						_nowCols = cols;
-					}
 				}
 				break;
 		}

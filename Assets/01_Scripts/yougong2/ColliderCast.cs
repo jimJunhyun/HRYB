@@ -34,6 +34,7 @@ public abstract class ColliderCast : MonoBehaviour
 	
 	public Action<LifeModule> CastAct;
 	private Action<Transform, LifeModule> FirstAct;
+	private Action _startCall = null;
 	private bool isFirst = false;
 	
 	protected void Update()
@@ -98,6 +99,13 @@ public abstract class ColliderCast : MonoBehaviour
 			_isRunning = true;
 			if (act != null)
 				CastAct = act;
+		}
+
+		ObjectAction[] t;
+		t = GetComponentsInChildren<ObjectAction>();
+		foreach (ObjectAction att in t)
+		{
+			att._isFire = true;
 		}
 
 		if(EndSec > 0)
