@@ -555,6 +555,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cap: 20
+  swapEffectName: Effect_27_ExposeOfDarkness
+  swapEffectRot: {x: 0, y: 0, z: 0}
+  swapEffectScale: {x: 0.2, y: 0.2, z: 0.2}
   stat: 0
   curHolding: 0
 --- !u!114 &3965672012114494430
@@ -572,7 +575,7 @@ MonoBehaviour:
   initAtkDist: 60
   initAtkGap: 1
   initDamage:
-    black: 30
+    black: 0
     white: 30
   target: {fileID: 0}
   initSecPerCharge: 0
@@ -1275,10 +1278,46 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4147740807139841473}
     m_Modifications:
+    - target: {fileID: 688221275674176927, guid: 6fd6883851faf24429cb40f1a93edfc9, type: 3}
+      propertyPath: m_Name
+      value: HumanCloth
+      objectReference: {fileID: 0}
+    - target: {fileID: 688221275674176927, guid: 6fd6883851faf24429cb40f1a93edfc9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3443967691586762709, guid: 6fd6883851faf24429cb40f1a93edfc9, type: 3}
+      propertyPath: eyeMats.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3443967691586762709, guid: 6fd6883851faf24429cb40f1a93edfc9, type: 3}
+      propertyPath: hairMats.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3443967691586762709, guid: 6fd6883851faf24429cb40f1a93edfc9, type: 3}
+      propertyPath: eyeMats.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ad27ff0c4df76fcc1bf20dcf3d6ce00c, type: 2}
+    - target: {fileID: 3443967691586762709, guid: 6fd6883851faf24429cb40f1a93edfc9, type: 3}
+      propertyPath: eyeMats.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0fdf3b53404c7a546aeef7f70574317a, type: 2}
+    - target: {fileID: 3443967691586762709, guid: 6fd6883851faf24429cb40f1a93edfc9, type: 3}
+      propertyPath: hairMats.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a3ebd67d4f7bf1e736f563954e14ba9e, type: 2}
+    - target: {fileID: 3443967691586762709, guid: 6fd6883851faf24429cb40f1a93edfc9, type: 3}
+      propertyPath: hairMats.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8f2dcb2549e7eb347bdb0f06a85b1190, type: 2}
     - target: {fileID: 3925027251658714667, guid: 6fd6883851faf24429cb40f1a93edfc9, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: c2bd829cfa7d4ef45b2b55024fe03342, type: 2}
+    - target: {fileID: 5404168002551327345, guid: 6fd6883851faf24429cb40f1a93edfc9, type: 3}
+      propertyPath: m_Name
+      value: FoxCloth
+      objectReference: {fileID: 0}
     - target: {fileID: 6960405213067195473, guid: 6fd6883851faf24429cb40f1a93edfc9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4616,7 +4655,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _anim: {fileID: 0}
-  eBowRend: {fileID: 0}
+  hairMats: []
+  eyeMats: []
 --- !u!4 &7569323312691132741 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3570264480827207231, guid: fd07633bc9861bc45888135e827cbded, type: 3}

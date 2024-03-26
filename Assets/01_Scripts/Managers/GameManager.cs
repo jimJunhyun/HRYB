@@ -85,7 +85,7 @@ public struct ModuleController
 		//Debug.Log("STF : " +stopFlag);
 	}
 
-	public void Pause(ControlModuleMode mode, bool stat)
+	public void Pause(ControlModuleMode mode, bool stat, bool isInput = false)
 	{
 		switch (mode)
 		{
@@ -127,11 +127,19 @@ public struct ModuleController
 				Debug.LogError("NEW STAT HAVE BEEN CREATED?");
 				break;
 		}
+		if(isInput && Paused)
+		{
+			GameManager.instance.pinp.DeactivateInput();
+		}
+		else if(isInput && !Paused)
+		{
+			GameManager.instance.pinp.ActivateInput();
+		}
 	}
 
-	public void Pause(ControlModuleMode mode, bool stat, float dur)
+	public void Pause(ControlModuleMode mode, bool stat, float dur, bool isInput = false)
 	{
-		GameManager.instance.StartCoroutine(DelPauser(mode, stat, dur));
+		GameManager.instance.StartCoroutine(DelPauser(mode, stat, dur, isInput));
 	}
 
 	public void HandleSpeed(float amt, SpeedMode mode)
@@ -191,11 +199,11 @@ public struct ModuleController
 		fixedSpeed = null;
 	}
 
-	IEnumerator DelPauser(ControlModuleMode mode, bool stat, float delSec)
+	IEnumerator DelPauser(ControlModuleMode mode, bool stat, float delSec, bool isInput)
 	{
-		Pause(mode, stat);
+		Pause(mode, stat, isInput);
 		yield return new WaitForSeconds(delSec);
-		Pause(mode, !stat);
+		Pause(mode, !stat, isInput);
 
 	}
 
@@ -212,6 +220,7 @@ public class GameManager : MonoBehaviour
 	public const float GRAVITY = 9.8f;
 	public const int PLAYERLAYER = 7;
 	public const int INTERABLELAYER = 8;
+	public const int ENEMYLAYER = 9;
 	public const int GROUNDLAYER = 11;
 	public const int CLIMBABLELAYER = 17;
 	public const int HOOKABLELAYER = 19;
@@ -345,7 +354,7 @@ public class GameManager : MonoBehaviour
 	public void DisableCtrl()
 	{
 		player.layer = LayerMask.NameToLayer("PlayerAttacker");
-		pinp.DeactivateInput();
+		//pinp.DeactivateInput();
 		pActor.move.moveDir = Vector3.zero;
 		//self.move.forceDir = Vector3.zero;
 		DisableCtrl(ControlModuleMode.Animated);
@@ -354,19 +363,19 @@ public class GameManager : MonoBehaviour
 	public void EnableCtrl()
 	{
 		player.layer = LayerMask.NameToLayer("Player");
-		GameManager.instance.pinp.ActivateInput();
+		//GameManager.instance.pinp.ActivateInput();
 		EnableCtrl(ControlModuleMode.Animated);
 	}
 	
 	public void DisableCtrl(ControlModuleMode mode)
 	{
-		(pActor.move as PlayerMove).NoInput.Pause(mode, true);
+		(pActor.move as PlayerMove).moveModuleStat.Pause(mode, true);
 		pActor.atk.attackModuleStat.Pause(mode, true);
 	}
 
 	public void EnableCtrl(ControlModuleMode mode)
 	{
-		(pActor.move as PlayerMove).NoInput.Pause(mode, false);
+		(pActor.move as PlayerMove).moveModuleStat.Pause(mode, false);
 		pActor.atk.attackModuleStat.Pause(mode, false);
 	}
 

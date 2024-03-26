@@ -263,7 +263,9 @@ public class PlayerInven : MonoBehaviour
 	public SkillInventory skInven = new SkillInventory();
     public int cap = 21;
 
-	bool attackable = true;
+	public string swapEffectName;
+	public Vector3 swapEffectRot;
+	public Vector3 swapEffectScale;
 
 	bool clickWood = false;
 	bool clickFire = false;
@@ -273,6 +275,8 @@ public class PlayerInven : MonoBehaviour
 
 	public PlayerForm stat = PlayerForm.Magic;
 	public int curHolding = 0;
+	PlayerAnimActions animActions;
+	
 	public ItemAmountPair CurHoldingItem 
 	{ 
 		get 
@@ -298,6 +302,12 @@ public class PlayerInven : MonoBehaviour
 	private void Awake()
 	{
 		inven = new Inventory(cap);
+		animActions = GetComponentInChildren<PlayerAnimActions>();
+	}
+
+	private void Start()
+	{
+		RefreshStat();
 	}
 
 	public int AddItem(Item data, int num = 1)
@@ -513,7 +523,7 @@ public class PlayerInven : MonoBehaviour
 
 	public void ObtainWeapon()
 	{
-		attackable = true;
+		//attackable = true;
 		//(GameManager.instance.pActor.atk as PlayerAttack).ObtainBowRender();
 	}
 
@@ -523,27 +533,36 @@ public class PlayerInven : MonoBehaviour
 		{
 			switch (stat)
 			{
-				//case HandStat.None:
 				case PlayerForm.Yoho:
-					if (attackable)
-					{
-						stat = PlayerForm.Magic;
-						//(GameManager.instance.pActor.anim as PlayerAnim).SetEquipTrigger();
-					}
-					
-					break;
-				case PlayerForm.Magic:
-					if((GameManager.instance.pActor.atk is PlayerAttack atk) &&
+					if ((GameManager.instance.pActor.atk is PlayerAttack atk) &&
 						!atk.clickL && !atk.clickR)
 					{
+						stat = PlayerForm.Magic;
+					}
+					break;
+				case PlayerForm.Magic:
+					if ((GameManager.instance.pActor.atk is PlayerAttack tk) &&
+						!tk.clickL && !tk.clickR)
+					{
 						stat = PlayerForm.Yoho;
-						//(GameManager.instance.pActor.anim as PlayerAnim).SetUnequipTrigger();
 					}
 					break;
 				default:
 					break;
 			}
+			(GameManager.instance.pActor.move as PlayerMove).NoInput.Pause(ControlModuleMode.Status, true, 2.5f, true);
+			GameObject obj = PoolManager.GetObject(swapEffectName, transform, 3);
+			obj.transform.rotation = Quaternion.Euler(swapEffectRot);
+			obj.transform.localScale = swapEffectScale;
+			RefreshStat();
 		}
+	}
+
+	public void RefreshStat()
+	{
+		Debug.Log("변");
+		animActions.ChangeFormTo(stat);
+		(GameManager.instance.pActor.cast as PlayerCast).ChangeSkillSlotTo(stat);
 		
 	}
 

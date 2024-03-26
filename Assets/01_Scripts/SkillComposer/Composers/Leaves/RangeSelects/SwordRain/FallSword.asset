@@ -12,17 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13054ebc27c1cdf489ce3a1c73450f7b, type: 3}
   m_Name: FallSword
   m_EditorClassIdentifier: 
-  animClip: {fileID: 0}
-  animClipLoopings: {fileID: 0}
-  animClipDisop: {fileID: 0}
+  animClip: {fileID: 7400000, guid: 36cc3d7d45ee2044e9a958032ba352e9, type: 2}
+  animClipLoopings: {fileID: 7400000, guid: 775d6203a37a0064a8cd9d95d2413f57, type: 2}
+  animClipDisop: {fileID: 7400000, guid: 0a7f6f20969bd8b499c12e3b245b23a7, type: 2}
   audioClipName: 
   tags:
     value: 1
   level: 0
   statEff: []
-  damageMult: 5.75
-  relateTrmName: 
+  damageMult: 2.5
+  relateTrmName: Main Camera (1)
   rangeName: PlayerDecalCircle
-  prefName: 
-  maxDistance: 0
+  prefName: SwordAOE
+  maxDistance: 20
   offSet: {x: 0, y: 0, z: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  scaleOffset: {x: 1, y: 1, z: 1}
+  isOffsetRandom: 0
+  randomOffsetRange: {x: 0, y: 0}
+  decalScale: {x: 7, y: 7}
+  totalRemainSec: 3
+  isOnce: 0
+  checkGap: 0.1
+  checkDur: 0.3

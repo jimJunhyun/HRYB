@@ -18,7 +18,9 @@ public enum DamageChannel
 	None,
 	Normal,
 	Bleeding,
-	
+	Fire,
+
+	Max
 }
 
 [Serializable]
@@ -84,11 +86,7 @@ public class LifeModule : Module
 	
 	internal Dictionary<string, AppliedStatus> appliedDebuff = new Dictionary<string, AppliedStatus>();
 
-	internal Dictionary<int, List<Coroutine>> ongoingTickDamages = new Dictionary<int, List<Coroutine>>()
-	{
-		{ ((int)DamageChannel.Normal), new List<Coroutine>()},
-		{ ((int)DamageChannel.Bleeding), new List<Coroutine>()},
-	};
+	internal Dictionary<int, List<Coroutine>> ongoingTickDamages = new Dictionary<int, List<Coroutine>>() ;
 
 	//피격자, 공격자, 대미지
 	public Action<Actor, Actor, YinYang> onNextDamaged; 
@@ -109,23 +107,27 @@ public class LifeModule : Module
 	public virtual void Awake()
 	{
 		//maxSoul = initSoul;
+		for (int i = ((int)DamageChannel.Normal); i < ((int)DamageChannel.Max); i++)
+		{
+			ongoingTickDamages.Add(i, new List<Coroutine>());
+		}
 	}
 
 	public virtual void Update()
 	{
-		if (regenOn)
-		{
-			if(Mathf.Abs((diff = initYinYang.white - yy.white)) > regenThreshold)
-			{
-				regenOn = true;
-				yy.white += TotalRegenSpeed.white * Time.deltaTime;
-			}
-			if(Mathf.Abs((diff = initYinYang.black - yy.black)) > regenThreshold)
-			{
-				regenOn = true;
-				yy.black += TotalRegenSpeed.black * Time.deltaTime;
-			}
-		}
+		//if (regenOn)
+		//{
+		//	if(Mathf.Abs((diff = initYinYang.white - yy.white)) > regenThreshold)
+		//	{
+		//		regenOn = true;
+		//		yy.white += TotalRegenSpeed.white * Time.deltaTime;
+		//	}
+		//	if(Mathf.Abs((diff = initYinYang.black - yy.black)) > regenThreshold)
+		//	{
+		//		regenOn = true;
+		//		yy.black += TotalRegenSpeed.black * Time.deltaTime;
+		//	}
+		//}
 		//foreach (var item in appliedDebuff)
 		//{
 		//	Debug.Log(name + " Effefct : " + item.Key.name + " For " + item.Value);

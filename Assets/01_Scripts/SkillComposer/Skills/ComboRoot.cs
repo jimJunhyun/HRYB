@@ -22,7 +22,11 @@ public class ComboRoot : SkillRoot
 	{
 		if(Time.time - prevOperateSec >= composeDel)
 		{
-			if(self.anim is PlayerAnim pa)
+			if (isSuperArmor)
+			{
+				self.life.superArmor = true;
+			}
+			if (self.anim is PlayerAnim pa)
 			{
 				pa.SetAttackTrigger(curCombo); 
 				prevOperateSec = Time.time;
@@ -195,6 +199,10 @@ public class ComboRoot : SkillRoot
 		{
 			Debug.Log("각종강화효과지우기");
 			atk.HandleRemoveCall();
+		}
+		if (isSuperArmor)
+		{
+			self.life.superArmor = false;
 		}
 	}
 

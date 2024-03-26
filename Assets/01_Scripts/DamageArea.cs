@@ -13,11 +13,18 @@ public class DamageArea : DamageObject
 	bool first = true;
 	bool checking;
 
-	bool already = false;
-
 	float lifetime;
 
-	public void SetInfo(float time, YinYang dmg, bool isOnce, float checkGap, float checkDur)
+	Collider col;
+
+	float initTime;
+
+	private void Awake()
+	{
+		col = GetComponent<Collider>();
+	}
+
+	public void SetInfo(float time, YinYang dmg, bool isOnce, float checkGap, float checkDur, Actor self, List<StatusEffectApplyData> stat)
 	{
 		lifetime = time;
 		yy = dmg;
@@ -25,10 +32,15 @@ public class DamageArea : DamageObject
 		calcGap= checkGap;
 		calcRemainSec = checkDur;
 
-		already = false;
 		first=  true;
 		prevCalcSec = 0;
 		checking =  false;
+		owner = self;
+		statData = stat;
+
+		initTime = Time.time;
+
+		col.enabled = false;
 	}
 
 	private void Update()
@@ -38,7 +50,7 @@ public class DamageArea : DamageObject
 			if(first || !isOnce)
 			{
 				checking = true;
-				already = false;
+				col.enabled = true;
 				prevCalcSec = Time.time;
 			}
 			if (first)
@@ -46,22 +58,33 @@ public class DamageArea : DamageObject
 		}
 		if(checking && Time.time - prevCalcSec >= calcRemainSec)
 		{
+			col.enabled = false;
 			checking = false;
 			prevCalcSec = Time.time;
+		}
+
+		if(Time.time - initTime >= lifetime)
+		{
+			Returner();
 		}
 	}
 
 	public override void OnTriggerEnter(Collider other)
 	{
-		if (checking && !already)
+		if (checking && other.transform != owner.transform)
 		{
 			base.OnTriggerEnter(other);
-			already = true;
 		}
 	}
 
 	public override void Damage(LifeModule to)
 	{
 		to.DamageYY(yy, DamageType.NoEvadeHit);
+	}
+
+	public void Returner()
+	{
+		PoolManager.ReturnObject(gameObject);
+
 	}
 }

@@ -94,7 +94,7 @@ public class MoveModule : Module
 		{
 			forceDir.y -= GameManager.GRAVITY * Time.deltaTime;
 		}
-		else if (isGrounded && forceDir.y <0)
+		else if (isGrounded && forceDir.y < 0)
 		{
 			forceDir.y = 0f;
 		}
@@ -104,7 +104,9 @@ public class MoveModule : Module
 	{
 		if(forceDir.sqrMagnitude > 0.01f)
 		{
+
 			Vector3 antiForce = -(forceDir) * GameManager.instance.forceResistance * Time.deltaTime;
+			antiForce.y = 0;
 			forceDir += antiForce;
 		}
 		else

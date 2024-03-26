@@ -45,7 +45,6 @@ public class CameraManager : MonoBehaviour
 		aimCam = GameObject.Find("AimCam").GetComponent<CinemachineVirtualCamera>();
 		
 		SwitchTo(CamStatus.Freelook);
-		
 		for (int i = 0; i < 3; i++)
 		{
 			camShakers.Add(pCam.GetRig(i).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>());

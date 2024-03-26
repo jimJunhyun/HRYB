@@ -31,6 +31,11 @@ public class ChargeCastRoot : SkillRoot
 
 	public override void Operate(Actor self)
 	{
+		if (isSuperArmor)
+		{
+			self.life.superArmor = true;
+		}
+
 		if (isPlayAnim)
 		{
 			if (self.anim is PlayerAnim pa)
@@ -55,8 +60,6 @@ public class ChargeCastRoot : SkillRoot
 			{
 				pa.ResetLoopState();
 				pa.SetDisopTrigger(0);
-				
-				
 			}
 		}
 		else
@@ -83,6 +86,13 @@ public class ChargeCastRoot : SkillRoot
 		{
 			GameManager.instance.StartCoroutine(DelDisoperate(self));
 		}
+		else
+		{
+			for (int i = 0; i < childs.Count; i++)
+			{
+				ActualDisoperateAt(self, i);
+			}
+		}
 		GameManager.instance.uiManager.interingUI.Off();
 		Debug.Log("충전종료, 스킬을 사용했는가? : " + prepared);
 		charging = false;
@@ -104,11 +114,24 @@ public class ChargeCastRoot : SkillRoot
 
 	protected override IEnumerator DelDisoperate(Actor self)
 	{
-		yield return base.DelDisoperate(self);
+		if (isPlayDisopAnim)
+		{
+			//(GameManager.instance.pActor.anim as PlayerAnim).SetDisopTrigger(0);
+			for (int i = 0; i < childs.Count; i++)
+			{
+				childs[i].Disoperate(self);
+				yield return new WaitForSeconds(composeDel);
+			}
+		}
+
 		if (self.atk is PlayerAttack atk)
 		{
 			Debug.Log("각종강화효과지우기");
 			atk.HandleRemoveCall();
+		}
+		if (isSuperArmor)
+		{
+			self.life.superArmor = false;
 		}
 	}
 
@@ -117,66 +140,55 @@ public class ChargeCastRoot : SkillRoot
 		if ((to.anim as PlayerAnim).curEquipped != this)
 		{
 			List<AnimationClip> clips = new List<AnimationClip>();
-			for (int i = 0; i < childs.Count; i++)
+			if (childs[0].animClip != null)
 			{
-				if (childs[i].animClip != null)
+				AnimationEvent[] events = childs[0].animClip.events;
+				for (int j = 0; j < events.Length; j++)
 				{
-					AnimationEvent[] events = childs[i].animClip.events;
-					if (events.Length > 1)
-					{
-						events[1].stringParameter = info.ToString();
-					}
-					if (events.Length > 2)
-					{
-						events[2].stringParameter = info.ToString();
-					}
-					childs[i].animClip.events = events;
-					clips.Add(childs[i].animClip);
-					Debug.Log($"New Clip : {childs[i].animClip}");
+					events[j].stringParameter = info.ToString();
+
 				}
+				childs[0].animClip.events = events;
+				clips.Add(childs[0].animClip);
+				Debug.Log($"New Clip : {childs[0].animClip} for op");
 			}
-			for (int i = 0; i < 5 - childs.Count; i++)
+			
+			for (int i = 0; i < 4; i++)
 			{
 				clips.Add(null);
 			}
-			for (int i = 0; i < childs.Count; i++)
+
+			if (childs[0].animClipDisop != null)
 			{
-				if (childs[i].animClipDisop != null)
+				AnimationEvent[] events = childs[0].animClipDisop.events;
+				for (int j = 0; j < events.Length; j++)
 				{
-					AnimationEvent[] events = childs[i].animClipDisop.events;
-					if (events.Length > 1)
-					{
-						events[1].stringParameter = info.ToString();
-					}
-					if (events.Length > 2)
-					{
-						events[2].stringParameter = info.ToString();
-					}
-					childs[i].animClipDisop.events = events;
-					clips.Add(childs[i].animClipDisop);
-					Debug.Log($"New Clip : {childs[i].animClipDisop}");
+					events[j].stringParameter = info.ToString();
+
 				}
+				childs[0].animClipDisop.events = events;
+				clips.Add(childs[0].animClipDisop);
+				Debug.Log($"New Clip : {childs[0].animClipDisop} for Disop");
 			}
-			for (int i = 0; i < 5 - childs.Count; i++)
+			
+			for (int i = 0; i < 4; i++)
 			{
 				clips.Add(null);
 			}
 			//dur
-			for (int i = 0; i < childs.Count; i++)
+			if (childs[0].animClipLoopings != null)
 			{
-				if (childs[i].animClipLoopings != null)
+				AnimationEvent[] events = childs[0].animClipLoopings.events;
+				for (int j = 0; j < events.Length; j++)
 				{
-					AnimationEvent[] events = childs[i].animClipLoopings.events;
-					for (int j = 0; j < events.Length; j++)
-					{
-						events[j].stringParameter = info.ToString();
-					}
-					childs[i].animClipLoopings.events = events;
-					clips.Add(childs[i].animClipLoopings);
-					Debug.Log($"New Clip : {childs[i].animClipLoopings}");
+					events[j].stringParameter = info.ToString();
 				}
+				childs[0].animClipLoopings.events = events;
+				clips.Add(childs[0].animClipLoopings);
+				Debug.Log($"New Clip : {childs[0].animClipLoopings} for LOOP");
 			}
-			for (int i = 0; i < 5 - childs.Count; i++)
+			
+			for (int i = 0; i < 4; i++)
 			{
 				clips.Add(null);
 			}
