@@ -88,7 +88,6 @@ public class StatusEffects
 		idStatEffPairs.Add(((int)StatEffID.Slow), new StatusEffect("둔화", "움직임이 느려집니다.", StatEffApplyMethod.Stackable, OnSlowActivated, OnSlowUpdated, OnSlowEnded));
 		idStatEffPairs.Add(((int)StatEffID.Bind), new StatusEffect("속박", "발이 묶여 이동할 수 없습니다.", StatEffApplyMethod.AddDuration, OnBindActivated, OnBindUpdated, OnBindEnded));
 		idStatEffPairs.Add(((int)StatEffID.EnhanceIce), new StatusEffect("냉기", "다음 공격에 얼음의 힘을 부여합니다.", StatEffApplyMethod.NoOverwrite, OnEnhanceIceActivated, OnEnhanceIceUpdated, OnEnhanceIceEnded));
-		idStatEffPairs.Add(((int)StatEffID.EnhanceFire), new StatusEffect("화상", "불로 인해 피해를 입습니다.", StatEffApplyMethod.NoOverwrite, OnEnhanceFireActivated, OnEnhanceFireUpdated, OnEnhanceFireEnded));
 		idStatEffPairs.Add(((int)StatEffID.Stun), new StatusEffect("기절", "행동할 수 없습니다.", StatEffApplyMethod.AddDuration, OnStunActivated, OnStunUpdated, OnStunEnded));
 		idStatEffPairs.Add(((int)StatEffID.FoxBewitched), new StatusEffect("여우홀림", "피해를 받으면, 여우를 빠르게 합니다.", StatEffApplyMethod.NoOverwrite, OnFoxBewitchedActivated, OnFoxBewitchedUpdated, OnFoxBewitchedEnded));
 		idStatEffPairs.Add(((int)StatEffID.SpeedUp), new StatusEffect("신속", "움직임이 날래집니다.", StatEffApplyMethod.Stackable, OnSpeedUpActivated, OnSpeedUpUpdated, OnSpeedUpEnded));
@@ -101,7 +100,6 @@ public class StatusEffects
 		idStatEffPairs.Add(new StatusEffect("둔화", "움직임이 느려집니다.", StatEffApplyMethod.Stackable, OnSlowActivated, OnSlowUpdated, OnSlowEnded), ((int)StatEffID.Slow));
 		idStatEffPairs.Add(new StatusEffect("속박", "발이 묶여 이동할 수 없습니다.", StatEffApplyMethod.AddDuration, OnBindActivated, OnBindUpdated, OnBindEnded), ((int)StatEffID.Bind));
 		idStatEffPairs.Add(new StatusEffect("냉기", "다음 공격에 얼음의 힘을 부여합니다.", StatEffApplyMethod.NoOverwrite, OnEnhanceIceActivated, OnEnhanceIceUpdated, OnEnhanceIceEnded), ((int)StatEffID.EnhanceIce));
-		idStatEffPairs.Add(new StatusEffect("화상", "불로 인해 피해를 입습니다.", StatEffApplyMethod.NoOverwrite, OnEnhanceFireActivated, OnEnhanceFireUpdated, OnEnhanceFireEnded), ((int)StatEffID.EnhanceFire));
 		idStatEffPairs.Add(new StatusEffect("기절", "행동할 수 없습니다.", StatEffApplyMethod.AddDuration, OnStunActivated, OnStunUpdated, OnStunEnded), ((int)StatEffID.Stun));
 		idStatEffPairs.Add(new StatusEffect("여우홀림", "피격시, 플레이어를 빠르게 합니다.", StatEffApplyMethod.NoOverwrite, OnFoxBewitchedActivated, OnFoxBewitchedUpdated, OnFoxBewitchedEnded), ((int)StatEffID.FoxBewitched));
 		idStatEffPairs.Add(new StatusEffect("신속", "움직임이 날래집니다.", StatEffApplyMethod.Stackable, OnSpeedUpActivated, OnSpeedUpUpdated, OnSpeedUpEnded), ((int)StatEffID.SpeedUp));
@@ -225,19 +223,6 @@ public class StatusEffects
 	{
 		Debug.Log("GETTING LEVEL");
 		return (a, c) => { act(a, c, lv); };
-	}
-
-	void OnEnhanceFireActivated(Actor self, Actor inflicter, float power)
-	{
-		Debug.Log("화염강화 사용됨");
-	}
-	void OnEnhanceFireUpdated(Actor self, float power)
-	{
-	}
-	void OnEnhanceFireEnded(Actor self, float power)
-	{
-		Debug.Log("화상제거됨");
-		//스킬 부여 효과 지우기?
 	}
 
 	void OnStunActivated(Actor self, Actor inflicter, float power)

@@ -85,7 +85,7 @@ public struct ModuleController
 		//Debug.Log("STF : " +stopFlag);
 	}
 
-	public void Pause(ControlModuleMode mode, bool stat)
+	public void Pause(ControlModuleMode mode, bool stat, bool isInput = false)
 	{
 		switch (mode)
 		{
@@ -126,6 +126,14 @@ public struct ModuleController
 			default:
 				Debug.LogError("NEW STAT HAVE BEEN CREATED?");
 				break;
+		}
+		if(isInput && Paused)
+		{
+			GameManager.instance.pinp.DeactivateInput();
+		}
+		else if(isInput && !Paused)
+		{
+			GameManager.instance.pinp.ActivateInput();
 		}
 	}
 
@@ -212,6 +220,7 @@ public class GameManager : MonoBehaviour
 	public const float GRAVITY = 9.8f;
 	public const int PLAYERLAYER = 7;
 	public const int INTERABLELAYER = 8;
+	public const int ENEMYLAYER = 9;
 	public const int GROUNDLAYER = 11;
 	public const int CLIMBABLELAYER = 17;
 	public const int HOOKABLELAYER = 19;

@@ -20,11 +20,18 @@ public class Composite : Compose, IComposer
 
 	public override void Disoperate(Actor self)
 	{
-		GameManager.instance.StartCoroutine(DelDisoperate(self));
+		if (!isPlayDisopAnim)
+		{
+			GameManager.instance.StartCoroutine(DelDisoperate(self));
+		}
 	}
 
 	public override void Operate(Actor self)
 	{
+		if (!isPlayAnim)
+		{
+			GameManager.instance.StartCoroutine(DelOperate(self));
+		}
 		//Debug.Log(name + " isPlayAnim : " + isPlayAnim);
 		//Debug.Log("OPERATING : " + name);
 		//GameManager.instance.StartCoroutine(DelOperate(self));

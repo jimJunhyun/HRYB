@@ -37,15 +37,10 @@ public class ShootArrowContinuous : AttackBase
 		localRot.y += Random.Range(-angleJitterAmt, angleJitterAmt);
 		r.transform.localEulerAngles = localRot;
 		//UnityEditor.EditorApplication.isPaused = true;
-		r.SetInfo(self.atk.Damage * damageMult);
-		r.SetOwner(self);
+		r.SetInfo(self.atk.Damage * damageMult, statEff, self);
 		(self.atk as PlayerAttack).onNextUse?.Invoke(r.gameObject);
 		(self.atk as PlayerAttack).onNextSkill?.Invoke(self, this);
 		r.SetHitEff((self.atk as PlayerAttack).onNextHit);
-		for (int i = 0; i < statEff.Count; i++)
-		{
-			r.AddStatusEffect(statEff[i]);
-		}
 
 		if (aMode == ArrowMode.Homing)
 		{

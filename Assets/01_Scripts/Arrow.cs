@@ -58,14 +58,14 @@ public class Arrow : DamageObject
 	bool fired = false;
 	bool detectOn = true;
 
-	Actor owner;
+	
 
 	WaitForSeconds waitTillDisappear;
 	Coroutine c;
 
     Rigidbody rig;
 
-	HashSet<StatusEffectApplyData> statData = new HashSet<StatusEffectApplyData>();
+	
 	Action<Vector3> hitEffData;
 
 	public override void OnTriggerEnter(Collider other)
@@ -183,11 +183,6 @@ public class Arrow : DamageObject
 		detectOn = true;
 	}
 
-	public void SetOwner(Actor a)
-	{
-		owner = a;
-	}
-
 	public void ResetOwner()
 	{
 		owner = null;
@@ -227,12 +222,6 @@ public class Arrow : DamageObject
 
 		this.mode = mode;
 		fired = true;
-	}
-
-	public void AddStatusEffect(StatusEffectApplyData data)
-	{
-		Debug.Log("STAT ADDED : " + data.id.ToString());
-		statData.Add(data);
 	}
 
 	public void RemoveStatusEffect(StatEffID id)
