@@ -129,9 +129,9 @@ public struct ModuleController
 		}
 	}
 
-	public void Pause(ControlModuleMode mode, bool stat, float dur)
+	public void Pause(ControlModuleMode mode, bool stat, float dur, bool isInput = false)
 	{
-		GameManager.instance.StartCoroutine(DelPauser(mode, stat, dur));
+		GameManager.instance.StartCoroutine(DelPauser(mode, stat, dur, isInput));
 	}
 
 	public void HandleSpeed(float amt, SpeedMode mode)
@@ -191,11 +191,11 @@ public struct ModuleController
 		fixedSpeed = null;
 	}
 
-	IEnumerator DelPauser(ControlModuleMode mode, bool stat, float delSec)
+	IEnumerator DelPauser(ControlModuleMode mode, bool stat, float delSec, bool isInput)
 	{
-		Pause(mode, stat);
+		Pause(mode, stat, isInput);
 		yield return new WaitForSeconds(delSec);
-		Pause(mode, !stat);
+		Pause(mode, !stat, isInput);
 
 	}
 
@@ -344,7 +344,7 @@ public class GameManager : MonoBehaviour
 
 	public void DisableCtrl()
 	{
-		pinp.DeactivateInput();
+		//pinp.DeactivateInput();
 		pActor.move.moveDir = Vector3.zero;
 		//self.move.forceDir = Vector3.zero;
 		DisableCtrl(ControlModuleMode.Animated);
@@ -352,19 +352,19 @@ public class GameManager : MonoBehaviour
 	
 	public void EnableCtrl()
 	{
-		GameManager.instance.pinp.ActivateInput();
+		//GameManager.instance.pinp.ActivateInput();
 		EnableCtrl(ControlModuleMode.Animated);
 	}
 	
 	public void DisableCtrl(ControlModuleMode mode)
 	{
-		(pActor.move as PlayerMove).NoInput.Pause(mode, true);
+		(pActor.move as PlayerMove).moveModuleStat.Pause(mode, true);
 		pActor.atk.attackModuleStat.Pause(mode, true);
 	}
 
 	public void EnableCtrl(ControlModuleMode mode)
 	{
-		(pActor.move as PlayerMove).NoInput.Pause(mode, false);
+		(pActor.move as PlayerMove).moveModuleStat.Pause(mode, false);
 		pActor.atk.attackModuleStat.Pause(mode, false);
 	}
 
