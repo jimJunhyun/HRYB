@@ -54,8 +54,6 @@ public class ChargeCastRoot : SkillRoot
 			{
 				pa.ResetLoopState();
 				pa.SetDisopTrigger(0);
-				
-				
 			}
 		}
 		else
