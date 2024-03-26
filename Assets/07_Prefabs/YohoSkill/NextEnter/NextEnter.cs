@@ -80,7 +80,7 @@ public class NextEnter : AttackBase
 							dir.Normalize();
 
 							_life.GetActor().move.forceDir = dir * 6 + new Vector3(0, 3, 0);
-						},null, -1, -1, 0.2f, 0.3f);
+						},null, -1, -1, 0.2f);
 					}
 
 				});

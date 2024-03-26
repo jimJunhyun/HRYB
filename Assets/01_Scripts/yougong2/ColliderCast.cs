@@ -79,7 +79,7 @@ public abstract class ColliderCast : MonoBehaviour
 		StopAllCoroutines();
 	}
 
-	public void Now(Transform _owner, Action<LifeModule> act = null, Action<Transform, LifeModule> act2=null, int attackAble = -1, float StartSec = -1, float EndSec = -1, float dieSec = -1)
+	public void Now(Transform _owner, Action<LifeModule> act = null, Action<Transform, LifeModule> act2=null, int attackAble = -1, float StartSec = -1, float EndSec = -1)
 	{
 		this.Owner = _owner;
 		_isDamaged = false;
@@ -104,11 +104,7 @@ public abstract class ColliderCast : MonoBehaviour
 		{
 			StartCoroutine(EndSet(EndSec));
 		}
-
-		if(dieSec > 0)
-		{
-			StartCoroutine(DieSet(dieSec));
-		}
+		
 	}
 
 	public void End()
@@ -135,17 +131,5 @@ public abstract class ColliderCast : MonoBehaviour
 		yield return new WaitForSeconds(t);
 		End();
 	}
-
-	IEnumerator DieSet(float t)
-	{
-		yield return new WaitForSeconds(t);
-		try
-		{
-			PoolManager.ReturnObject(gameObject);
-		}
-		catch
-		{
-			Destroy(gameObject);
-		}
-	}
+	
 }

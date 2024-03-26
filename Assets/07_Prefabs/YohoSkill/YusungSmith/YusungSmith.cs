@@ -71,7 +71,7 @@ public class YusungSmith : AttackBase
 		    {
 			    _cols.Now(self.transform, (_life) =>
 			    {
-				    DoDamage(_life.GetActor(), self);
+				    DoDamage(_life.GetActor(), self, obj.transform.position);
 				    Vector3 dir = _life.transform.position-self.transform.position;
 				    dir.y = 0;
 				    dir.Normalize();

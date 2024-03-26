@@ -71,7 +71,7 @@ public class SkyBirtgh : AttackBase
 						    
 						    Actor to = _life.GetActor();
 						    Actor by = self;
-						    DoDamage(to,by, 0.1f);
+						    DoDamage(to,by, 0.1f, obj.transform.position);
 						    
 					    });
 				    }
@@ -105,7 +105,7 @@ public class SkyBirtgh : AttackBase
 						    
 						    Actor to = _life.GetActor();
 						    Actor by = self;
-						    DoDamage(to,by, 0.4f);
+						    DoDamage(to,by, 0.4f, obj.transform.position);
 					    });
 				    }
 			    }
@@ -138,7 +138,7 @@ public class SkyBirtgh : AttackBase
 						    _life.GetActor().move.forceDir = self.transform.forward * 18 + new Vector3(0, -24, 0);
 						    Actor to = _life.GetActor();
 						    Actor by = self;
-						    DoDamage(to,by, 0.8f);
+						    DoDamage(to,by, 0.8f, obj.transform.position);
 					    });
 				    }
 			    }

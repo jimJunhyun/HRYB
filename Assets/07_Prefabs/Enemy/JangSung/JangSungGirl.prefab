@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5924248618244487200}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MumukPos4
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2950110755487932837}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MumukPos2
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -71,7 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3245303703359289653}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MumukPos8
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -103,7 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4570701240445088893}
   - component: {fileID: 6511198911994207983}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BottomArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,7 +186,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 167883274244935627}
-  - component: {fileID: 7313086911686857864}
   - component: {fileID: 2293863065939411816}
   - component: {fileID: 1704962789026442230}
   - component: {fileID: 2868070435718924047}
@@ -197,7 +196,8 @@ GameObject:
   - component: {fileID: 9190380120647970038}
   - component: {fileID: 7359776289472502642}
   - component: {fileID: 6657746863476612385}
-  m_Layer: 0
+  - component: {fileID: 3586097445456830033}
+  m_Layer: 9
   m_Name: JangSungGirl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,26 +230,6 @@ Transform:
   - {fileID: 4570701240445088893}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7313086911686857864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3905693945725910127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fc2186f7ee167d4ab78cdb161565e87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveDir: {x: 0, y: 0, z: 0}
-  forceDir: {x: 0, y: 0, z: 0}
-  runSpeed: 0
-  walkSpeed: 0
-  crouchSpeed: 0
-  speedMod: 1
-  gravity: 0
-  groundThreshold: 0.5
 --- !u!114 &2293863065939411816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,8 +337,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isImmune: 0
   initYinYang:
-    black: 0
-    white: 0
+    black: 2000
+    white: 2000
   initAdequity:
     black: 0
     white: 0
@@ -373,6 +353,7 @@ MonoBehaviour:
     white: 0
   regenThreshold: 10
   applyMod: 1
+  superArmor: 0
   _barrierEffect: {fileID: 6036363885242095341, guid: 761ce3f370c6bdd4491bb2246cf28e18, type: 3}
 --- !u!114 &9190380120647970038
 MonoBehaviour:
@@ -439,6 +420,26 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   bossName: "\uC9C0\uD558\uC5EC\uC7A5"
+--- !u!114 &3586097445456830033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3905693945725910127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1277e7a7421b3545ab67358c4409f85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveDir: {x: 0, y: 0, z: 0}
+  forceDir: {x: 0, y: 0, z: 0}
+  runSpeed: 0
+  walkSpeed: 0
+  crouchSpeed: 0
+  gravity: 0
+  groundThreshold: 0.5
+  _isCanMove: 0
 --- !u!1 &4701536389832943330
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,7 +449,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7025414331462548319}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MumukPos3
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -479,7 +480,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7139615099549322655}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MumukPos6
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -510,7 +511,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3700019177979505445}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MumukPos5
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -541,7 +542,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1298735252990324592}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MumukPos9
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -572,7 +573,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4974599366513485071}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MumukPos7
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -603,7 +604,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9131894513350919181}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MumukPos1
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -689,6 +690,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HRYB - JSW_Bottom
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ac0ee56cdb949de4eb093a1fd2311a30, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -750,6 +755,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 9d03793560fb2a746a2f1b0418b75648, type: 3}
       propertyPath: m_Name
       value: HRYB - JSW_Main
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9d03793560fb2a746a2f1b0418b75648, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

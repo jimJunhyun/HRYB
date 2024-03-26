@@ -50,7 +50,7 @@ public class JangsungGirlAI : AISetter
 
 	    #region 으아악 뿌리다
 
-	    Waiter waitRootAttack = new Waiter(12.0f);
+	    Waiter waitRootAttack = new Waiter(30.0f);
 	    IsInRange isRootAttack = new IsInRange(self, player.transform, RootRange, null, () =>
 	    {
 			// AttackMoudle에서 이름 셋팅 << Attack에 유기하기?

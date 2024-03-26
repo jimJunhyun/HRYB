@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 
 public class CameraManager : MonoBehaviour
 {
-	List<CinemachineBasicMultiChannelPerlin> camShakers = new List<CinemachineBasicMultiChannelPerlin>();
+	public List<CinemachineBasicMultiChannelPerlin> camShakers = new List<CinemachineBasicMultiChannelPerlin>();
 	
 	public CamStatus curCamStat;
 	
@@ -52,7 +52,7 @@ public class CameraManager : MonoBehaviour
 		}
 
 		v = _main.GetComponentInChildren<Volume>();
-		
+		Debug.LogError(camShakers.Count);
 		for (int i = 0; i < camShakers.Count; i++)
 		{
 			camShakers[i].m_AmplitudeGain = 0;

@@ -20,9 +20,8 @@ GameObject:
   - component: {fileID: 5216959805318715878}
   - component: {fileID: 2178317243217670839}
   - component: {fileID: 5373213743209681124}
-  - component: {fileID: 119962802420935432}
   - component: {fileID: 891224687365898331}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: JangSung
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,9 +175,9 @@ MonoBehaviour:
   runSpeed: 0
   walkSpeed: 0
   crouchSpeed: 0
-  speedMod: 1
   gravity: 0
   groundThreshold: 0.5
+  _isCanMove: 0
   _findPlayerRange: 30
   _normalSpeed: 7
   _fallDownMoveSpeed: 20
@@ -239,8 +238,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isImmune: 0
   initYinYang:
-    black: 0
-    white: 1000
+    black: 2000
+    white: 2000
   initAdequity:
     black: 0
     white: 0
@@ -255,29 +254,9 @@ MonoBehaviour:
     white: 0
   regenThreshold: 10
   applyMod: 1
+  superArmor: 0
   _barrierEffect: {fileID: 6036363885242095341, guid: 761ce3f370c6bdd4491bb2246cf28e18, type: 3}
   _visualPos: {fileID: 7856797209567409450}
---- !u!135 &119962802420935432
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6548958457746408809}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 40
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &891224687365898331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,6 +329,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Visual
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a1bcae98d7571eb49a8360d094abc99f, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -418,6 +401,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 45989d21d4d2f7a469348cb13f7fa9a2, type: 3}
       propertyPath: m_Name
       value: HRYB - JSM Bottom
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 45989d21d4d2f7a469348cb13f7fa9a2, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

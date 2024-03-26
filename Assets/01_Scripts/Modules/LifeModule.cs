@@ -10,6 +10,7 @@ public enum DamageType
 	DotDamage, //지속시간동안 매 틱마다 지정된 피해
 	NoEvadeHit, //필중공격, 회피 불가
 	Continuous, //지속시간동안 지정된 만큼 변함. 매 틱마다 적용
+	NoHit,
 }
 
 public enum DamageChannel
@@ -17,7 +18,7 @@ public enum DamageChannel
 	None,
 	Normal,
 	Bleeding,
-
+	
 }
 
 [Serializable]
@@ -309,6 +310,18 @@ public class LifeModule : Module
 				StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 				onNextDamaged?.Invoke(GetActor(), attacker, data);
 				break;
+			case DamageType.NoHit:
+				if (!(isImmune))
+				{
+					DamageYYBase(data);
+					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+					onNextDamaged?.Invoke(GetActor(), attacker, data);
+					if (GetActor()._ai != null)
+					{
+						GetActor()._ai.StartExamine();
+					}
+				}
+				break;
 			default:
 				break;
 		}
@@ -345,6 +358,18 @@ public class LifeModule : Module
 				StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 				onNextDamaged?.Invoke(GetActor(), attacker, data);
 				_hitEvent?.Invoke();
+				break;
+			case DamageType.NoHit:
+				if (!(isImmune))
+				{
+					DamageYYBase(data);
+					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+					onNextDamaged?.Invoke(GetActor(), attacker, data);
+					if (GetActor()._ai != null)
+					{
+						GetActor()._ai.StartExamine();
+					}
+				}
 				break;
 			default:
 				break;
