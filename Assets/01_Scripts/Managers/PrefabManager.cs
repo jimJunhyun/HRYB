@@ -36,10 +36,10 @@ public class PrefabManager : MonoBehaviour
 
 		HPBar = HP.LoadAsset<GameObject>("UI_HPBar");
 
-		var jangsung = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "jangsungHP"));
+		var jangsung = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "jangsunghp"));
 		if (jangsung == null)
 			Debug.LogError("LOAD FAIL");
 
-		jangsungHP = HP.LoadAsset<GameObject>("JangsungHP");
+		jangsungHP = jangsung.LoadAsset<GameObject>("JangsungHP");
 	}
 }
