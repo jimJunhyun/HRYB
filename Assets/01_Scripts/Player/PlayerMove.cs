@@ -184,7 +184,6 @@ public class PlayerMove : MoveModule
 	{
 		if(hit.point.y <= middle.position.y)
 		{
-			
 
 			angle = Mathf.Acos(Vector3.Dot(hit.normal, transform.up) / (hit.normal.magnitude * transform.up.magnitude)) * Mathf.Rad2Deg;
 			
@@ -426,6 +425,12 @@ public class PlayerMove : MoveModule
 		{
 //			Debug.Log("사운드 혐오");
 		}
+		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, groundThreshold, (1 << GameManager.GROUNDLAYER)))
+		{
+			Vector3 actualDir = Quaternion.FromToRotation(Vector3.up, hit.normal) * dir;
+			dir = actualDir;
+			Debug.DrawRay(transform.position, actualDir, Color.cyan, 1000f);
+		}//비탈길에 맞게 움직이도록@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 		if (target != null && (target.position - transform.position).sqrMagnitude >= lockOnDist * lockOnDist)
 		{
@@ -444,7 +449,6 @@ public class PlayerMove : MoveModule
 
 		if (moveStat != MoveStates.Climb)
 		{
-			dir -= Vector3.up * GameManager.GRAVITY; //최초중력
 			dir += forceDir;
 		}
 		ctrl.Move( (dir) * Time.fixedDeltaTime);
@@ -461,7 +465,6 @@ public class PlayerMove : MoveModule
 			if (moveStat != MoveStates.Climb)
 			{
 				moveDir = new Vector3(inp.x, moveDir.y, inp.y);
-
 			}
 			else
 			{
