@@ -81,6 +81,13 @@ public class ChargeCastRoot : SkillRoot
 		{
 			GameManager.instance.StartCoroutine(DelDisoperate(self));
 		}
+		else
+		{
+			for (int i = 0; i < childs.Count; i++)
+			{
+				ActualDisoperateAt(self, i);
+			}
+		}
 		GameManager.instance.uiManager.interingUI.Off();
 		Debug.Log("충전종료, 스킬을 사용했는가? : " + prepared);
 		charging = false;

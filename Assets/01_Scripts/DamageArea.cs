@@ -39,6 +39,8 @@ public class DamageArea : DamageObject
 		statData = stat;
 
 		initTime = Time.time;
+
+		col.enabled = false;
 	}
 
 	private void Update()

@@ -298,6 +298,7 @@ public class StatusEffects
 
 	void OnFireActivated(Actor self, Actor inflicter, float power)
 	{
+		Debug.Log("불타는중");
 		self.life.DamageYY(0, power, DamageType.DotDamage, -1, 1, null, DamageChannel.Fire);
 	}
 	void OnFireUpdated(Actor self, float power)
@@ -306,6 +307,7 @@ public class StatusEffects
 	}
 	void OnFireEnded(Actor self, float power)
 	{
+		Debug.Log("꺼짐");
 		self.life.StopDamagingFor(DamageChannel.Fire, 1);
 	}
 
@@ -422,7 +424,7 @@ public class StatusEffects
 			power *= GameManager.instance.forceResistance;
 		}
 		Action<Actor> updateAct = to.life.ApplyStatus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], by, power, dur, out string guid);
-		Debug.Log($"{updateAct != null} && {guid != null} => {updateAct != null && guid != null}");
+		//Debug.Log($"{updateAct != null} && {guid != null} => {updateAct != null && guid != null}");
 		if (updateAct != null && guid != null)
 		{
 			List<GameObject> effs = new List<GameObject>();
@@ -442,7 +444,8 @@ public class StatusEffects
 			}
 			float t = 0;
 			_bufferDurations[id] = dur - t;
-			Debug.LogError($"dddd : " + _bufferDurations[id] + " " + id);
+			//Debug.LogError($"dddd : " + _bufferDurations[id] + " " + id);
+			Debug.Log($"{guid} : {id}");
 			while(to.life.appliedDebuff[guid].dur < 0)
 			{
 				//Debug.Log( id + " : INFITITE : " + to.life.appliedDebuff[guid].dur);
@@ -456,6 +459,7 @@ public class StatusEffects
 				_bufferDurations[id] = dur - t;
 
 			}
+			Debug.Log($"{guid} : {id} ENDED");
 			to.life.EndStaus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], updateAct, power);
 			if (effs.Count > 0)
 			{

@@ -63990,9 +63990,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4957220552200294}
   - component: {fileID: 198785544065499596}
+  - component: {fileID: 1976259507319446148}
   - component: {fileID: 199531155630731180}
   - component: {fileID: -6781101459906891676}
-  - component: {fileID: 1976259507319446148}
   m_Layer: 0
   m_Name: Lightning strike 2
   m_TagString: Untagged
@@ -68843,6 +68843,24 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &1976259507319446148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759752313034738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e491412bfa93d0b47a521d9feca0909b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yy:
+    black: 0
+    white: 0
+  isOnce: 0
+  calcGap: 0
+  calcRemainSec: 0
 --- !u!199 &199531155630731180
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -68938,24 +68956,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1976259507319446148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1759752313034738}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e491412bfa93d0b47a521d9feca0909b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yy:
-    black: 0
-    white: 0
-  isOnce: 0
-  calcGap: 0
-  calcRemainSec: 0
 --- !u!1 &1791400656931014
 GameObject:
   m_ObjectHideFlags: 0
