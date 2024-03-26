@@ -136,6 +136,11 @@ public class PlayerMove : MoveModule
 		}
 	}
 
+	public Vector3 MoveDirWithForce
+	{
+		get => MoveDirUncalced + forceDir;
+	}
+
 	public override MoveStates moveStat 
 	{
 		get => base.moveStat; 

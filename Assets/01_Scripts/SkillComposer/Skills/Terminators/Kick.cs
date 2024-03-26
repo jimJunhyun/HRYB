@@ -46,14 +46,14 @@ public class Kick : AttackBase
 				CameraManager.instance.ShakeCamFor(0.1f);
 				//Debug.Log(hitEffs.Count);
 				Vector3 effPos = life.transform.GetComponent<Collider>().ClosestPointOnBounds(caster.transform.position);
-				if ((self.atk.Damage * damageMult).white > 0)
-				{
-					GameManager.instance.shower.GenerateDamageText(effPos, (self.atk.Damage * damageMult).white, YYInfo.White);
-				}
-				if ((self.atk.Damage * damageMult).black > 0)
-				{
-					GameManager.instance.shower.GenerateDamageText(effPos, (self.atk.Damage * damageMult).black, YYInfo.Black);
-				}
+				//if ((self.atk.Damage * damageMult).white > 0)
+				//{
+				//	GameManager.instance.shower.GenerateDamageText(effPos, (self.atk.Damage * damageMult).white, YYInfo.White);
+				//}
+				//if ((self.atk.Damage * damageMult).black > 0)
+				//{
+				//	GameManager.instance.shower.GenerateDamageText(effPos, (self.atk.Damage * damageMult).black, YYInfo.Black);
+				//}
 				(self.atk as PlayerAttack).onNextSkill?.Invoke(self, this);
 				(self.atk as PlayerAttack).onNextHit?.Invoke(effPos);
 				PoolManager.GetObject("Hit 26", effPos, -caster.transform.forward, 2.5f);

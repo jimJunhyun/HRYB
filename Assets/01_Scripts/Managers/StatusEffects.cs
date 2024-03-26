@@ -20,6 +20,7 @@ public enum StatEffID
 	SpeedUp,
 
 	Bleeding,
+	Fire,
 
 	Max
 }
@@ -92,6 +93,7 @@ public class StatusEffects
 		idStatEffPairs.Add(((int)StatEffID.FoxBewitched), new StatusEffect("여우홀림", "피해를 받으면, 여우를 빠르게 합니다.", StatEffApplyMethod.NoOverwrite, OnFoxBewitchedActivated, OnFoxBewitchedUpdated, OnFoxBewitchedEnded));
 		idStatEffPairs.Add(((int)StatEffID.SpeedUp), new StatusEffect("신속", "움직임이 날래집니다.", StatEffApplyMethod.Stackable, OnSpeedUpActivated, OnSpeedUpUpdated, OnSpeedUpEnded));
 		idStatEffPairs.Add(((int)StatEffID.Bleeding), new StatusEffect("출혈", "피가 누출됩니다.", StatEffApplyMethod.Stackable, OnBleedingActivated, OnBleedingUpdated, OnBleedingEnded));
+		idStatEffPairs.Add(((int)StatEffID.Fire), new StatusEffect("화상", "몸이 불탑니다.", StatEffApplyMethod.Stackable, OnFireActivated, OnFireUpdated, OnFireEnded));
 
 		idStatEffPairs.Add(new StatusEffect("밀려남", "강력한 힘에 밀려납니다.", StatEffApplyMethod.NoOverwrite, OnKnockbackActivated, OnKnockbackDebuffUpdated, OnKnockbackDebuffEnded), ((int)StatEffID.Knockback));
 		idStatEffPairs.Add(new StatusEffect("무적", "세계의 비호를 받고 있습니다.", StatEffApplyMethod.NoOverwrite, OnImmuneActivated, OnImmuneUpdated, OnImmuneEnded), ((int)StatEffID.Immune));
@@ -104,6 +106,7 @@ public class StatusEffects
 		idStatEffPairs.Add(new StatusEffect("여우홀림", "피격시, 플레이어를 빠르게 합니다.", StatEffApplyMethod.NoOverwrite, OnFoxBewitchedActivated, OnFoxBewitchedUpdated, OnFoxBewitchedEnded), ((int)StatEffID.FoxBewitched));
 		idStatEffPairs.Add(new StatusEffect("신속", "움직임이 날래집니다.", StatEffApplyMethod.Stackable, OnSpeedUpActivated, OnSpeedUpUpdated, OnSpeedUpEnded), ((int)StatEffID.SpeedUp));
 		idStatEffPairs.Add(new StatusEffect("출혈", "피가 누출됩니다.", StatEffApplyMethod.Stackable, OnBleedingActivated, OnBleedingUpdated, OnBleedingEnded), ((int)StatEffID.Bleeding));
+		idStatEffPairs.Add(new StatusEffect("화상", "몸이 불탑니다.", StatEffApplyMethod.Stackable, OnFireActivated, OnFireUpdated, OnFireEnded), ((int)StatEffID.Fire));
 
 
 		effDict = Resources.Load<StatVfxDictionary>("StatEffList");
@@ -306,6 +309,19 @@ public class StatusEffects
 	void OnBleedingEnded(Actor self, float power)
 	{
 		self.life.StopDamagingFor(DamageChannel.Bleeding, 1);
+	}
+
+	void OnFireActivated(Actor self, Actor inflicter, float power)
+	{
+		self.life.DamageYY(0, power, DamageType.DotDamage, -1, 1, null, DamageChannel.Fire);
+	}
+	void OnFireUpdated(Actor self, float power)
+	{
+
+	}
+	void OnFireEnded(Actor self, float power)
+	{
+		self.life.StopDamagingFor(DamageChannel.Fire, 1);
 	}
 
 
