@@ -127,10 +127,10 @@ public struct ModuleController
 				Debug.LogError("NEW STAT HAVE BEEN CREATED?");
 				break;
 		}
-		if (isInput && Paused)
-			GameManager.instance.pinp.DeactivateInput();
-		else if (isInput && !Paused)
-			GameManager.instance.pinp.ActivateInput();
+		//if (isInput && Paused)
+		//	GameManager.instance.pinp.DeactivateInput();
+		//else if (isInput && !Paused)
+		//	GameManager.instance.pinp.ActivateInput();
 	}
 
 	public void Pause(ControlModuleMode mode, bool stat, float dur)
@@ -349,7 +349,7 @@ public class GameManager : MonoBehaviour
 
 	public void DisableCtrl()
 	{
-		pinp.DeactivateInput();
+		//pinp.DeactivateInput();
 		pActor.move.moveDir = Vector3.zero;
 		//self.move.forceDir = Vector3.zero;
 		DisableCtrl(ControlModuleMode.Animated);
@@ -357,7 +357,7 @@ public class GameManager : MonoBehaviour
 	
 	public void EnableCtrl()
 	{
-		GameManager.instance.pinp.ActivateInput();
+		//GameManager.instance.pinp.ActivateInput();
 		EnableCtrl(ControlModuleMode.Animated);
 	}
 	
