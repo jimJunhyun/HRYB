@@ -19,8 +19,8 @@ public class BossHPManager : MonoBehaviour
 			{
 				obj = Instantiate(GameManager.instance.pManager.jangsungHP, transform);
 				jangsungHP = true;
-				GameObject.Find("Girl").GetComponentInChildren<BossHPBar>().lf = GameObject.Find("JangSung").GetComponent<LifeModule>();
-				GameObject.Find("Boy").GetComponentInChildren<BossHPBar>().lf = GameObject.Find("JangSungGirl").GetComponent<LifeModule>();
+				GameObject.Find("Boy").GetComponentInChildren<BossHPBar>().lf = GameObject.Find("JangSung").GetComponent<LifeModule>();
+				GameObject.Find("Girl").GetComponentInChildren<BossHPBar>().lf = GameObject.Find("JangSungGirl").GetComponent<LifeModule>();
 
 			}
 		}
