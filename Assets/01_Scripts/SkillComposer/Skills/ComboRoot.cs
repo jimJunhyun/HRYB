@@ -9,6 +9,9 @@ public class ComboRoot : SkillRoot
 	public float resetSec;
 	public int resetThreshold;
 	
+	public float totalCooldown;
+
+	//bool available => Time.time - ;
 
 	int curCombo = 0;
 	float prevOperateSec;
@@ -20,14 +23,18 @@ public class ComboRoot : SkillRoot
 
 	public override void Operate(Actor self)
 	{
-		if(Time.time - prevOperateSec >= composeDel)
+		if (curCombo != 0 || Time.time - prevOperateSec >= composeDel)
 		{
-			if(self.anim is PlayerAnim pa)
+			if (self.anim is PlayerAnim pa)
 			{
-				pa.SetAttackTrigger(curCombo); 
-				prevOperateSec = Time.time;
+				pa.SetAttackTrigger(curCombo);
+				if (curCombo == childs.Count - 1)
+				{
+					prevOperateSec = Time.time;
+				}
 			}
 		}
+		
 	}
 
 	public override void UpdateStatus()
