@@ -31,6 +31,11 @@ public class ChargeCastRoot : SkillRoot
 
 	public override void Operate(Actor self)
 	{
+		if (isSuperArmor)
+		{
+			self.life.superArmor = true;
+		}
+
 		if (isPlayAnim)
 		{
 			if (self.anim is PlayerAnim pa)
@@ -123,6 +128,10 @@ public class ChargeCastRoot : SkillRoot
 		{
 			Debug.Log("각종강화효과지우기");
 			atk.HandleRemoveCall();
+		}
+		if (isSuperArmor)
+		{
+			self.life.superArmor = false;
 		}
 	}
 
