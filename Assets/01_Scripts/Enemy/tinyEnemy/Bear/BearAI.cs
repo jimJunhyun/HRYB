@@ -60,12 +60,12 @@ public class BearAI : AISetter
 			stunSeq.connecteds.Add(_ishaveStun);
 
 			#region 특수 공격
-			Waiter _exWait = new Waiter(5f);
+			Waiter _exWait = new Waiter(8.5f);
 			IsInRange exRange = new IsInRange(self, player.transform, Attackrange, null, () =>
 			{
 
 				_exWait.StartReady();
-				_atkModule.SetAttackType(NormalAttack);
+				_atkModule.SetAttackType(EXAttack);
 				_moveModule.StopMove();
 
 
@@ -73,7 +73,7 @@ public class BearAI : AISetter
 			Attacker exAttack = new Attacker(self, () =>
 			{
 				_exWait.ResetReady();
-
+				_moveModule.StopMove();
 				StopExamine();
 			});
 
@@ -152,7 +152,7 @@ public class BearAI : AISetter
 			#endregion
 
 			head.connecteds.Add(stunSeq);
-
+			head.connecteds.Add(exAtk);
 			head.connecteds.Add(normalATK);
 			head.connecteds.Add(ShowIdler);
 			head.connecteds.Add(Moved);

@@ -9,6 +9,11 @@ public class Bear_AttackModule : EnemyAttackModule
 	
 	public override void OnAnimationEnd()
 	{
+		if (_nowCols != null)
+		{
+			_nowCols.End();
+			_nowCols = null;
+		}
 	}
 
 	public override void OnAnimationEvent()
@@ -18,9 +23,10 @@ public class Bear_AttackModule : EnemyAttackModule
 		
 		switch(AttackStd)
 		{
-			case "normal":
+			case "Normal":
 				{
-					int a = left ? 1 : 2;	
+					
+					int at = left ? -1 : 1;
 					_nowCols.Now(transform, (_life) =>
 					{
 						_life.DamageYY(new YinYang(50, 0), DamageType.DirectHit);
@@ -28,18 +34,17 @@ public class Bear_AttackModule : EnemyAttackModule
 						Vector3 vec = _life.transform.position - transform.position;
 						vec.y = 0;
 						vec.Normalize();
+						vec *= 4;
+						vec += transform.right * at * 14;
+					
 
-
-
-						_life.GetActor().move.forceDir = vec * 20 + new Vector3(0, 20, 0);
+						_life.GetActor().move.forceDir = vec + new Vector3(0, 20, 0);
 						//_life.GetActor().move.forceDir.y = 40;
 
 						Debug.LogError("시발시발시발시발" + _life.GetActor().move.forceDir);
 					});
 
 
-					EffectObject eff = PoolManager.GetEffect($"BearNoraml{a}", transform);
-					eff.Begin();
 				}
 				break;
 
@@ -52,18 +57,17 @@ public class Bear_AttackModule : EnemyAttackModule
 						Vector3 vec = _life.transform.position - transform.position;
 						vec.y = 0;
 						vec.Normalize();
+						
+						GiveBuff(_life.GetActor(), StatEffID.Stun, 0.8f);
 
 
-
-						_life.GetActor().move.forceDir = vec * 20 + new Vector3(0, 20, 0);
+						_life.GetActor().move.forceDir = vec + new Vector3(0, 32, 0);
 						//_life.GetActor().move.forceDir.y = 40;
 
 						Debug.LogError("시발시발시발시발" + _life.GetActor().move.forceDir);
 					});
-
-
-					EffectObject eff = PoolManager.GetEffect($"BearEX", transform);
-
+					EffectObject eff = PoolManager.GetEffect($"SandBoomb", transform);
+					eff.Begin();
 				}
 				break;
 		}
@@ -85,6 +89,7 @@ public class Bear_AttackModule : EnemyAttackModule
 
 	public override void OnAnimationStop()
 	{
+		self.ai.StartExamine();
 	}
 
 	public override void ResetAttackRange(int idx)
@@ -103,12 +108,19 @@ public class Bear_AttackModule : EnemyAttackModule
 		left = !left;
 		int a = left ? 1 : 2;
 		string t = AttackStd;
+		Debug.LogError(AttackStd);
+
+		if (_nowCols != null)
+		{
+			_nowCols.End();
+			_nowCols = null;
+		}
 		
 		switch(AttackStd)
 		{
-			case "normal":
+			case "Normal":
 				{
-					GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"Attack{AttackStd}"));
+					GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"Attack{AttackStd}{a}"));
 					
 					
 					GameObject obj = PoolManager.GetObject($"BearNormalCollider", transform);
@@ -122,7 +134,7 @@ public class Bear_AttackModule : EnemyAttackModule
 
 			case "EX":
 				{
-					GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"Attack{AttackStd}{a}"));
+					GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"Attack{AttackStd}"));
 					
 					
 										
