@@ -10,6 +10,7 @@ public enum DamageType
 	DotDamage, //지속시간동안 매 틱마다 지정된 피해
 	NoEvadeHit, //필중공격, 회피 불가
 	Continuous, //지속시간동안 지정된 만큼 변함. 매 틱마다 적용
+	NoHit,
 }
 
 public enum DamageChannel
@@ -85,7 +86,7 @@ public class LifeModule : Module
 	
 	internal Dictionary<string, AppliedStatus> appliedDebuff = new Dictionary<string, AppliedStatus>();
 
-	internal Dictionary<int, List<Coroutine>> ongoingTickDamages ;
+	internal Dictionary<int, List<Coroutine>> ongoingTickDamages = new Dictionary<int, List<Coroutine>>() ;
 
 	//피격자, 공격자, 대미지
 	public Action<Actor, Actor, YinYang> onNextDamaged; 
@@ -311,6 +312,18 @@ public class LifeModule : Module
 				StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 				onNextDamaged?.Invoke(GetActor(), attacker, data);
 				break;
+			case DamageType.NoHit:
+				if (!(isImmune))
+				{
+					DamageYYBase(data);
+					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+					onNextDamaged?.Invoke(GetActor(), attacker, data);
+					if (GetActor()._ai != null)
+					{
+						GetActor()._ai.StartExamine();
+					}
+				}
+				break;
 			default:
 				break;
 		}
@@ -347,6 +360,18 @@ public class LifeModule : Module
 				StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
 				onNextDamaged?.Invoke(GetActor(), attacker, data);
 				_hitEvent?.Invoke();
+				break;
+			case DamageType.NoHit:
+				if (!(isImmune))
+				{
+					DamageYYBase(data);
+					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+					onNextDamaged?.Invoke(GetActor(), attacker, data);
+					if (GetActor()._ai != null)
+					{
+						GetActor()._ai.StartExamine();
+					}
+				}
 				break;
 			default:
 				break;

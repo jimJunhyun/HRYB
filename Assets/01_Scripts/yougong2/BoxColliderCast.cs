@@ -22,7 +22,7 @@ public class BoxColliderCast : ColliderCast
 
 		if (transform.localScale != Vector3.one)
 		{
-			Debug.LogError($"Object : {gameObject.name} is Not Scale Vector.oen(1,1,1)");
+			Debug.LogWarning($"Object : {gameObject.name} is Not Scale Vector.oen(1,1,1)");
             
 		}
 	}

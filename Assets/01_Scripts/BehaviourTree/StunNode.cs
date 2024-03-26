@@ -21,7 +21,8 @@ public class StunNode : INode
 	    {
 		    if (StatusEffects._bufferDurations[StatEffID.Stun] >= 0)
 		    {
-				
+				EnemyMoveModule moves = self.move as EnemyMoveModule;
+				moves.StopMove();
 			    self.anim.SetBoolModify("Stun", true);
 			    if (F == false || self.anim.Animators.GetBool("Stun") == false)
 			    {

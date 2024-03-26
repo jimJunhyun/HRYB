@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 199674303742462222}
   - component: {fileID: -709268960096510982}
   - component: {fileID: 1073971732921418998}
+  - component: {fileID: 5502651246867315033}
   m_Layer: 0
   m_Name: Lightning strike
   m_TagString: Untagged
@@ -5065,6 +5066,27 @@ MonoBehaviour:
   isOnce: 1
   calcGap: 0.5
   calcRemainSec: 0.1
+--- !u!135 &5502651246867315033
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008656586100278}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 5.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1035701766714822
 GameObject:
   m_ObjectHideFlags: 0

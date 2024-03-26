@@ -25,12 +25,16 @@ public class JangsungLifeModule : LifeModule
 			Destroy(_objs);
 		}
 	}
+	public override void DamageYY(YinYang data, DamageType type, float dur = 0, float tick = 0, Actor attacker = null, DamageChannel channel = DamageChannel.None)
+	{
+		DamageYY(data.black, data.white, type, dur,tick,attacker,channel);
+	}
 
-	public virtual void DamageYY(float yin, float yang, DamageType type, float dur = 0, float tick = 0)
+	public override void DamageYY(float black, float white, DamageType type, float dur = 0, float tick = 0, Actor attacker = null, DamageChannel channel= DamageChannel.None)
 	{
 		if (_isBarrier == false)
 		{
-			YinYang data = new YinYang(yin, yang);
+			YinYang data = new YinYang(black, white);
 			switch (type)
 			{
 				case DamageType.DirectHit:

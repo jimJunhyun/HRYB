@@ -13,13 +13,15 @@ public class JangsungMumukMissile : MonoBehaviour
 	[SerializeField] LayerMask _grond;
 	Vector3 dir;
 
+	private DamageType _channel;
+	
 	private void OnEnable()
 	{
 		_isFire = false;
 		_cast = GetComponent<BoxColliderCast>();
 	}
 
-	public void Init(Transform pos, Transform target, float Speed)
+	public void Init(Transform pos, Transform target, float Speed, DamageType dmg, Vector3 damping = new Vector3())
 	{
 		if(_cast == null)
 		{
@@ -31,7 +33,9 @@ public class JangsungMumukMissile : MonoBehaviour
 		_target = target.position;
 		_isFire = false;
 		_speed = Speed;
-		dir = (_target - transform.position).normalized;
+		dir = (_target - transform.position).normalized + damping;
+
+		_channel = dmg;
 	}
 
 	public void Fire()
@@ -42,8 +46,8 @@ public class JangsungMumukMissile : MonoBehaviour
 			if(1 << a.gameObject.layer == (int)_enemy)
 			{
 				Debug.LogError("dd");
-				a.DamageYY(10,0, DamageType.NoEvadeHit);
-				CameraManager.instance.ShakeCamFor(0.3f);
+				a.DamageYY(10,0, _channel);
+				CameraManager.instance.ShakeCamFor(0.3f, 0.8f, 0.8f);
 			}
 		});
 		StartCoroutine(Returns());

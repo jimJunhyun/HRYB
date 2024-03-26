@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 
 public class CameraManager : MonoBehaviour
 {
-	List<CinemachineBasicMultiChannelPerlin> camShakers = new List<CinemachineBasicMultiChannelPerlin>();
+	public List<CinemachineBasicMultiChannelPerlin> camShakers = new List<CinemachineBasicMultiChannelPerlin>();
 	
 	public CamStatus curCamStat;
 	
@@ -45,14 +45,13 @@ public class CameraManager : MonoBehaviour
 		aimCam = GameObject.Find("AimCam").GetComponent<CinemachineVirtualCamera>();
 		
 		SwitchTo(CamStatus.Freelook);
-		
 		for (int i = 0; i < 3; i++)
 		{
 			camShakers.Add(pCam.GetRig(i).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>());
 		}
 
 		v = _main.GetComponentInChildren<Volume>();
-		
+		Debug.LogError(camShakers.Count);
 		for (int i = 0; i < camShakers.Count; i++)
 		{
 			camShakers[i].m_AmplitudeGain = 0;

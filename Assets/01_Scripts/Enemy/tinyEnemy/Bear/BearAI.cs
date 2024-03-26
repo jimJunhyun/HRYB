@@ -8,16 +8,24 @@ public class BearAI : AISetter
 
 
 	[Header("공격 시작 범위")][SerializeField] public float _attackRange = 4f;
+	[Header("특수 공격1 시작 범위")][SerializeField] public float _exAttackRange = 12f;
 
+	
+	
 	[Header("탐색 범위")][SerializeField] public float _sectionRange = 10f;
 	[Header("초기화 범위")][SerializeField] public float _section2Range = 15f;
 
 	const string NormalAttack = "Normal";
 	const string EXAttack = "EX";
-
+	const string EX2Attack = "EX2";
 	public float Attackrange()
 	{
 		return _attackRange;
+	}
+	
+	public float EX1Attackrange()
+	{
+		return _exAttackRange;
 	}
 
 	public float SectionRanged()
@@ -59,14 +67,71 @@ public class BearAI : AISetter
 
 			stunSeq.connecteds.Add(_ishaveStun);
 
+
+			#region 기본공격
+
+			Waiter _normalAtt = new Waiter(5f);
+			IsInRange noramlRange = new IsInRange(self, player.transform, Attackrange, null, () =>
+			{
+
+				_normalAtt.StartReady();
+				_atkModule.SetAttackType(NormalAttack);
+
+
+			});
+			Attacker normalAttack = new Attacker(self, () =>
+			{
+				_normalAtt.ResetReady();
+				_moveModule.StopMove();
+				StopExamine();
+			});
+
+			Sequencer normalATK = new Sequencer();
+
+			normalATK.connecteds.Add(noramlRange);
+			normalATK.connecteds.Add(_normalAtt);
+			normalATK.connecteds.Add(normalAttack);
+
+
+
+			#endregion
+
+
+			#region 특수2 공격
+			Waiter _ex2Wait = new Waiter(7f);
+			IsInRange ex2Range = new IsInRange(self, player.transform, Attackrange, null, () =>
+			{
+
+				_ex2Wait.StartReady();
+				_atkModule.SetAttackType(EX2Attack);
+
+
+			});
+			Attacker ex2Attack = new Attacker(self, () =>
+			{
+				_ex2Wait.ResetReady();
+				_moveModule.StopMove();
+				StopExamine();
+			});
+
+			Sequencer ex2Atk = new Sequencer();
+
+			ex2Atk.connecteds.Add(ex2Range);
+			ex2Atk.connecteds.Add(_ex2Wait);
+			ex2Atk.connecteds.Add(ex2Attack);
+
+
+			#endregion
+			
+			
+			
 			#region 특수 공격
-			Waiter _exWait = new Waiter(8.5f);
-			IsInRange exRange = new IsInRange(self, player.transform, Attackrange, null, () =>
+			Waiter _exWait = new Waiter(10f);
+			IsInRange exRange = new IsInRange(self, player.transform, EX1Attackrange, null, () =>
 			{
 
 				_exWait.StartReady();
 				_atkModule.SetAttackType(EXAttack);
-				_moveModule.StopMove();
 
 
 			});
@@ -85,38 +150,8 @@ public class BearAI : AISetter
 
 
 			#endregion
-
-
-			#region 기본공격
-
-			Waiter _normalAtt = new Waiter(5f);
-			IsInRange noramlRange = new IsInRange(self, player.transform, Attackrange, null, () =>
-			{
-
-				_normalAtt.StartReady();
-				_atkModule.SetAttackType(NormalAttack);
-				_moveModule.StopMove();
-
-
-			});
-			Attacker normalAttack = new Attacker(self, () =>
-			{
-				_normalAtt.ResetReady();
-
-				StopExamine();
-			});
-
-			Sequencer normalATK = new Sequencer();
-
-			normalATK.connecteds.Add(noramlRange);
-			normalATK.connecteds.Add(_normalAtt);
-			normalATK.connecteds.Add(normalAttack);
-
-
-
-			#endregion
-
-
+			
+			
 			#region Normal
 			IsInRange SectionRange = new IsInRange(self, player.transform, this.SectionRanged, null, () =>
 			{
@@ -152,6 +187,7 @@ public class BearAI : AISetter
 			#endregion
 
 			head.connecteds.Add(stunSeq);
+			head.connecteds.Add(ex2Atk);
 			head.connecteds.Add(exAtk);
 			head.connecteds.Add(normalATK);
 			head.connecteds.Add(ShowIdler);

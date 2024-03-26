@@ -31,6 +31,11 @@ public class ChargeCastRoot : SkillRoot
 
 	public override void Operate(Actor self)
 	{
+		if (isSuperArmor)
+		{
+			self.life.superArmor = true;
+		}
+
 		if (isPlayAnim)
 		{
 			if (self.anim is PlayerAnim pa)
@@ -81,6 +86,13 @@ public class ChargeCastRoot : SkillRoot
 		{
 			GameManager.instance.StartCoroutine(DelDisoperate(self));
 		}
+		else
+		{
+			for (int i = 0; i < childs.Count; i++)
+			{
+				ActualDisoperateAt(self, i);
+			}
+		}
 		GameManager.instance.uiManager.interingUI.Off();
 		Debug.Log("충전종료, 스킬을 사용했는가? : " + prepared);
 		charging = false;
@@ -116,6 +128,10 @@ public class ChargeCastRoot : SkillRoot
 		{
 			Debug.Log("각종강화효과지우기");
 			atk.HandleRemoveCall();
+		}
+		if (isSuperArmor)
+		{
+			self.life.superArmor = false;
 		}
 	}
 

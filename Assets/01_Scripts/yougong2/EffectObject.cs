@@ -42,6 +42,13 @@ public class EffectObject : MonoBehaviour
 		transform.localPosition = _originPosision;
 		transform.localEulerAngles = _originQuaternion;
 		
+		ObjectAction[] t;
+		t = GetComponentsInChildren<ObjectAction>();
+		foreach (ObjectAction att in t)
+		{
+			att._isFire = true;
+		}
+
 		
 		
 		Particle.Play();
