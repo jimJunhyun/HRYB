@@ -98,42 +98,7 @@ public class CameraManager : MonoBehaviour
 		UnShakeCam(ampGain, frqGain);
 	}
 
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.J))
-		{
-			pCam.m_Orbits[0].m_Height = 6;
-			pCam.m_Orbits[0].m_Radius = 6;
-			
-			pCam.m_Orbits[1].m_Height = 4;
-			pCam.m_Orbits[1].m_Radius = 10;
-			
-			pCam.m_Orbits[2].m_Height = 0.1f;
-			pCam.m_Orbits[2].m_Radius = 0.8f;
-		}
-		if (Input.GetKeyDown(KeyCode.K))
-		{
-			pCam.m_Orbits[0].m_Height = 5;
-			pCam.m_Orbits[0].m_Radius = 5;
-			
-			pCam.m_Orbits[1].m_Height = 3.5f;
-			pCam.m_Orbits[1].m_Radius = 8;
-			
-			pCam.m_Orbits[2].m_Height = 0.1f;
-			pCam.m_Orbits[2].m_Radius = 0.8f;
-		}
-		if (Input.GetKeyDown(KeyCode.L))
-		{
-			pCam.m_Orbits[0].m_Height = 4;
-			pCam.m_Orbits[0].m_Radius = 4;
-			
-			pCam.m_Orbits[1].m_Height = 3;
-			pCam.m_Orbits[1].m_Radius = 6;
-			
-			pCam.m_Orbits[2].m_Height = 0.1f;
-			pCam.m_Orbits[2].m_Radius = 0.8f;
-		}
-	}
+
 
 	public void ShakeCam(float ampGain, float frqGain)
 	{

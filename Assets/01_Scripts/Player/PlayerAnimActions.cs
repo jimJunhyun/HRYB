@@ -125,10 +125,7 @@ public class PlayerAnimActions : MonoBehaviour
 	
 	public void DisableInput()
 	{
-		GameManager.instance.pinp.DeactivateInput();
-		self.move.moveDir = Vector3.zero;
-		//self.move.forceDir = Vector3.zero;
-		DisableMove();
+		GameManager.instance.DisableCtrl();
 	}
 	 
 	public void DisableMove()
@@ -197,6 +194,11 @@ public class PlayerAnimActions : MonoBehaviour
 		if ((self.cast as PlayerCast).NowSkillUse != null)
 		{
 			(self.cast as PlayerCast).NowSkillUse.OnAnimationMove(self, evt);
+		}
+
+		if(evt.stringParameter == "Foot")
+		{
+
 		}
 	}
 
