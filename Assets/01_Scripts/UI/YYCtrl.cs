@@ -7,23 +7,22 @@ public class YYCtrl : MonoBehaviour
 {
 	const float UICIRCUM = 150;
 
-    float spirit;
     YinYang yy;
 
 	public float spinSpeed;
-	public float emerSpeed = 5;
-
+	
 	Transform bgnd;
 
-	Slider blkGauge;
-	Slider whtGauge;
+	Image blkGauge;
+	Image whtGauge;
 
 
 	private void Awake()
 	{
 
-		blkGauge = transform.Find("YinGauge").GetComponent<Slider>();
-		whtGauge = transform.Find("YangGauge").GetComponent<Slider>();
+		blkGauge = GameObject.Find("YangFill").GetComponent<Image>();
+		whtGauge = GameObject.Find("YinFill").GetComponent<Image>();
+		bgnd = transform.GetChild(0);
 	}
 
 	private void Start()
@@ -31,25 +30,25 @@ public class YYCtrl : MonoBehaviour
 		RefreshValues();
 	}
 
-	//private void Update()
-	//{
-		
-	//	bgnd.eulerAngles += Vector3.back * spinSpeed * Time.deltaTime * (1 + (1 - diff) * emerSpeed);
+	private void Update()
+	{
 
-	//}
+		bgnd.eulerAngles += Vector3.back * spinSpeed * Time.deltaTime;
+
+	}
 
 	public void RefreshValues()
 	{
 		yy = GameManager.instance.pActor.life.yy;
 
-		//diff = yy.yinAmt > yy.yangAmt ? yy.yangAmt / yy.yinAmt : yy.yinAmt / yy.yangAmt;
+		//diff = yy.yinamt > yy.yangamt ? yy.yangamt / yy.yinamt : yy.yinamt / yy.yangamt;
 
-		//float sum = yy.yangAmt + yy.yinAmt;
+		//float sum = yy.yangamt + yy.yinamt;
 
-		//blk.rectTransform.sizeDelta = Vector2.one * (UICIRCUM * yy.yinAmt / sum);
-		//wht.rectTransform.sizeDelta = Vector2.one * (UICIRCUM * yy.yangAmt / sum);
+		//blk.recttransform.sizedelta = vector2.one * (uicircum * yy.yinamt / sum);
+		//wht.recttransform.sizedelta = vector2.one * (uicircum * yy.yangamt / sum);
 
-		blkGauge.value = yy.black / GameManager.instance.pActor.life.initYinYang.black;
-		whtGauge.value = yy.white / GameManager.instance.pActor.life.initYinYang.white;
+		blkGauge.fillAmount = yy.black / GameManager.instance.pActor.life.initYinYang.black;
+		whtGauge.fillAmount = yy.white / GameManager.instance.pActor.life.initYinYang.white;
 	}
 }

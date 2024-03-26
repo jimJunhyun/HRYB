@@ -27,17 +27,17 @@ Material:
   m_ValidKeywords:
   - _EMISSIVE_SIMPLE
   - _IS_ANGELRING_OFF
-  - _IS_CLIPPING_OFF
-  - _IS_OUTLINE_CLIPPING_NO
+  - _IS_CLIPPING_MODE
+  - _IS_OUTLINE_CLIPPING_YES
   - _OUTLINE_NML
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2450
   stringTagMap:
     IgnoreProjection: False
-    RenderType: Opaque
+    RenderType: TransparentCutout
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -120,7 +120,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ClippingMask:
-        m_Texture: {fileID: 2800000, guid: 998ff80426d98ba513059b86ba919c9a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6685770e586eddb4dba11b2dd488d7d8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CoatMaskMap:
@@ -572,8 +572,8 @@ Material:
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _ClippingMatteMode: 0
-    - _ClippingMode: 0
-    - _Clipping_Level: 0
+    - _ClippingMode: 1
+    - _Clipping_Level: 0.138
     - _CoatMask: 0
     - _ColorMask: 15
     - _ColorShift_Speed: 0
@@ -709,7 +709,7 @@ Material:
     - _IDMaskPrior8: 0
     - _IgnoreEncryption: 0
     - _InvTilingScale: 1
-    - _Inverse_Clipping: 0
+    - _Inverse_Clipping: 1
     - _Inverse_MatcapMask: 0
     - _Inverse_Z_Axis_BLD: 1
     - _Invisible: 0

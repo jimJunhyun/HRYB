@@ -8,24 +8,16 @@ public class DamageArea : DamageObject
     public float calcGap; //n초 간격으로
 	public float calcRemainSec; //n초간 판정
 
+
 	float prevCalcSec = 0;
 	bool first = true;
 	bool checking;
 
-	float lifetime = Mathf.Infinity;
-	float spawnSec;
+	bool already = false;
 
-	Actor owner;
-	List<StatusEffectApplyData> statData = new List<StatusEffectApplyData>();
+	float lifetime;
 
-	Collider col;
-
-	private void Awake()
-	{
-		col = GetComponent<Collider>();
-	}
-
-	public void SetInfo(float time, YinYang dmg, bool isOnce, float checkGap, float checkDur, Actor self, List<StatusEffectApplyData> stat)
+	public void SetInfo(float time, YinYang dmg, bool isOnce, float checkGap, float checkDur)
 	{
 		lifetime = time;
 		yy = dmg;
@@ -33,14 +25,10 @@ public class DamageArea : DamageObject
 		calcGap= checkGap;
 		calcRemainSec = checkDur;
 
+		already = false;
 		first=  true;
 		prevCalcSec = 0;
 		checking =  false;
-
-		spawnSec = Time.time;
-
-		owner = self;
-		statData = stat;
 	}
 
 	private void Update()
@@ -50,51 +38,30 @@ public class DamageArea : DamageObject
 			if(first || !isOnce)
 			{
 				checking = true;
-				col.enabled = true;
+				already = false;
 				prevCalcSec = Time.time;
 			}
 			if (first)
 				first = false;
 		}
-		if (checking)
-		{
-			transform.position += Vector3.zero;
-		}
 		if(checking && Time.time - prevCalcSec >= calcRemainSec)
 		{
-			col.enabled = false;
 			checking = false;
 			prevCalcSec = Time.time;
-		}
-		if(Time.time - spawnSec >= lifetime)
-		{
-			Returner();
 		}
 	}
 
 	public override void OnTriggerEnter(Collider other)
 	{
-		if (checking && other.transform != owner.transform)
+		if (checking && !already)
 		{
-			LifeModule lf;
-			if(lf = other.GetComponent<LifeModule>())
-			{
-				foreach (var item in statData)
-				{
-					StatusEffects.ApplyStat(lf.GetActor(), owner, item.id, item.duration, item.power);
-				}
-				base.OnTriggerEnter(other);
-			}
+			base.OnTriggerEnter(other);
+			already = true;
 		}
 	}
 
 	public override void Damage(LifeModule to)
 	{
 		to.DamageYY(yy, DamageType.NoEvadeHit);
-	}
-
-	public void Returner()
-	{
-		PoolManager.ReturnObject(gameObject);
 	}
 }

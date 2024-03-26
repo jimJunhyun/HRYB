@@ -27,8 +27,7 @@ public class Composite : Compose, IComposer
 	{
 		//Debug.Log(name + " isPlayAnim : " + isPlayAnim);
 		//Debug.Log("OPERATING : " + name);
-		Debug.Log("OPERATED FROM : " + name);
-		GameManager.instance.StartCoroutine(DelOperate(self));
+		//GameManager.instance.StartCoroutine(DelOperate(self));
 	}
 
 	public void OperateAt(Actor self, int idx)
@@ -53,10 +52,7 @@ public class Composite : Compose, IComposer
 
 	internal override void MyDisoperation(Actor self)
 	{
-		for (int i = 0; i < childs.Count; i++)
-		{
-			ActualDisoperateAt(self, i);
-		}
+		//Do nothing?
 	}
 
 	internal override void  MyOperation(Actor self)

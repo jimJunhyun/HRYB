@@ -391,8 +391,7 @@ public class PoolManager : MonoBehaviour
 	public static void ReturnObject(GameObject obj)
 	{
 		StackWithName<GameObject> st;
-		if(!obj)
-			return;
+		
 		if ((st = pooleds.Find(item => SimilarName(item.name, obj.name))) != null)
 		{
 			obj.SetActive(false);

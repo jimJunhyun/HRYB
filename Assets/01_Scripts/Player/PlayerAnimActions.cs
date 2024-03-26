@@ -195,6 +195,11 @@ public class PlayerAnimActions : MonoBehaviour
 		{
 			(self.cast as PlayerCast).NowSkillUse.OnAnimationMove(self, evt);
 		}
+
+		if(evt.stringParameter == "Foot")
+		{
+
+		}
 	}
 
 	public void OnAnimationEvent(AnimationEvent evt)
