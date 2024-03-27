@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyMoveModule : MoveModule
 {
@@ -9,7 +10,20 @@ public class EnemyMoveModule : MoveModule
 
 
 	private bool _isMove = false;
-	UnityEngine.AI.NavMeshAgent agent;
+	UnityEngine.AI.NavMeshAgent _agent;
+
+	NavMeshAgent agent
+	{
+		get
+		{
+			if (_agent == null)
+			{
+				_agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+			}
+
+			return _agent;
+		}
+	}
 	private CharacterController _char;
 
 	public UnityEngine.AI.NavMeshAgent Agent => agent;
@@ -17,7 +31,7 @@ public class EnemyMoveModule : MoveModule
 
 	private void Awake()
 	{
-		agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+
 		_char = GetComponent<CharacterController>();
 		agent.speed = Speed;
 	}
@@ -35,7 +49,10 @@ public class EnemyMoveModule : MoveModule
 
 	public override void FixedUpdate()
 	{
-
+		ForceCalc();
+		GravityCalc();
+		Debug.LogError("FORCEdIR	" + forceDir + "d : " + isGrounded);
+		Character.Move((forceDir) * Time.deltaTime);
 		if (_isCanMove != true)
 		{
 			if ((forceDir.y > 0) || isGrounded == false)
@@ -43,12 +60,11 @@ public class EnemyMoveModule : MoveModule
 				Character.enabled = true;
 				agent.enabled = false;
 
-				ForceCalc();
-				GravityCalc();
+				
 				//transform.Translate(forceDir * Time.deltaTime, Space.World);
 				if (_isCanMove == false)
 				{
-					Character.Move((forceDir) * Time.deltaTime);
+					
 				}
 				//			Debug.LogError(forceDir);
 			}

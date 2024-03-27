@@ -31,7 +31,7 @@ public class NextEnter : AttackBase
 	public override void OnAnimationMove(Actor self, AnimationEvent evt)
 	{
 		Vector3 vec = self.transform.forward;
-		self.move.forceDir = vec * 20 + new Vector3(0, 1, 0) * 24;
+		self.move.forceDir = vec * 8 + new Vector3(0, 1, 0) * 6;
 	}
 	
 	public override void OnAnimationEvent(Actor self, AnimationEvent evt)
@@ -55,6 +55,7 @@ public class NextEnter : AttackBase
 				}, (tls, _life) =>
 				{
 					Vector3 vec = self.transform.forward;
+					vec.y = 0;
 					CameraManager.instance.ShakeCamFor(0.16f, 2, 2);
 					self.move.forceDir += vec * 12 + new Vector3(0, 1, 0) * 2;
 

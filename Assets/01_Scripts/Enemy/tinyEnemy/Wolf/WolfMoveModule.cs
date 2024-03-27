@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class WolfMoveModule : MoveModule
+public class WolfMoveModule : EnemyMoveModule
 {
 	Transform _target;
 
