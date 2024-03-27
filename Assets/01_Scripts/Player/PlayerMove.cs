@@ -7,12 +7,10 @@ using System;
 
 
 
-
-
 public class PlayerMove : MoveModule
 {
 	
-	
+
 
 	internal CharacterController ctrl;
 
@@ -49,8 +47,8 @@ public class PlayerMove : MoveModule
 	bool slip = false;
 	bool climbGrounded = false;
 
-	bool jumped = false;
-	bool jumpComplete = false;
+	//bool jumped = false;
+	//bool jumpComplete = false;
 
 	float prevJump = 0;
 
@@ -75,16 +73,15 @@ public class PlayerMove : MoveModule
 	Transform target;
 	bool isLocked = false;
 
+
+
 	RaycastHit hitCache;
 
 	public ModuleController NoInput = new ModuleController(false);
 
 	PlayerAttack pAttack;
 
-	bool IsActualGrounded
-	{
-		get => !jumped && isGrounded;
-	}
+
 
 	public Vector3 MoveDirCalced
 	{
@@ -136,6 +133,11 @@ public class PlayerMove : MoveModule
 		}
 	}
 
+	public Vector3 MoveDirWithForce
+	{
+		get => MoveDirUncalced + forceDir;
+	}
+
 	public override MoveStates moveStat 
 	{
 		get => base.moveStat; 
@@ -179,8 +181,6 @@ public class PlayerMove : MoveModule
 	{
 		if(hit.point.y <= middle.position.y)
 		{
-			
-
 			angle = Mathf.Acos(Vector3.Dot(hit.normal, transform.up) / (hit.normal.magnitude * transform.up.magnitude)) * Mathf.Rad2Deg;
 			
 			if (angle >= slipThreshold)
@@ -422,6 +422,11 @@ public class PlayerMove : MoveModule
 //			Debug.Log("사운드 혐오");
 		}
 
+		if (IsActualGrounded)
+		{
+			dir -= Vector3.up * GameManager.GRAVITY;
+		}
+
 		if (target != null && (target.position - transform.position).sqrMagnitude >= lockOnDist * lockOnDist)
 		{
 			ResetTargets();
@@ -439,7 +444,6 @@ public class PlayerMove : MoveModule
 
 		if (moveStat != MoveStates.Climb)
 		{
-			dir -= Vector3.up * GameManager.GRAVITY; //최초중력
 			dir += forceDir;
 		}
 		ctrl.Move( (dir) * Time.fixedDeltaTime);
@@ -456,7 +460,6 @@ public class PlayerMove : MoveModule
 			if (moveStat != MoveStates.Climb)
 			{
 				moveDir = new Vector3(inp.x, moveDir.y, inp.y);
-
 			}
 			else
 			{
@@ -520,7 +523,7 @@ public class PlayerMove : MoveModule
 			{
 				if (moveStat == MoveStates.Climb)
 				{
-					forceDir.y += jumpPwer / climbSpeed;
+					forceDir += Vector3.up * (jumpPwer / climbSpeed);
 					Vector3 ropeJumpDir = (ropeNormal + Vector3.up).normalized;
 					forceDir += ropeJumpDir * jumpPwer;
 					ResetClimb();
@@ -530,8 +533,7 @@ public class PlayerMove : MoveModule
 					if (ctrl.isGrounded && Time.time - prevJump >= jumpGap)
 					{
 						prevJump = Time.time;
-						forceDir.y += jumpPwer;
-						jumped = true;
+						forceDir += Vector3.up * jumpPwer;
 						(GetActor().anim as PlayerAnim).SetJumpTrigger();
 					}
 				}
@@ -699,29 +701,7 @@ public class PlayerMove : MoveModule
 		}
 		return 0;
 	}
-
-
-	public override void GravityCalc()
-	{
-		
-		if (gravity && !isGrounded)
-		{
-			forceDir.y -= GameManager.GRAVITY * Time.deltaTime;
-		}
-		else if (IsActualGrounded  && forceDir.y <0)
-		{
-			forceDir.y = 0f;
-		}
-		if (jumped && !isGrounded)
-		{
-			jumpComplete = true;
-		}
-		if(jumpComplete && isGrounded)
-		{
-			jumped = false;
-		}
-	}
-
+	
 
 	void ResetTargets()
 	{

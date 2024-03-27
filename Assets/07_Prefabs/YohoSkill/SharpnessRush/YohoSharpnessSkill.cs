@@ -95,12 +95,12 @@ public class YohoSharpnessSkill : AttackBase
 			_cols.Now(self.transform, (_life) =>
 			{
 				CameraManager.instance.ShakeCamFor(0.08f, 2, 2);
-				DoDamage(_life.GetActor(), self);
-				_life.GetActor().move.forceDir = self.transform.forward * 0.4f + new Vector3(0,2,0);
+				DoDamage(_life.GetActor(), self, obj.transform.position);
+				_life.GetActor().move.forceDir = self.transform.forward * 0.4f + new Vector3(0,0.5f,0);
 			},
 			(sans, enemy)=>
 			{
-				self.move.forceDir = self.transform.forward * 0.4f + new Vector3(0,12f,0);
+				self.move.forceDir = self.transform.forward * 0.4f + new Vector3(0,0.5f,0);
 			});
 		}
 		

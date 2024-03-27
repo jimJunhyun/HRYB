@@ -32,6 +32,11 @@ public abstract class EnemyAttackModule : AttackModule
 		AttackStd = AttackName;
 	}
 
+	public void GiveBuff(Actor act, StatEffID id, float duration)
+	{
+		StatusEffects.ApplyStat(act, self, id, duration, 0);
+	}
+	
 
 	public abstract void SetAttackRange(int idx);
 	public abstract void ResetAttackRange(int idx);

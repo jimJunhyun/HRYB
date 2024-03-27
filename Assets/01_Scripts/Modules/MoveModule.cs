@@ -1,3 +1,4 @@
+using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,7 +28,30 @@ public class MoveModule : Module
 
     public Vector3 moveDir = Vector3.zero;
 
-	public Vector3 forceDir = Vector3.zero;
+    protected bool forced = false;
+    protected bool forceFlied = false;
+
+    private Vector3 fDir;
+	public virtual Vector3 forceDir
+	{
+		get
+		{
+			return fDir;
+		}
+		set
+		{
+			fDir = value;
+			if(fDir.y > 0)
+			{
+				forced = true;
+			}
+		}
+	}
+	
+	protected virtual bool IsActualGrounded
+	{
+		get => !forced && isGrounded;
+	}
 
 	public float runSpeed;
 	public float walkSpeed;
@@ -90,21 +114,36 @@ public class MoveModule : Module
 
 	public virtual void GravityCalc()
 	{
+		
 		if (gravity && !isGrounded)
 		{
-			forceDir.y -= GameManager.GRAVITY * Time.deltaTime;
+			forceDir -= Vector3.up * GameManager.GRAVITY * Time.deltaTime;
 		}
-		else if (isGrounded && forceDir.y <0)
+		else if (IsActualGrounded  && forceDir.y <0)
 		{
-			forceDir.y = 0f;
+			Vector3 v = forceDir;
+			v.y = 0;
+			forceDir = v;
 		}
+		if (forced && !isGrounded)
+		{
+			forceFlied = true;
+		}
+		if(forceFlied && isGrounded)
+		{
+			forced = false;
+			forceFlied = false;
+		}
+		
 	}
 
 	public virtual void ForceCalc()
 	{
 		if(forceDir.sqrMagnitude > 0.01f)
 		{
+
 			Vector3 antiForce = -(forceDir) * GameManager.instance.forceResistance * Time.deltaTime;
+			antiForce.y = 0;
 			forceDir += antiForce;
 		}
 		else

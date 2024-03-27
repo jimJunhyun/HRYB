@@ -51,9 +51,12 @@ public class ChargeRoot : SkillRoot
 	{
 		if (Time.time - prevOperateSec >= composeDel)
 		{
+			if (isSuperArmor)
+			{
+				self.life.superArmor = true;
+			}
 			if (self.anim is PlayerAnim pa)
 			{
-				
 				GameManager.instance.uiManager.aimUI.On();
 				pa.SetAttackTrigger(0);
 			}
@@ -197,6 +200,10 @@ public class ChargeRoot : SkillRoot
 		{
 			Debug.Log("각종강화효과지우기");
 			atk.HandleRemoveCall();
+		}
+		if (isSuperArmor)
+		{
+			self.life.superArmor = false;
 		}
 	}
 }

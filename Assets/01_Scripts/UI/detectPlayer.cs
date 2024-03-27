@@ -19,7 +19,6 @@ public class detectPlayer : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-
 		if(other.gameObject.layer == 7)
 		{
 			obj = GameManager.instance.bHPManager.makeHP(bossName, lf);
@@ -31,6 +30,10 @@ public class detectPlayer : MonoBehaviour
 		if (other.gameObject.layer == 7)
 		{
 			Destroy(obj);
+			if(obj.CompareTag("Jansung"))
+			{
+				GameManager.instance.bHPManager.jangsungHP = false;
+			}
 		}	 
 	}
 }

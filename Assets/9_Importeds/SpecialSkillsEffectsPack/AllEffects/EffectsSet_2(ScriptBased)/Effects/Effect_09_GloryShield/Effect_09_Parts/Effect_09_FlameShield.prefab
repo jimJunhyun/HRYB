@@ -11,9 +11,7 @@ GameObject:
   - component: {fileID: 6036363885061881170}
   - component: {fileID: 6036363885061881171}
   - component: {fileID: 6036363885061881168}
-  - component: {fileID: 6036363885061881169}
   - component: {fileID: 6036363885061881174}
-  - component: {fileID: 6036363885061881181}
   m_Layer: 0
   m_Name: Effect_09_Shield
   m_TagString: Untagged
@@ -86,27 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &6036363885061881169
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6036363885061881175}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6036363885061881174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,24 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0af683078061c2d4dabef0494034564f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ImpactLife: 1.5
---- !u!114 &6036363885061881181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6036363885061881175}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f875761d9a11f1b448dda0f9ee26e0f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isParticleSystem: 0
-  m_inputMaterial: {fileID: 2100000, guid: 39d706e5f1a699a43a569c417dec23f1, type: 2}
-  m_timeToReduce: 9999
-  m_reduceFactor: 2
-  m_upFactor: 1
+  ImpactLife: 0.75
 --- !u!1 &6036363885242095341
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,8 +122,8 @@ Transform:
   m_GameObject: {fileID: 6036363885242095341}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.5, z: 0}
-  m_LocalScale: {x: 2.4, y: 2.4, z: 2.4}
+  m_LocalPosition: {x: 0, y: 4.5, z: 0}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6036363885061881170}
@@ -181,7 +141,6 @@ GameObject:
   - component: {fileID: 6036363885914940081}
   - component: {fileID: 6036363885914940093}
   - component: {fileID: 6036363885914940082}
-  - component: {fileID: 6036363885914940080}
   m_Layer: 0
   m_Name: Effect_09_Shield_2
   m_TagString: Untagged
@@ -254,20 +213,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6036363885914940080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6036363885914940086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f875761d9a11f1b448dda0f9ee26e0f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isParticleSystem: 0
-  m_inputMaterial: {fileID: 2100000, guid: 98cb94841a8621f4e8ea05216e607467, type: 2}
-  m_timeToReduce: 9999
-  m_reduceFactor: 2
-  m_upFactor: 1

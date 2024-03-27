@@ -170,8 +170,4 @@ public class JangsungManAI : AISetter
 	    
     }
     
-    public override void StartExamine()
-    {
-	    stopped = false;
-    }
 }

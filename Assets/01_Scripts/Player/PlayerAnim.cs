@@ -99,7 +99,7 @@ public class PlayerAnim : AnimModule
 		}
 
 		anim.SetBool(onAirHash, pmove.onAir);
-		anim.SetFloat(vertPowerHash, pmove.MoveDirUncalced.y);
+		anim.SetFloat(vertPowerHash, pmove.MoveDirWithForce.y);
 	}
 
 	public void SetAttackTrigger(int idx)

@@ -20,6 +20,7 @@ public class JangsungGirlAttack : EnemyAttackModule
 
 	public override void OnAnimationEnd()
 	{
+		StopAllCoroutines();
 		switch (AttackStd)
 		{
 			case "mumuk":
@@ -30,25 +31,31 @@ public class JangsungGirlAttack : EnemyAttackModule
 					}
 
 					GetActor().anim.Animators.SetBool(AttackStd, false);
-					self.ai.StartExamine();
+					StartCoroutine(WaeUpCo(2f));
 				}
 				break;
 			case "Root":
 				{
 
 					GetActor().anim.Animators.SetBool(AttackStd, false);
-					self.ai.StartExamine();
+					StartCoroutine(WaeUpCo(6f));
 				}
 				break;
 			case "Barrier":
 				{
 					GetActor().anim.Animators.SetBool(AttackStd, false);
 					GetComponent<JangsungGirlAI>()._friend.GetComponent<JangsungLifeModule>().BarrierOff();
-					self.ai.StartExamine();
+					StartCoroutine(WaeUpCo(4f));
 				}
 				break;
 		}
 		GetComponent<JangsungGirlLifeModule>().DeleteBarrier();
+	}
+
+	IEnumerator WaeUpCo(float t)
+	{
+		yield return new WaitForSeconds(t);
+		self.ai.StartExamine();
 	}
 
 
@@ -84,20 +91,20 @@ public class JangsungGirlAttack : EnemyAttackModule
 			_missile.Add(obj.GetComponent<JangsungMumukMissile>());
 
 			Debug.LogError(self);
-			_missile[fireIndex].Init(mumukPos[fireIndex], self.ai.player.transform, 10);
+			_missile[fireIndex].Init(mumukPos[fireIndex], self.ai.player.transform, 20, DamageType.DirectHit);
 			fireIndex++;
 		}
 		else
 		{
 			GameObject obj1 = PoolManager.GetObject("MumukMissile", mumukPos[fireIndex].position, mumukPos[fireIndex].rotation);
 			_missile.Add(obj1.GetComponent<JangsungMumukMissile>());
-			_missile[fireIndex].Init(mumukPos[fireIndex], self.ai.player.transform, 10);
+			_missile[fireIndex].Init(mumukPos[fireIndex], self.ai.player.transform, 15 * fireIndex, DamageType.DirectHit);
 			fireIndex++;
 
 			yield return null;
 			GameObject obj2 = PoolManager.GetObject("MumukMissile", mumukPos[fireIndex].position, mumukPos[fireIndex].rotation);
 			_missile.Add(obj2.GetComponent<JangsungMumukMissile>());
-			_missile[fireIndex].Init(mumukPos[fireIndex], self.ai.player.transform, 10);
+			_missile[fireIndex].Init(mumukPos[fireIndex], self.ai.player.transform, 15 * (fireIndex-1), DamageType.DirectHit);
 			fireIndex++;
 		}
 
@@ -108,13 +115,70 @@ public class JangsungGirlAttack : EnemyAttackModule
 	IEnumerator RootPatton()
 	{
 		JangsungGirlLifeModule lf = GetComponent<JangsungGirlLifeModule>();
-		lf.BarrierON(5);
+		lf.BarrierON(16);
 
 		// 바닥 범위 보여주기 <= 에니메이션 처리
 
 
-		yield return new WaitForSeconds(3f);
 
+		GameObject objs = PoolManager.GetObject("JSRootATK", transform);
+		objs.GetComponent<ColliderCast>().Now(transform,(player) =>
+		{
+			player.DamageYY(3, 0, DamageType.DirectHit);
+			//GiveBuff(player.GetActor(), StatEffID.Stun, 1.2f);
+			player.GetActor().move.forceDir += new Vector3(0, 20, 0);
+		}, null, -1, -1, 0.5f);
+		
+		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(1.5f);
+
+		for (int i = 0; i < 50; i++)
+		{
+			yield return new WaitForSeconds( 0.5f - 0.01f * i);
+
+			if (i < 25)
+			{
+				if (i % 5 == 0)
+				{
+					GameObject obj1 = PoolManager.GetObject("MumukMissile", mumukPos[0].position, mumukPos[0].rotation);
+					JangsungMumukMissile missile = obj1.GetComponent<JangsungMumukMissile>();
+					missile.Init(mumukPos[0], self.ai.player.transform, 50, DamageType.DirectHit, self.ai.player.transform.forward * 0.1f);
+					missile.Fire();
+				}
+				else
+				{
+					GameObject obj1 = PoolManager.GetObject("MumukMissile", mumukPos[0].position, mumukPos[0].rotation);
+					JangsungMumukMissile missile = obj1.GetComponent<JangsungMumukMissile>();
+					missile.Init(mumukPos[0], self.ai.player.transform, 50, DamageType.NoHit);
+					missile.Fire();
+				}
+			}
+			else
+			{
+				int rand = UnityEngine.Random.Range(-1, 2);
+
+				Vector3 dir = self.ai.player.transform.forward * rand * 0.1f;
+				
+				if (i % 5 == 0)
+				{
+					GameObject obj1 = PoolManager.GetObject("MumukMissile", mumukPos[0].position, mumukPos[0].rotation);
+					JangsungMumukMissile missile = obj1.GetComponent<JangsungMumukMissile>();
+					missile.Init(mumukPos[0], self.ai.player.transform, 50, DamageType.DirectHit, dir);
+					missile.Fire();
+				}
+				else
+				{
+					GameObject obj1 = PoolManager.GetObject("MumukMissile", mumukPos[0].position, mumukPos[0].rotation);
+					JangsungMumukMissile missile = obj1.GetComponent<JangsungMumukMissile>();
+					missile.Init(mumukPos[0], self.ai.player.transform, 50, DamageType.NoHit, dir);
+					missile.Fire();
+				}
+			}
+
+
+		}
+		
+		/*
 		for(int i =0; i < 50; i++)
 		{
 
@@ -138,10 +202,10 @@ public class JangsungGirlAttack : EnemyAttackModule
 			// 생성
 			StartCoroutine(SummonPuri(x, y));
 		}
-
+		*/
 		OnAnimationEnd();
 	}
-
+	/*
 	IEnumerator SummonPuri(float x, float y)
 	{
 		GameObject obj = PoolManager.GetObject("MiddleBoxDecal", transform);
@@ -162,7 +226,7 @@ public class JangsungGirlAttack : EnemyAttackModule
 			player.DamageYY(3, 0, DamageType.DirectHit);
 		}, null, -1, 2f, 3f);
 	}
-
+*/
 	public override void OnAnimationMove()
 	{
 	}

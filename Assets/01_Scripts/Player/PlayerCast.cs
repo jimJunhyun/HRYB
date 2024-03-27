@@ -183,14 +183,22 @@ public class PlayerCast : CastModule
 	{
 		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("NormalBowAttack"), SkillSlotInfo.LClick, PlayerForm.Magic);
 		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
-		
-		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YohoNormalAttack"), SkillSlotInfo.LClick, PlayerForm.Magic);
-		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("NextEnter"), SkillSlotInfo.RClick, PlayerForm.Magic);
-		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("SkyBritgh"), SkillSlotInfo.One, PlayerForm.Magic);
-		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YusungSmith"), SkillSlotInfo.Three, PlayerForm.Magic);
-		//ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YohoSharpnessAtt"), SkillSlotInfo.Two, PlayerForm.Magic);
+
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("BackKick"), SkillSlotInfo.One, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("FireWall"), SkillSlotInfo.Two, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("EnhanceIce"), SkillSlotInfo.Three, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ThunderStorm"), SkillSlotInfo.Q, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("SwordRain"), SkillSlotInfo.E, PlayerForm.Magic);
+
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YohoNormalAttack"), SkillSlotInfo.LClick, PlayerForm.Yoho);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("NextEnter"), SkillSlotInfo.RClick, PlayerForm.Yoho);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("SkyBritgh"), SkillSlotInfo.One, PlayerForm.Yoho);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YusungSmith"), SkillSlotInfo.Three, PlayerForm.Yoho);
+		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YohoSharpnessAtt"), SkillSlotInfo.Two, PlayerForm.Yoho);
+
+
 		// YohoNormalAttack
-		
+
 		nameCastPair.Add("interact" , new Preparation(
 		(self)=>
 		{
@@ -474,13 +482,10 @@ public class PlayerCast : CastModule
 
 	protected override IEnumerator DelCast(Preparation p)
 	{
-		float waitSec = p.Timefunc();
-		if(waitSec > 0)
-		{
-			GameManager.instance.DisableCtrl(ControlModuleMode.Animated); //히트당하면 끊긴다...
-			GameManager.instance.uiManager.interingUI.On();
-		}
+		GameManager.instance.DisableCtrl(ControlModuleMode.Animated); //히트당하면 끊긴다...
+		GameManager.instance.uiManager.interingUI.On();
 		float t = 0;
+		float waitSec = p.Timefunc();
 		while (waitSec * castModuleStat.Speed > t)
 		{
 			t += Time.deltaTime;
@@ -490,36 +495,13 @@ public class PlayerCast : CastModule
 		p.onPrepComp?.Invoke(transform);
 		ongoing = null;
 		curName = null;
-		if(waitSec > 0)
-		{
-			GameManager.instance.uiManager.interingUI.Off();
-			GameManager.instance.EnableCtrl(ControlModuleMode.Animated);
-		}
+		GameManager.instance.uiManager.interingUI.Off();
+		GameManager.instance.EnableCtrl(ControlModuleMode.Animated);
 	}
 
 	private void Update()
 	{
 		nowSkillSlot.Update();
-		
-		///
-		if (Input.GetKeyDown(KeyCode.Y))
-		{
-			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("BackKick"), SkillSlotInfo.One, PlayerForm.Magic);
-		}
-		if (Input.GetKeyDown(KeyCode.H))
-		{
-			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("FireWall"), SkillSlotInfo.Two, PlayerForm.Magic);
-		}
-		if (Input.GetKeyDown(KeyCode.N))
-		{
-			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("EnhanceIce"), SkillSlotInfo.Three, PlayerForm.Magic);
-		}
-		if (Input.GetKeyDown(KeyCode.RightShift))
-		{
-			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("ThunderStorm"), SkillSlotInfo.Q, PlayerForm.Magic);
-			ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumenSkill("SwordRain"), SkillSlotInfo.E, PlayerForm.Magic);
-		}
-		///
 	}
 
 	void UpdateClickSlots()
@@ -600,6 +582,21 @@ public class PlayerCast : CastModule
 	internal void ResetSkillUse(SkillSlotInfo at)
 	{
 		DisoperateAt(at);
+	}
+
+	public void ChangeSkillSlotTo(PlayerForm form)
+	{
+		switch (form)
+		{
+			case PlayerForm.Magic:
+				nowSkillSlot = humenSkillSlot;
+				break;
+			case PlayerForm.Yoho:
+				nowSkillSlot = yohoSkillSlot;
+				break;
+			default:
+				break;
+		}
 	}
 	
 

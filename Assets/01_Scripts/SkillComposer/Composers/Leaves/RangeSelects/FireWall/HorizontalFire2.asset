@@ -19,18 +19,22 @@ MonoBehaviour:
   tags:
     value: 1
   level: 0
-  statEff: []
+  statEff:
+  - id: 11
+    power: 15
+    duration: 3
   damageMult: 0.7
   relateTrmName: Main Camera (1)
   rangeName: PlayerDecalCircle
-  prefName: Magic circle 10
+  prefName: Effect_21_GroundScatter(Base)
   maxDistance: 10
   offSet: {x: -2.5, y: 0, z: 0}
-  rotationOffset: {x: -90, y: 0, z: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  scaleOffset: {x: 0.3, y: 0.3, z: 0.3}
   isOffsetRandom: 0
   randomOffsetRange: {x: 0, y: 0}
   decalScale: {x: 4, y: 4}
-  totalRemainSec: 2
+  totalRemainSec: 2.1
   isOnce: 0
-  checkGap: 0.3
-  checkDur: 0.2
+  checkGap: 0.5
+  checkDur: 0.4

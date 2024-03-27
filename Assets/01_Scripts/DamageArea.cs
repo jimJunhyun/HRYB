@@ -8,17 +8,16 @@ public class DamageArea : DamageObject
     public float calcGap; //n초 간격으로
 	public float calcRemainSec; //n초간 판정
 
+
 	float prevCalcSec = 0;
 	bool first = true;
 	bool checking;
 
-	float lifetime = Mathf.Infinity;
-	float spawnSec;
-
-	Actor owner;
-	List<StatusEffectApplyData> statData = new List<StatusEffectApplyData>();
+	float lifetime;
 
 	Collider col;
+
+	float initTime;
 
 	private void Awake()
 	{
@@ -36,11 +35,12 @@ public class DamageArea : DamageObject
 		first=  true;
 		prevCalcSec = 0;
 		checking =  false;
-
-		spawnSec = Time.time;
-
 		owner = self;
 		statData = stat;
+
+		initTime = Time.time;
+
+		col.enabled = false;
 	}
 
 	private void Update()
@@ -56,17 +56,14 @@ public class DamageArea : DamageObject
 			if (first)
 				first = false;
 		}
-		if (checking)
-		{
-			transform.position += Vector3.zero;
-		}
 		if(checking && Time.time - prevCalcSec >= calcRemainSec)
 		{
 			col.enabled = false;
 			checking = false;
 			prevCalcSec = Time.time;
 		}
-		if(Time.time - spawnSec >= lifetime)
+
+		if(Time.time - initTime >= lifetime)
 		{
 			Returner();
 		}
@@ -76,15 +73,7 @@ public class DamageArea : DamageObject
 	{
 		if (checking && other.transform != owner.transform)
 		{
-			LifeModule lf;
-			if(lf = other.GetComponent<LifeModule>())
-			{
-				foreach (var item in statData)
-				{
-					StatusEffects.ApplyStat(lf.GetActor(), owner, item.id, item.duration, item.power);
-				}
-				base.OnTriggerEnter(other);
-			}
+			base.OnTriggerEnter(other);
 		}
 	}
 
@@ -96,5 +85,6 @@ public class DamageArea : DamageObject
 	public void Returner()
 	{
 		PoolManager.ReturnObject(gameObject);
+
 	}
 }

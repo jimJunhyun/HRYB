@@ -32,10 +32,20 @@ public class YusungSmith : AttackBase
     }
     public override void OnAnimationMove(Actor self, AnimationEvent evt)
     {
-
+	    string[] tt = evt.stringParameter.Split("$");
+	    if (tt[0] == "1")
+	    {
 		    Vector3 dir = self.transform.forward;
-		    self.move.forceDir = dir * 16 + new Vector3(0, 40, 0);
+		    self.move.forceDir = dir * 8 + new Vector3(0, 20, 0);
 		    Debug.Log($"LOGG {dir}");
+	    }
+	    else if (tt[0] == "2")
+	    {
+		    Vector3 dir = self.transform.forward;
+		    self.move.forceDir = dir * 16 + new Vector3(0, 5, 0);
+		    Debug.Log($"LOGG {dir}");
+	    }
+
 
 
     }
@@ -47,7 +57,7 @@ public class YusungSmith : AttackBase
 	    if (tt[0] == "ATK")
 	    {
 		    Vector3 dir = self.transform.forward;
-		    self.move.forceDir = dir + new Vector3(0, -120, 0);
+		    self.move.forceDir = dir + new Vector3(0, -300, 0);
 	    
 		    if (_cols != null)
 		    {
@@ -61,12 +71,12 @@ public class YusungSmith : AttackBase
 		    {
 			    _cols.Now(self.transform, (_life) =>
 			    {
-				    DoDamage(_life.GetActor(), self);
+				    DoDamage(_life.GetActor(), self, obj.transform.position);
 				    Vector3 dir = _life.transform.position-self.transform.position;
 				    dir.y = 0;
 				    dir.Normalize();
 					
-				    _life.GetActor().move.forceDir += dir*6 + new Vector3(0, 15, 0);
+				    _life.GetActor().move.forceDir += dir*6 + new Vector3(0, 6, 0);
 				    
 
 			    }, (me, enemy) =>

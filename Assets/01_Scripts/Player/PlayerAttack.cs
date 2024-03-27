@@ -55,13 +55,12 @@ public class PlayerAttack : AttackModule
 
 	List<StatEffID> skillEndRemovers = new List<StatEffID>(); //사용 종료시 제거되는 효과
 
-	PlayerAnimActions animActions;
 
 	private void Awake()
 	{
 		ShootPos = GameObject.Find("ShootPos").transform;
 
-		animActions = GetComponentInChildren<PlayerAnimActions>();
+		
 
 		//chargeEff = shootPos.GetComponentInChildren<VisualEffect>();
 		//chargeEff.Stop();

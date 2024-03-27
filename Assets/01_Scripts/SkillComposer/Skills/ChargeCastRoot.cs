@@ -4,8 +4,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// 항상 1번 슬롯에 장착된 스킬의 opAnim, durAnim, DisopAnim을 사용할 것.
-/// 여러개를 꽂기보다는 여러개를 컴포지트로 묶고 꽂기.
+/// 항상 1번 슬롯에 장착된 스킬의 opAnim, durAnim, DisopAnim을 사용함.
 /// 
 /// 일정 시간 충전한ㄴ 뒤 묶여있는 스킬들을 전부 사용하는 형태.
 /// 충전중엔 모으기 말고 아무것도 안함.
@@ -31,11 +30,17 @@ public class ChargeCastRoot : SkillRoot
 
 	public override void Operate(Actor self)
 	{
+		if (isSuperArmor)
+		{
+			self.life.superArmor = true;
+		}
+
 		if (isPlayAnim)
 		{
 			if (self.anim is PlayerAnim pa)
 			{
 				pa.SetAttackTrigger(0); //애니메이션트리거로 PauseAnimation 및 MyOperation (SetAttackRange) 발동
+				//chargeStartSec = Time.time;
 				
 			}
 		}
@@ -54,8 +59,6 @@ public class ChargeCastRoot : SkillRoot
 			{
 				pa.ResetLoopState();
 				pa.SetDisopTrigger(0);
-				
-				
 			}
 		}
 		else
@@ -72,8 +75,8 @@ public class ChargeCastRoot : SkillRoot
 			childs[i].Operate(self);
 		}
 		charging  = true;
-		chargeStartSec = Time.time;
 		GameManager.instance.uiManager.interingUI.On();
+		chargeStartSec = Time.time;
 	}
 
 	internal override void MyDisoperation(Actor self)
@@ -90,6 +93,7 @@ public class ChargeCastRoot : SkillRoot
 			}
 		}
 		GameManager.instance.uiManager.interingUI.Off();
+		Debug.Log("충전종료, 스킬을 사용했는가? : " + prepared);
 		charging = false;
 	}
 
@@ -99,6 +103,7 @@ public class ChargeCastRoot : SkillRoot
 		if (charging)
 		{
 			GameManager.instance.uiManager.interingUI.SetGaugeValue(chargeT / chargeThreshold);
+			//Debug.Log($"충전중우 : {chargeT} / {chargeThreshold} = " + chargeT / chargeThreshold);
 		}
 		if (overcooked)
 		{
@@ -108,10 +113,24 @@ public class ChargeCastRoot : SkillRoot
 
 	protected override IEnumerator DelDisoperate(Actor self)
 	{
-		yield return base.DelDisoperate(self);
+		if (isPlayDisopAnim)
+		{
+			//(GameManager.instance.pActor.anim as PlayerAnim).SetDisopTrigger(0);
+			for (int i = 0; i < childs.Count; i++)
+			{
+				childs[i].Disoperate(self);
+				yield return new WaitForSeconds(composeDel);
+			}
+		}
+
 		if (self.atk is PlayerAttack atk)
 		{
+			Debug.Log("각종강화효과지우기");
 			atk.HandleRemoveCall();
+		}
+		if (isSuperArmor)
+		{
+			self.life.superArmor = false;
 		}
 	}
 
@@ -120,66 +139,55 @@ public class ChargeCastRoot : SkillRoot
 		if ((to.anim as PlayerAnim).curEquipped != this)
 		{
 			List<AnimationClip> clips = new List<AnimationClip>();
-			for (int i = 0; i < childs.Count; i++)
+			if (childs[0].animClip != null)
 			{
-				if (childs[i].animClip != null)
+				AnimationEvent[] events = childs[0].animClip.events;
+				for (int j = 0; j < events.Length; j++)
 				{
-					AnimationEvent[] events = childs[i].animClip.events;
-					if (events.Length > 1)
-					{
-						events[1].stringParameter = info.ToString();
-					}
-					if (events.Length > 2)
-					{
-						events[2].stringParameter = info.ToString();
-					}
-					childs[i].animClip.events = events;
-					clips.Add(childs[i].animClip);
-					Debug.Log($"New Clip : {childs[i].animClip}");
+					events[j].stringParameter = info.ToString();
+
 				}
+				childs[0].animClip.events = events;
+				clips.Add(childs[0].animClip);
+				Debug.Log($"New Clip : {childs[0].animClip} for op");
 			}
-			for (int i = 0; i < 5 - childs.Count; i++)
+			
+			for (int i = 0; i < 4; i++)
 			{
 				clips.Add(null);
 			}
-			for (int i = 0; i < childs.Count; i++)
+
+			if (childs[0].animClipDisop != null)
 			{
-				if (childs[i].animClipDisop != null)
+				AnimationEvent[] events = childs[0].animClipDisop.events;
+				for (int j = 0; j < events.Length; j++)
 				{
-					AnimationEvent[] events = childs[i].animClipDisop.events;
-					if (events.Length > 1)
-					{
-						events[1].stringParameter = info.ToString();
-					}
-					if (events.Length > 2)
-					{
-						events[2].stringParameter = info.ToString();
-					}
-					childs[i].animClipDisop.events = events;
-					clips.Add(childs[i].animClipDisop);
-					Debug.Log($"New Clip : {childs[i].animClipDisop}");
+					events[j].stringParameter = info.ToString();
+
 				}
+				childs[0].animClipDisop.events = events;
+				clips.Add(childs[0].animClipDisop);
+				Debug.Log($"New Clip : {childs[0].animClipDisop} for Disop");
 			}
-			for (int i = 0; i < 5 - childs.Count; i++)
+			
+			for (int i = 0; i < 4; i++)
 			{
 				clips.Add(null);
 			}
 			//dur
-			for (int i = 0; i < childs.Count; i++)
+			if (childs[0].animClipLoopings != null)
 			{
-				if (childs[i].animClipLoopings != null)
+				AnimationEvent[] events = childs[0].animClipLoopings.events;
+				for (int j = 0; j < events.Length; j++)
 				{
-					AnimationEvent[] events = childs[i].animClipLoopings.events;
-					for (int j = 0; j < events.Length; j++)
-					{
-						events[j].stringParameter = info.ToString();
-					}
-					childs[i].animClipLoopings.events = events;
-					clips.Add(childs[i].animClipLoopings);
-					Debug.Log($"New Clip : {childs[i].animClipLoopings}");
+					events[j].stringParameter = info.ToString();
 				}
+				childs[0].animClipLoopings.events = events;
+				clips.Add(childs[0].animClipLoopings);
+				Debug.Log($"New Clip : {childs[0].animClipLoopings} for LOOP");
 			}
-			for (int i = 0; i < 5 - childs.Count; i++)
+			
+			for (int i = 0; i < 4; i++)
 			{
 				clips.Add(null);
 			}

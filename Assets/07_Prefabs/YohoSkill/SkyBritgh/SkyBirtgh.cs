@@ -25,7 +25,7 @@ public class SkyBirtgh : AttackBase
 
     public override void OnAnimationStart(Actor self, AnimationEvent evt)
     {
-	    GameManager.instance.DisableCtrl();
+	    //GameManager.instance.DisableCtrl();
     }
 
     public override void OnAnimationMove(Actor self, AnimationEvent evt)
@@ -58,7 +58,7 @@ public class SkyBirtgh : AttackBase
 				    }
 				    
 				    Vector3 dir = self.transform.forward;
-				    self.move.forceDir = dir + new Vector3(0, 20, 0);
+				    (self.move as PlayerMove).forceDir += dir + new Vector3(0, 10, 0);
 
 				    Debug.LogError("스카이브릿지");
 				    GameObject obj = PoolManager.GetObject("SkyBritghCollider", self.transform);
@@ -67,11 +67,11 @@ public class SkyBirtgh : AttackBase
 					    _cols.Now(self.transform, (_life) =>
 					    {
 						    CameraManager.instance.ShakeCamFor(0.08f, 2, 2);
-						    _life.GetActor().move.forceDir = self.transform.forward * 3 + new Vector3(0, 12, 0);
+						    _life.GetActor().move.forceDir = self.transform.forward * 2 + new Vector3(0, 10, 0);
 						    
 						    Actor to = _life.GetActor();
 						    Actor by = self;
-						    DoDamage(to,by, 0.1f);
+						    DoDamage(to,by, 0.1f, obj.transform.position);
 						    
 					    });
 				    }
@@ -95,7 +95,7 @@ public class SkyBirtgh : AttackBase
 				    }
 				    
 				    GameObject obj = PoolManager.GetObject("SkyBritghCollider", self.transform);
-				    self.move.forceDir += new Vector3(0, 25, 0);
+				    self.move.forceDir += new Vector3(0, 2, 0);
 				    if (obj.TryGetComponent<ColliderCast>(out _cols))
 				    {
 					    _cols.Now(self.transform, (_life) =>
@@ -105,7 +105,7 @@ public class SkyBirtgh : AttackBase
 						    
 						    Actor to = _life.GetActor();
 						    Actor by = self;
-						    DoDamage(to,by, 0.4f);
+						    DoDamage(to,by, 0.4f, obj.transform.position);
 					    });
 				    }
 			    }
@@ -138,7 +138,7 @@ public class SkyBirtgh : AttackBase
 						    _life.GetActor().move.forceDir = self.transform.forward * 18 + new Vector3(0, -24, 0);
 						    Actor to = _life.GetActor();
 						    Actor by = self;
-						    DoDamage(to,by, 0.8f);
+						    DoDamage(to,by, 0.8f, obj.transform.position);
 					    });
 				    }
 			    }

@@ -20,6 +20,9 @@ public class SkillRoot : Composite
 	public SkillUseType useType;
 	public float castTime;
 	public float cooldown;
+	public Sprite skillIcon;
+
+	public bool isSuperArmor;
 
 	SkillSlotInfo mySlotInfo;
 	public SkillSlotInfo MySlotInfo { private get => mySlotInfo; set => mySlotInfo = value;}
@@ -29,6 +32,10 @@ public class SkillRoot : Composite
 		Vector3 dir = Camera.main.transform.forward;
 		dir.y = 0;
 		self.transform.rotation = Quaternion.LookRotation(dir);
+		if (isSuperArmor)
+		{
+			self.life.superArmor = true;
+		}
 		base.Operate(self);
 		//GameManager.instance.StartCoroutine(DelOperate(self));
 		base.MyOperation(self);
@@ -46,6 +53,11 @@ public class SkillRoot : Composite
 		{
 			Debug.Log("각종강화효과지우기");
 			atk.HandleRemoveCall();
+		}
+		if (isSuperArmor)
+		{
+			Debug.Log("슈퍼아머끝");
+			self.life.superArmor = false;
 		}
 	}
 }

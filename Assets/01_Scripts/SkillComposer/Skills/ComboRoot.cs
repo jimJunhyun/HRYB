@@ -9,9 +9,6 @@ public class ComboRoot : SkillRoot
 	public float resetSec;
 	public int resetThreshold;
 	
-	public float totalCooldown;
-
-	//bool available => Time.time - ;
 
 	int curCombo = 0;
 	float prevOperateSec;
@@ -23,18 +20,18 @@ public class ComboRoot : SkillRoot
 
 	public override void Operate(Actor self)
 	{
-		if (curCombo != 0 || Time.time - prevOperateSec >= composeDel)
+		if(Time.time - prevOperateSec >= composeDel)
 		{
+			if (isSuperArmor)
+			{
+				self.life.superArmor = true;
+			}
 			if (self.anim is PlayerAnim pa)
 			{
-				pa.SetAttackTrigger(curCombo);
-				if (curCombo == childs.Count - 1)
-				{
-					prevOperateSec = Time.time;
-				}
+				pa.SetAttackTrigger(curCombo); 
+				prevOperateSec = Time.time;
 			}
 		}
-		
 	}
 
 	public override void UpdateStatus()
@@ -202,6 +199,10 @@ public class ComboRoot : SkillRoot
 		{
 			Debug.Log("각종강화효과지우기");
 			atk.HandleRemoveCall();
+		}
+		if (isSuperArmor)
+		{
+			self.life.superArmor = false;
 		}
 	}
 

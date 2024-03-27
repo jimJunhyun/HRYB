@@ -29,8 +29,14 @@ public abstract class AttackBase : Leaf
 	}
 
 
-	protected virtual void DoDamage(Actor to, Actor by)
+	protected virtual void DoDamage(Actor to, Actor by, Vector3 vec = new Vector3())
 	{
+		Vector3 pos = to.transform.position;
+		
+		if (vec != new Vector3())
+		{
+			pos = vec;
+		}
 		
 		float white = by.atk.Damage.white * damageMult;
 		float black = by.atk.Damage.white * damageMult;
@@ -41,11 +47,11 @@ public abstract class AttackBase : Leaf
 		
 		if ((by.atk.Damage * damageMult).white > 0)
 		{
-			GameManager.instance.shower.GenerateDamageText(to.transform.position, white, YYInfo.White);
+			GameManager.instance.shower.GenerateDamageText(pos, white, YYInfo.White);
 		}
 		if ((by.atk.Damage * damageMult).black > 0)
 		{
-			GameManager.instance.shower.GenerateDamageText(to.transform.position, black, YYInfo.Black);
+			GameManager.instance.shower.GenerateDamageText(pos, black, YYInfo.Black);
 		}
 		
 		for (int i = 0; i < statEff.Count; i++)
@@ -55,8 +61,15 @@ public abstract class AttackBase : Leaf
 	}
 	
 	
-	protected virtual void DoDamage(Actor to, Actor by, float value)
+	protected virtual void DoDamage(Actor to, Actor by, float value , Vector3 vec = new Vector3())
 	{
+		Vector3 pos = to.transform.position;
+		
+		if (vec != new Vector3())
+		{
+			pos = vec;
+		}
+		
 		if (value == 0)
 			value = 1;
 
@@ -65,13 +78,13 @@ public abstract class AttackBase : Leaf
 		
 		if ((by.atk.Damage * damageMult).white > 0)
 		{
-			GameManager.instance.shower.GenerateDamageText(to.transform.position, white, YYInfo.White);
+			GameManager.instance.shower.GenerateDamageText(pos, white, YYInfo.White);
 		}
 		if ((by.atk.Damage * damageMult).black > 0)
 		{
-			GameManager.instance.shower.GenerateDamageText(to.transform.position,black, YYInfo.Black);
+			GameManager.instance.shower.GenerateDamageText(pos, black, YYInfo.Black);
 		}
-		
+
 		to.life.DamageYY(black, white, DamageType.DirectHit, 0, 0, by);
 		for (int i = 0; i < statEff.Count; i++)
 		{
