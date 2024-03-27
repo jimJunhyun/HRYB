@@ -25,7 +25,7 @@ public class SkyBirtgh : AttackBase
 
     public override void OnAnimationStart(Actor self, AnimationEvent evt)
     {
-	    //GameManager.instance.DisableCtrl();
+	    GameManager.instance.DisableCtrl();
     }
 
     public override void OnAnimationMove(Actor self, AnimationEvent evt)
