@@ -220,6 +220,7 @@ public struct ModuleController
 public class GameManager : MonoBehaviour
 {
 	public const float GRAVITY = 9.8f;
+	public const int PLAYERATTACKLAYER = 6;
 	public const int PLAYERLAYER = 7;
 	public const int INTERABLELAYER = 8;
 	public const int ENEMYLAYER = 9;

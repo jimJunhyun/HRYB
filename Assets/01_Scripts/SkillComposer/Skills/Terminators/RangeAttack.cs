@@ -63,7 +63,7 @@ public class RangeAttack : AttackBase
 			}
 			Vector3 dir = (relatedTransform.rotation * (Vector3.forward * maxDistance + actualOffset)).normalized;
 			//Debug.DrawRay(relatedTransform.position, dir, Color.cyan, 1000f);
-			if (Physics.Raycast(relatedTransform.position, dir, out RaycastHit hit, maxDistance, ~(1 << GameManager.PLAYERLAYER), QueryTriggerInteraction.Ignore))
+			if (Physics.Raycast(relatedTransform.position, dir, out RaycastHit hit, maxDistance, ~((1 << GameManager.PLAYERATTACKLAYER) | 1 << GameManager.PLAYERLAYER), QueryTriggerInteraction.Ignore))
 			{
 				targetPt = hit.point;
 				//Debug.Log("가로막힘, ");
@@ -72,7 +72,7 @@ public class RangeAttack : AttackBase
 			else
 			{
 				targetPt = relatedTransform.position + (dir * maxDistance);
-				if (Physics.Raycast(targetPt, Vector3.down, out RaycastHit hit2, Mathf.Infinity, ~((1 << GameManager.PLAYERLAYER) | (1 << GameManager.ENEMYLAYER)), QueryTriggerInteraction.Ignore))
+				if (Physics.Raycast(targetPt, Vector3.down, out RaycastHit hit2, Mathf.Infinity, ~((1 << GameManager.PLAYERATTACKLAYER) | (1 << GameManager.PLAYERLAYER) | (1 << GameManager.ENEMYLAYER)), QueryTriggerInteraction.Ignore))
 				{
 					Debug.DrawRay(targetPt, Vector3.down * 1000f, Color.cyan, 1000);
 					//Debug.Log("바닥 ");
