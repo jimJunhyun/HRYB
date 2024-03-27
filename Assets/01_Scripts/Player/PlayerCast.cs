@@ -482,10 +482,13 @@ public class PlayerCast : CastModule
 
 	protected override IEnumerator DelCast(Preparation p)
 	{
-		GameManager.instance.DisableCtrl(ControlModuleMode.Animated); //히트당하면 끊긴다...
-		GameManager.instance.uiManager.interingUI.On();
-		float t = 0;
 		float waitSec = p.Timefunc();
+		if (waitSec > 0)
+		{
+			GameManager.instance.DisableCtrl(ControlModuleMode.Animated); //히트당하면 끊긴다...
+			GameManager.instance.uiManager.interingUI.On();
+		}
+		float t = 0;
 		while (waitSec * castModuleStat.Speed > t)
 		{
 			t += Time.deltaTime;
@@ -495,8 +498,12 @@ public class PlayerCast : CastModule
 		p.onPrepComp?.Invoke(transform);
 		ongoing = null;
 		curName = null;
-		GameManager.instance.uiManager.interingUI.Off();
-		GameManager.instance.EnableCtrl(ControlModuleMode.Animated);
+		if (waitSec > 0)
+		{
+			
+			GameManager.instance.uiManager.interingUI.Off();
+			GameManager.instance.EnableCtrl(ControlModuleMode.Animated);
+		}
 	}
 
 	private void Update()
