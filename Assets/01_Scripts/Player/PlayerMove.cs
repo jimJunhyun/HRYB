@@ -7,8 +7,6 @@ using System;
 
 
 
-
-
 public class PlayerMove : MoveModule
 {
 	
@@ -74,6 +72,8 @@ public class PlayerMove : MoveModule
 
 	Transform target;
 	bool isLocked = false;
+
+	bool forceFlied = false;
 
 	RaycastHit hitCache;
 
@@ -184,8 +184,6 @@ public class PlayerMove : MoveModule
 	{
 		if(hit.point.y <= middle.position.y)
 		{
-			
-
 			angle = Mathf.Acos(Vector3.Dot(hit.normal, transform.up) / (hit.normal.magnitude * transform.up.magnitude)) * Mathf.Rad2Deg;
 			
 			if (angle >= slipThreshold)
@@ -333,6 +331,22 @@ public class PlayerMove : MoveModule
 		}
 	}
 
+	public override void ForceCalc()
+	{
+		base.ForceCalc();
+		if (!ctrl.isGrounded)
+		{
+			if(forceDir.y > 0)
+			{
+				forceFlied = true;
+			}
+		}
+		else
+		{
+			forceFlied = false;
+		}
+	}
+
 	public void CalcClimbState()
 	{
 		if(moveStat == MoveStates.Climb)
@@ -426,6 +440,11 @@ public class PlayerMove : MoveModule
 		{
 //			Debug.Log("사운드 혐오");
 		}
+		
+		if(!forceFlied)
+		{
+			dir.y -= GameManager.GRAVITY;
+		}
 
 		if (target != null && (target.position - transform.position).sqrMagnitude >= lockOnDist * lockOnDist)
 		{
@@ -444,7 +463,6 @@ public class PlayerMove : MoveModule
 
 		if (moveStat != MoveStates.Climb)
 		{
-			dir -= Vector3.up * GameManager.GRAVITY; //최초중력
 			dir += forceDir;
 		}
 		ctrl.Move( (dir) * Time.fixedDeltaTime);
@@ -461,7 +479,6 @@ public class PlayerMove : MoveModule
 			if (moveStat != MoveStates.Climb)
 			{
 				moveDir = new Vector3(inp.x, moveDir.y, inp.y);
-
 			}
 			else
 			{

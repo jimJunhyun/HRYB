@@ -4,8 +4,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// 항상 1번 슬롯에 장착된 스킬의 opAnim, durAnim, DisopAnim을 사용할 것.
-/// 여러개를 꽂기보다는 여러개를 컴포지트로 묶고 꽂기.
+/// 항상 1번 슬롯에 장착된 스킬의 opAnim, durAnim, DisopAnim을 사용함.
 /// 
 /// 일정 시간 충전한ㄴ 뒤 묶여있는 스킬들을 전부 사용하는 형태.
 /// 충전중엔 모으기 말고 아무것도 안함.
@@ -41,7 +40,7 @@ public class ChargeCastRoot : SkillRoot
 			if (self.anim is PlayerAnim pa)
 			{
 				pa.SetAttackTrigger(0); //애니메이션트리거로 PauseAnimation 및 MyOperation (SetAttackRange) 발동
-				chargeStartSec = Time.time;
+				//chargeStartSec = Time.time;
 				
 			}
 		}
@@ -77,7 +76,7 @@ public class ChargeCastRoot : SkillRoot
 		}
 		charging  = true;
 		GameManager.instance.uiManager.interingUI.On();
-		Debug.Log("INTERINGNGNGNGN");
+		chargeStartSec = Time.time;
 	}
 
 	internal override void MyDisoperation(Actor self)
@@ -104,7 +103,7 @@ public class ChargeCastRoot : SkillRoot
 		if (charging)
 		{
 			GameManager.instance.uiManager.interingUI.SetGaugeValue(chargeT / chargeThreshold);
-			Debug.Log("충전중우");
+			//Debug.Log($"충전중우 : {chargeT} / {chargeThreshold} = " + chargeT / chargeThreshold);
 		}
 		if (overcooked)
 		{
