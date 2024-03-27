@@ -25,7 +25,7 @@ public class SkyBirtgh : AttackBase
 
     public override void OnAnimationStart(Actor self, AnimationEvent evt)
     {
-	    GameManager.instance.DisableCtrl();
+	    //GameManager.instance.DisableCtrl();
     }
 
     public override void OnAnimationMove(Actor self, AnimationEvent evt)
@@ -58,7 +58,7 @@ public class SkyBirtgh : AttackBase
 				    }
 				    
 				    Vector3 dir = self.transform.forward;
-				    self.move.forceDir = dir + new Vector3(0, 4, 0);
+				    (self.move as PlayerMove).forceDir += dir + new Vector3(0, 10, 0);
 
 				    Debug.LogError("스카이브릿지");
 				    GameObject obj = PoolManager.GetObject("SkyBritghCollider", self.transform);
@@ -67,7 +67,7 @@ public class SkyBirtgh : AttackBase
 					    _cols.Now(self.transform, (_life) =>
 					    {
 						    CameraManager.instance.ShakeCamFor(0.08f, 2, 2);
-						    _life.GetActor().move.forceDir = self.transform.forward * 2 + new Vector3(0, 4, 0);
+						    _life.GetActor().move.forceDir = self.transform.forward * 2 + new Vector3(0, 10, 0);
 						    
 						    Actor to = _life.GetActor();
 						    Actor by = self;

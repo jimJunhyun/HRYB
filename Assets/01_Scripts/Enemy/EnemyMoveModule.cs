@@ -49,7 +49,10 @@ public class EnemyMoveModule : MoveModule
 
 	public override void FixedUpdate()
 	{
-
+		ForceCalc();
+		GravityCalc();
+		Debug.LogError("FORCEdIR	" + forceDir + "d : " + isGrounded);
+		Character.Move((forceDir) * Time.deltaTime);
 		if (_isCanMove != true)
 		{
 			if ((forceDir.y > 0) || isGrounded == false)
@@ -57,12 +60,11 @@ public class EnemyMoveModule : MoveModule
 				Character.enabled = true;
 				agent.enabled = false;
 
-				ForceCalc();
-				GravityCalc();
+				
 				//transform.Translate(forceDir * Time.deltaTime, Space.World);
 				if (_isCanMove == false)
 				{
-					Character.Move((forceDir) * Time.deltaTime);
+					
 				}
 				//			Debug.LogError(forceDir);
 			}

@@ -10,21 +10,7 @@ using System;
 public class PlayerMove : MoveModule
 {
 	
-	public new Vector3 forceDir
-	{
-		get
-		{
-			return base.forceDir;
-		}
-		set
-		{
-			base.forceDir = value;
-			if(base.forceDir.y > 0)
-			{
-				forced = true;
-			}
-		}
-	}
+
 
 	internal CharacterController ctrl;
 
@@ -87,8 +73,7 @@ public class PlayerMove : MoveModule
 	Transform target;
 	bool isLocked = false;
 
-	bool forced = false;
-	bool forceFlied = false;
+
 
 	RaycastHit hitCache;
 
@@ -96,10 +81,7 @@ public class PlayerMove : MoveModule
 
 	PlayerAttack pAttack;
 
-	bool IsActualGrounded
-	{
-		get => !forced && isGrounded;
-	}
+
 
 	public Vector3 MoveDirCalced
 	{
@@ -719,33 +701,7 @@ public class PlayerMove : MoveModule
 		}
 		return 0;
 	}
-
-
-	public override void GravityCalc()
-	{
-		
-		if (gravity && !isGrounded)
-		{
-			forceDir -= Vector3.up * GameManager.GRAVITY * Time.deltaTime;
-		}
-		else if (IsActualGrounded  && forceDir.y <0)
-		{
-			Vector3 v = forceDir;
-			v.y = 0;
-			forceDir = v;
-		}
-		if (forced && !isGrounded)
-		{
-			forceFlied = true;
-		}
-		if(forceFlied && isGrounded)
-		{
-			forced = false;
-			forceFlied = false;
-		}
-		
-	}
-
+	
 
 	void ResetTargets()
 	{
