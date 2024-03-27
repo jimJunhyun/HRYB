@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyMoveModule : MoveModule
 {
@@ -9,7 +10,20 @@ public class EnemyMoveModule : MoveModule
 
 
 	private bool _isMove = false;
-	UnityEngine.AI.NavMeshAgent agent;
+	UnityEngine.AI.NavMeshAgent _agent;
+
+	NavMeshAgent agent
+	{
+		get
+		{
+			if (_agent == null)
+			{
+				_agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+			}
+
+			return _agent;
+		}
+	}
 	private CharacterController _char;
 
 	public UnityEngine.AI.NavMeshAgent Agent => agent;
@@ -17,7 +31,7 @@ public class EnemyMoveModule : MoveModule
 
 	private void Awake()
 	{
-		agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+
 		_char = GetComponent<CharacterController>();
 		agent.speed = Speed;
 	}

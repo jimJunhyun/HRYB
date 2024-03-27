@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MooseMoveModule : MoveModule
+public class MooseMoveModule : EnemyMoveModule
 {
 	Transform _target;
 	[SerializeField] private float Speed = 15f;
