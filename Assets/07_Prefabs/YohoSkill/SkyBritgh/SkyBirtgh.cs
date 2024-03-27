@@ -58,7 +58,7 @@ public class SkyBirtgh : AttackBase
 				    }
 				    
 				    Vector3 dir = self.transform.forward;
-				    self.move.forceDir = dir + new Vector3(0, 20, 0);
+				    self.move.forceDir = dir + new Vector3(0, 10, 0);
 
 				    Debug.LogError("스카이브릿지");
 				    GameObject obj = PoolManager.GetObject("SkyBritghCollider", self.transform);
@@ -67,7 +67,7 @@ public class SkyBirtgh : AttackBase
 					    _cols.Now(self.transform, (_life) =>
 					    {
 						    CameraManager.instance.ShakeCamFor(0.08f, 2, 2);
-						    _life.GetActor().move.forceDir = self.transform.forward * 3 + new Vector3(0, 12, 0);
+						    _life.GetActor().move.forceDir = self.transform.forward * 3 + new Vector3(0, 4, 0);
 						    
 						    Actor to = _life.GetActor();
 						    Actor by = self;
@@ -95,7 +95,7 @@ public class SkyBirtgh : AttackBase
 				    }
 				    
 				    GameObject obj = PoolManager.GetObject("SkyBritghCollider", self.transform);
-				    self.move.forceDir += new Vector3(0, 25, 0);
+				    self.move.forceDir += new Vector3(0, 12, 0);
 				    if (obj.TryGetComponent<ColliderCast>(out _cols))
 				    {
 					    _cols.Now(self.transform, (_life) =>

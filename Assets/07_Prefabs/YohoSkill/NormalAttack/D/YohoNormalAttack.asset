@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: YohoNormalAttack
   m_EditorClassIdentifier: 
   animClip: {fileID: 7400000, guid: 9ee11612552b1d1419b058d2634ea02b, type: 2}
+  animClipLoopings: {fileID: 0}
   animClipDisop: {fileID: 0}
   audioClipName: 
   tags:
@@ -21,13 +22,14 @@ MonoBehaviour:
   childs:
   - {fileID: 11400000, guid: 9a636bf3d459a3f4e9602194fb1f7496, type: 2}
   - {fileID: 11400000, guid: 92a7baea3de5fb54baaebdb29dd74970, type: 2}
-  composeDel: 0
+  composeDel: 0.5
   isPlayAnim: 1
   isPlayDisopAnim: 0
   wx: 0
   useType: 0
   castTime: 0
-  cooldown: 0.7
+  cooldown: 0.25
+  isSuperArmor: 0
   initCombo: 0
   resetSec: 3
   resetThreshold: 0
