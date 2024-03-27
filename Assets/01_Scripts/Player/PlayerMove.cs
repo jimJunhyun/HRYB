@@ -576,7 +576,7 @@ public class PlayerMove : MoveModule
 		{
 			if (context.started)
 			{
-				Collider[] c = Physics.OverlapSphere(transform.position, lockOnDist, ~(1 << GameManager.PLAYERLAYER | 1 << GameManager.GROUNDLAYER));
+				Collider[] c = Physics.OverlapSphere(transform.position, lockOnDist, ~((1 << GameManager.PLAYERATTACKLAYER) | 1 << GameManager.PLAYERLAYER | 1 << GameManager.GROUNDLAYER));
 				if (c.Length > 0)
 				{
 					prevTargets = targets;
@@ -658,7 +658,7 @@ public class PlayerMove : MoveModule
 	{
 		//Debug.Log("DETECTED");
 		nearEnemies.Clear();
-		Collider[] c = Physics.OverlapSphere(transform.position, pAttack.targetMaxDist, ~(1 << GameManager.PLAYERLAYER | 1 << GameManager.GROUNDLAYER));
+		Collider[] c = Physics.OverlapSphere(transform.position, pAttack.targetMaxDist, ~(1 << GameManager.PLAYERATTACKLAYER) | (1 << GameManager.PLAYERLAYER | 1 << GameManager.GROUNDLAYER));
 		for (int i = 0; i < c.Length; i++)
 		{
 			if(c[i].TryGetComponent<Actor>(out Actor actor))
