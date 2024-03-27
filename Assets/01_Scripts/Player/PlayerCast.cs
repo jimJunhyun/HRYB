@@ -613,17 +613,17 @@ public class PlayerCast : CastModule
 
 	internal void ActualSkillOperate(SkillSlotInfo at, int idx)
 	{
-		nowSkillSlot[((int)at)].skInfo.ActualOperateAt(GetActor(), idx);
+		nowSkillSlot[((int)at)]?.skInfo.ActualOperateAt(GetActor(), idx);
 	}
 
 	internal void ActualSkillDisoperate(SkillSlotInfo at, int idx)
 	{
-		nowSkillSlot[((int)at)].skInfo.ActualDisoperateAt(GetActor(), idx);
+		nowSkillSlot[((int)at)]?.skInfo.ActualDisoperateAt(GetActor(), idx);
 	}
 
 	internal void SetSkillUse(SkillSlotInfo at)
 	{
-		nowSkillSlot[((int)at)].skInfo.SetAnimations(GetActor(), at);
+		nowSkillSlot[((int)at)]?.skInfo.SetAnimations(GetActor(), at);
 		UseSkillAt(at);
 	}
 

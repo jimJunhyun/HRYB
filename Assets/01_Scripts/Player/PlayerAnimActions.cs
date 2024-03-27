@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Animations;
 using Quaternion = System.Numerics.Quaternion;
@@ -18,7 +19,7 @@ public class PlayerAnimActions : MonoBehaviour
 
 	GameObject foxCloth;
 	GameObject humanCloth;
-
+	PlayerSound playerSound;
 	public Material[] hairMats;
 	public Material[] eyeMats;
 
@@ -34,7 +35,7 @@ public class PlayerAnimActions : MonoBehaviour
 		self = GetComponentInParent<Actor>();
 		animator = GetComponent<Animator>();
 		animator.runtimeAnimatorController = _anim;
-
+		playerSound = GetComponentInParent<PlayerSound>();
 		hair = transform.Find("Rad_Hair").GetComponent<SkinnedMeshRenderer>();
 		head = transform.Find("Body").GetComponent<SkinnedMeshRenderer>();
 		ear = transform.Find("Rad_Kemomimi").GetComponent<SkinnedMeshRenderer>();
@@ -256,10 +257,50 @@ public class PlayerAnimActions : MonoBehaviour
 			(self.cast as PlayerCast).NowSkillUse.OnAnimationMove(self, evt);
 		}
 
-		if(evt.stringParameter == "Foot")
+		string[] values = new string[] { "Walk", "Jump", "Run" };
+		bool isContains = false;
+		for(int i = 0; i < values.Length; i++)
 		{
-
+			if (evt.stringParameter.Contains(values[i])) isContains = true;
 		}
+
+		if (isContains)
+		{
+			
+			if (Physics.Raycast(transform.position, -transform.up, out RaycastHit hit, 0.2f))
+			{
+				if (hit.collider.GetComponent<Terrain>())
+				{
+					string layerName = GameManager.GetLayerName(transform.position, GameManager.instance.terrain);
+
+					if (layerName.Contains("Grass"))
+					{
+						playerSound.FootStepSound(GroundType.Grass, evt.stringParameter);
+					}
+					else if (layerName.Contains("Sand"))
+					{
+						playerSound.FootStepSound(GroundType.Sand, evt.stringParameter);
+					}
+					else
+					{
+						playerSound.FootStepSound(GroundType.Stone, evt.stringParameter);
+					}
+				}
+				else if (hit.collider.TryGetComponent<MeshCollider>(out MeshCollider mc))
+				{
+					if (mc.material.name.Contains("Grass"))
+					{
+						playerSound.FootStepSound(GroundType.Grass, evt.stringParameter);
+					}
+					else
+					{
+						playerSound.FootStepSound(GroundType.Stone, evt.stringParameter);
+					}
+				}
+			}
+		
+		}
+
 	}
 
 	public void OnAnimationEvent(AnimationEvent evt)

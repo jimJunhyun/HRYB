@@ -305,9 +305,9 @@ public class GameManager : MonoBehaviour
 		uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
 		terrain = GameObject.Find("Terrain").GetComponentInChildren<Terrain>();
 		audioPlayer = GameObject.Find("AudioManager").GetComponent<AudioPlayer>();
-		sManager = GameObject.Find("SectionManager").GetComponent<SectionManager>();
-		timeliner = GameObject.Find("Timeliner").GetComponent<PlayableDirector>(); //////////#####타임라인매니저?????
-		timeliner2 = GameObject.Find("Timeliner2").GetComponent<PlayableDirector>();
+		//sManager = GameObject.Find("SectionManager").GetComponent<SectionManager>();
+		//timeliner = GameObject.Find("Timeliner").GetComponent<PlayableDirector>(); //////////#####타임라인매니저?????
+		//timeliner2 = GameObject.Find("Timeliner2").GetComponent<PlayableDirector>();
 		camManager = GameObject.Find("PCam").GetComponent<CameraManager>();
 		pManager = GameObject.Find("PrefabManager").GetComponent<PrefabManager>();
 		bHPManager = GameObject.Find("bossHPGroup").GetComponent<BossHPManager>();

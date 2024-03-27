@@ -381,14 +381,16 @@ public class PlayerMove : MoveModule
 			return;
 		try
 		{
-			if (dir.sqrMagnitude > 0.1f && !ctrl.isGrounded)
+			if (dir.sqrMagnitude > 0.1f && ctrl.isGrounded)
 			{
+				/*
 				switch (moveStat)
 				{
 					case MoveStates.Run:
 						if (GameManager.GetLayerName(transform.position, GameManager.instance.terrain)
 						    .Contains("Grass"))
 						{
+							
 							GameManager.instance.audioPlayer.PlayGlobal("GrassRun");
 						}
 						else
@@ -413,6 +415,7 @@ public class PlayerMove : MoveModule
 					case MoveStates.Climb:
 						break;
 				}
+				*/
 			}
 			else if (GameManager.instance.audioPlayer.IsPlaying)
 			{
@@ -421,7 +424,7 @@ public class PlayerMove : MoveModule
 		}
 		catch
 		{
-//			Debug.Log("사운드 혐오");
+			Debug.Log("사운드 혐오");
 		}
 
 		if (IsActualGrounded)
