@@ -7,8 +7,6 @@ using System;
 
 
 
-
-
 public class PlayerMove : MoveModule
 {
 	
@@ -74,6 +72,8 @@ public class PlayerMove : MoveModule
 
 	Transform target;
 	bool isLocked = false;
+
+	bool forceFlied = false;
 
 	RaycastHit hitCache;
 
@@ -184,7 +184,6 @@ public class PlayerMove : MoveModule
 	{
 		if(hit.point.y <= middle.position.y)
 		{
-
 			angle = Mathf.Acos(Vector3.Dot(hit.normal, transform.up) / (hit.normal.magnitude * transform.up.magnitude)) * Mathf.Rad2Deg;
 			
 			if (angle >= slipThreshold)
@@ -332,6 +331,22 @@ public class PlayerMove : MoveModule
 		}
 	}
 
+	public override void ForceCalc()
+	{
+		base.ForceCalc();
+		if (!ctrl.isGrounded)
+		{
+			if(forceDir.y > 0)
+			{
+				forceFlied = true;
+			}
+		}
+		else
+		{
+			forceFlied = false;
+		}
+	}
+
 	public void CalcClimbState()
 	{
 		if(moveStat == MoveStates.Climb)
@@ -425,12 +440,11 @@ public class PlayerMove : MoveModule
 		{
 //			Debug.Log("사운드 혐오");
 		}
-		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, groundThreshold, (1 << GameManager.GROUNDLAYER)))
+		
+		if(!forceFlied)
 		{
-			Vector3 actualDir = Quaternion.FromToRotation(Vector3.up, hit.normal) * dir;
-			dir = actualDir;
-			Debug.DrawRay(transform.position, actualDir, Color.cyan, 1000f);
-		}//비탈길에 맞게 움직이도록@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+			dir.y -= GameManager.GRAVITY;
+		}
 
 		if (target != null && (target.position - transform.position).sqrMagnitude >= lockOnDist * lockOnDist)
 		{
