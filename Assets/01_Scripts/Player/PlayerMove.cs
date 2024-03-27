@@ -10,7 +10,21 @@ using System;
 public class PlayerMove : MoveModule
 {
 	
-	
+	public new Vector3 forceDir
+	{
+		get
+		{
+			return base.forceDir;
+		}
+		set
+		{
+			base.forceDir = value;
+			if(base.forceDir.y > 0)
+			{
+				forced = true;
+			}
+		}
+	}
 
 	internal CharacterController ctrl;
 
@@ -47,8 +61,8 @@ public class PlayerMove : MoveModule
 	bool slip = false;
 	bool climbGrounded = false;
 
-	bool jumped = false;
-	bool jumpComplete = false;
+	//bool jumped = false;
+	//bool jumpComplete = false;
 
 	float prevJump = 0;
 
@@ -73,6 +87,7 @@ public class PlayerMove : MoveModule
 	Transform target;
 	bool isLocked = false;
 
+	bool forced = false;
 	bool forceFlied = false;
 
 	RaycastHit hitCache;
@@ -83,7 +98,7 @@ public class PlayerMove : MoveModule
 
 	bool IsActualGrounded
 	{
-		get => !jumped && isGrounded;
+		get => !forced && isGrounded;
 	}
 
 	public Vector3 MoveDirCalced
@@ -331,22 +346,6 @@ public class PlayerMove : MoveModule
 		}
 	}
 
-	public override void ForceCalc()
-	{
-		base.ForceCalc();
-		if (!ctrl.isGrounded)
-		{
-			if(forceDir.y > 0)
-			{
-				forceFlied = true;
-			}
-		}
-		else
-		{
-			forceFlied = false;
-		}
-	}
-
 	public void CalcClimbState()
 	{
 		if(moveStat == MoveStates.Climb)
@@ -443,10 +442,10 @@ public class PlayerMove : MoveModule
 		{
 			Debug.Log("사운드 혐오");
 		}
-		
-		if(!forceFlied)
+
+		if (IsActualGrounded)
 		{
-			dir.y -= GameManager.GRAVITY;
+			dir -= Vector3.up * GameManager.GRAVITY;
 		}
 
 		if (target != null && (target.position - transform.position).sqrMagnitude >= lockOnDist * lockOnDist)
@@ -545,7 +544,7 @@ public class PlayerMove : MoveModule
 			{
 				if (moveStat == MoveStates.Climb)
 				{
-					forceDir.y += jumpPwer / climbSpeed;
+					forceDir += Vector3.up * (jumpPwer / climbSpeed);
 					Vector3 ropeJumpDir = (ropeNormal + Vector3.up).normalized;
 					forceDir += ropeJumpDir * jumpPwer;
 					ResetClimb();
@@ -555,8 +554,7 @@ public class PlayerMove : MoveModule
 					if (ctrl.isGrounded && Time.time - prevJump >= jumpGap)
 					{
 						prevJump = Time.time;
-						forceDir.y += jumpPwer;
-						jumped = true;
+						forceDir += Vector3.up * jumpPwer;
 						(GetActor().anim as PlayerAnim).SetJumpTrigger();
 					}
 				}
@@ -731,20 +729,24 @@ public class PlayerMove : MoveModule
 		
 		if (gravity && !isGrounded)
 		{
-			forceDir.y -= GameManager.GRAVITY * Time.deltaTime;
+			forceDir -= Vector3.up * GameManager.GRAVITY * Time.deltaTime;
 		}
 		else if (IsActualGrounded  && forceDir.y <0)
 		{
-			forceDir.y = 0f;
+			Vector3 v = forceDir;
+			v.y = 0;
+			forceDir = v;
 		}
-		if (jumped && !isGrounded)
+		if (forced && !isGrounded)
 		{
-			jumpComplete = true;
+			forceFlied = true;
 		}
-		if(jumpComplete && isGrounded)
+		if(forceFlied && isGrounded)
 		{
-			jumped = false;
+			forced = false;
+			forceFlied = false;
 		}
+		
 	}
 
 
