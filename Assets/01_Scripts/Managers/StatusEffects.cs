@@ -262,7 +262,7 @@ public class StatusEffects
 
 	void Bewitched(Actor self, Actor attacker, YinYang dmg)
 	{
-		if(attacker.move is PlayerMove)
+		if(attacker?.move is PlayerMove)
 		{
 			StatusEffects.ApplyStat(attacker, attacker, StatEffID.SpeedUp, 3, 0.1f);
 			GameManager.instance.foxfire.Accumulate(dmg);
@@ -298,7 +298,7 @@ public class StatusEffects
 
 	void OnFireActivated(Actor self, Actor inflicter, float power)
 	{
-		Debug.Log("불타는중");
+		//Debug.Log("불타는중");
 		self.life.DamageYY(0, power, DamageType.DotDamage, -1, 1, null, DamageChannel.Fire);
 	}
 	void OnFireUpdated(Actor self, float power)
@@ -307,7 +307,7 @@ public class StatusEffects
 	}
 	void OnFireEnded(Actor self, float power)
 	{
-		Debug.Log("꺼짐");
+		//Debug.Log("꺼짐");
 		self.life.StopDamagingFor(DamageChannel.Fire, 1);
 	}
 
@@ -445,7 +445,7 @@ public class StatusEffects
 			float t = 0;
 			_bufferDurations[id] = dur - t;
 			//Debug.LogError($"dddd : " + _bufferDurations[id] + " " + id);
-			Debug.Log($"{guid} : {id}");
+			//Debug.Log($"{guid} : {id}");
 			while(to.life.appliedDebuff[guid].dur < 0)
 			{
 				//Debug.Log( id + " : INFITITE : " + to.life.appliedDebuff[guid].dur);

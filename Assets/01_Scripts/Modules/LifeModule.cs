@@ -277,7 +277,7 @@ public class LifeModule : Module
 	public virtual void DamageYY(float black, float white, DamageType type, float dur = 0, float tick = 0, Actor attacker = null, DamageChannel channel= DamageChannel.None)
 	{
 		_isFirstHit = true;
-		
+		//Debug.Log("ATK : " + attacker);
 		YinYang data = new YinYang(black, white);
 		switch (type)
 		{
@@ -289,7 +289,7 @@ public class LifeModule : Module
 					{
 						GetActor().anim.SetHitTrigger();
 					}
-					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+					StatusEffects.ApplyStat(GetActor(), attacker, StatEffID.Immune, IMMUNETIME);
 					onNextDamaged?.Invoke(GetActor(), attacker, data);
 					if (GetActor()._ai != null)
 					{
@@ -300,7 +300,7 @@ public class LifeModule : Module
 			case DamageType.DotDamage:
 			case DamageType.Continuous:
 				//
-				ongoingTickDamages[((int)channel)].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type)));
+				ongoingTickDamages[((int)channel)].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type, channel)));
 				break;
 			case DamageType.NoEvadeHit:
 				DamageYYBase(data);
@@ -308,7 +308,7 @@ public class LifeModule : Module
 				{
 					GetActor().anim.SetHitTrigger();
 				}
-				StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+				StatusEffects.ApplyStat(GetActor(), attacker, StatEffID.Immune, IMMUNETIME);
 				onNextDamaged?.Invoke(GetActor(), attacker, data);
 				break;
 			default:
@@ -327,7 +327,7 @@ public class LifeModule : Module
 				{
 					DamageYYBase(data);
 					GetActor().anim.SetHitTrigger();
-					StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+					StatusEffects.ApplyStat(GetActor(), attacker, StatEffID.Immune, IMMUNETIME);
 					onNextDamaged?.Invoke(GetActor(), attacker, data);
 					_hitEvent?.Invoke();
 					if (GetActor()._ai != null)
@@ -339,12 +339,12 @@ public class LifeModule : Module
 			case DamageType.DotDamage:
 			case DamageType.Continuous:
 				Debug.Log(((int)channel));
-				ongoingTickDamages[(int)channel].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type)));
+				ongoingTickDamages[(int)channel].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type , channel)));
 				break;
 			case DamageType.NoEvadeHit:
 				DamageYYBase(data);
 				GetActor().anim.SetHitTrigger();
-				StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);
+				StatusEffects.ApplyStat(GetActor(), attacker, StatEffID.Immune, IMMUNETIME);
 				onNextDamaged?.Invoke(GetActor(), attacker, data);
 				_hitEvent?.Invoke();
 				break;
@@ -359,21 +359,29 @@ public class LifeModule : Module
 		{
 			if(ongoingTickDamages.Count > 1)
 			{
-				ongoingTickDamages[((int)channel)].RemoveAt(ongoingTickDamages[((int)channel)].Count - 1);
+				int lastIdx = ongoingTickDamages[((int)channel)].Count - 1;
+				if (ongoingTickDamages[((int)channel)][lastIdx] != null)
+				{
+					StopCoroutine(ongoingTickDamages[((int)channel)][lastIdx]);
+				}
+				ongoingTickDamages[((int)channel)].RemoveAt(lastIdx);
+				Debug.Log("STOPPED : " +channel);
 			}
 			else
 				break;
 		}
 	}
 
-	protected IEnumerator DelDmgYYWX(YinYang data, float dur, float tick, DamageType type)
+	protected IEnumerator DelDmgYYWX(YinYang data, float dur, float tick, DamageType type, DamageChannel channel = DamageChannel.None)
 	{
 		float curT = 0;
 		WaitForSeconds w = new WaitForSeconds(tick);
+		bool isInf = dur < 0;
+		Debug.Log("DAMAGING : " + channel);
 		switch (type)
 		{
 			case DamageType.DotDamage:
-				while (curT < dur)
+				while (curT < dur || dur < 0)
 				{
 					if(dur > 0)
 					{
@@ -381,6 +389,7 @@ public class LifeModule : Module
 					}
 					yield return w;
 					DamageYYBase(data);
+					Debug.Log("DAMAGED OF" + channel + ": " + data.white);
 					if (data.white > 0)
 					{
 						GameManager.instance.shower.GenerateDamageText(transform.position, data.white, YYInfo.White);
@@ -395,9 +404,12 @@ public class LifeModule : Module
 				YinYang incPerSec = YinYang.Zero;
 				incPerSec.black = data.black / dur;
 				incPerSec.white = data.white / dur;
-				while (curT < dur)
+				while (curT < dur || dur < 0)
 				{
-					curT += Time.deltaTime;
+					if(dur >= 0)
+					{
+						curT += Time.deltaTime;
+					}
 					yield return w;
 					DamageYYBase(incPerSec * Time.deltaTime);
 					if (incPerSec.white > 0)
@@ -413,7 +425,10 @@ public class LifeModule : Module
 			default:
 				break;
 		}
-		
+		if (!isInf && channel != DamageChannel.None)
+		{
+			StopDamagingFor(channel);
+		}
 		
 	}
 
