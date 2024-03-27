@@ -36,13 +36,13 @@ public class YusungSmith : AttackBase
 	    if (tt[0] == "1")
 	    {
 		    Vector3 dir = self.transform.forward;
-		    self.move.forceDir = dir * 8 + new Vector3(0, 20, 0);
+		    self.move.forceDir = dir * 8 + new Vector3(0, 12, 0);
 		    Debug.Log($"LOGG {dir}");
 	    }
 	    else if (tt[0] == "2")
 	    {
 		    Vector3 dir = self.transform.forward;
-		    self.move.forceDir = dir * 16 + new Vector3(0, 5, 0);
+		    self.move.forceDir = dir * 16 + new Vector3(0, 4, 0);
 		    Debug.Log($"LOGG {dir}");
 	    }
 
