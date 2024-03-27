@@ -18,14 +18,19 @@ public class ChargeCastRoot : SkillRoot
 	public float maxChargeSec;
 	public float chargeThreshold;
 
+	public string chargeEffect;
+	public string chargeEffectShowPos;
+
 	bool charging = false;
 	float chargeStartSec;
 
 	Actor owner;
+	GameObject chargeEff;
 
 	float chargeT => Time.time - chargeStartSec;
 	bool overcooked => charging && chargeT >= maxChargeSec;
 	bool prepared => chargeT >= chargeThreshold && !overcooked;
+
 
 
 	public override void Operate(Actor self)
@@ -66,6 +71,11 @@ public class ChargeCastRoot : SkillRoot
 			MyDisoperation(self);
 		}
 		owner = null;
+		if (chargeEff)
+		{
+			PoolManager.ReturnObject(chargeEff);
+		}
+
 	}
 
 	internal override void MyOperation(Actor self)
@@ -77,6 +87,16 @@ public class ChargeCastRoot : SkillRoot
 		charging  = true;
 		GameManager.instance.uiManager.interingUI.On();
 		chargeStartSec = Time.time;
+
+		Transform t = owner.transform.Find(chargeEffectShowPos);
+		if (t)
+		{
+			chargeEff = PoolManager.GetObject(chargeEffect, t);
+		}
+		else
+		{
+			chargeEff = PoolManager.GetObject(chargeEffect, owner.transform);
+		}
 	}
 
 	internal override void MyDisoperation(Actor self)

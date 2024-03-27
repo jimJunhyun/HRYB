@@ -459,7 +459,7 @@ public class StatusEffects
 				_bufferDurations[id] = dur - t;
 
 			}
-			Debug.Log($"{guid} : {id} ENDED");
+			//Debug.Log($"{guid} : {id} ENDED");
 			to.life.EndStaus((StatusEffect)GameManager.instance.statEff.idStatEffPairs[((int)id)], updateAct, power);
 			if (effs.Count > 0)
 			{
