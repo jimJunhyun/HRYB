@@ -377,6 +377,8 @@ public class PlayerMove : MoveModule
 
 	public void PlayerControllerMove(Vector3 dir)
 	{
+		if(moveModuleStat.Paused)
+			return;
 		try
 		{
 			if (dir.sqrMagnitude > 0.1f && ctrl.isGrounded)

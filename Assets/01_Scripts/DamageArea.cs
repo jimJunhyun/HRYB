@@ -79,7 +79,7 @@ public class DamageArea : DamageObject
 
 	public override void Damage(LifeModule to)
 	{
-		to.DamageYY(yy, DamageType.NoEvadeHit);
+		to.DamageYY(yy, DamageType.NoEvadeHit, 0, 0, owner);
 	}
 
 	public void Returner()

@@ -51,7 +51,7 @@ public class EnemyMoveModule : MoveModule
 	{
 		ForceCalc();
 		GravityCalc();
-		//Debug.LogError("FORCEdIR	" + forceDir + "d : " + isGrounded);
+//		Debug.LogError("FORCEdIR	" + forceDir + "d : " + isGrounded);
 		Character.Move((forceDir) * Time.deltaTime);
 		if (_isCanMove != true)
 		{

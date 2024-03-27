@@ -60,7 +60,7 @@ public struct ModuleController
 	{
 		get 
 		{
-			//Debug.Log($"{AnimPause} || {StatPause} || {TimelinePause} || {stopFlag} = {AnimPause || StatPause || TimelinePause || stopFlag}");
+			//Debug.Log($"{AnimPause} || {StatPause} || {TimelinePause} || {stopFlag}");
 			return AnimPause || StatPause || TimelinePause || stopFlag; 
 		}
 	}
@@ -452,5 +452,17 @@ public class GameManager : MonoBehaviour
 		float start = (min + max) * 0.5f - 180;
 		float floor = Mathf.FloorToInt((angle - start) / 360) * 360;
 		return Mathf.Clamp(angle, min + floor, max + floor);
+	}
+
+	public void TimeFreeze(float t, float duration = 0.04f)
+	{
+		StartCoroutine(TimeFreezeCO(t, duration));
+	}
+
+	IEnumerator TimeFreezeCO(float t, float duration)
+	{
+		Time.timeScale = 0;
+		yield return new WaitForSecondsRealtime(duration);
+		Time.timeScale = 1;
 	}
 }

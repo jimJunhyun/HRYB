@@ -307,7 +307,8 @@ public class PlayerInven : MonoBehaviour
 
 	private void Start()
 	{
-		RefreshStat();
+		animActions.ChangeFormTo(stat);
+		(GameManager.instance.pActor.cast as PlayerCast).ChangeSkillSlotTo(stat);
 	}
 
 	public int AddItem(Item data, int num = 1)
@@ -531,37 +532,39 @@ public class PlayerInven : MonoBehaviour
 	{
 		if (context.performed)
 		{
-			switch (stat)
+			if((GameManager.instance.pActor.move as PlayerMove).isGrounded 
+				&& !clickWood && !clickFire && !clickMetal && !clickWater && !clickEarth)
 			{
-				case PlayerForm.Yoho:
-					if ((GameManager.instance.pActor.atk is PlayerAttack atk) &&
-						!atk.clickL && !atk.clickR)
-					{
-						stat = PlayerForm.Magic;
-					}
-					break;
-				case PlayerForm.Magic:
-					if ((GameManager.instance.pActor.atk is PlayerAttack tk) &&
-						!tk.clickL && !tk.clickR)
-					{
-						stat = PlayerForm.Yoho;
-					}
-					break;
-				default:
-					break;
+				switch (stat)
+				{
+					case PlayerForm.Yoho:
+						if ((GameManager.instance.pActor.atk is PlayerAttack atk) &&
+							!atk.clickL && !atk.clickR)
+						{
+							stat = PlayerForm.Magic;
+						}
+						break;
+					case PlayerForm.Magic:
+						if ((GameManager.instance.pActor.atk is PlayerAttack tk) &&
+							!tk.clickL && !tk.clickR)
+						{
+							stat = PlayerForm.Yoho;
+						}
+						break;
+					default:
+						break;
+				}
+				GameObject obj = PoolManager.GetObject(swapEffectName, transform, 1.5f);
+				obj.transform.rotation = Quaternion.Euler(swapEffectRot);
+				obj.transform.localScale = swapEffectScale;
+				RefreshStat();
 			}
-			(GameManager.instance.pActor.move as PlayerMove).NoInput.Pause(ControlModuleMode.Status, true, 2.5f, true);
-			GameObject obj = PoolManager.GetObject(swapEffectName, transform, 3);
-			obj.transform.rotation = Quaternion.Euler(swapEffectRot);
-			obj.transform.localScale = swapEffectScale;
-			RefreshStat();
 		}
 	}
 
 	public void RefreshStat()
 	{
-		Debug.Log("변");
-		animActions.ChangeFormTo(stat);
+		(GameManager.instance.pActor.anim as PlayerAnim).SetChangeTrigger();
 		(GameManager.instance.pActor.cast as PlayerCast).ChangeSkillSlotTo(stat);
 		
 	}

@@ -48,7 +48,7 @@ public class JangsungGirlLifeModule : LifeModule
 				case DamageType.DotDamage:
 				case DamageType.Continuous:
 					Debug.Log(((int)channel));
-					ongoingTickDamages[((int)channel)].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type)));
+					ongoingTickDamages[((int)channel)].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type, channel)));
 					break;
 				case DamageType.NoEvadeHit:
 					DamageYYBase(data);
