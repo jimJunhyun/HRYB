@@ -98,7 +98,7 @@ MonoBehaviour:
   climbSpeed: 3
   climbDistance: 0.3
   spinSpd: 10
-  jumpPwer: 23
+  jumpPwer: 7
   jumpGap: 1
   sneakPower: 4
   slipThreshold: 45
@@ -442,19 +442,7 @@ MonoBehaviour:
     m_ActionId: 8ef8df7c-8a89-4fc3-bac2-c87153f897bb
     m_ActionName: Player/Switch[/Keyboard/tab]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnInven
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 65766e41-4eb6-4b91-9eea-2d874705652b
     m_ActionName: Player/Inventory[/Keyboard/i]
   - m_PersistentCalls:
@@ -908,8 +896,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.777967, y: 1.0751309, z: 1}
-  m_Center: {x: -0.2536801, y: -0.095873594, z: 0}
+  m_Size: {x: 0.777967, y: 1.0751309, z: 0.921463}
+  m_Center: {x: -0.2536801, y: -0.095873594, z: -0.23639679}
 --- !u!114 &5256577879084134948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -924,7 +912,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _layer:
     serializedVersion: 2
-    m_Bits: 731455
+    m_Bits: 512
   Owner: {fileID: 0}
 --- !u!1 &3655011478167333133
 GameObject:

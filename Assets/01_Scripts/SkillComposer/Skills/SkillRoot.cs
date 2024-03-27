@@ -20,6 +20,7 @@ public class SkillRoot : Composite
 	public SkillUseType useType;
 	public float castTime;
 	public float cooldown;
+	public Sprite skillIcon;
 
 	public bool isSuperArmor;
 
