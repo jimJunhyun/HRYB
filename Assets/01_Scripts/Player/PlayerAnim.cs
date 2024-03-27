@@ -32,6 +32,7 @@ public class PlayerAnim : AnimModule
 	protected readonly int disop3Hash = Animator.StringToHash("Disop3");
 	protected readonly int disop4Hash = Animator.StringToHash("Disop4");
 	protected readonly int loopAfterHash = Animator.StringToHash("LoopAfter");
+	protected readonly int changeHash = Animator.StringToHash("Change");
 
 
 	PlayerMove pmove;
@@ -189,5 +190,10 @@ public class PlayerAnim : AnimModule
 	public void SetRollTrigger()
 	{
 		anim.SetTrigger(rollHash);
+	}
+
+	public void SetChangeTrigger()
+	{
+		anim.SetTrigger(changeHash);
 	}
 }

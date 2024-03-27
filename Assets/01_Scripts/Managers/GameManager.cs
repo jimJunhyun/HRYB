@@ -60,7 +60,7 @@ public struct ModuleController
 	{
 		get 
 		{
-			//Debug.Log($"{AnimPause} || {StatPause} || {TimelinePause} || {stopFlag} = {AnimPause || StatPause || TimelinePause || stopFlag}");
+			//Debug.Log($"{AnimPause} || {StatPause} || {TimelinePause} || {stopFlag}");
 			return AnimPause || StatPause || TimelinePause || stopFlag; 
 		}
 	}
