@@ -33,7 +33,7 @@ public class PoolManager : MonoBehaviour
 			pooleds.Add(new StackWithName<GameObject>(datas[i].data.obj.name));
 			for (int j = datas[i].data.num - 1; j >= 0; --j)
 			{
-				GameObject o = Instantiate(datas[i].data.obj, Vector3.zero, Quaternion.identity, transform);
+				GameObject o = Instantiate(datas[i].data.obj, Vector3.zero, Quaternion.identity, self);
 				sb.Append(datas[i].data.obj.name);
 				sb.Append('&');
 				sb.Append(j);
@@ -81,7 +81,7 @@ public class PoolManager : MonoBehaviour
 
 				GameObject res = st.data.Peek();
 
-				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, self);
+				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, res.transform.parent);
 				string[] str = res.name.Trim('&').Split('&');
 				sb.Append(str[0]);
 				sb.Append('&');
@@ -125,7 +125,7 @@ public class PoolManager : MonoBehaviour
 			{
 				GameObject res = st.data.Peek();
 
-				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, self);
+				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, res.transform.parent);
 				string[] str = res.name.Trim('&').Split('&');
 				sb.Append(str[0]);
 				sb.Append('&');
@@ -170,7 +170,7 @@ public class PoolManager : MonoBehaviour
 			{
 				GameObject res = st.data.Peek();
 
-				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, self);
+				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, res.transform.parent);
 				string[] str = res.name.Trim('&').Split('&');
 				sb.Append(str[0]);
 				sb.Append('&');
@@ -206,10 +206,10 @@ public class PoolManager : MonoBehaviour
 			{
 				GameObject res = st.data.Pop();
 				res.SetActive(true);
+				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
 				res.transform.SetParent(parent);
 				res.transform.localPosition = Vector3.zero;
 				res.transform.localRotation = Quaternion.identity;
-				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
 				pooleds[idx] = st;
 				return res;
 			}
@@ -217,7 +217,7 @@ public class PoolManager : MonoBehaviour
 			{
 				GameObject res = st.data.Peek();
 
-				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, self);
+				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, res.transform.parent);
 				string[] str = res.name.Trim('&').Split('&');
 				sb.Append(str[0]);
 				sb.Append('&');
@@ -228,10 +228,10 @@ public class PoolManager : MonoBehaviour
 				added.SetActive(false);
 
 				res.SetActive(true);
+				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
 				res.transform.SetParent(parent);
 				res.transform.localPosition = Vector3.zero;
 				res.transform.localRotation = Quaternion.identity;
-				GameManager.instance.StartCoroutine(DelReturner(res, lifetime));
 				st.data.Pop();
 
 				st.data.Push(added);
@@ -267,7 +267,7 @@ public class PoolManager : MonoBehaviour
 			{
 				GameObject resd = st.data.Peek();
 
-				GameObject added = Instantiate(resd, Vector3.zero, Quaternion.identity, self);
+				GameObject added = Instantiate(resd, Vector3.zero, Quaternion.identity, resd.transform.parent);
 			
 				string[] str = resd.name.Trim('&').Split('&');
 				sb.Append(str[0]);
@@ -319,7 +319,7 @@ public class PoolManager : MonoBehaviour
 			{
 				GameObject res = st.data.Peek();
 
-				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, self);
+				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, res.transform.parent);
 				string[] str = res.name.Trim('&').Split('&');
 				sb.Append(str[0]);
 				sb.Append('&');
@@ -363,7 +363,7 @@ public class PoolManager : MonoBehaviour
 			{
 				GameObject res = st.data.Peek();
 
-				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, self);
+				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, res.transform.parent);
 				string[] str = res.name.Trim('&').Split('&');
 				sb.Append(str[0]);
 				sb.Append('&');
@@ -396,6 +396,7 @@ public class PoolManager : MonoBehaviour
 		{
 			obj.SetActive(false);
 			obj.transform.SetParent(self);
+			
 			obj.transform.position = Vector3.zero;
 			obj.transform.rotation = Quaternion.identity;
 			obj.transform.localScale = Vector3.one;

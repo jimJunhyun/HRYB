@@ -39,6 +39,7 @@ public class DamageText : MonoBehaviour
 	private void Awake()
 	{
 		txt = GetComponent<TextMeshProUGUI>();
+		originScale = transform.localScale;
 	}
 
 	public void SetInfo(float dmg, YYInfo inf, Vector3 pt)
@@ -48,7 +49,7 @@ public class DamageText : MonoBehaviour
 		point = pt;
 		curT = 0;
 		accY = 0;
-		originScale = transform.localScale;
+		
 		damageScaleMult = GameManager.instance.shower.damageMult.Evaluate(Mathf.Min(amt / (info == YYInfo.Black ? GameManager.instance.shower.maxAmtBlack : GameManager.instance.shower.maxAmtWhite), 1));
 		ShowInfo();
 	}
