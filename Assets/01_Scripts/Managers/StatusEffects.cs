@@ -436,10 +436,21 @@ public class StatusEffects
 					GameObject eff = PoolManager.GetObject(GameManager.instance.statEff.effDict.data[id][i].effPrefName, to.transform);
 					if (eff)
 					{
-						VisualEffect vfx = eff.GetComponent<VisualEffect>();
-						vfx.Reinit();
-						vfx.Play();
-						effs.Add(eff);
+						ParticleSystem ps = eff.GetComponent<ParticleSystem>();
+						if (ps)
+						{
+							ps.Stop();
+							ps.Play();
+							effs.Add(eff);
+						}
+						else
+						{
+							VisualEffect vfx = eff.GetComponent<VisualEffect>();
+							vfx.Reinit();
+							vfx.Play();
+							effs.Add(eff);
+						}
+						
 					}
 				}
 			}
