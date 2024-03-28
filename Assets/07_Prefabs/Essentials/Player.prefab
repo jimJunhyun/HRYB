@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 6300738487636027113}
   - component: {fileID: 1077379046556091410}
   - component: {fileID: 4678642442708023600}
+  - component: {fileID: 7593551870927441995}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -88,7 +89,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveDir: {x: 0, y: 0, z: 0}
-  forceDir: {x: 0, y: 0, z: 0}
   runSpeed: 8
   walkSpeed: 4
   crouchSpeed: 2
@@ -668,6 +668,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7593551870927441995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 104876616053643956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b577430fa3f01d5459785f4746d03053, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &220605965769024690
 GameObject:
   m_ObjectHideFlags: 0
@@ -4525,7 +4537,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5040050518116760306, guid: fd07633bc9861bc45888135e827cbded, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.062
+      value: -3.61
       objectReference: {fileID: 0}
     - target: {fileID: 5040050518116760306, guid: fd07633bc9861bc45888135e827cbded, type: 3}
       propertyPath: m_LocalPosition.z

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -686,4 +687,8 @@ public class PlayerCast : CastModule
 		}
 	}
 
+	internal void NowSkillUseReset()
+	{
+		_nowSkillUse = null;
+	}
 }

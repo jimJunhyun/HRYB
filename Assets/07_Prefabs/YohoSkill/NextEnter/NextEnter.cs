@@ -32,6 +32,7 @@ public class NextEnter : AttackBase
 	{
 		Vector3 vec = self.transform.forward;
 		self.move.forceDir = vec * 8 + new Vector3(0, 1, 0) * 6;
+		Debug.Log("이거 되면 좀 버그임");
 	}
 	
 	public override void OnAnimationEvent(Actor self, AnimationEvent evt)
