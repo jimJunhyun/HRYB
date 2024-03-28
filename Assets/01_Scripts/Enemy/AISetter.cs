@@ -50,7 +50,7 @@ public abstract class AISetter : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-	    if (!stopped)
+	    if (!stopped && head != null)
 	    {
 		    head.Examine();
 	    }

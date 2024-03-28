@@ -11,7 +11,6 @@ public class JangsungGirlAttack : EnemyAttackModule
 	
 	int fireIndex = 0;
 
-
 	public override void Attack()
 	{
 		fireIndex = 0;

@@ -58,7 +58,7 @@ public class SkyBirtgh : AttackBase
 				    }
 				    
 				    Vector3 dir = self.transform.forward;
-				    (self.move as PlayerMove).forceDir += dir + new Vector3(0, 5, 0);
+				    self.move.forceDir = dir + new Vector3(0, 5, 0);
 
 				    Debug.LogError("스카이브릿지");
 				    GameObject obj = PoolManager.GetObject("SkyBritghCollider", self.transform);
