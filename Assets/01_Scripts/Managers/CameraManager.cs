@@ -97,7 +97,15 @@ public class CameraManager : MonoBehaviour
 		UnShakeCam(ampGain, frqGain);
 	}
 
+	public void FreezeCamX()
+	{
+		pCam.m_XAxis.m_Wrap = false;
+	}
 
+	public void UnfreezeCamX()
+	{
+		pCam.m_XAxis.m_Wrap = true;
+	}
 
 	public void ShakeCam(float ampGain, float frqGain)
 	{

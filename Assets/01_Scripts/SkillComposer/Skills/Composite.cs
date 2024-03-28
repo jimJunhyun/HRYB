@@ -59,7 +59,10 @@ public class Composite : Compose, IComposer
 
 	internal override void MyDisoperation(Actor self)
 	{
-		//Do nothing?
+		for (int i = 0; i < childs.Count; i++)
+		{
+			ActualDisoperateAt(self, i);
+		}
 	}
 
 	internal override void  MyOperation(Actor self)

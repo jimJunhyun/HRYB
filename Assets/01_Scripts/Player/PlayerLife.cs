@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerLife : LifeModule 
 {
+	Transform spawnPoint;
+
 	public override void Awake()
 	{
 		base.Awake();
@@ -35,7 +37,7 @@ public class PlayerLife : LifeModule
 		(GetActor().move as PlayerMove).ctrl.height = 1;
 		GetActor().Respawn();
 
-		transform.position = Vector3.zero;
+		transform.position = spawnPoint.position;
 		Debug.Log("Player dead");
 	}
 }
