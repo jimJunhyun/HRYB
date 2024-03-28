@@ -33,7 +33,7 @@ public class DamageArea : DamageObject
 		calcRemainSec = checkDur;
 
 		first=  true;
-		prevCalcSec = 0;
+		prevCalcSec = Time.time;
 		checking =  false;
 		owner = self;
 		statData = stat;

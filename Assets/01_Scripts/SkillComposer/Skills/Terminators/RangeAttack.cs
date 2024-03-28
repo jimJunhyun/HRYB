@@ -48,7 +48,7 @@ public class RangeAttack : AttackBase
 		{
 			Debug.LogError("Trying To Create Strange Object.");
 		}
-		MyDisoperation(self);
+		//MyDisoperation(self);
 		Debug.Log("띔");
 	}
 
@@ -74,14 +74,14 @@ public class RangeAttack : AttackBase
 				targetPt = relatedTransform.position + (dir * maxDistance);
 				if (Physics.Raycast(targetPt, Vector3.down, out RaycastHit hit2, Mathf.Infinity, ~((1 << GameManager.PLAYERATTACKLAYER) | (1 << GameManager.PLAYERLAYER) | (1 << GameManager.ENEMYLAYER)), QueryTriggerInteraction.Ignore))
 				{
-					Debug.DrawRay(targetPt, Vector3.down * 1000f, Color.cyan, 1000);
+					//Debug.DrawRay(targetPt, Vector3.down * 1000f, Color.cyan, 1000);
 					//Debug.Log("바닥 ");
 					targetPt = hit2.point;
 				}
 			}
 			if (rngDecal)
 			{
-				rngDecal.transform.position = targetPt + Vector3.up * 300f;
+				rngDecal.transform.position = targetPt;// + Vector3.up * 15f;
 				//Debug.Log( name + " RANGEDECAL AT : " + targetPt.ToString());
 			}
 		}

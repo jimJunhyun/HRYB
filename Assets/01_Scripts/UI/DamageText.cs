@@ -18,6 +18,8 @@ public class DamageText : MonoBehaviour
 	Color myCol;
 	Vector3 originScale;
 
+	Vector3 prevPos;
+
 	float accY = 0;
 	float distScaleMult
 	{
@@ -37,6 +39,7 @@ public class DamageText : MonoBehaviour
 	private void Awake()
 	{
 		txt = GetComponent<TextMeshProUGUI>();
+		originScale = transform.localScale;
 	}
 
 	public void SetInfo(float dmg, YYInfo inf, Vector3 pt)
@@ -46,7 +49,7 @@ public class DamageText : MonoBehaviour
 		point = pt;
 		curT = 0;
 		accY = 0;
-		originScale = transform.localScale;
+		
 		damageScaleMult = GameManager.instance.shower.damageMult.Evaluate(Mathf.Min(amt / (info == YYInfo.Black ? GameManager.instance.shower.maxAmtBlack : GameManager.instance.shower.maxAmtWhite), 1));
 		ShowInfo();
 	}
@@ -79,6 +82,9 @@ public class DamageText : MonoBehaviour
 	{
 		if (on)
 		{
+			Vector3 ptRelativeToCam = point - Camera.main.transform.position;
+			
+
 			curT += Time.deltaTime;
 
 			myCol.a = GameManager.instance.shower.alphaMovement.Evaluate(ExistTime);
@@ -88,9 +94,14 @@ public class DamageText : MonoBehaviour
 
 			accY += GameManager.instance.shower.yAccelMovement.Evaluate(ExistTime);
 
+			if (Vector3.Dot(ptRelativeToCam.normalized, Camera.main.transform.forward) >= Mathf.Cos(GameManager.instance.shower.textInvalidRotation))
+			{
+				prevPos = Camera.main.WorldToScreenPoint(point);
+			}
+			transform.position = prevPos + Vector3.up * accY;
 
-			transform.position = Camera.main.WorldToScreenPoint(point) + Vector3.up * accY;
-			//transform.rotation = Quaternion.LookRotation(Camera.main.transform.position/* - transform.position*/);
+			
+			
 
 
 			if (ExistTime >= 1)
