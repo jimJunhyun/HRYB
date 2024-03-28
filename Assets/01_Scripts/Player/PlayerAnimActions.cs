@@ -29,6 +29,7 @@ public class PlayerAnimActions : MonoBehaviour
 
 	readonly int aimHash = Animator.StringToHash("Aim");
 	readonly int fireHash = Animator.StringToHash("Fire");
+	readonly int formHash = Animator.StringToHash("Form");
 
 	private void Awake()
 	{
@@ -180,6 +181,7 @@ public class PlayerAnimActions : MonoBehaviour
 	public void ChangeFormTo(PlayerForm f)
 	{
 		form = f;
+		animator.SetInteger(formHash, ((int)form));
 		switch (form)
 		{
 			case PlayerForm.Magic:

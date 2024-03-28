@@ -640,22 +640,22 @@ public class PlayerMove : MoveModule
 
 	public void Roll(InputAction.CallbackContext context)
 	{
-		if (!NoInput.Paused)
-		{
-			if (context.started && moveStat != MoveStates.Climb && rollable && IsActualGrounded)
-			{
-				GetActor().life.isImmune = true;
-				GameManager.instance.pinp.DeactivateInput();
-				moveDir = Vector3.forward;
-				to = Quaternion.LookRotation(moveDir, Vector3.up);
-				RotateTo();
-				(GetActor().anim as PlayerAnim).SetRollTrigger();
-				ctrl.height *= 0.5f;
-				ctrl.radius *= 0.5f;
-				if (GetActor().move.moveStat != MoveStates.Sit)
-					ctrl.center *= 0.5f;
-			}
-		}
+		//if (!NoInput.Paused && !moveModuleStat.Paused)
+		//{
+		//	if (context.started && moveStat != MoveStates.Climb && rollable && IsActualGrounded)
+		//	{
+		//		GetActor().life.isImmune = true;
+		//		GameManager.instance.pinp.DeactivateInput();
+		//		moveDir = Vector3.forward;
+		//		to = Quaternion.LookRotation(moveDir, Vector3.up);
+		//		RotateTo();
+		//		(GetActor().anim as PlayerAnim).SetRollTrigger();
+		//		ctrl.height *= 0.5f;
+		//		ctrl.radius *= 0.5f;
+		//		if (GetActor().move.moveStat != MoveStates.Sit)
+		//			ctrl.center *= 0.5f;
+		//	}
+		//}
 		
 		
 	}
