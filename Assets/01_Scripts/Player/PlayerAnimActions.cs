@@ -257,6 +257,12 @@ public class PlayerAnimActions : MonoBehaviour
 			(self.cast as PlayerCast).NowSkillUse.OnAnimationMove(self, evt);
 		}
 
+
+	}
+	
+	public void MoveSound(AnimationEvent evt)
+	{
+		
 		string[] values = new string[] { "Walk", "Jump", "Run" };
 		bool isContains = false;
 		for(int i = 0; i < values.Length; i++)
@@ -300,7 +306,6 @@ public class PlayerAnimActions : MonoBehaviour
 			}
 		
 		}
-
 	}
 
 	public void OnAnimationEvent(AnimationEvent evt)

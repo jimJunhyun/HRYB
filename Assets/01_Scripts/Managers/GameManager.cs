@@ -92,10 +92,12 @@ public struct ModuleController
 			case ControlModuleMode.Animated:
 				if (stat && !AnimPause)
 				{
+					//Debug.Log("!@!@!@!@!@!@!@!@!!@@");
 					animPause += 1;
 				}
 				else if (!stat && animPause > 0)
 				{
+					//Debug.Log("!############@!@!@!@!!@@");
 					animPause -= 1;
 				}
 				break;
@@ -218,6 +220,7 @@ public struct ModuleController
 public class GameManager : MonoBehaviour
 {
 	public const float GRAVITY = 9.8f;
+	public const int PLAYERATTACKLAYER = 6;
 	public const int PLAYERLAYER = 7;
 	public const int INTERABLELAYER = 8;
 	public const int ENEMYLAYER = 9;
@@ -354,6 +357,7 @@ public class GameManager : MonoBehaviour
 	public void DisableCtrl()
 	{
 		player.layer = LayerMask.NameToLayer("PlayerAttacker");
+		Debug.Log("(!(!(!");
 		//pinp.DeactivateInput();
 		pActor.move.moveDir = Vector3.zero;
 		//self.move.forceDir = Vector3.zero;
@@ -362,6 +366,7 @@ public class GameManager : MonoBehaviour
 	
 	public void EnableCtrl()
 	{
+		Debug.Log(")!)!)!)");
 		player.layer = LayerMask.NameToLayer("Player");
 		//GameManager.instance.pinp.ActivateInput();
 		EnableCtrl(ControlModuleMode.Animated);
@@ -369,12 +374,14 @@ public class GameManager : MonoBehaviour
 	
 	public void DisableCtrl(ControlModuleMode mode)
 	{
+		Debug.Log("(*(*(*(*(*(");
 		(pActor.move as PlayerMove).moveModuleStat.Pause(mode, true);
 		pActor.atk.attackModuleStat.Pause(mode, true);
 	}
 
 	public void EnableCtrl(ControlModuleMode mode)
 	{
+		Debug.Log("*)*)*)*)*)*)");
 		(pActor.move as PlayerMove).moveModuleStat.Pause(mode, false);
 		pActor.atk.attackModuleStat.Pause(mode, false);
 	}
