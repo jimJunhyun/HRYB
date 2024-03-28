@@ -280,6 +280,7 @@ public class LifeModule : Module
 		_isFirstHit = true;
 		//Debug.Log("ATK : " + attacker);
 		YinYang data = new YinYang(black, white);
+		
 		switch (type)
 		{
 			case DamageType.DirectHit:
@@ -311,6 +312,7 @@ public class LifeModule : Module
 				}
 				StatusEffects.ApplyStat(GetActor(), attacker, StatEffID.Immune, IMMUNETIME);
 				onNextDamaged?.Invoke(GetActor(), attacker, data);
+				_hitEvent?.Invoke();
 				break;
 			case DamageType.NoHit:
 				if (!(isImmune))
@@ -333,16 +335,19 @@ public class LifeModule : Module
 	{
 		_isFirstHit = true;
 		
+		
 		switch (type)
 		{
 			case DamageType.DirectHit:
 				if (!(isImmune))
 				{
 					DamageYYBase(data);
-					GetActor().anim.SetHitTrigger();
+					if (!superArmor)
+					{
+						GetActor().anim.SetHitTrigger();
+					}
 					StatusEffects.ApplyStat(GetActor(), attacker, StatEffID.Immune, IMMUNETIME);
 					onNextDamaged?.Invoke(GetActor(), attacker, data);
-					_hitEvent?.Invoke();
 					if (GetActor()._ai != null)
 					{
 						GetActor()._ai.StartExamine();
@@ -351,12 +356,15 @@ public class LifeModule : Module
 				break;
 			case DamageType.DotDamage:
 			case DamageType.Continuous:
-				Debug.Log(((int)channel));
-				ongoingTickDamages[(int)channel].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type , channel)));
+				//
+				ongoingTickDamages[((int)channel)].Add(StartCoroutine(DelDmgYYWX(data, dur, tick, type, channel)));
 				break;
 			case DamageType.NoEvadeHit:
 				DamageYYBase(data);
-				GetActor().anim.SetHitTrigger();
+				if (!superArmor)
+				{
+					GetActor().anim.SetHitTrigger();
+				}
 				StatusEffects.ApplyStat(GetActor(), attacker, StatEffID.Immune, IMMUNETIME);
 				onNextDamaged?.Invoke(GetActor(), attacker, data);
 				_hitEvent?.Invoke();

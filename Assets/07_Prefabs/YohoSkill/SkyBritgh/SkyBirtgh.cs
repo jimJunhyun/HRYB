@@ -49,7 +49,7 @@ public class SkyBirtgh : AttackBase
 	    {
 		    case "1":
 			    {
-				    GameManager.instance.audioPlayer.PlayPoint("Craw", self.transform.position);
+				    //GameManager.instance.audioPlayer.PlayPoint("Craw", self.transform.position);
 				    
 				    GameObject obj1 = PoolManager.GetObject("YusungSmithright", self.transform);
 				    if (obj1.TryGetComponent<EffectObject>(out EffectObject eff1))
@@ -57,7 +57,7 @@ public class SkyBirtgh : AttackBase
 					    eff1.Begin();
 					    self.StartCoroutine(DeleteObj(obj1));
 				    }
-				    
+				    GameManager.instance.audioPlayer.PlayPoint("HitSound", self.transform.position);
 				    Vector3 dir = self.transform.forward;
 				    self.move.forceDir = dir + new Vector3(0, 5, 0);
 
@@ -77,7 +77,7 @@ public class SkyBirtgh : AttackBase
 					    }, (transform, module) =>
 					    {
 						    CameraManager.instance.ShakeCamFor(0.18f, 12, 12);
-						    //GameManager.instance.TimeFreeze(0.3f, 0.08f);
+						    GameManager.instance.TimeFreeze(0.3f, 0.08f);
 					    });
 				    }
 			    }
@@ -98,16 +98,17 @@ public class SkyBirtgh : AttackBase
 						    DoDamage(to,by, 0.4f, obj.transform.position);
 					    }, (transform, module) =>
 					    {
+						    GameManager.instance.audioPlayer.PlayPoint("HitSound", self.transform.position);
 						    self.move.forceDir += new Vector3(0, 1f, 0);
 						    CameraManager.instance.ShakeCamFor(0.1f, 2, 2);
-						    //GameManager.instance.TimeFreeze(0.1f, 0.01f);
+						    GameManager.instance.TimeFreeze(0.1f, 0.01f);
 						    GameObject obj1 = PoolManager.GetObject("SlashMiddle", self.transform);
 						    if (obj1.TryGetComponent<EffectObject>(out EffectObject eff1))
 						    {
 							    eff1.Begin();
 							    self.StartCoroutine(DeleteObj(obj1));
 						    }
-						    GameManager.instance.audioPlayer.PlayPoint("Craw", self.transform.position);
+						    //
 					    });
 				    }
 			    }
@@ -115,7 +116,7 @@ public class SkyBirtgh : AttackBase
 		    case "3":
 			    {
 				    
-				    GameManager.instance.audioPlayer.PlayPoint("CrawLow", self.transform.position);
+				    //GameManager.instance.audioPlayer.PlayPoint("CrawLow", self.transform.position);
 				    GameObject obj1 = PoolManager.GetObject("YusungSmithleft", self.transform);
 				    if (obj1.TryGetComponent<EffectObject>(out EffectObject eff1))
 				    {
@@ -129,7 +130,7 @@ public class SkyBirtgh : AttackBase
 					    eff2.Begin();
 					    self.StartCoroutine(DeleteObj(obj2));
 				    }
-				    
+				    GameManager.instance.audioPlayer.PlayPoint("HitSound", self.transform.position);
 				    GameObject obj = PoolManager.GetObject("SkyBritghCollider", self.transform);
 				    if (obj.TryGetComponent<ColliderCast>(out _cols))
 				    {

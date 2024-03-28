@@ -90,7 +90,7 @@ public class YohoSharpnessSkill : AttackBase
 				break;
 			case "Sound":
 				{
-					GameManager.instance.audioPlayer.PlayPoint("CrawLow", self.transform.position);
+					GameManager.instance.audioPlayer.PlayPoint("HitSound", self.transform.position);
 				}
 				break;
 		}

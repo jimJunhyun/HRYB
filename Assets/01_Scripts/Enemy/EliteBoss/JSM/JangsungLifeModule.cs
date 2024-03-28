@@ -41,7 +41,6 @@ public class JangsungLifeModule : LifeModule
 					if (!(isImmune))
 					{
 						DamageYYBase(data);
-						
 						_hitEvent?.Invoke();
 						
 						GetActor().anim.SetHitTrigger();

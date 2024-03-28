@@ -1836,14 +1836,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveDir: {x: 0, y: 0, z: 0}
-  forceDir: {x: 0, y: 0, z: 0}
   runSpeed: 0
   walkSpeed: 0
   crouchSpeed: 0
   gravity: 1
   groundThreshold: 0.5
   _isCanMove: 0
-  Speed: 15
+  speed: 9
 --- !u!114 &1444978251146536968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1876,8 +1875,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isImmune: 0
   initYinYang:
-    black: 2000
-    white: 2000
+    black: 90
+    white: 90
   initAdequity:
     black: 1
     white: 1
@@ -1983,12 +1982,12 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
-  m_Acceleration: 5
+  m_Acceleration: 10
   avoidancePriority: 50
-  m_AngularSpeed: 240
+  m_AngularSpeed: 320
   m_StoppingDistance: 3
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0

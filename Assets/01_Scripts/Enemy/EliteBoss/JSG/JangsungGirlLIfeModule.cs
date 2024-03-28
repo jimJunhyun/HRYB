@@ -40,6 +40,10 @@ public class JangsungGirlLifeModule : LifeModule
 						DamageYYBase(data);
 						GetActor().anim.SetHitTrigger();
 						
+
+						GameManager.instance.audioPlayer.PlayPoint("HitSound", self.transform.position);
+						
+						
 						_hitEvent?.Invoke();
 						
 						StatusEffects.ApplyStat(GetActor(), GetActor(), StatEffID.Immune, IMMUNETIME);

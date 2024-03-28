@@ -272,7 +272,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &167883274244935627
 Transform:
   m_ObjectHideFlags: 0
@@ -372,6 +372,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
   _friend: {fileID: 0}
+  _isStart: 1
 --- !u!95 &2717952637745010415
 Animator:
   serializedVersion: 5
@@ -407,8 +408,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isImmune: 0
   initYinYang:
-    black: 2000
-    white: 2000
+    black: 1000
+    white: 1000
   initAdequity:
     black: 1
     white: 1

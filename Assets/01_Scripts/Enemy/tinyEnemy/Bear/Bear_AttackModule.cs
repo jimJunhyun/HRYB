@@ -7,6 +7,9 @@ public class Bear_AttackModule : EnemyAttackModule
 	private bool left = false;
 	
 	[SerializeField] GameObject _firePos;
+
+	private int tempCount = 0;
+	
 	public override void OnAnimationEnd()
 	{
 		if (_nowCols != null)
@@ -36,9 +39,8 @@ public class Bear_AttackModule : EnemyAttackModule
 						vec.Normalize();
 						vec *= 4;
 						vec += transform.right * at * 14;
-					
 
-						_life.GetActor().move.forceDir = vec + new Vector3(0, 20, 0);
+						_life.GetActor().move.forceDir = vec + new Vector3(0, 3, 0);
 						//_life.GetActor().move.forceDir.y = 40;
 
 						Debug.LogError("시발시발시발시발" + _life.GetActor().move.forceDir);
@@ -50,39 +52,45 @@ public class Bear_AttackModule : EnemyAttackModule
 
 			case "EX":
 				{
-					
-					GameObject obj = PoolManager.GetObject($"BearFire", _firePos.transform); ;
 
-					if (obj.TryGetComponent(out ColliderCast cols))
+					if (tempCount == 0)
 					{
-						_nowCols = cols;
-					}
-
-					if (obj.TryGetComponent(out EffectObject eff))
-					{
+						EffectObject eff = PoolManager.GetEffect($"FlameStream", _firePos.transform);
 						eff.Begin();
+						tempCount++;
+					}
+					else
+					{
+						GameObject obj = PoolManager.GetObject($"BearFireCol", _firePos.transform); ;
+
+						if (obj.TryGetComponent(out ColliderCast cols))
+						{
+							_nowCols = cols;
+						}
+
+
+						obj.transform.position = _firePos.transform.position;
+						obj.transform.LookAt(self.ai.player.transform);
+						obj.transform.parent = null;
+					
+						_nowCols.Now(transform, (_life) =>
+						{
+							_life.DamageYY(new YinYang(50, 0), DamageType.DirectHit);
+							// 기절 ++
+							Vector3 vec = _life.transform.position-transform.position;
+							vec.y = 0;
+							vec.Normalize();
+						
+							GiveBuff(_life.GetActor(), StatEffID.Stun, 0.1f);
+
+
+							_life.GetActor().move.forceDir = vec * 2; //+ new Vector3(0, 32, 0);
+							//_life.GetActor().move.forceDir.y = 40;
+						});
+
 					}
 					
-					obj.transform.position = _firePos.transform.position;
-					obj.transform.LookAt(self.ai.player.transform);
-					obj.transform.parent = null;
 					
-					_nowCols.Now(transform, (_life) =>
-					{
-						_life.DamageYY(new YinYang(50, 0), DamageType.DirectHit);
-						// 기절 ++
-						Vector3 vec = transform.position - _life.transform.position;
-						vec.y = 0;
-						vec.Normalize();
-						
-						GiveBuff(_life.GetActor(), StatEffID.Stun, 0.1f);
-
-
-						_life.GetActor().move.forceDir = vec * 2; //+ new Vector3(0, 32, 0);
-						//_life.GetActor().move.forceDir.y = 40;
-					});
-					//EffectObject eff = PoolManager.GetEffect($"BearFire", transform);
-					//eff.Begin();
 				}
 				break;
 			
@@ -107,7 +115,7 @@ public class Bear_AttackModule : EnemyAttackModule
 						//GiveBuff(_life.GetActor(), StatEffID.Stun, 0.8f);
 
 
-						_life.GetActor().move.forceDir = vec + new Vector3(0, 12, 0);
+						_life.GetActor().move.forceDir = vec + new Vector3(0, 7, 0);
 						//_life.GetActor().move.forceDir.y = 40;
 					});
 					EffectObject eff = PoolManager.GetEffect($"SandBoomb", transform);
@@ -153,7 +161,7 @@ public class Bear_AttackModule : EnemyAttackModule
 		int a = left ? 1 : 2;
 		string t = AttackStd;
 		Debug.LogError(AttackStd);
-
+		tempCount = 0;
 		if (_nowCols != null)
 		{
 			_nowCols.End();

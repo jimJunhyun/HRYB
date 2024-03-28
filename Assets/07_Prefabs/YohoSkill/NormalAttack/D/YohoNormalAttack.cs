@@ -104,7 +104,7 @@ public class YohoNormalAttack : AttackBase
 		GameObject obj = PoolManager.GetObject("YohoNormalAttack", self.transform);
 		if (obj.TryGetComponent<ColliderCast>(out _cols))
 		{
-			GameManager.instance.audioPlayer.PlayPoint("CrawLow", self.transform.position);
+			//GameManager.instance.audioPlayer.PlayPoint("CrawLow", self.transform.position);
 			_cols.Now(self.transform, (_life) =>
 			{
 				CameraManager.instance.ShakeCamFor(0.08f, 2, 2);

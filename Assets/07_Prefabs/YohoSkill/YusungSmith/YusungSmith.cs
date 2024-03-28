@@ -42,8 +42,13 @@ public class YusungSmith : AttackBase
 	    else if (tt[0] == "2")
 	    {
 		    Vector3 dir = self.transform.forward;
-		    self.move.forceDir += dir * 16 + new Vector3(0, 4, 0);
+		    self.move.forceDir += dir * 12 + new Vector3(0, 3, 0);
 		    Debug.Log($"LOGG {dir}");
+	    }
+	    else if (tt[0] == "3")
+	    {
+		    Vector3 dir = self.transform.forward;
+		    self.move.forceDir = dir + new Vector3(0, -80, 0);
 	    }
 
 
@@ -56,8 +61,7 @@ public class YusungSmith : AttackBase
 	    string[] tt = evt.stringParameter.Split("$");
 	    if (tt[0] == "ATK")
 	    {
-		    Vector3 dir = self.transform.forward;
-		    self.move.forceDir = dir + new Vector3(0, -80, 0);
+
 	    
 		    if (_cols != null)
 		    {
@@ -129,16 +133,16 @@ public class YusungSmith : AttackBase
     {
 	    self.move.forceDir= Vector3.zero;
 	    self.move.moveDir = Vector3.zero;
-	    if (_cols != null)
-	    {
-		    _cols.End();
-		    _cols = null;
-	    }
+
     }
 
     public override void OnAnimationStop(Actor self, AnimationEvent evt)
     {
-	    
+	    if (_cols != null)
+	    {
+		    _cols.End();
+		    _cols = null;
+	    }	    
 	    GameManager.instance.EnableCtrl();
     }
 }
