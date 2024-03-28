@@ -37,6 +37,8 @@ public class JangsungGirlAttack : EnemyAttackModule
 				{
 
 					GetActor().anim.Animators.SetBool(AttackStd, false);
+					
+					GetComponent<JangsungGirlAI>()._friend.GetComponent<JangsungLifeModule>().BarrierOff();
 					StartCoroutine(WaeUpCo(6f));
 				}
 				break;
