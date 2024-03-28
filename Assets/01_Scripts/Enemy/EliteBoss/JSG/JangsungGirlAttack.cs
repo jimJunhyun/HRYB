@@ -125,7 +125,7 @@ public class JangsungGirlAttack : EnemyAttackModule
 		{
 			player.DamageYY(3, 0, DamageType.DirectHit);
 			//GiveBuff(player.GetActor(), StatEffID.Stun, 1.2f);
-			player.GetActor().move.forceDir += new Vector3(0, 20, 0);
+			player.GetActor().move.forceDir += new Vector3(0, 8, 0);
 		}, null, -1, -1, 0.5f);
 		
 		yield return new WaitForSeconds(1.5f);

@@ -355,13 +355,13 @@ public class GameManager : MonoBehaviour
 	}
 
 	public void DisableCtrl()
-	{
+	{ 
 		player.layer = LayerMask.NameToLayer("PlayerAttacker");
 		Debug.Log("(!(!(!");
 		//pinp.DeactivateInput();
 		pActor.move.moveDir = Vector3.zero;
 		//self.move.forceDir = Vector3.zero;
-		DisableCtrl(ControlModuleMode.Animated);
+		//DisableCtrl(ControlModuleMode.Animated);
 	}
 	
 	public void EnableCtrl()
@@ -468,7 +468,7 @@ public class GameManager : MonoBehaviour
 
 	IEnumerator TimeFreezeCO(float t, float duration)
 	{
-		Time.timeScale = 0;
+		Time.timeScale = t;
 		yield return new WaitForSecondsRealtime(duration);
 		Time.timeScale = 1;
 	}

@@ -42,7 +42,7 @@ public class YusungSmith : AttackBase
 	    else if (tt[0] == "2")
 	    {
 		    Vector3 dir = self.transform.forward;
-		    self.move.forceDir = dir * 16 + new Vector3(0, 4, 0);
+		    self.move.forceDir += dir * 16 + new Vector3(0, 4, 0);
 		    Debug.Log($"LOGG {dir}");
 	    }
 
@@ -57,14 +57,13 @@ public class YusungSmith : AttackBase
 	    if (tt[0] == "ATK")
 	    {
 		    Vector3 dir = self.transform.forward;
-		    self.move.forceDir = dir + new Vector3(0, -300, 0);
+		    self.move.forceDir = dir + new Vector3(0, -80, 0);
 	    
 		    if (_cols != null)
 		    {
 			    _cols.End();
 			    _cols = null;
 		    }
-		    CameraManager.instance.ShakeCamFor(0.2f, 5, 5);
 		    GameObject obj = PoolManager.GetObject("YusungSmith", self.transform);
 
 		    if (obj.TryGetComponent<ColliderCast>(out _cols))
@@ -82,7 +81,7 @@ public class YusungSmith : AttackBase
 			    }, (me, enemy) =>
 			    {
 				    RaycastHit ray;
-
+				    CameraManager.instance.ShakeCamFor(0.2f, 18, 18);
 				    if (Physics.Raycast(self.transform.position, Vector3.down, out ray, 100, 1 << 11))
 				    {
 					    GameObject obj = PoolManager.GetObject("YusungSmithEnd", self.transform);
@@ -90,6 +89,7 @@ public class YusungSmith : AttackBase
 					    obj.transform.parent = null;
 					    obj.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
 					    obj.transform.position = ray.point;
+					    GameManager.instance.TimeFreeze(0.3f, 0.08f);
 				    }
 				    
 

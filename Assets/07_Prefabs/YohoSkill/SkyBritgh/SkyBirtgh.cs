@@ -75,7 +75,8 @@ public class SkyBirtgh : AttackBase
 						    
 					    }, (transform, module) =>
 					    {
-						    CameraManager.instance.ShakeCamFor(0.12f, 8, 8);
+						    CameraManager.instance.ShakeCamFor(0.18f, 12, 12);
+						    GameManager.instance.TimeFreeze(0.3f, 0.08f);
 					    });
 				    }
 			    }
@@ -89,15 +90,15 @@ public class SkyBirtgh : AttackBase
 				    {
 					    _cols.Now(self.transform, (_life) =>
 					    {
-						    _life.GetActor().move.forceDir += new Vector3(0, 1f, 0);   
+						    _life.GetActor().move.forceDir += new Vector3(0, 0.7f, 0);   
 						    
 						    Actor to = _life.GetActor();
 						    Actor by = self;
 						    DoDamage(to,by, 0.4f, obj.transform.position);
 					    }, (transform, module) =>
 					    {
-						    self.move.forceDir += new Vector3(0, 2f, 0);
-						    CameraManager.instance.ShakeCamFor(0.1f, 3, 3);
+						    self.move.forceDir += new Vector3(0, 1f, 0);
+						    CameraManager.instance.ShakeCamFor(0.1f, 2, 2);
 						    //GameManager.instance.TimeFreeze(0.1f, 0.01f);
 						    GameObject obj1 = PoolManager.GetObject("SlashMiddle", self.transform);
 						    if (obj1.TryGetComponent<EffectObject>(out EffectObject eff1))
@@ -132,13 +133,14 @@ public class SkyBirtgh : AttackBase
 				    {
 					    _cols.Now(self.transform, (_life) =>
 					    {
-						    CameraManager.instance.ShakeCamFor(0.08f, 2, 2);
+						    //CameraManager.instance.ShakeCamFor(0.08f, 2, 2);
 						    //GameManager.instance.TimeFreeze(0.1f, 0.1f);
 						    _life.GetActor().move.forceDir = self.transform.forward * 18 + new Vector3(0, -24, 0);
 						    Actor to = _life.GetActor();
 						    Actor by = self;
 						    DoDamage(to,by, 0.8f, obj.transform.position);
-						    CameraManager.instance.ShakeCamFor(0.12f, 8, 8);
+						    CameraManager.instance.ShakeCamFor(0.18f, 12, 12);
+						    GameManager.instance.TimeFreeze(0.3f, 0.08f);
 					    });
 				    }
 			    }

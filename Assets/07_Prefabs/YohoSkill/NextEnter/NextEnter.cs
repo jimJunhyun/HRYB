@@ -31,7 +31,7 @@ public class NextEnter : AttackBase
 	public override void OnAnimationMove(Actor self, AnimationEvent evt)
 	{
 		Vector3 vec = self.transform.forward;
-		self.move.forceDir = vec * 8 + new Vector3(0, 1, 0) * 6;
+		self.move.forceDir = vec * 12 + new Vector3(0, 1, 0) * 6;
 		Debug.Log("이거 되면 좀 버그임");
 	}
 	
@@ -58,7 +58,7 @@ public class NextEnter : AttackBase
 					Vector3 vec = self.transform.forward;
 					vec.y = 0;
 					CameraManager.instance.ShakeCamFor(0.16f, 2, 2);
-					self.move.forceDir += vec * 12 + new Vector3(0, 1, 0) * 2;
+					self.move.forceDir = vec * 8 + new Vector3(0, 1, 0) * 4;
 
 					GameObject obj1 = PoolManager.GetObject("NextEnterEff", self.transform);
 					if (obj1.TryGetComponent<EffectObject>(out EffectObject eff1))

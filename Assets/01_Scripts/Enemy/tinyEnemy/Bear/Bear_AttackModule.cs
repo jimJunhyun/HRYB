@@ -107,7 +107,7 @@ public class Bear_AttackModule : EnemyAttackModule
 						//GiveBuff(_life.GetActor(), StatEffID.Stun, 0.8f);
 
 
-						_life.GetActor().move.forceDir = vec + new Vector3(0, 32, 0);
+						_life.GetActor().move.forceDir = vec + new Vector3(0, 12, 0);
 						//_life.GetActor().move.forceDir.y = 40;
 					});
 					EffectObject eff = PoolManager.GetEffect($"SandBoomb", transform);
