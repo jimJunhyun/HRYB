@@ -49,8 +49,9 @@ public class SkyBirtgh : AttackBase
 	    {
 		    case "1":
 			    {
+				    GameManager.instance.audioPlayer.PlayPoint("Craw", self.transform.position);
 				    
-				    GameObject obj1 = PoolManager.GetObject("YusungSmithleft", self.transform);
+				    GameObject obj1 = PoolManager.GetObject("YusungSmithright", self.transform);
 				    if (obj1.TryGetComponent<EffectObject>(out EffectObject eff1))
 				    {
 					    eff1.Begin();
@@ -76,7 +77,7 @@ public class SkyBirtgh : AttackBase
 					    }, (transform, module) =>
 					    {
 						    CameraManager.instance.ShakeCamFor(0.18f, 12, 12);
-						    GameManager.instance.TimeFreeze(0.3f, 0.08f);
+						    //GameManager.instance.TimeFreeze(0.3f, 0.08f);
 					    });
 				    }
 			    }
@@ -106,6 +107,7 @@ public class SkyBirtgh : AttackBase
 							    eff1.Begin();
 							    self.StartCoroutine(DeleteObj(obj1));
 						    }
+						    GameManager.instance.audioPlayer.PlayPoint("Craw", self.transform.position);
 					    });
 				    }
 			    }
@@ -113,7 +115,7 @@ public class SkyBirtgh : AttackBase
 		    case "3":
 			    {
 				    
-				    
+				    GameManager.instance.audioPlayer.PlayPoint("CrawLow", self.transform.position);
 				    GameObject obj1 = PoolManager.GetObject("YusungSmithleft", self.transform);
 				    if (obj1.TryGetComponent<EffectObject>(out EffectObject eff1))
 				    {
@@ -140,7 +142,7 @@ public class SkyBirtgh : AttackBase
 						    Actor by = self;
 						    DoDamage(to,by, 0.8f, obj.transform.position);
 						    CameraManager.instance.ShakeCamFor(0.18f, 12, 12);
-						    GameManager.instance.TimeFreeze(0.3f, 0.08f);
+						    //GameManager.instance.TimeFreeze(0.3f, 0.08f);
 					    });
 				    }
 			    }
