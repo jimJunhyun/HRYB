@@ -6,6 +6,7 @@ public enum GroundType
 {
 	Grass,
 	Sand,
+	Dirt,
 	Stone
 }
 public class PlayerSound : MonoBehaviour

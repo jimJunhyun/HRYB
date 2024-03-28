@@ -288,6 +288,10 @@ public class PlayerAnimActions : MonoBehaviour
 					{
 						playerSound.FootStepSound(GroundType.Sand, evt.stringParameter);
 					}
+					else if (layerName.Contains("Dirt"))
+					{
+						playerSound.FootStepSound(GroundType.Dirt, evt.stringParameter);
+					}
 					else
 					{
 						playerSound.FootStepSound(GroundType.Stone, evt.stringParameter);
