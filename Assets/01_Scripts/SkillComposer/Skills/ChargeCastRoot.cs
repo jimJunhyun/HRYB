@@ -154,6 +154,7 @@ public class ChargeCastRoot : SkillRoot
 		{
 			self.life.superArmor = false;
 		}
+		
 	}
 
 	public override void SetAnimations(Actor to, SkillSlotInfo info)
