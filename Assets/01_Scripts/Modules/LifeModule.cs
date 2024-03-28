@@ -474,6 +474,7 @@ public class LifeModule : Module
 		{
 			_isOneDie = true;
 			StopAllCoroutines();
+			//GetActor().anim.SetBoolModify("Die",true);
 			GetActor().anim.SetDieTrigger();
 			_dieEvent?.Invoke();
 			

@@ -42,7 +42,7 @@ public class BearAI : AISetter
 	{
 		//self.anim.ResetStatus();
 		StopExamine();
-		MooseMoveModule _moveModule = self.move as MooseMoveModule;
+		EnemyMoveModule _moveModule = self.move as EnemyMoveModule;
 		GetComponent<BoxCollider>().isTrigger = true;
 		_moveModule.StopMove();
 	}
