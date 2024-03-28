@@ -27,7 +27,7 @@ public class ChargeCastRoot : SkillRoot
 	Actor owner;
 	GameObject chargeEff;
 
-	float chargeT => Time.time - chargeStartSec;
+	float chargeT = 0;
 	bool overcooked => charging && chargeT >= maxChargeSec;
 	bool prepared => chargeT >= chargeThreshold && !overcooked;
 
@@ -58,6 +58,7 @@ public class ChargeCastRoot : SkillRoot
 
 	public override void Disoperate(Actor self)
 	{
+		charging = false;
 		if (isPlayDisopAnim)
 		{
 			if(self.anim is PlayerAnim pa)
@@ -114,7 +115,7 @@ public class ChargeCastRoot : SkillRoot
 		}
 		GameManager.instance.uiManager.interingUI.Off();
 		Debug.Log("충전종료, 스킬을 사용했는가? : " + prepared);
-		charging = false;
+		chargeT = 0;
 	}
 
 	public override void UpdateStatus()
@@ -122,6 +123,7 @@ public class ChargeCastRoot : SkillRoot
 		base.UpdateStatus();
 		if (charging)
 		{
+			chargeT += Time.deltaTime;
 			GameManager.instance.uiManager.interingUI.SetGaugeValue(chargeT / chargeThreshold);
 			//Debug.Log($"충전중우 : {chargeT} / {chargeThreshold} = " + chargeT / chargeThreshold);
 		}
