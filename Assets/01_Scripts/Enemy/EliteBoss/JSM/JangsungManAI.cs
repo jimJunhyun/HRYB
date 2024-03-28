@@ -13,7 +13,7 @@ public class JangsungManAI : AISetter
 	
 	private const string MoveAttackHash = "MoveAttack";
 
-	private bool _isStart = false;
+	public bool _isStart = false;
 
 	public void DieEvent()
 	{
