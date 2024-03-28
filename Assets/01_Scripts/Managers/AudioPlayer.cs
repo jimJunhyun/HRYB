@@ -82,6 +82,7 @@ public class AudioPlayer : MonoBehaviour
 			GameObject audioPt = PoolManager.GetObject("AudioPoint", point, Quaternion.identity, delT);
 			AudioSource audioPoint= audioPt.GetComponent<AudioSource>();
 			audioPoint.clip = clip;
+			audioPoint.pitch = 1 + Random.Range(-0.1f, 0);
 			audioPoint.Play();
 		}
 		

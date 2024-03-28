@@ -51,6 +51,7 @@ public class YohoSharpnessSkill : AttackBase
 						eff1.Begin();
 						self.StartCoroutine(DeleteObj(obj1));
 					}
+
 				}
 				break;
 
@@ -72,6 +73,7 @@ public class YohoSharpnessSkill : AttackBase
 						eff1.Begin();
 						self.StartCoroutine(DeleteObj(obj1));
 					}
+					
 				}
 				break;
 
@@ -83,6 +85,12 @@ public class YohoSharpnessSkill : AttackBase
 						eff2.Begin();
 						self.StartCoroutine(DeleteObj(obj2));
 					}
+					//GameManager.instance.audioPlayer.PlayPoint("CrawLow", self.transform.position);
+				}
+				break;
+			case "Sound":
+				{
+					GameManager.instance.audioPlayer.PlayPoint("CrawLow", self.transform.position);
 				}
 				break;
 		}

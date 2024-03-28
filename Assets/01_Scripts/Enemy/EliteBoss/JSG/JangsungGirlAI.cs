@@ -12,7 +12,7 @@ public class JangsungGirlAI : AISetter
 	private const string _RootPatton = "Root";
 
 
-	private bool _isStart =false;
+	public bool _isStart =false;
     protected override void StartInvoke()
     {
 	    if (_isStart)

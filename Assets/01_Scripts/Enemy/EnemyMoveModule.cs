@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyMoveModule : MoveModule
 {
 	Transform _target;
-	[SerializeField] private float Speed = 15f;
+	[SerializeField] private new float speed = 15f;
 
 
 	private bool _isMove = false;
@@ -33,13 +33,17 @@ public class EnemyMoveModule : MoveModule
 	{
 
 		_char = GetComponent<CharacterController>();
-		agent.speed = Speed;
+		agent.speed = speed;
+		agent.acceleration = speed;
 	}
 
 	public void SetTarget(Transform target)
 	{
 		this._target = target;
+		
+		agent.isStopped = false;
 		agent.updatePosition = true;
+		agent.updateRotation = false;
 	}
 
 	public override void Move()
@@ -59,19 +63,28 @@ public class EnemyMoveModule : MoveModule
 			{
 				Character.enabled = true;
 				agent.enabled = false;
-
-				
-				//transform.Translate(forceDir * Time.deltaTime, Space.World);
-				if (_isCanMove == false)
-				{
-					
-				}
-				//			Debug.LogError(forceDir);
 			}
 			else
 			{
 				Character.enabled = false;
 				agent.enabled = true;
+				
+				if (_isMove == true && _target != null && agent.enabled == true)
+				{
+
+					self.anim.SetMoveState(true);
+					//			Debug.LogError(_target.transform.position);
+					UnityEngine.AI.NavMesh.SamplePosition(_target.transform.position, out UnityEngine.AI.NavMeshHit hit, 1f, UnityEngine.AI.NavMesh.AllAreas);
+
+					agent.SetDestination(hit.position);
+					//agent.velocity = hit.position.normalized * speed;
+					Debug.Log($"Velocity : {agent.velocity}");
+				}
+				else
+				{
+					self.anim.SetMoveState(false);
+					StopMove();
+				}
 			}
 		}
 
@@ -80,19 +93,14 @@ public class EnemyMoveModule : MoveModule
 
 	private void Update()
 	{
-		if (_isMove == true && _target != null && agent.enabled == true)
-		{
-			self.anim.SetMoveState(true);
-			//			Debug.LogError(_target.transform.position);
-			UnityEngine.AI.NavMesh.SamplePosition(_target.transform.position, out UnityEngine.AI.NavMeshHit hit, 8, UnityEngine.AI.NavMesh.AllAreas);
 
-			agent.SetDestination(hit.position);
-		}
 	}
 
 	public void StopMove()
 	{
+		agent.isStopped = true;
 		agent.updatePosition = false;
+		agent.updateRotation = false;
 		agent.velocity = new Vector3(0, 0, 0);
 
 
