@@ -74,6 +74,7 @@ public class JangsungGirlAI : AISetter
 			    self.anim.Animators.SetBool(_RootPatton, true);
 			    self.anim.SetAttackTrigger();
 			    Debug.LogError("땅바닥");
+			    _friend.GetComponent<JangsungLifeModule>().BarrierON();
 			    StopExamine(); // 패턴 끝나거나 (코루틴) or 캔슬시 코루틴 끊고 Start 해주기 
 		    });
 
