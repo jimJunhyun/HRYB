@@ -8,7 +8,7 @@ public class DamageText : MonoBehaviour
 
 
 
-	TextMeshProUGUI txt;
+	internal TextMeshProUGUI txt;
 	float curT;
 
 	float amt;
@@ -19,6 +19,8 @@ public class DamageText : MonoBehaviour
 	Vector3 originScale;
 
 	Vector3 prevPos;
+
+	DamageChannel myChannel;
 
 	float accY = 0;
 	float distScaleMult
@@ -42,34 +44,48 @@ public class DamageText : MonoBehaviour
 		originScale = transform.localScale;
 	}
 
-	public void SetInfo(float dmg, YYInfo inf, Vector3 pt)
+	public void SetInfo(float dmg, YYInfo inf, Vector3 pt, DamageChannel channel)
 	{
 		amt = dmg;
 		info = inf;
 		point = pt;
 		curT = 0;
 		accY = 0;
+
+		myChannel = channel;
 		
 		damageScaleMult = GameManager.instance.shower.damageMult.Evaluate(Mathf.Min(amt / (info == YYInfo.Black ? GameManager.instance.shower.maxAmtBlack : GameManager.instance.shower.maxAmtWhite), 1));
+		prevPos = Camera.main.WorldToScreenPoint(point);
+
 		ShowInfo();
+
 	}
 
 	public void ShowInfo()
 	{
 		on = true;
 		txt.text = amt.ToString();
-		switch (info)
+		if(myChannel == DamageChannel.Normal)
 		{
-			case YYInfo.Black:
-				txt.color = GameManager.instance.shower.blackDmgColor.Evaluate((amt / GameManager.instance.shower.maxAmtBlack));
-				break;
-			case YYInfo.White:
-				txt.color = GameManager.instance.shower.whiteDmgColor.Evaluate((amt / GameManager.instance.shower.maxAmtWhite));
-				break;
-			default:
-				break;
+			switch (info)
+			{
+				case YYInfo.Black:
+					txt.color = GameManager.instance.shower.blackDmgColor.Evaluate((amt / GameManager.instance.shower.maxAmtBlack));
+					break;
+				case YYInfo.White:
+					txt.color = GameManager.instance.shower.whiteDmgColor.Evaluate((amt / GameManager.instance.shower.maxAmtWhite));
+					break;
+				default:
+					break;
+			}
 		}
+		else
+		{
+			txt.color = GameManager.instance.shower.channelColors[((int)myChannel)];
+		}
+		
 		myCol = txt.color;
+		txt.enabled = false;
 	}
 
 	public void Resetter()
@@ -82,6 +98,7 @@ public class DamageText : MonoBehaviour
 	{
 		if (on)
 		{
+			txt.enabled = true;
 			Vector3 ptRelativeToCam = point - Camera.main.transform.position;
 			
 

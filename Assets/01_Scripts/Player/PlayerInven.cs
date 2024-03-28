@@ -534,6 +534,8 @@ public class PlayerInven : MonoBehaviour
 
 	public void SwitchHand(InputAction.CallbackContext context)
 	{
+		if((GameManager.instance.pActor.move as PlayerMove).NoInput.Paused || GameManager.instance.pActor.move.moveModuleStat.Paused)
+			return;
 		if (context.performed)
 		{
 			if(Time.time - prevChange >= changeCool)
