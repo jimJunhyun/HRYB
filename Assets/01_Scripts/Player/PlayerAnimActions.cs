@@ -255,6 +255,8 @@ public class PlayerAnimActions : MonoBehaviour
 		if ((self.cast as PlayerCast).NowSkillUse != null)
 		{
 			(self.cast as PlayerCast).NowSkillUse.OnAnimationMove(self, evt);
+			Debug.LogError($"{animator.GetCurrentAnimatorStateInfo(0).IsName("MoveBlend")}");
+			
 		}
 
 
