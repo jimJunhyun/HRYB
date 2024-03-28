@@ -159,8 +159,7 @@ public class PlayerAnimActions : MonoBehaviour
 
 	public void EnableInput()
 	{
-		GameManager.instance.pinp.ActivateInput();
-		EnableMove();
+		GameManager.instance.EnableCtrl();
 	}
 
 	public void ChangeForm()
@@ -255,6 +254,8 @@ public class PlayerAnimActions : MonoBehaviour
 		if ((self.cast as PlayerCast).NowSkillUse != null)
 		{
 			(self.cast as PlayerCast).NowSkillUse.OnAnimationMove(self, evt);
+			Debug.LogError($"{animator.GetCurrentAnimatorStateInfo(0).IsName("MoveBlend")}");
+			
 		}
 
 
