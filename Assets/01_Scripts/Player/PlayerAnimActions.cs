@@ -159,8 +159,7 @@ public class PlayerAnimActions : MonoBehaviour
 
 	public void EnableInput()
 	{
-		GameManager.instance.pinp.ActivateInput();
-		EnableMove();
+		GameManager.instance.EnableCtrl();
 	}
 
 	public void ChangeForm()

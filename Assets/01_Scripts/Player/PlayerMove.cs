@@ -241,6 +241,7 @@ public class PlayerMove : MoveModule
 
 	public override void Move()
 	{
+		GetActor().anim.SetIdleState(idling);
 		if (moveStat != MoveStates.Climb)
 		{
 			GravityCalc();
@@ -453,19 +454,20 @@ public class PlayerMove : MoveModule
 		}
 		ctrl.Move((dir) * Time.fixedDeltaTime);
 
-		GetActor().anim.SetIdleState(idling);
+		
 		
 		
 	}
 
 	public void Move(InputAction.CallbackContext context)
 	{
-		if (!NoInput.Paused)
+		if (!NoInput.Paused && !moveModuleStat.Paused)
 		{
 			Vector2 inp = context.ReadValue<Vector2>();
 			if (moveStat != MoveStates.Climb)
 			{
 				moveDir = new Vector3(inp.x, moveDir.y, inp.y);
+				
 			}
 			else
 			{
