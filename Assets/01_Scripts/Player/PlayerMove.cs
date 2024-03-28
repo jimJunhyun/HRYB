@@ -241,91 +241,94 @@ public class PlayerMove : MoveModule
 
 	public override void Move()
 	{
-		if (!moveModuleStat.Paused)
+		if (moveStat != MoveStates.Climb)
 		{
-			if (moveStat != MoveStates.Climb)
+			GravityCalc();
+			ForceCalc();
+			SlipCalc();
+			ctrl.Move((forceDir) * Time.fixedDeltaTime);
+		}
+		
+		if (moveModuleStat.Paused)
+			return;
+		if (moveStat != MoveStates.Climb)
+		{
+			if (Physics.SphereCast(middle.position, 0.5f, transform.forward, out hitCache, climbDistance, (1 << GameManager.CLIMBABLELAYER)) && moveDir.z > 0)
 			{
-				if (Physics.SphereCast(middle.position, 0.5f, transform.forward, out hitCache, climbDistance, (1 << GameManager.CLIMBABLELAYER)) && moveDir.z > 0)
-				{
-					Debug.Log("등반");
-					ropeNormal = hitCache.normal;
-					SetClimb();
-				}
+				Debug.Log("등반");
+				ropeNormal = hitCache.normal;
+				SetClimb();
+			}
 
-			
+		
 
-				if (isLocked && target == null)
-				{
-					ResetTargets();
-				}
-				switch (CameraManager.instance.curCamStat)
-				{
-					case CamStatus.Freelook:
+			if (isLocked && target == null)
+			{
+				ResetTargets();
+			}
+			switch (CameraManager.instance.curCamStat)
+			{
+				case CamStatus.Freelook:
+					{
+						Vector3 vec = MoveDirCalced;
+
+						if (vec.sqrMagnitude > 0.01f)
 						{
-							Vector3 vec = MoveDirCalced;
-
-							if (vec.sqrMagnitude > 0.01f)
-							{
-								to = Quaternion.LookRotation(vec, Vector3.up);
-								RotateTo();
-							}
-							PlayerControllerMove(vec);
-						}
-
-						break;
-					case CamStatus.Locked:
-						{
-							Vector3 vec = GetDir(target);
 							to = Quaternion.LookRotation(vec, Vector3.up);
-							if (to != Quaternion.identity)
-							{
-								RotateTo();
-							}
-							PlayerControllerMove(MoveDirCalced);
+							RotateTo();
 						}
+						PlayerControllerMove(vec);
+					}
 
-						break;
-					case CamStatus.Aim:
+					break;
+				case CamStatus.Locked:
+					{
+						Vector3 vec = GetDir(target);
+						to = Quaternion.LookRotation(vec, Vector3.up);
+						if (to != Quaternion.identity)
 						{
-							Vector3 vec = MoveDirCalced;
-
-							PlayerControllerMove(vec);
+							RotateTo();
 						}
-						break;
-					default:
-						break;
+						PlayerControllerMove(MoveDirCalced);
+					}
+
+					break;
+				case CamStatus.Aim:
+					{
+						Vector3 vec = MoveDirCalced;
+
+						PlayerControllerMove(vec);
+					}
+					break;
+				default:
+					break;
+			}
+		}
+		else
+		{
+
+			if (climbGrounded && moveDir.y < 0)
+			{
+				Debug.Log("착지");
+				ResetClimb();
+			}
+
+			if (!climbGrounded && !Physics.SphereCast(transform.position, 0.5f, transform.forward, out hitCache, climbDistance, (1 << GameManager.CLIMBABLELAYER)) && moveDir.y > 0)
+			{
+				Debug.Log("등반완");
+				PlayerControllerMove(-ropeNormal * climbSpeed);
+				if (Physics.Raycast(transform.position, Vector3.down, 2f, ~(1 << GameManager.PLAYERLAYER)))
+				{
+					ResetClimb();
 				}
 			}
 			else
 			{
-
-				if (climbGrounded && moveDir.y < 0)
-				{
-					Debug.Log("착지");
-					ResetClimb();
-				}
-
-				if (!climbGrounded && !Physics.SphereCast(transform.position, 0.5f, transform.forward, out hitCache, climbDistance, (1 << GameManager.CLIMBABLELAYER)) && moveDir.y > 0)
-				{
-					Debug.Log("등반완");
-					PlayerControllerMove(-ropeNormal * climbSpeed);
-					if (Physics.Raycast(transform.position, Vector3.down, 2f, ~(1 << GameManager.PLAYERLAYER)))
-					{
-						ResetClimb();
-					}
-				}
-				else
-				{
-					PlayerControllerMove(MoveDirCalced);
-				}
+				PlayerControllerMove(MoveDirCalced);
 			}
 		}
-		if (moveStat != MoveStates.Climb)
-		{
-			ForceCalc();
-			SlipCalc();
-			GravityCalc();
-		}
+		
+		
 	}
 
 	public void CalcClimbState()
@@ -377,7 +380,9 @@ public class PlayerMove : MoveModule
 
 	public void PlayerControllerMove(Vector3 dir)
 	{
-		if(moveModuleStat.Paused)
+		
+		
+		if (moveModuleStat.Paused)
 			return;
 		try
 		{
@@ -446,12 +451,8 @@ public class PlayerMove : MoveModule
 		{
 			pAttack.target = null;
 		}
+		ctrl.Move((dir) * Time.fixedDeltaTime);
 
-		if (moveStat != MoveStates.Climb)
-		{
-			dir += forceDir;
-		}
-		ctrl.Move( (dir) * Time.fixedDeltaTime);
 		GetActor().anim.SetIdleState(idling);
 		
 		

@@ -64,7 +64,16 @@ public class MoveModule : Module
 
 	public virtual bool isGrounded
 	{
-		get=>Physics.Raycast(transform.position + new Vector3(0, 0.1f,0), Vector3.down, groundThreshold, 1<< GameManager.GROUNDLAYER);
+		get
+		{ 
+			if(Physics.Raycast(transform.position + new Vector3(0, 0.1f,0), Vector3.down, groundThreshold, 1<< GameManager.GROUNDLAYER))
+			{
+				Debug.DrawRay(transform.position + new Vector3(0, 0.1f, 0), Vector3.down * groundThreshold, Color.cyan, 1000f);
+				return true;
+			}
+			Debug.DrawRay(transform.position + new Vector3(0, 0.1f, 0), Vector3.down * groundThreshold, Color.red, 1000f);
+			return false;
+		}
 	}
 	public ModuleController moveModuleStat = new ModuleController(false);
 
