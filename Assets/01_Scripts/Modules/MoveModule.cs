@@ -68,10 +68,10 @@ public class MoveModule : Module
 		{ 
 			if(Physics.Raycast(transform.position + new Vector3(0, 0.1f,0), Vector3.down, groundThreshold, 1<< GameManager.GROUNDLAYER))
 			{
-				Debug.DrawRay(transform.position + new Vector3(0, 0.1f, 0), Vector3.down * groundThreshold, Color.cyan, 1000f);
+				//Debug.DrawRay(transform.position + new Vector3(0, 0.1f, 0), Vector3.down * groundThreshold, Color.cyan, 1000f);
 				return true;
 			}
-			Debug.DrawRay(transform.position + new Vector3(0, 0.1f, 0), Vector3.down * groundThreshold, Color.red, 1000f);
+			//Debug.DrawRay(transform.position + new Vector3(0, 0.1f, 0), Vector3.down * groundThreshold, Color.red, 1000f);
 			return false;
 		}
 	}
@@ -105,7 +105,7 @@ public class MoveModule : Module
 
 	public bool idling
 	{
-		get => moveDir.sqrMagnitude < 0.1f;
+		get => moveDir.sqrMagnitude < 0.01f;
 	}
 
 
