@@ -85,6 +85,7 @@ public class EnemyMoveModule : MoveModule
 			self.anim.SetMoveState(true);
 			//			Debug.LogError(_target.transform.position);
 			UnityEngine.AI.NavMesh.SamplePosition(_target.transform.position, out UnityEngine.AI.NavMeshHit hit, 8, UnityEngine.AI.NavMesh.AllAreas);
+
 			agent.SetDestination(hit.position);
 		}
 	}
