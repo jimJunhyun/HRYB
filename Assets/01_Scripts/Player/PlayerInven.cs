@@ -307,6 +307,7 @@ public class PlayerInven : MonoBehaviour
 	{
 		inven = new Inventory(cap);
 		animActions = GetComponentInChildren<PlayerAnimActions>();
+		prevChange = -changeCool;
 	}
 
 	private void Start()

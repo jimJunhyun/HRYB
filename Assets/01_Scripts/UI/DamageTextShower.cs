@@ -46,12 +46,12 @@ public class DamageTextShower : MonoBehaviour
 		}
 	}
 
-	public void GenerateDamageText(Vector3 pos, float damage, YYInfo info, DamageChannel channel = DamageChannel.Normal)
+	public void GenerateDamageText(Vector3 pos, float damage, YYInfo info, DamageChannel channel = DamageChannel.Normal, float sizeMod = 1)
 	{
 		damage = Mathf.Round(damage * 100) / 100f;
 		DamageText dt = PoolManager.GetObject("DamageText", transform).GetComponent<DamageText>();
 		pos += (Vector3)UnityEngine.Random.insideUnitCircle * appearNoiseScale;
-		dt.SetInfo(damage, info, pos, channel);
+		dt.SetInfo(damage, info, pos, channel, sizeMod);
 		damageTexts.Add(dt);
 		StartCoroutine(DelReturnDamageText(dt));
 	}

@@ -417,11 +417,11 @@ public class LifeModule : Module
 					Debug.Log("DAMAGED OF" + channel + ": " + data.white);
 					if (data.white > 0)
 					{
-						GameManager.instance.shower.GenerateDamageText(transform.position, data.white, YYInfo.White, channel);
+						GameManager.instance.shower.GenerateDamageText(transform.position, data.white, YYInfo.White, channel, 0.7f);
 					}
 					if (data.black > 0)
 					{
-						GameManager.instance.shower.GenerateDamageText(transform.position, data.black, YYInfo.Black, channel);
+						GameManager.instance.shower.GenerateDamageText(transform.position, data.black, YYInfo.Black, channel, 0.7f);
 					}
 				}
 				break;
@@ -439,11 +439,11 @@ public class LifeModule : Module
 					DamageYYBase(incPerSec * Time.deltaTime);
 					if (incPerSec.white > 0)
 					{
-						GameManager.instance.shower.GenerateDamageText(transform.position, incPerSec.white, YYInfo.White, channel);
+						GameManager.instance.shower.GenerateDamageText(transform.position, incPerSec.white, YYInfo.White, channel, 0.7f);
 					}
 					if (incPerSec.black > 0)
 					{
-						GameManager.instance.shower.GenerateDamageText(transform.position, incPerSec.black, YYInfo.Black, channel);
+						GameManager.instance.shower.GenerateDamageText(transform.position, incPerSec.black, YYInfo.Black, channel, 0.7f);
 					}
 				}
 				break;

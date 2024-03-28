@@ -29,6 +29,7 @@ public class DamageText : MonoBehaviour
 	}
 
 	float damageScaleMult;
+	float sizeMod;
 
 	float ExistTime
 	{
@@ -44,7 +45,7 @@ public class DamageText : MonoBehaviour
 		originScale = transform.localScale;
 	}
 
-	public void SetInfo(float dmg, YYInfo inf, Vector3 pt, DamageChannel channel)
+	public void SetInfo(float dmg, YYInfo inf, Vector3 pt, DamageChannel channel, float sizeMod)
 	{
 		amt = dmg;
 		info = inf;
@@ -58,7 +59,7 @@ public class DamageText : MonoBehaviour
 		prevPos = Camera.main.WorldToScreenPoint(point);
 
 		ShowInfo();
-
+		this.sizeMod = sizeMod;
 	}
 
 	public void ShowInfo()
@@ -107,7 +108,7 @@ public class DamageText : MonoBehaviour
 			myCol.a = GameManager.instance.shower.alphaMovement.Evaluate(ExistTime);
 			txt.color = myCol;
 
-			txt.transform.localScale = originScale * GameManager.instance.shower.scaleMovement.Evaluate(ExistTime) * damageScaleMult * distScaleMult;
+			txt.transform.localScale = originScale * GameManager.instance.shower.scaleMovement.Evaluate(ExistTime) * damageScaleMult * distScaleMult * sizeMod;
 
 			accY += GameManager.instance.shower.yAccelMovement.Evaluate(ExistTime);
 
