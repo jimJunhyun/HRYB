@@ -235,11 +235,26 @@ public class CompleteAtom
 			{
 				case CompletionAct.DefeatTarget:
 				{
-					string enemyDefeatCapture = GameManager.instance.DoCapture();
-					if (defeatMode != DefeatEnemyMode.None && GameManager.instance.Decode(enemyDefeatCapture)[defeatMode].Contains(defeatParameter)) //Decode로 변환.
+					if (defeatMode != DefeatEnemyMode.None)
 					{
-						curRepeatCount += amt;
+
+						string enemyDefeatCapture = GameManager.instance.DoCapture();
+						if (GameManager.instance.Decode(enemyDefeatCapture)[defeatMode].Contains(defeatParameter)) //Decode로 변환.
+						{
+							if(this.parameter == parameter || this.parameter == "")
+							{
+								curRepeatCount += amt;
+							}
+						}
 					}
+					else
+					{
+						if (this.parameter == parameter || this.parameter == "")
+						{
+							curRepeatCount += amt;
+						}
+					}
+					
 				}
 					break;
 				case CompletionAct.BelowLevel:

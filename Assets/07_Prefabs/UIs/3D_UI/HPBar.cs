@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 
 public class HPBar : MonoBehaviour
 {
-	public string name;
+	
 
 	EnemyLifeModule lf;
 	Image hp;
@@ -27,7 +27,7 @@ public class HPBar : MonoBehaviour
 		groge = transform.Find("GrogyBar/Grogy").GetComponent<Image>();
 		parent = GetComponentInParent<Canvas>();
 
-		nameText.text = name;
+		nameText.text = lf.GetActor().actorName;
 	}
 
 	private void Update()

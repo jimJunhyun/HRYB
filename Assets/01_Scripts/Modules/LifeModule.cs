@@ -431,7 +431,7 @@ public class LifeModule : Module
 			GameManager.instance.recentDamage = yy.white.Value;
 			GameManager.instance.recentDamageType = type;
 			GameManager.instance.recentEnemy = GetActor();
-			GameManager.instance.qManager.InvokeOnChanged(CompletionAct.DefeatTarget, GetActor().name);
+			GameManager.instance.qManager.InvokeOnChanged(CompletionAct.DefeatTarget, GetActor().actorName);
 		}
 
 	}
