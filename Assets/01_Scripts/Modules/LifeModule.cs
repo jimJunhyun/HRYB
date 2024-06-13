@@ -95,6 +95,12 @@ public class LifeModule : Module
 	//피격자, 공격자, 대미지
 	public Action<Actor, Actor, YinYang> onNextDamaged;
 
+	public int power; //기세
+	public float powerExpReq;
+	public float powerExp;
+
+	public ModuleController	powerExpMod = new ModuleController(false);
+
 	public virtual bool isDead
 	{
 		get => yy.white.Value <= 0;
@@ -167,6 +173,20 @@ public class LifeModule : Module
 		//}
 	}
 
+
+	public void GetPowerExp(float amt)
+	{
+		if (!powerExpMod.Paused)
+		{
+			powerExp += amt * powerExpMod.Speed;
+			if(powerExp >= powerExpReq)
+			{
+				power += 1;
+				powerExp -= powerExpReq;
+				powerExpReq = 500 + (500 * (int)(power / 10)); //모종의 식
+			}
+		}
+	}
 	protected virtual void DecreaseYY(float amt, YYInfo to, DamageChannel chn = DamageChannel.Normal)
 	{
 		
@@ -358,13 +378,18 @@ public class LifeModule : Module
 	public virtual void DamageYY(YinYang data, DamageType type, float dur = 0, float tick = 0, Actor attacker = null, DamageChannel channel = DamageChannel.None)
 	{
 		_isFirstHit = true;
-		
-		
+		if (attacker != null)
+		{
+			float mod = (attacker.life.power / power);
+			data = data * mod;
+		}
+
 		switch (type)
 		{
 			case DamageType.DirectHit:
 				if (!(isImmune))
 				{
+					
 					DamageYYBase(data);
 					if (!superArmor)
 					{

@@ -109,7 +109,11 @@ public class NodeCreater : EditorWindow
 		if(node.nodeType != StatUpgradeType.Callback)
 		{
 			EditorGUILayout.Space(10);
-			node.amt = EditorGUILayout.FloatField("증가량 : ", node.amt);
+			node.amt = EditorGUILayout.TextField("증가량 : ", node.amt);
+			if (GUILayout.Button(node.percentage ? "%" : " "))
+			{
+				node.percentage = !node.percentage;
+			}
 		}
 		EditorGUILayout.EndHorizontal();
 
@@ -157,7 +161,7 @@ public class NodeCreater : EditorWindow
 				GUILayout.Label("배우기 위해 필요한 노드 : ");
 				int cIdx = requirementVectors[i].x, oIdx = requirementVectors[i].y;
 				cIdx = EditorGUILayout.IntPopup((int)cIdx, bodyParts.ToArray(), bodyPartsValue.ToArray());
-				GUILayout.Label("번째 동심원의 ");
+				GUILayout.Label("부위의 ");
 				oIdx = EditorGUILayout.IntField(oIdx);
 				GUILayout.Label("번째 노드 (파일명 숫자)");
 
@@ -165,7 +169,7 @@ public class NodeCreater : EditorWindow
 
 				requirementVectors[i] = new Vector2Int(cIdx, oIdx);
 
-				PlayerNode req = NodeUtility.LoadNodeData(bodyParts[cIdx], oIdx);
+				PlayerNode req = NodeUtility.LoadNodeData(((BodyPart)cIdx).ToString(), oIdx);
 
 				if (req != null)
 				{
