@@ -543,11 +543,15 @@ public class PlayerMove : MoveModule
 		{
 			if (context.started)
 			{
-				moveStat = MoveStates.Run;
-			}
-			if (context.canceled)
-			{
-				moveStat = MoveStates.Walk;
+				if(moveStat == MoveStates.Run)
+				{
+					moveStat = MoveStates.Walk;
+				}
+				else if(moveStat == MoveStates.Walk)
+				{
+					moveStat = MoveStates.Run;
+				}
+
 			}
 			GetActor().anim.SetMoveState(((int)moveStat));
 		}
