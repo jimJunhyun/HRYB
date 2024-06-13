@@ -19,6 +19,9 @@ public class EnemyLifeModule : LifeModule
 	[SerializeField] bool _33PercentWhite = false;
 	[SerializeField] bool _isDie = false;
 
+	[Header("Items")]
+	List<string> _dropItem = new();
+
 
 	Transform middle;
 
@@ -28,6 +31,7 @@ public class EnemyLifeModule : LifeModule
 		_currentGrogeValue = _grogeInitValue;
 
 		_dieEvent += OutJeungGi;
+		_dieEvent += DieEntity;
 
 		if(transform.Find("Middle"))
 		{
@@ -188,6 +192,12 @@ public class EnemyLifeModule : LifeModule
 	{
 		// 나중에 엘리트몹 보스몹 나눠주기
 		GameManager.instance.ComboRankManager.AddValue(t);
+	}
+
+
+	public void DieEntity()
+	{
+		// 유준현작업
 	}
 }
 

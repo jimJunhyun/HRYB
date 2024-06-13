@@ -208,4 +208,11 @@ public class PlayerAnim : AnimModule
 	{
 		anim.SetTrigger(changeHash);
 	}
+
+	public void SetChangeAnimation(string id, AnimationClip _clip)
+	{
+		AnimatorOverrideController ov = new AnimatorOverrideController(anim.runtimeAnimatorController);
+		ov[id] = _clip;
+		anim.runtimeAnimatorController = ov;
+	}
 }

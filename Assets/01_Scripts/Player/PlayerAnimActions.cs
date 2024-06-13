@@ -10,6 +10,9 @@ public class PlayerAnimActions : MonoBehaviour
 {
 	Actor self;
 
+	public PlayerDashMomentSO _pldmYoho;
+	public PlayerDashMomentSO _pldmHuman;
+
 	[SerializeField] private AnimatorOverrideController _anim;
 
 	SkinnedMeshRenderer hair;
@@ -280,9 +283,13 @@ public class PlayerAnimActions : MonoBehaviour
 					humanCloth.transform.GetChild(i).gameObject.SetActive(true);
 				}
 
-
-
+				(self.anim as PlayerAnim).SetChangeAnimation("Front", _pldmHuman.Front);
+				(self.anim as PlayerAnim).SetChangeAnimation("Right", _pldmHuman.Right);
+				(self.anim as PlayerAnim).SetChangeAnimation("Back", _pldmHuman.Back);
+				(self.anim as PlayerAnim).SetChangeAnimation("Left", _pldmHuman.Left);
 				break;
+
+
 			case PlayerForm.Yoho:
 				tail.enabled = true;
 				ear.enabled = true;
@@ -300,8 +307,17 @@ public class PlayerAnimActions : MonoBehaviour
 					humanCloth.transform.GetChild(i).gameObject.SetActive(false);
 				}
 
+
+				(self.anim as PlayerAnim).SetChangeAnimation("Front", _pldmYoho.Front);
+				(self.anim as PlayerAnim).SetChangeAnimation("Right", _pldmYoho.Right);
+				(self.anim as PlayerAnim).SetChangeAnimation("Back", _pldmYoho.Back);
+				(self.anim as PlayerAnim).SetChangeAnimation("Left", _pldmYoho.Left);
 				break;
 			default:
+				(self.anim as PlayerAnim).SetChangeAnimation("Front", _pldmHuman.Front);
+				(self.anim as PlayerAnim).SetChangeAnimation("Right", _pldmHuman.Right);
+				(self.anim as PlayerAnim).SetChangeAnimation("Back", _pldmHuman.Back);
+				(self.anim as PlayerAnim).SetChangeAnimation("Left", _pldmHuman.Left);
 				break;
 		}
 		

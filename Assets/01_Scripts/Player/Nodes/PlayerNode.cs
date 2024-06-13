@@ -26,7 +26,7 @@ public class PlayerNode : ScriptableObject
 	public bool completed;
 
 	public StatUpgradeType nodeType;
-	public float amt;
+	public string amt;
 	public bool percentage;
 
 	public bool learnable;
@@ -42,7 +42,7 @@ public class PlayerNode : ScriptableObject
 		//circleIndex = 0;
 		orderIndex = 0;
 		completed =false;
-		amt = 0;
+		amt = "";
 		requirements = new List<PlayerNode>();
 		learnable = true;
 		needPoint = 0;
@@ -67,14 +67,26 @@ public class PlayerNode : ScriptableObject
 			 	case StatUpgradeType.Callback:
 			 		onLearn?.Invoke();
 			 		break;
+				case StatUpgradeType.LearnSkill:
+					//????????????????
+					SkillRoot sk = GameManager.instance.skillLoader.GetHumanSkill(amt);
+					if(sk == null)
+					{
+						sk = GameManager.instance.skillLoader.GetYohoSkill(amt);
+					}
+					if(sk == null)
+						break;
+					//스킬을 꽂느냐 배우게 하느냐
+					
+					break;
 			 	default:
 					if (percentage)
 					{
-			 			GameManager.instance.pActor.MultStat(amt, nodeType);
+			 			GameManager.instance.pActor.MultStat(float.Parse(amt), nodeType);
 					}
 					else
 					{
-			 			GameManager.instance.pActor.AddStat(amt, nodeType);
+			 			GameManager.instance.pActor.AddStat(float.Parse(amt), nodeType);
 					}
 			 		break;
 			 }
