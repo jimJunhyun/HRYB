@@ -13,6 +13,7 @@ public enum StatUpgradeType
 	 //BlackAtk,
 	MoveSpeed,
 	CooldownRdc,
+	LearnSkill,
 
 	Callback
 }
@@ -122,6 +123,7 @@ public class NodeUtility
 				sb.Append("의");
 				break;
 			case StatUpgradeType.Callback:
+			case StatUpgradeType.LearnSkill:
 				sb.Append("특수 ");
 				break;
 			default:
@@ -151,6 +153,8 @@ public class NodeUtility
 				return "이동속도";
 			case StatUpgradeType.CooldownRdc:
 				return "쿨다운 감소";
+			case StatUpgradeType.LearnSkill:
+				return "스킬 배우기";
 			case StatUpgradeType.Callback:
 				return "특수";
 			default:
