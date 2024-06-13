@@ -27,6 +27,8 @@ public class Actor : MonoBehaviour
 	public Action<Actor> updateActs;
 	public AISetter _ai;
 
+	
+
 	List<TemporaryStatMods> ongoingTempStatMods = new List<TemporaryStatMods>();
 
 	public AISetter AI
@@ -112,7 +114,7 @@ public class Actor : MonoBehaviour
 				move.walkSpeed.AddMod( amt);
 				move.crouchSpeed.AddMod( amt);
 				break;
-			case StatUpgradeType.CooldownRdc: //없다고하빈다.
+			case StatUpgradeType.CooldownRdc:
 				//cast.cooldownModuleStat.HandleSpeed(-amt, ModuleController.SpeedMode.Slow);
 				break;
 			case StatUpgradeType.Callback:
@@ -143,7 +145,7 @@ public class Actor : MonoBehaviour
 				move.walkSpeed.MultMod(amt);
 				move.crouchSpeed.MultMod(amt);
 				break;
-			case StatUpgradeType.CooldownRdc: //??????
+			case StatUpgradeType.CooldownRdc:
 				cast.cooldownModuleStat.HandleSpeed(-amt, ModuleController.SpeedMode.Slow);
 				break;
 			case StatUpgradeType.Callback:
@@ -184,7 +186,13 @@ public class Actor : MonoBehaviour
 	IEnumerator DelHandleStat(StatUpgradeType type, float amtAdd, float amtMult, float time)
 	{
 		HandleStatus(type, amtAdd, amtMult, -1);
-		yield return new WaitForSeconds(time);
+		float t = 0;
+		while(t <= time)
+		{
+			yield return null;
+			t += Time.deltaTime;
+		}
+		yield return null;
 		HandleStatus(type, -amtAdd, -amtMult, -1);
 	}
 }
