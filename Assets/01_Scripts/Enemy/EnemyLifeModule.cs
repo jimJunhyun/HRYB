@@ -19,8 +19,11 @@ public class EnemyLifeModule : LifeModule
 	[SerializeField] bool _33PercentWhite = false;
 	[SerializeField] bool _isDie = false;
 
-	[Header("Items")]
+	[Header("Rewards")]
+	[SerializeField]
 	List<string> _dropItem = new();
+	[SerializeField]
+	int _expAmt;
 
 
 	Transform middle;
@@ -197,7 +200,12 @@ public class EnemyLifeModule : LifeModule
 
 	public void DieEntity()
 	{
-		// 유준현작업
+		for (int i = 0; i < _dropItem.Count; i++)
+		{
+			GameManager.instance.pinven.AddItem(Item.GetItem<Item>(_dropItem[i]));
+		}
+
+		GameManager.instance.pinven.AddExp(_expAmt);
 	}
 }
 

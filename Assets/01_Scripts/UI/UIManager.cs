@@ -36,6 +36,7 @@ using System.Linq;
 	public DialogueUI dialogueUI;
 
 	public NodeDetailUI detailer;
+	
 
 	public GameObject basicUIGroup;
 

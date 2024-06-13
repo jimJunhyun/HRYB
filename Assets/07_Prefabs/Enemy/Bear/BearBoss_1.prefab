@@ -183,6 +183,7 @@ GameObject:
   - component: {fileID: 6058713294426786377}
   - component: {fileID: -510076408697515796}
   - component: {fileID: 4326635324537322347}
+  - component: {fileID: 113843074070374836}
   m_Layer: 9
   m_Name: BearBoss_1
   m_TagString: Untagged
@@ -434,6 +435,9 @@ MonoBehaviour:
   initAdeBlack: 1.2
   initAdeWhite: 0.05
   regenThreshold: 10
+  power: 0
+  powerExpReq: 0
+  powerExp: 0
   superArmor: 0
   _isItGroge: 0
   _grogeInitValue: 100
@@ -443,6 +447,9 @@ MonoBehaviour:
   _33PercentBlack: 0
   _33PercentWhite: 0
   _isDie: 0
+  _dropItem:
+  - "\uC6C5\uC7A5"
+  _expAmt: 0
 --- !u!114 &4326635324537322347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -460,6 +467,20 @@ MonoBehaviour:
   purchaseBias: 0.8
   debtAble: 0
   shopList: []
+--- !u!114 &113843074070374836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068531570469127118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8a0acb6315fc34418788e6ed69ae1a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  ignoreAngle: 0
 --- !u!1 &1115335750636031985
 GameObject:
   m_ObjectHideFlags: 0
