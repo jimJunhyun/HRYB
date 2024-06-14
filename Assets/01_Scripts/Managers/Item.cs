@@ -146,6 +146,26 @@ public class Item : IComparable // #################
 		return null;
 	}
 
+	//public static Item GetItemBoxed(string name)
+	//{
+	//	if (nameDataHashT.ContainsKey(name))
+	//	{
+	//		if(nameDataHashT[name] is Medicines)
+	//		{
+	//			return (Medicines)nameDataHashT[name];
+	//		}
+	//		else if (nameDataHashT[name] is YinyangItem)
+	//		{
+	//			return (YinyangItem)nameDataHashT[name];
+	//		}
+	//		else
+	//		{
+	//			return (Item)nameDataHashT[name];
+	//		}
+	//	}
+	//	return null;
+	//}
+
 	public static Dictionary<Item, int> useCount = new Dictionary<Item, int>();
 
 	public int Id {get => MyName.GetHashCode();}

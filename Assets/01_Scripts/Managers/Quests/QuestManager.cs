@@ -94,6 +94,8 @@ public enum RewardType
 	HealWhite,
 	HealBlack,
 	Quest,
+	EnableObject,
+	DisableObject,
 }
 
 public enum QuestType
@@ -233,11 +235,26 @@ public class CompleteAtom
 			{
 				case CompletionAct.DefeatTarget:
 				{
-					string enemyDefeatCapture = GameManager.instance.DoCapture();
-					if (defeatMode != DefeatEnemyMode.None && GameManager.instance.Decode(enemyDefeatCapture)[defeatMode].Contains(defeatParameter)) //Decode로 변환.
+					if (defeatMode != DefeatEnemyMode.None)
 					{
-						curRepeatCount += amt;
+
+						string enemyDefeatCapture = GameManager.instance.DoCapture();
+						if (GameManager.instance.Decode(enemyDefeatCapture)[defeatMode].Contains(defeatParameter)) //Decode로 변환.
+						{
+							if(this.parameter == parameter || this.parameter == "")
+							{
+								curRepeatCount += amt;
+							}
+						}
 					}
+					else
+					{
+						if (this.parameter == parameter || this.parameter == "")
+						{
+							curRepeatCount += amt;
+						}
+					}
+					
 				}
 					break;
 				case CompletionAct.BelowLevel:
@@ -565,6 +582,10 @@ public class QuestManager
 				return "음(검은거) 회복 : ";
 			case RewardType.Quest:
 				return "퀘스트 제공(식별명) : ";
+			case RewardType.EnableObject:
+				return "오브젝트 활성화 : ";
+			case RewardType.DisableObject:
+				return "오브젝트 비활성화 : ";
 			default:
 				Debug.LogWarning($"{act} 상태에 대한 한글 번역이 제공되지 않습니다.");
 				return act.ToString();

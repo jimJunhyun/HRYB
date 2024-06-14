@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcb5693b5430445429919af49ea1c1e6, type: 3}
+  m_Name: KillWolf
+  m_EditorClassIdentifier: 
+  questName: "\uB291\uB300\uC7A1\uAE30"
+  myInfo:
+  - objective: 4
+    parameter: "\uB291\uB300"
+    repeatCount: 5
+    afterAct: 2
+    inverted: 0
+    everSince: 1
+    isVisibleCondition: 1
+    itemMode: 0
+    itemRequirement: 0
+    defeatMode: 0
+    defeatParameter: 
+  - objective: 7
+    parameter: Soldier
+    repeatCount: 1
+    afterAct: 3
+    inverted: 0
+    everSince: 0
+    isVisibleCondition: 0
+    itemMode: 0
+    itemRequirement: 0
+    defeatMode: 0
+    defeatParameter: 
+  rewardInfo:
+  - rewardType: 0
+    parameter: 2500
+    amount: 0
+  completableCount: 1
+  onCompleteAction:
+    m_PersistentCalls:
+      m_Calls: []
+  onAssignedAction:
+    m_PersistentCalls:
+      m_Calls: []
+  onDismissedAction:
+    m_PersistentCalls:
+      m_Calls: []
+  questingDia: {fileID: 11400000, guid: 9c88cb676ce03ca418e6d3a887dc689a, type: 2}
+  questedDia: {fileID: 11400000, guid: 4906a82c5832e5448bdc561440af7791, type: 2}
+  descriptions: "\uC740\uBAFC\uB97C \uB3C4\uC640 \uC8FC\uC704\uB97C \uC548\uC804\uD558\uAC8C
+    \uB9CC\uB4E4\uC790. \uB291\uB300\uB294 \uBB34\uB9AC\uC9C0\uC5B4 \uB2E4\uB2C8\uB294
+    \uC2B5\uC131\uC774 \uC788\uB2E4."
+  type: 0

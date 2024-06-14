@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -42,6 +43,7 @@ public class QuestInfo : ScriptableObject, System.IComparable
 	public bool IsDeprived => completableCount >= 0 && curCompletedAmount >= completableCount;
 
 	bool? everSince = null;
+	Dictionary<string, GameObject> relatedObjects;
 	public bool NeedCheck
 	{
 		get
@@ -70,6 +72,16 @@ public class QuestInfo : ScriptableObject, System.IComparable
 		ResetQuestStartTime();
 		curCompletedAmount = 0;
 		assigned = false;
+
+		relatedObjects = new Dictionary<string, GameObject>();
+
+		for (int i = 0; i < rewardInfo.Count; i++)
+		{
+			if(rewardInfo[i].rewardType == RewardType.EnableObject || rewardInfo[i].rewardType == RewardType.DisableObject)
+			{
+				relatedObjects.Add(rewardInfo[i].parameter, GameObject.Find(rewardInfo[i].parameter));
+			}
+		}
 	}
 
 	public void ResetQuestStartTime(CompletionAct cond = CompletionAct.None)
@@ -271,6 +283,7 @@ public class QuestInfo : ScriptableObject, System.IComparable
 				case RewardType.Exp:
 					{
 						Debug.Log($"경험치 {rewardInfo[i].parameter} 제공함");
+						GameManager.instance.pinven.AddExp(int.Parse(rewardInfo[i].parameter));
 					}
 					break;
 				case RewardType.Skill:
@@ -300,6 +313,16 @@ public class QuestInfo : ScriptableObject, System.IComparable
 				case RewardType.Quest:
 					{
 						QuestManager.AssignQuest(rewardInfo[i].parameter);
+					}
+					break;
+				case RewardType.EnableObject:
+					{
+						relatedObjects[rewardInfo[i].parameter].SetActive(true);
+					}
+					break;
+				case RewardType.DisableObject:
+					{
+						relatedObjects[rewardInfo[i].parameter].SetActive(false);
 					}
 					break;
 				default:

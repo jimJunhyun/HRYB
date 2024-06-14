@@ -70,7 +70,7 @@ public class NodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 		}
 	}
 
-	public void SetUpNodeUI(PlayerNode node)
+	public void SetUpNodeUI(PlayerNode node) //안씀.
 	{
 		button = GetComponent<Button>();
 		img = GetComponent<Image>();

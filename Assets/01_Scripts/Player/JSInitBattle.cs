@@ -15,6 +15,11 @@ public class JSInitBattle : MonoBehaviour
 	private bool _IsStart =false;
 	private bool _isDead = false;
 
+	private void Start()
+	{
+		gameObject.SetActive(false);
+	}
+
 	public void StartReseet()
 	{
 		_IsStart = false;

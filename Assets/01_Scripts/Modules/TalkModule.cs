@@ -89,7 +89,7 @@ public class TalkModule : Module, IInterable
 
 	public void Inter()
 	{
-		GameManager.instance.qManager.InvokeOnChanged(CompletionAct.InteractWith, transform.name);
+		GameManager.instance.qManager.InvokeOnChanged(CompletionAct.InteractWith, self.actorName);
 		charInfo.OnTalk();
 		self.anim.Animators.SetBool(talkingHash, true);
 	}

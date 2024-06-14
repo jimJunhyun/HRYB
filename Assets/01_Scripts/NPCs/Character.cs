@@ -32,7 +32,13 @@ public class Character : ScriptableObject
 				Dialogue nxt = initDia;
 				while (true)
 				{
-					nxt = nxt.next;
+					if(nxt is ChoiceDialogue cd)
+					{
+						nxt = cd.nexts[0];
+					}
+					else{
+						nxt = nxt.next;
+					}
 					if(nxt == null)
 					{
 						break;

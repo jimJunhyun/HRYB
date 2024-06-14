@@ -122,6 +122,7 @@ GameObject:
   - component: {fileID: 2178317243217670839}
   - component: {fileID: 5373213743209681124}
   - component: {fileID: 1199267022448068303}
+  - component: {fileID: 1824319327946309814}
   m_Layer: 9
   m_Name: JangSungMen
   m_TagString: Jansung
@@ -228,6 +229,7 @@ MonoBehaviour:
   talk: {fileID: 0}
   show: {fileID: 0}
   _ai: {fileID: 0}
+  actorName: "\uCC9C\uD558\uB300\uC7A5\uAD70"
 --- !u!114 &4689662016484940396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,6 +349,9 @@ MonoBehaviour:
   initAdeBlack: 0.05
   initAdeWhite: 2
   regenThreshold: 10
+  power: 0
+  powerExpReq: 0
+  powerExp: 0
   superArmor: 0
   _barrierEffect: {fileID: 8001687956726767954, guid: a17e70a02f8d081468e767010cf9643f, type: 3}
   _visualPos: {fileID: 0}
@@ -367,6 +372,20 @@ MonoBehaviour:
   purchaseBias: 0.8
   debtAble: 0
   shopList: []
+--- !u!114 &1824319327946309814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6548958457746408809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8a0acb6315fc34418788e6ed69ae1a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2
+  ignoreAngle: 0
 --- !u!1001 &8187783587879568246
 PrefabInstance:
   m_ObjectHideFlags: 0

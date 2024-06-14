@@ -320,6 +320,12 @@ public class PlayerInven : MonoBehaviour
 		(GameManager.instance.pActor.cast as PlayerCast).ChangeSkillSlotTo(stat);
 	}
 
+	public void AddExp(int amt)
+	{
+		currentExp += amt;
+		GameManager.instance.uiManager.UpdateInvenUI();
+	}
+
 	public int AddItem(Item data, int num = 1) //새로운 아이템을 얻는 것이나.
 	{
 		if(data == null)

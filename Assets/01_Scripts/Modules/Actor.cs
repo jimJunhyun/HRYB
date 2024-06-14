@@ -27,7 +27,9 @@ public class Actor : MonoBehaviour
 	public Action<Actor> updateActs;
 	public AISetter _ai;
 
-	
+	public string actorName;
+
+
 
 	List<TemporaryStatMods> ongoingTempStatMods = new List<TemporaryStatMods>();
 
@@ -60,6 +62,9 @@ public class Actor : MonoBehaviour
 		talk = GetComponent<TalkModule>();
 		show = GetComponent<MinimapTarget>();
 		wallet = GetComponent<WalletModule>();
+
+		if(actorName == null || actorName == "")
+			actorName = transform.name;
 	}
 	void Start()
 	{

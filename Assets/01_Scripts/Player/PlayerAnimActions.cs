@@ -82,7 +82,7 @@ public class PlayerAnimActions : MonoBehaviour
 
 	private void OnAnimatorIK(int layerIndex)
 	{
-		if(self == null)
+		if(self == null || self.life.isDead)
 			return;
 		if (self.move.isGrounded && self.move.idling)
 		{
