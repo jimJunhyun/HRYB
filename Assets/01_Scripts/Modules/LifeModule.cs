@@ -95,6 +95,7 @@ public class LifeModule : Module
 	//피격자, 공격자, 대미지
 	public Action<Actor, Actor, YinYang> onNextDamaged;
 
+	[Range(1, 100)]
 	public int power; //기세
 	public float powerExpReq;
 	public float powerExp;
@@ -380,7 +381,7 @@ public class LifeModule : Module
 		_isFirstHit = true;
 		if (attacker != null)
 		{
-			float mod = (attacker.life.power / power);
+			float mod = (Mathf.Max(1, attacker.life.power) / Mathf.Max(1, power));
 			data = data * mod;
 		}
 
