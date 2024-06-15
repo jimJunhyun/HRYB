@@ -39,8 +39,6 @@ public class MinimapManager : MonoBehaviour
 		ClearRender();
 		for (int k = 0; k < targs.Count; k++)
 		{
-			if(targs[k] == null)
-				continue;
 			Vector3 offset = targs[k].transform.position - GameManager.instance.player.transform.position;
 			float xDiff = MINIMAPTEXSIZE * 0.5f * (offset.x / GameManager.instance.pActor.sight.GetSightRange());
 			float yDiff = MINIMAPTEXSIZE * 0.5f * (offset.z / GameManager.instance.pActor.sight.GetSightRange());
