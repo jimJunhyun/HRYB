@@ -53,8 +53,16 @@ public class PlayerAnim : AnimModule
 
 	public override void Awake()
 	{
-		Animator[] anims = GetComponentsInChildren<Animator>();
-		anim = anims[1];
+
+		anim = AnimAct.GetComponent<Animator>();
+		if (anim.runtimeAnimatorController != null)
+		{
+			animatorOverrideController = new AnimatorOverrideController(anim.runtimeAnimatorController);
+			Animators.runtimeAnimatorController = animatorOverrideController;
+
+			clipOverrides = new AnimationClipOverrides(animatorOverrideController.overridesCount);
+			animatorOverrideController.GetOverrides(clipOverrides);
+		}
 	}
 
 	private void Start()
@@ -209,10 +217,5 @@ public class PlayerAnim : AnimModule
 		anim.SetTrigger(changeHash);
 	}
 
-	public void SetChangeAnimation(string id, AnimationClip _clip)
-	{
-		AnimatorOverrideController ov = new AnimatorOverrideController(anim.runtimeAnimatorController);
-		ov[id] = _clip;
-		anim.runtimeAnimatorController = ov;
-	}
+
 }

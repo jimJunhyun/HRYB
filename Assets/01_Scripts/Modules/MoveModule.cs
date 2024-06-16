@@ -31,7 +31,7 @@ public class MoveModule : Module
     protected bool forced = false;
     protected bool forceFlied = false;
 
-    private Vector3 fDir;
+    protected Vector3 fDir;
 	public virtual Vector3 forceDir
 	{
 		get

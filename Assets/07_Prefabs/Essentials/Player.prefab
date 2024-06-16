@@ -113,6 +113,8 @@ MonoBehaviour:
   jumpable: 1
   rollable: 0
   climbable: 1
+  _avoidTime: 0.3
+  _isAvoid: 0
 --- !u!114 &1949278270064682331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,6 +496,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: c4d1e96c-3278-456f-a681-11540330fb82
     m_ActionName: Player/SkillE[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8841136918260268387}
+        m_TargetAssemblyTypeName: PlayerMove, Assembly-CSharp
+        m_MethodName: AvoidPlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 78f4631b-19ad-406d-b22c-3f9fb188ab3c
+    m_ActionName: Player/Avoid[/Keyboard/shift]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: MnK
   m_DefaultActionMap: Player
@@ -548,8 +566,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initAtkDist: 60
   initAtkGap: 1
-  blackDamage: 50
-  whiteDamage: 50
+  blackDamage: 100
+  whiteDamage: 100
   target: {fileID: 0}
   initSecPerCharge: 0
   _grabPos: {fileID: 6580504642613933310}
@@ -600,6 +618,9 @@ MonoBehaviour:
   initAdeBlack: 1
   initAdeWhite: 1
   regenThreshold: 10
+  power: 1
+  powerExpReq: 0
+  powerExp: 0
   superArmor: 0
   isFade: 0
 --- !u!114 &1077379046556091410

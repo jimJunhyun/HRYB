@@ -95,7 +95,7 @@ public class LifeModule : Module
 	//피격자, 공격자, 대미지
 	public Action<Actor, Actor, YinYang> onNextDamaged;
 
-	public int power; //기세
+	int power =1; //기세
 	public float powerExpReq;
 	public float powerExp;
 

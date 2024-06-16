@@ -2,6 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class AnimationClipOverrides : List<KeyValuePair<AnimationClip, AnimationClip>>
+{
+	public AnimationClipOverrides(int capacity) : base(capacity) { }
+
+	public AnimationClip this[string name]
+	{
+		get { return this.Find(x => x.Key.name.Equals(name)).Value; }
+		set
+		{
+			int index = this.FindIndex(x => x.Key.name.Equals(name));
+			if (index != -1)
+				this[index] = new KeyValuePair<AnimationClip, AnimationClip>(this[index].Key, value);
+		}
+	}
+}
+
 public class AnimModule : Module
 {
 	public string hitClipName;
@@ -21,9 +37,23 @@ public class AnimModule : Module
 
 	protected Animator anim;
 	public Animator Animators => anim;
+
+	protected AnimatorOverrideController animatorOverrideController;
+
+	protected AnimationClipOverrides clipOverrides;
+
 	public virtual void Awake()
 	{
 		anim = GetComponent<Animator>();
+		if (anim.runtimeAnimatorController != null)
+		{
+			animatorOverrideController = new AnimatorOverrideController(anim.runtimeAnimatorController);
+			Animators.runtimeAnimatorController = animatorOverrideController;
+
+			clipOverrides = new AnimationClipOverrides(animatorOverrideController.overridesCount);
+			animatorOverrideController.GetOverrides(clipOverrides);
+		}
+
 	}
 
 
@@ -77,34 +107,30 @@ public class AnimModule : Module
 		anim.SetBool(Animator.StringToHash(a), b);
 	}
 
+	public void SetIntigerModify(string a, int b)
+	{
+		anim.SetInteger(Animator.StringToHash(a), b);
+	}
+
 	public virtual void SetAnimationOverrides(List<string> from, List<AnimationClip> to)
 	{
-		AnimatorOverrideController ctrl = new AnimatorOverrideController(anim.runtimeAnimatorController);
-		List<KeyValuePair<AnimationClip, AnimationClip>> apply = new List<KeyValuePair<AnimationClip, AnimationClip>>();
-
-		//for (int i = 0; i < ctrl.animationClips.Length; i++)
-		//{
-		//	//Debug.Log($"Examining : {ctrl.animationClips[i].name}");
-		//	int idx = from.FindIndex(n => n == ctrl.animationClips[i].name);
-		//
-		//	Debug.LogWarning(ctrl.animationClips[i].name);
-		//
-		//	if (idx != -1 && idx < to.Count)
-		//	{
-		//		//Debug.Log($"New Animation To : {to[idx].GetInstanceID()}");
-		//		apply.Add(new KeyValuePair<AnimationClip, AnimationClip>(ctrl.animationClips[i], to[idx]));
-		//	}
-		//}
 
 		for (int i = 0; i < from.Count; i++)
 		{
 			if (i < to.Count)
 			{
-				ctrl[$"{from[i]}"] = to[i];
+				clipOverrides[from[i]] = to[i];
 			}
 		}
-		anim.runtimeAnimatorController = ctrl;
+		animatorOverrideController.ApplyOverrides(clipOverrides);
 
+	}
+
+	public void SetChangeAnimation(string id, AnimationClip _clip)
+	{
+		Debug.LogError(clipOverrides);
+		clipOverrides[id] = _clip;
+		animatorOverrideController.ApplyOverrides(clipOverrides);
 	}
 
 	public void StartExampled()

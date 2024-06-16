@@ -13,8 +13,6 @@ public class PlayerAnimActions : MonoBehaviour
 	public PlayerDashMomentSO _pldmYoho;
 	public PlayerDashMomentSO _pldmHuman;
 
-	[SerializeField] private AnimatorOverrideController _anim;
-
 	SkinnedMeshRenderer hair;
 	SkinnedMeshRenderer ear;
 	SkinnedMeshRenderer tail;
@@ -54,7 +52,6 @@ public class PlayerAnimActions : MonoBehaviour
 	{
 		self = GetComponentInParent<Actor>();
 		animator = GetComponent<Animator>();
-		animator.runtimeAnimatorController = _anim;
 		playerSound = GetComponentInParent<PlayerSound>();
 		hair = transform.Find("Rad_Hair").GetComponent<SkinnedMeshRenderer>();
 		head = transform.Find("Body").GetComponent<SkinnedMeshRenderer>();
@@ -84,7 +81,7 @@ public class PlayerAnimActions : MonoBehaviour
 	{
 		if(self == null)
 			return;
-		if (self.move.isGrounded && self.move.idling)
+		if (self.move.isGrounded && self.move.idling && (self.move as PlayerMove)._isAvoid==false)
 		{
 			lFootPos = animator.GetBoneTransform(HumanBodyBones.LeftFoot).position;
 			lFootForward = animator.GetBoneTransform(HumanBodyBones.LeftFoot).forward;
@@ -283,9 +280,9 @@ public class PlayerAnimActions : MonoBehaviour
 					humanCloth.transform.GetChild(i).gameObject.SetActive(true);
 				}
 
-				(self.anim as PlayerAnim).SetChangeAnimation("Front", _pldmHuman.Front);
-				(self.anim as PlayerAnim).SetChangeAnimation("Right", _pldmHuman.Right);
-				(self.anim as PlayerAnim).SetChangeAnimation("Back", _pldmHuman.Back);
+				self.anim.SetChangeAnimation("Front", _pldmHuman.Front);
+				self.anim.SetChangeAnimation("Right", _pldmHuman.Right);
+				self.anim.SetChangeAnimation("Back", _pldmHuman.Back);
 				(self.anim as PlayerAnim).SetChangeAnimation("Left", _pldmHuman.Left);
 				break;
 
@@ -308,16 +305,16 @@ public class PlayerAnimActions : MonoBehaviour
 				}
 
 
-				(self.anim as PlayerAnim).SetChangeAnimation("Front", _pldmYoho.Front);
-				(self.anim as PlayerAnim).SetChangeAnimation("Right", _pldmYoho.Right);
-				(self.anim as PlayerAnim).SetChangeAnimation("Back", _pldmYoho.Back);
-				(self.anim as PlayerAnim).SetChangeAnimation("Left", _pldmYoho.Left);
+				self.anim.SetChangeAnimation("Front", _pldmYoho.Front);
+				self.anim.SetChangeAnimation("Right", _pldmYoho.Right);
+				self.anim.SetChangeAnimation("Back", _pldmYoho.Back);
+				self.anim.SetChangeAnimation("Left", _pldmYoho.Left);
 				break;
 			default:
-				(self.anim as PlayerAnim).SetChangeAnimation("Front", _pldmHuman.Front);
-				(self.anim as PlayerAnim).SetChangeAnimation("Right", _pldmHuman.Right);
-				(self.anim as PlayerAnim).SetChangeAnimation("Back", _pldmHuman.Back);
-				(self.anim as PlayerAnim).SetChangeAnimation("Left", _pldmHuman.Left);
+				self.anim.SetChangeAnimation("Front", _pldmHuman.Front);
+				self.anim.SetChangeAnimation("Right", _pldmHuman.Right);
+				self.anim.SetChangeAnimation("Back", _pldmHuman.Back);
+				self.anim.SetChangeAnimation("Left", _pldmHuman.Left);
 				break;
 		}
 		
@@ -480,4 +477,12 @@ public class PlayerAnimActions : MonoBehaviour
 			return;
 		StartCoroutine(_plm.UseAfterEffect(self, 0.12f, v2, 0.3f));
 	}
+
+	public void PlayerAvoidEnd()
+	{
+		(self.move as PlayerMove).Hitting();
+		GameManager.instance.EnableCtrl();
+		self.move.forceDir = Vector3.zero;
+	}
+
 }

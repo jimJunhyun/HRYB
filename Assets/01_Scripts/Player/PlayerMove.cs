@@ -16,7 +16,7 @@ public class PlayerMove : MoveModule
 
 	public float climbSpeed = 7f;
 	public float climbDistance = 0.7f;
-	
+
 	public float spinSpd = 300f;
 	public float jumpPwer = 20f;
 	public float jumpGap = 0.5f;
@@ -37,6 +37,31 @@ public class PlayerMove : MoveModule
 	public bool jumpable;
 	public bool rollable;
 	public bool climbable;
+
+	[Header("Avoid")]
+	public float _avoidTime = 0.3f;
+	public bool _isAvoid = false;
+
+	bool AvoidSuccess = false;
+
+
+	public override Vector3 forceDir
+	{
+		get
+		{
+			return fDir;
+		}
+		set
+		{
+			fDir = value;
+			if (fDir.y > 0)
+			{
+				forced = true;
+			}
+
+
+		}
+	}
 
 	public bool onAir
 	{
@@ -124,7 +149,7 @@ public class PlayerMove : MoveModule
 						return Vector3.zero;
 				}
 			}
-			
+
 		}
 	}
 
@@ -158,17 +183,17 @@ public class PlayerMove : MoveModule
 		get => MoveDirUncalced + forceDir;
 	}
 
-	public override MoveStates moveStat 
+	public override MoveStates moveStat
 	{
-		get => base.moveStat; 
-		protected set 
+		get => base.moveStat;
+		protected set
 		{
-			if(value == MoveStates.Climb)
+			if (value == MoveStates.Climb)
 			{
 				curStat = MoveStates.Climb;
 				speed = climbSpeed;
 			}
-			else if(value == MoveStates.Sit)
+			else if (value == MoveStates.Sit)
 			{
 				if (moveStat != MoveStates.Climb)
 				{
@@ -204,10 +229,10 @@ public class PlayerMove : MoveModule
 
 	private void OnControllerColliderHit(ControllerColliderHit hit)
 	{
-		if(hit.point.y <= middle.position.y)
+		if (hit.point.y <= middle.position.y)
 		{
 			angle = Mathf.Acos(Vector3.Dot(hit.normal, transform.up) / (hit.normal.magnitude * transform.up.magnitude)) * Mathf.Rad2Deg;
-			
+
 			if (angle >= slipThreshold)
 			{
 				slip = true;
@@ -223,13 +248,13 @@ public class PlayerMove : MoveModule
 				slipDir = Vector3.zero;
 			}
 		}
-		
-		
+
+
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if(other.gameObject.layer == GameManager.TRIGGERLAYER)
+		if (other.gameObject.layer == GameManager.TRIGGERLAYER)
 		{
 			GameManager.instance.qManager.InvokeOnChanged(CompletionAct.MoveTo, other.name);
 		}
@@ -275,13 +300,13 @@ public class PlayerMove : MoveModule
 		//	ctrl.center = Vector3.up;
 		//}
 
-		if(Time.time - prevDetectTime > nearRefreshTime)
+		if (Time.time - prevDetectTime > nearRefreshTime)
 		{
 			DoTargetDetection();
 			DoNearDetection();
 		}
 	}
-	
+
 
 	public override void FixedUpdate()
 	{
@@ -302,7 +327,7 @@ public class PlayerMove : MoveModule
 			ctrl.Move((forceDir) * Time.fixedDeltaTime);
 		}
 		GetActor().anim.SetIdleState(idling);
-		
+
 		if (moveModuleStat.Paused)
 		{
 			//Debug.LogError("Pause");
@@ -317,7 +342,7 @@ public class PlayerMove : MoveModule
 				SetClimb();
 			}
 
-		
+
 
 			if (isLocked && (self.atk.target) == null)
 			{
@@ -340,7 +365,7 @@ public class PlayerMove : MoveModule
 					break;
 				case CamStatus.Locked:
 					{
-						if((self.atk.target) == null)
+						if ((self.atk.target) == null)
 							return;
 						Vector3 vec = GetDir((self.atk.target));
 						to = Quaternion.LookRotation(vec, Vector3.up);
@@ -386,13 +411,13 @@ public class PlayerMove : MoveModule
 				PlayerControllerMove(MoveDirCalced);
 			}
 		}
-		
-		
+
+
 	}
 
 	public void CalcClimbState()
 	{
-		if(moveStat == MoveStates.Climb)
+		if (moveStat == MoveStates.Climb)
 		{
 			Debug.DrawRay(middle.position, Vector3.down * 1.5f, Color.cyan, 1000f);
 			if (Physics.Raycast(transform.position, Vector3.down, 0.5f, ~(1 << GameManager.PLAYERLAYER)))
@@ -405,8 +430,8 @@ public class PlayerMove : MoveModule
 				climbGrounded = false;
 			}
 		}
-		
-		
+
+
 	}
 
 	void SlipCalc()
@@ -510,9 +535,9 @@ public class PlayerMove : MoveModule
 
 		ctrl.Move((dir) * Time.fixedDeltaTime);
 
-		
-		
-		
+
+
+
 	}
 	int t = 0;
 
@@ -532,22 +557,22 @@ public class PlayerMove : MoveModule
 				moveDir = new Vector3(0, inp.y, 0);
 			}
 
-			
+
 		}
-		
+
 	}
 
 	public void Run(InputAction.CallbackContext context)
 	{
-		if(moveStat != MoveStates.Sit && moveStat != MoveStates.Climb)
+		if (moveStat != MoveStates.Sit && moveStat != MoveStates.Climb)
 		{
 			if (context.started)
 			{
-				if(moveStat == MoveStates.Run)
+				if (moveStat == MoveStates.Run)
 				{
 					moveStat = MoveStates.Walk;
 				}
-				else if(moveStat == MoveStates.Walk)
+				else if (moveStat == MoveStates.Walk)
 				{
 					moveStat = MoveStates.Run;
 				}
@@ -555,7 +580,7 @@ public class PlayerMove : MoveModule
 			}
 			GetActor().anim.SetMoveState(((int)moveStat));
 		}
-		
+
 
 	}
 
@@ -563,16 +588,16 @@ public class PlayerMove : MoveModule
 	{
 		if (context.started && moveStat != MoveStates.Climb)
 		{
-			if(moveStat == MoveStates.Sit)
+			if (moveStat == MoveStates.Sit)
 			{
 				Debug.DrawRay(middle.position, Vector3.up * ctrl.height, Color.green, 1000f);
-				if(!Physics.Raycast(middle.position,Vector3.up, ctrl.height, ~(1 << GameManager.PLAYERLAYER), QueryTriggerInteraction.Ignore))
+				if (!Physics.Raycast(middle.position, Vector3.up, ctrl.height, ~(1 << GameManager.PLAYERLAYER), QueryTriggerInteraction.Ignore))
 				{
 					moveStat = MoveStates.Walk;
 					ctrl.height *= 2f;
 					ctrl.center *= 2f;
 				}
-				
+
 			}
 			else
 			{
@@ -609,13 +634,13 @@ public class PlayerMove : MoveModule
 				}
 			}
 		}
-		
-		
+
+
 	}
 
 	public void Turn(InputAction.CallbackContext context)
 	{
-		if(CameraManager.instance.curCamStat == CamStatus.Aim)
+		if (CameraManager.instance.curCamStat == CamStatus.Aim)
 		{
 			Vector2 inp = context.ReadValue<Vector2>();
 			transform.Rotate(Vector3.up * inp.x * spinSpd * Time.deltaTime);
@@ -625,13 +650,13 @@ public class PlayerMove : MoveModule
 				, CameraManager.instance.aimCam.transform.eulerAngles.z);
 		}
 
-		if(CameraManager.instance.curCamStat == CamStatus.Freelook)
+		if (CameraManager.instance.curCamStat == CamStatus.Freelook)
 		{
-			if(targetables.Count == 0)
+			if (targetables.Count == 0)
 			{
 				DoTargetDetection();
 			}
-			if(targetables.Count > 0)
+			if (targetables.Count > 0)
 			{
 				SetNearestEnemy();
 			}
@@ -712,7 +737,7 @@ public class PlayerMove : MoveModule
 				}
 			}
 		}
-		
+
 	}
 
 	public void Roll(InputAction.CallbackContext context)
@@ -733,8 +758,8 @@ public class PlayerMove : MoveModule
 		//			ctrl.center *= 0.5f;
 		//	}
 		//}
-		
-		
+
+
 	}
 
 	public void DoNearDetection()
@@ -747,7 +772,7 @@ public class PlayerMove : MoveModule
 			nearTargets.Add(c[i].transform);
 		}
 
-		HashSet<Transform> nearEnters = new HashSet<Transform>(nearTargets); 
+		HashSet<Transform> nearEnters = new HashSet<Transform>(nearTargets);
 		nearEnters.ExceptWith(prevNearTargets);
 
 		foreach (var item in nearEnters)
@@ -761,7 +786,7 @@ public class PlayerMove : MoveModule
 
 		foreach (var item in nearExits)
 		{
-			if(item != null)
+			if (item != null)
 			{
 				GameManager.instance.qManager.InvokeOnChanged(CompletionAct.RemainNear, item.name, -1);
 			}
@@ -775,9 +800,9 @@ public class PlayerMove : MoveModule
 		//Debug.Log("HIT OF  + " + c.Length);
 		for (int i = 0; i < c.Length; i++)
 		{
-			if(c[i].TryGetComponent<Actor>(out Actor actor))
+			if (c[i].TryGetComponent<Actor>(out Actor actor))
 			{
-				if(actor != GetActor() && actor.life.yy.white.Value > 0)
+				if (actor != GetActor() && actor.life.yy.white.Value > 0)
 				{
 					targetables.Add(actor);
 				}
@@ -802,7 +827,7 @@ public class PlayerMove : MoveModule
 			if (!item)
 				continue;
 			Vector3 distVec = (item.transform.position - transform.position);
-			if(Vector3.Dot(distVec.normalized,  Camera.main.transform.forward) > pAttack.TargetMaxAngleCos)
+			if (Vector3.Dot(distVec.normalized, Camera.main.transform.forward) > pAttack.TargetMaxAngleCos)
 			{
 				if (distVec.sqrMagnitude < nearestDist)
 				{
@@ -812,19 +837,19 @@ public class PlayerMove : MoveModule
 				}
 
 			}
-			
+
 		}
 	}
 
 	public float GetSneakDist()
 	{
-		if(moveStat == MoveStates.Sit)
+		if (moveStat == MoveStates.Sit)
 		{
 			return sneakPower;
 		}
 		return 0;
 	}
-	
+
 
 	void ResetTargets()
 	{
@@ -859,11 +884,47 @@ public class PlayerMove : MoveModule
 		GameManager.instance.pinp.ActivateInput();
 		already.Clear();
 		ResetCharacterController();
-		
+
 	}
 
 	public void PlayerGoHome()
 	{
 		PlayerTeleport(new Vector3(0, 0, 0));
 	}
+
+	public void AvoidPlayer()
+	{
+		GameManager.instance.DisableCtrl();
+		self.anim.SetBoolModify("Avoid", true);
+		Debug.LogError("Move ment : " + moveDir);
+		Vector3 dir = moveDir;
+		if (dir == Vector3.zero)
+		{
+			dir = new Vector3(0, 0, -1);
+			//self.anim.SetIntigerModify("MoveX", -1);
+		}
+
+		dir = ConvertToCamFront(dir);
+		dir = new Vector3(dir.x * 8, 3, dir.z * 8);
+
+		forceDir = dir;
+		StartCoroutine(AvoidDelay());
+
+		self.life._hitEvent += Hitting;
+	}
+
+	IEnumerator AvoidDelay()
+	{
+		_isAvoid = true;
+		yield return new WaitForSeconds(_avoidTime);
+		forceDir = Vector3.zero;
+	}
+
+	public void Hitting()
+	{
+		_isAvoid = false;
+		self.life._hitEvent -= Hitting;
+		self.anim.SetBoolModify("Avoid", false);
+	}
+
 }

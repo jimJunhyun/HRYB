@@ -47,6 +47,8 @@ public class PlayerLife : LifeModule
 				_stopCoroutine = StartCoroutine(PlayWakeAgain(0.2f));
 			}
 		};
+
+		pMove = self.move as PlayerMove;
 	}
 
 	public IEnumerator JunGIUP(ColliderCast cols, float t)
@@ -82,10 +84,30 @@ public class PlayerLife : LifeModule
 
 	protected override void DamageYYBase(YinYang data, DamageChannel chn = DamageChannel.Normal)
 	{
-		base.DamageYYBase(data, chn);
-		GameManager.instance.uiManager.yinYangUI.RefreshValues();
+
+			base.DamageYYBase(data, chn);
+			GameManager.instance.uiManager.yinYangUI.RefreshValues();
 	}
 
+	public override void DamageYY(float black, float white, DamageType type, float dur = 0, float tick = 0, Actor attacker = null, DamageChannel channel = DamageChannel.None)
+	{
+		if (pMove._isAvoid)
+		{
+
+		}
+		else
+			base.DamageYY(black, white, type, dur, tick, attacker, channel);
+	}
+
+	public override void DamageYY(YinYang data, DamageType type, float dur = 0, float tick = 0, Actor attacker = null, DamageChannel channel = DamageChannel.None)
+	{
+		if (pMove._isAvoid)
+		{
+
+		}
+		else
+			base.DamageYY(data, type, dur, tick, attacker, channel);
+	}
 
 	public override void OnDead()
 	{
