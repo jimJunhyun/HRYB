@@ -67,6 +67,7 @@ public class ChoiceDialogue : Dialogue
 		
 		GameManager.instance.uiManager.dialogueUI.ShowChoice(choiceOptions);
 		choosing = true;
+		chooseComp = false;
 		yield return new WaitUntil(()=> GameManager.instance.uiManager.dialogueUI.chosen != -1);
 		next = nexts[GameManager.instance.uiManager.dialogueUI.chosen];
 		GameManager.instance.uiManager.dialogueUI.chosen = -1;
