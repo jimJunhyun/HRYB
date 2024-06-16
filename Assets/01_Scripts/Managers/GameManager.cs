@@ -565,8 +565,8 @@ public class GameManager : MonoBehaviour
 		}
 		if (Input.GetKeyDown(KeyCode.P))
 		{
-			GameManager.instance.pinven.AddItem(Item.GetItem <YinyangItem>("고사리"), 1);
-			GameManager.instance.pinven.AddItem(Item.GetItem <YinyangItem>("녹각"), 2);
+			GameManager.instance.pinven.AddItem(Item.GetItem <YinyangItem>("작약"), 1);
+			GameManager.instance.pinven.AddItem(Item.GetItem <YinyangItem>("인삼"), 2);
 		}
 
 

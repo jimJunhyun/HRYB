@@ -217,15 +217,10 @@ public class ToolBtn : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 			else
 			{
 				subButtons[i].transform.localPosition = Vector3.zero;
-			}
-		}
-		if (!isShow)
-		{
-			for (int i = 0; i < subButtons.Count; i++)
-			{
 				subButtons[i].gameObject.SetActive(false);
 			}
 		}
+
 	}
 
 	public void OnPointerEnter(PointerEventData eventData)
