@@ -29,7 +29,7 @@ public class Character : ScriptableObject
 			if(q == null)
 			{
 				q = false;
-				Dialogue nxt = initDia;
+				Dialogue nxt = dia;
 				while (true)
 				{
 					if(nxt is ChoiceDialogue cd)
@@ -41,10 +41,12 @@ public class Character : ScriptableObject
 					}
 					if(nxt == null)
 					{
+						Debug.Log("NOQUESTING");
 						break;
 					}
 					if((nxt as QuestDialogue) != null)
 					{
+						Debug.Log("ZNPTMEND");
 						q = true;
 						break;
 					}
