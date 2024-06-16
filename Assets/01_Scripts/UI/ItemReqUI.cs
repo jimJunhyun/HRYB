@@ -19,7 +19,7 @@ public class ItemReqUI : MonoBehaviour
 		if(count == null)
 			count = transform.Find("Count").GetComponent<TextMeshProUGUI>();
 
-		image.sprite = pair.info.icon;
+		image.sprite = Item.GetItem<Item>(pair.info.originalName).icon;
 		itemName.text = pair.info.MyName;
 
 		System.Text.StringBuilder sb;
