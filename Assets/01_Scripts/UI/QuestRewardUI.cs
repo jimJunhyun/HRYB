@@ -31,6 +31,7 @@ public class QuestRewardUI : MonoBehaviour
 		{
 			case RewardType.Exp:
 				//typeImg.sprite = GameManager.instance.expSprite;
+				rewNameTxt.text = "경험치";
 				break;
 			case RewardType.Skill:
 				typeImg.sprite = GameManager.instance.skillLoader.GetSkill(rew.parameter).skillIcon;
@@ -39,15 +40,23 @@ public class QuestRewardUI : MonoBehaviour
 				typeImg.sprite = Item.GetItem <Item> (rew.parameter).icon;
 				break;
 			case RewardType.HealWhite:
+				rewNameTxt.text = "양 회복";
+				return;
 			case RewardType.HealBlack:
+				rewNameTxt.text = "음 회복";
+				return;
 			case RewardType.Quest:
+			case RewardType.EnableObject:
+			case RewardType.DisableObject:
 				return;
 		}
 
 		System.Text.StringBuilder sb;
 		bool usingGlobal = GameManager.GetGlobalSB(out sb);
-
-		rewNameTxt.text = rew.parameter;
+		if(rew.rewardType != RewardType.Exp && rew.rewardType != RewardType.HealWhite && rew.rewardType != RewardType.HealBlack)
+		{
+			rewNameTxt.text = rew.parameter;
+		}
 
 		sb.Append("<#00dd00>");
 		sb.Append(rew.amount);

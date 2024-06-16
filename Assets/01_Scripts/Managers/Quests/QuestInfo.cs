@@ -283,13 +283,13 @@ public class QuestInfo : ScriptableObject, System.IComparable
 				case RewardType.Exp:
 					{
 						Debug.Log($"경험치 {rewardInfo[i].parameter} 제공함");
-						GameManager.instance.pinven.AddExp(int.Parse(rewardInfo[i].parameter));
+						GameManager.instance.pinven.AddExp(rewardInfo[i].amount);
 					}
 					break;
 				case RewardType.Skill:
 					{
 						Debug.Log($"스킬 {rewardInfo[i].parameter} 제공함");
-
+						//?????????
 					}
 					break;
 				case RewardType.Item:
@@ -300,14 +300,14 @@ public class QuestInfo : ScriptableObject, System.IComparable
 					break;
 				case RewardType.HealWhite:
 					{
-						int amt = int.Parse(rewardInfo[i].parameter);
-						GameManager.instance.pActor.life.DamageYY(0, -amt, DamageType.NoHit);
+						//int amt = int.Parse(rewardInfo[i].parameter);
+						GameManager.instance.pActor.life.DamageYY(0, -rewardInfo[i].amount, DamageType.NoHit);
 					}
 					break;
 				case RewardType.HealBlack:
 					{
-						int amt = int.Parse(rewardInfo[i].parameter);
-						GameManager.instance.pActor.life.DamageYY(-amt, 0, DamageType.NoHit);
+						//int amt = int.Parse(rewardInfo[i].parameter);
+						GameManager.instance.pActor.life.DamageYY(-rewardInfo[i].amount, 0, DamageType.NoHit);
 					}
 					break;
 				case RewardType.Quest:

@@ -61,8 +61,9 @@ public class QuestDetailUI : MonoBehaviour
 		giver.text = sb.ToString();
 
 		sb.Clear();
-		sb.Append("내용 : ");
+		sb.Append("내용 : <size=80%>");
 		sb.Append(inf.descriptions);
+		sb.Append("<size=100%>");
 		description.text = sb.ToString();
 
 		GameManager.ReturnGlobalSB(usingGlobal);

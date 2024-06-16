@@ -181,6 +181,7 @@ using System.Linq;
 	public void OffInven()
 	{
 		invenPanel.SetActive(false);
+		toolbarUIShower.ChangeStatus(ToolState.Inventory);
 		isOn = false;
 		GameManager.instance.LockCursor();
 	}
