@@ -104,6 +104,10 @@ public class PlayerMove : MoveModule
 	float initRad;
 	float initHeight;
 
+	float _currentAvoidTime = 0.0f;
+	[Header("Avoid")]
+	public float AvoidTime = 4;
+
 	public override bool idling => base.idling || moveModuleStat.Paused;
 
 	public override bool isGrounded
@@ -299,7 +303,7 @@ public class PlayerMove : MoveModule
 		//	ctrl.radius = 0.5f;
 		//	ctrl.center = Vector3.up;
 		//}
-
+		_currentAvoidTime += Time.deltaTime;
 		if (Time.time - prevDetectTime > nearRefreshTime)
 		{
 			DoTargetDetection();
@@ -895,6 +899,13 @@ public class PlayerMove : MoveModule
 
 	public void AvoidPlayer()
 	{
+		if(_currentAvoidTime < AvoidTime)
+		{
+			return;
+		}
+
+		_currentAvoidTime = 0;
+
 		GameManager.instance.DisableCtrl();
 		self.anim.SetBoolModify("Avoid", true);
 		Debug.LogError("Move ment : " + moveDir);
@@ -906,9 +917,9 @@ public class PlayerMove : MoveModule
 		}
 
 		dir = ConvertToCamFront(dir);
-		dir = new Vector3(dir.x * 8, 3, dir.z * 8);
+		dir = new Vector3(dir.x * 12, 3, dir.z * 12);
 
-		forceDir = dir;
+		forceDir += dir;
 		StartCoroutine(AvoidDelay());
 
 		self.life._hitEvent += Hitting;

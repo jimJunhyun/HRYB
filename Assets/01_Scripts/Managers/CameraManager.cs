@@ -88,6 +88,9 @@ public class CameraManager : MonoBehaviour
 		}
 
 		originYSpeed = pCam.m_YAxis.m_MaxSpeed;
+
+		if (_middleCamObj == null)
+			_middleCamObj = new GameObject();
 	}
 
 	private void Start()
@@ -124,6 +127,10 @@ public class CameraManager : MonoBehaviour
 			_middleCamObj.transform.position = Vector3.Lerp(_middleCamObj.transform.position, vec, Time.deltaTime * 5);
 			//pCam.m_YAxis.Value
 		}
+		else
+		{
+			_middleCamObj.transform.position = _playerModule.transform.position;
+		}
 
 		if(_playerModule.GetActor().atk.target==null)
 		{
@@ -153,8 +160,6 @@ public class CameraManager : MonoBehaviour
 				pCam.Priority = FORWARDCAM;
 				aimCam.Priority = BACKWARDCAM;
 				
-				if(_middleCamObj == null)
-					_middleCamObj = new GameObject();
 				pCam.LookAt = _middleCamObj.transform;
 				
 

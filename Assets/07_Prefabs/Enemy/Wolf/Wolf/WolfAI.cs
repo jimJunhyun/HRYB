@@ -47,7 +47,7 @@ public class WolfAI : AISetter
 	{
 		Vector3 lookPos = t.position - transform.position;
 		lookPos.y = transform.position.y;
-		transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.LookRotation(lookPos), Time.deltaTime * 40);
+		transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.LookRotation(lookPos), Time.deltaTime * 4);
 	}
 	
     protected override void StartInvoke()

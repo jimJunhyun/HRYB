@@ -77,8 +77,7 @@ public class OnePunchGrabSkill : YGComboAttackBase
 						_nextTo?.Invoke();
 						PlayerAttack pl = self.atk as PlayerAttack;
 						pl.BleedValue = t;
-
-						(self.cast as PlayerCast).SetCooldownTo(SkillSlotInfo.RClick, 0.2f);
+						self.StartCoroutine(YeildTime(self));
 					}
 					else
 					{
@@ -154,5 +153,12 @@ public class OnePunchGrabSkill : YGComboAttackBase
 	public override int ListValue()
 	{
 		return 2;
+	}
+
+	IEnumerator YeildTime(Actor self)
+	{
+		(self.cast as PlayerCast).SetCooldownTo(SkillSlotInfo.RClick, 0.2f);
+		yield return new WaitForSeconds(0.2f);
+		(self.cast as PlayerCast).SetCooldownSet(SkillSlotInfo.RClick, 0);
 	}
 }
