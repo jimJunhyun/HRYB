@@ -23,6 +23,7 @@ using System.Linq;
  public class UIManager : MonoBehaviour
 {
 	Canvas canvas;
+	Canvas comboCanv;
 
 	public YYCtrl yinYangUI;
 	public AimPointCtrl aimUI;
@@ -86,6 +87,7 @@ using System.Linq;
 		getUIDefault = GameObject.Find("GetItemTransform").transform;
 		GetitemUITransform = GameObject.Find("GetItemGroup").transform;
 		canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+		comboCanv = GameObject.Find("UICombo").GetComponent<Canvas>();
 		invenPanel = canvas.transform.Find("ToolPanel").gameObject;
 		optionPanel = canvas.transform.Find("OptionUI").gameObject;
 		yinYangUI = canvas.GetComponentInChildren<YYCtrl>();
@@ -222,11 +224,13 @@ using System.Linq;
 	public void OffCanvas()
 	{
 		canvas.gameObject.SetActive(false);
+		comboCanv.gameObject.SetActive(false);
 	}
 
 	public void OnCanvas()
 	{
 		canvas.gameObject.SetActive(true);
+		comboCanv.gameObject.SetActive(true);
 	}
 
 
