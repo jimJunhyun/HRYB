@@ -434,7 +434,7 @@ public class LifeModule : Module
 			GameManager.instance.recentEnemy = GetActor();
 			GameManager.instance.qManager.InvokeOnChanged(CompletionAct.DefeatTarget, GetActor().actorName);
 		}
-
+		Debug.Log($"{self.actorName} HP : {yy.white.Value} / {yy.white.MaxValue}");
 	}
 
 	public void StopDamagingFor(DamageChannel channel, int amt = 1)
