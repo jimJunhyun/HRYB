@@ -40,7 +40,7 @@ public class HPBar : MonoBehaviour
 		{
 			parent.enabled = false;
 		}
-		else
+		else if (lf.yy.white.Value <= lf.yy.white.MaxValue || lf.yy.white.Value >= 0)
 		{
 			parent.enabled = true;
 		}
