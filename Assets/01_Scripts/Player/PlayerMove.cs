@@ -660,6 +660,7 @@ public class PlayerMove : MoveModule
 			{
 				SetNearestEnemy();
 			}
+
 		}
 	}
 
@@ -917,12 +918,12 @@ public class PlayerMove : MoveModule
 	{
 		_isAvoid = true;
 		yield return new WaitForSeconds(_avoidTime);
-		forceDir = Vector3.zero;
+		_isAvoid = false;
+		//forceDir = Vector3.zero;
 	}
 
 	public void Hitting()
 	{
-		_isAvoid = false;
 		self.life._hitEvent -= Hitting;
 		self.anim.SetBoolModify("Avoid", false);
 	}

@@ -71,7 +71,7 @@ public class OnePunchGrabSkill : YGComboAttackBase
 
 				if (t >= 1 && _life.tag != "Jansung")
 				{
-					if((_life.yy.black.Value > 0 && _life.yy.white.Value > 0))
+					if((_life.yy.white.Value > 0))
 					{
 
 						_nextTo?.Invoke();
@@ -106,7 +106,7 @@ public class OnePunchGrabSkill : YGComboAttackBase
 				{
 					//_nextTo?.Invoke();
 
-					if (_life.tag != "Jansung")
+					if (_life.tag == "Jansung")
 					{
 						GameObject obj2 = PoolManager.GetObject("MasterSparkCols", self.transform);
 

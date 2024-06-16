@@ -17,6 +17,8 @@ public class PlayerLife : LifeModule
 
 	Vector3 initPos;
 
+	bool _playerAvoidSucc = false;
+
 	public override bool isDead
 	{
 		get => yy.white.Value <= 0;
@@ -91,22 +93,31 @@ public class PlayerLife : LifeModule
 
 	public override void DamageYY(float black, float white, DamageType type, float dur = 0, float tick = 0, Actor attacker = null, DamageChannel channel = DamageChannel.None)
 	{
-		if (pMove._isAvoid)
+		if (pMove._isAvoid && _playerAvoidSucc == false)
 		{
-
+			_playerAvoidSucc = true;
+			StartCoroutine(PlayerAvoidSucc());
 		}
-		else
+		else if(_playerAvoidSucc ==false)
 			base.DamageYY(black, white, type, dur, tick, attacker, channel);
 	}
 
 	public override void DamageYY(YinYang data, DamageType type, float dur = 0, float tick = 0, Actor attacker = null, DamageChannel channel = DamageChannel.None)
 	{
-		if (pMove._isAvoid)
+		if (pMove._isAvoid && _playerAvoidSucc == false)
 		{
-
+			_playerAvoidSucc = true;
+			StartCoroutine(PlayerAvoidSucc());
 		}
-		else
+		else if (_playerAvoidSucc == false)
 			base.DamageYY(data, type, dur, tick, attacker, channel);
+	}
+
+	IEnumerator PlayerAvoidSucc()
+	{
+		Debug.LogError("회피 성공");
+		yield return new WaitForSeconds(3.0f);
+		_playerAvoidSucc = false;
 	}
 
 	public override void OnDead()

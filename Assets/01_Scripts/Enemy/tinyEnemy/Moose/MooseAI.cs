@@ -136,7 +136,17 @@ public class MooseAI : AISetter
 
     protected override void UpdateInvoke()
     {
-	    if (self.life.isDead == false && _isWake && self.life.isDead == false && self.anim.Animators.GetBool("Stun") == false)
+		if ((self.life.IsFirstHit == true || Vector3.Distance(player.transform.position, transform.position) < 7) && _isWake == false)
+		{
+			_isWake = true;
+			self.anim.SetBoolModify("Sleep", false);
+			StartInvoke();
+		}
+
+		if (self.AI.StopState)
+			return;
+
+		if (self.life.isDead == false && _isWake && self.life.isDead == false && self.anim.Animators.GetBool("Stun") == false)
 	    {
 		    LookAt(player.transform);
 		    
@@ -144,11 +154,6 @@ public class MooseAI : AISetter
 
 	    transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
 	    
-	    if ((self.life.IsFirstHit == true || Vector3.Distance(player.transform.position, transform.position) < 7) && _isWake == false)
-	    {
-		    _isWake = true;
-		    self.anim.SetBoolModify("Sleep", false);
-		    StartInvoke();
-	    }
+
     }
 }

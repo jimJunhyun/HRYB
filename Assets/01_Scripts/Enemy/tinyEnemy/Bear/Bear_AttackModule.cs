@@ -92,28 +92,25 @@ public class Bear_AttackModule : EnemyAttackModule
 						obj.transform.position = _firePos.transform.position;
 						obj.transform.LookAt(self.AI.player.transform);
 						obj.transform.parent = null;
-					
+
 						_nowCols.Now(transform, (_life) =>
 						{
-							_life.DamageYY(new YinYang(0, 5), DamageType.DirectHit);
+							_life.DamageYY(new YinYang(0, 2), DamageType.DirectHit);
 							// 기절 ++
-							Vector3 vec = _life.transform.position-transform.position;
+							Vector3 vec = _life.transform.position - transform.position;
 							vec.y = 0;
 							vec.Normalize();
-						
-							GiveBuff(_life.GetActor(), StatEffID.Stun, 0.1f);
 
 
 							_life.GetActor().move.forceDir = vec * 2; //+ new Vector3(0, 32, 0);
-							//_life.GetActor().move.forceDir.y = 40;
-						});
+																	  //_life.GetActor().move.forceDir.y = 40;
+						}, default, default, 0.2f) ;
 
 					}
 					
 					
 				}
 				break;
-			
 			case "EX2":
 				{
 					

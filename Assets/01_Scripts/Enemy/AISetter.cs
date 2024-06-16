@@ -24,6 +24,7 @@ public abstract class AISetter : MonoBehaviour
 	protected Selecter head;
 	
 	protected bool stopped = false;
+	public bool StopState => stopped;
 	float stopEnAble = 0f;
 
 
