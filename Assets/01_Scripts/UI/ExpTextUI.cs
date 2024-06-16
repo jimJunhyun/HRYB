@@ -7,7 +7,12 @@ using TMPro;
 public class ExpTextUI : MonoBehaviour
 {
 	TextMeshProUGUI txt;
-    public void DoRefresh()
+
+	private void Start()
+	{
+		DoRefresh();
+	}
+	public void DoRefresh()
 	{
 		if(txt == null)
 		{
@@ -19,6 +24,7 @@ public class ExpTextUI : MonoBehaviour
 		sb.Append("<#000000>내공 : </color><#555555>");
 		sb.Append(GameManager.instance.pinven.currentExp);
 		sb.Append("</color>");
+		txt.text = sb.ToString();
 		GameManager.ReturnGlobalSB(b);
 	}
 }
