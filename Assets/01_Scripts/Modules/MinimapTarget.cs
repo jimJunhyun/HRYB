@@ -7,7 +7,7 @@ public enum MinimapRenderType
 	MiniPlayer,
 	MiniEnemy,
 	MiniEliteEnemy,
-
+	MiniNPC,
 }
 
 public class MinimapTarget : Module
