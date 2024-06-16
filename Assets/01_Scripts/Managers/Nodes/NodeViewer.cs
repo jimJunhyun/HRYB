@@ -16,6 +16,8 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 	List<GameObject> partedNode;
 
 	public NodeLearnUI nodeLearner;
+	public ExpTextUI exp;
+	
 	Transform viewport;
 
 	internal NodeUI curSelected;
@@ -46,6 +48,7 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 		}
 		nodeLearner = transform.Find("NodeLearnWindow").GetComponent<NodeLearnUI>();
 		viewport = transform.Find("NodeBgnd/Viewport");
+		exp = transform.Find("EXPText").GetComponent<ExpTextUI>();
 	}
 
 	private void Start()
@@ -188,6 +191,6 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 
 	public void Refresh()
 	{
-
+		exp.DoRefresh();
 	}
 }
