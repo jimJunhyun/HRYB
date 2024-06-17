@@ -36,6 +36,7 @@ public class HPBar : MonoBehaviour
 		whiteAdequity.fillAmount = lf.adequity.white.Value / (lf.adequity.white.Value + lf.adequity.black.Value);
 		groge.fillAmount = lf.GetGrogeValue  / lf._grogeInitValue;
 
+		parent.enabled = true;
 		//if (lf.yy.white.Value >= lf.yy.white.MaxValue || lf.yy.white.Value <= 0)
 		//{
 		//	parent.enabled = false;
