@@ -333,10 +333,14 @@ public class PlayerInven : MonoBehaviour
 			Debug.LogError($"존재하지 않는 아이템을 얻으려 함.");
 			return num;
 		}
+
 		List<int> idxes;
 		GameManager.instance.qManager.InvokeOnChanged(CompletionAct.GetItem, data.MyName, num);
 		GameManager.instance.qManager.InvokeOnChanged(CompletionAct.HaveItem, data.MyName, num);
-		if(data is YinyangItem yy)
+		GetItemBack btn = PoolManager.GetObject("GetItemBack", GameManager.instance.uiManager.GetitemUITransform).GetComponent<GetItemBack>();
+		btn.transform.localPosition = GameManager.instance.uiManager.getItemUiSlot[0].localPosition;
+		btn.SetInfo(data, num);
+		if (data is YinyangItem yy)
 		{
 			GameManager.instance.pedia.GotItem(yy);
 		}

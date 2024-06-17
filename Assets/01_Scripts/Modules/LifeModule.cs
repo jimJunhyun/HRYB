@@ -429,10 +429,10 @@ public class LifeModule : Module
 		}
 		if (attacker == GameManager.instance.pActor)
 		{
-			GameManager.instance.recentDamage = yy.white.Value;
+
+			GameManager.instance.recentDamage = data.white.Value;
 			GameManager.instance.recentDamageType = type;
 			GameManager.instance.recentEnemy = GetActor();
-			GameManager.instance.qManager.InvokeOnChanged(CompletionAct.DefeatTarget, GetActor().actorName);
 		}
 		Debug.Log($"{self.actorName} HP : {yy.white.Value} / {yy.white.MaxValue}");
 	}
@@ -516,6 +516,8 @@ public class LifeModule : Module
 			{
 				RemoveAllStatEff((StatEffID)GameManager.instance.statEff.idStatEffPairs[item.Value.eff]);
 			}
+				
+			GameManager.instance.qManager.InvokeOnChanged(CompletionAct.DefeatTarget, GetActor().actorName);
 			
 		}
 
