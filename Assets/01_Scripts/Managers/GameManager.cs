@@ -36,6 +36,8 @@ public struct ModuleController
 	int timelinePause;
 	bool stopFlag;
 
+	float minmaxModifier;
+
 	float? fixedSpeed;
 	float speed;
 	Stack<float> prevSpeeds;
@@ -74,7 +76,7 @@ public struct ModuleController
 		}
 	}
 
-	public ModuleController(bool disabled)
+	public ModuleController(bool disabled, float minmax = Mathf.Infinity)
 	{
 		animPause = 0;
 		statPause = 0;
@@ -83,6 +85,7 @@ public struct ModuleController
 		speed = 1;
 		fixedSpeed = null;
 		prevSpeeds = new Stack<float>();
+		this.minmaxModifier = minmax;
 		//Debug.Log("STF : " +stopFlag);
 	}
 
@@ -183,6 +186,8 @@ public struct ModuleController
 				Debug.Log("NEW SPEEDMODE CREATED?!");
 				break;
 		}
+
+		speed = Mathf.Clamp(speed, -minmaxModifier, minmaxModifier);
 	}
 
 	public void HandleSpeed(float amt, float dur, SpeedMode mode)
