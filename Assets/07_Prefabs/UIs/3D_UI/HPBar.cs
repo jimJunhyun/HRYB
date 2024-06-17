@@ -25,7 +25,7 @@ public class HPBar : MonoBehaviour
 		nameText = transform.Find("NameBack/NameText").GetComponent<TextMeshProUGUI>();
 		whiteAdequity = transform.Find("BlackBack/WhiteBack").GetComponent<Image>();
 		groge = transform.Find("GrogyBar/Grogy").GetComponent<Image>();
-		parent = GetComponentInParent<Canvas>();
+		parent = GetComponent<Canvas>();
 
 		nameText.text = lf.GetActor().actorName;
 	}
