@@ -29,6 +29,24 @@ namespace OccaSoftware.SuperSimpleSkybox.Runtime
             set => rotationsPerHour = value;
         }
 
+		[SerializeField]
+		private bool isRotating = true;
+
+		public bool IsRotating
+		{
+			get => isRotating;
+			set => isRotating = value;
+		}
+
+		[SerializeField]
+		private bool isFixedOnDay = false;
+
+		public bool IsFixedOnDay
+		{
+			get => isFixedOnDay;
+			set => isFixedOnDay = value;
+		}
+
         [SerializeField]
         private bool automaticLightIntensity = true;
 
@@ -120,13 +138,16 @@ namespace OccaSoftware.SuperSimpleSkybox.Runtime
         /// <summary>
         /// Rotates the transform based on the rotation speed.
         /// </summary>
-        private void Rotate()
+        protected virtual void Rotate()
         {
             if (!Application.isPlaying)
                 return;
 
             if (rotationsPerHour == 0f)
                 return;
+
+			if (isRotating == false) 
+				return;
 
             transform.Rotate(
                 transform.right * rotationsPerHour * Time.deltaTime * 0.1f,
