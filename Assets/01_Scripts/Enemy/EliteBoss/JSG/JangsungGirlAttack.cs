@@ -83,7 +83,7 @@ public class JangsungGirlAttack : EnemyAttackModule
 		{
 			case "mumuk":
 				{
-					Debug.LogError("생성중");
+					//Debug.LogError("생성중");
 					StartCoroutine(SeedPatton());
 
 				}
@@ -107,7 +107,7 @@ public class JangsungGirlAttack : EnemyAttackModule
 			GameObject obj = PoolManager.GetObject("MumukMissile", mumukPos[fireIndex].position, mumukPos[fireIndex].rotation);
 			_missile.Add(obj.GetComponent<JangsungMumukMissile>());
 
-			Debug.LogError(self);
+			//Debug.LogError(self);
 			_missile[fireIndex].Init(mumukPos[fireIndex], self.AI.player.transform, 20, DamageType.DirectHit);
 			fireIndex++;
 		}

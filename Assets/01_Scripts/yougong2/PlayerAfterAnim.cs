@@ -37,7 +37,7 @@ public class PlayerAfterAnim : MonoBehaviour
 		isRunning = true;
 
 
-		Debug.LogError("AfterEffect Imit");
+		//Debug.LogError("AfterEffect Imit");
 
 		while (UseTime >= currentTime)
 		{

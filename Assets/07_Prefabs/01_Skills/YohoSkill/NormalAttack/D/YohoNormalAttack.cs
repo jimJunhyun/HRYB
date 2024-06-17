@@ -74,7 +74,7 @@ public class YohoNormalAttack : AttackBase
 		}
 		
 		string[] tt = evt.stringParameter.Split("$");
-		Debug.LogError(tt[0]);
+		//Debug.LogError(tt[0]);
 		switch (tt[0])
 		{
 			case "1":

@@ -45,7 +45,7 @@ public class TwoPunchGrabSkill : AttackBase
 		{
 			n.enabled = false;
 		}
-		Debug.LogError(tt._grabedEnemy);
+		//Debug.LogError(tt._grabedEnemy);
 	}
 
 	public override void OnAnimationMove(Actor self, AnimationEvent evt)

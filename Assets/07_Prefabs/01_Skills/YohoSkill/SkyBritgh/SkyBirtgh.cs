@@ -61,7 +61,7 @@ public class SkyBirtgh : AttackBase
 				    }
 
 
-				    Debug.LogError("스카이브릿지");
+				    //Debug.LogError("스카이브릿지");
 				    GameObject obj = PoolManager.GetObject("SkyBritghCollider", self.transform);
 				    if (obj.TryGetComponent<ColliderCast>(out _cols))
 				    {
