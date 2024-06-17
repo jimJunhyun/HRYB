@@ -34,6 +34,7 @@ public class CameraManager : MonoBehaviour
 	public CinemachineVirtualCamera aimCam;
 
 	float originYSpeed;
+	float originFOV;
 
 	public static CameraManager instance;
 
@@ -88,6 +89,7 @@ public class CameraManager : MonoBehaviour
 		}
 
 		originYSpeed = pCam.m_YAxis.m_MaxSpeed;
+		originFOV = pCam.m_Lens.FieldOfView;
 
 		if (_middleCamObj == null)
 			_middleCamObj = new GameObject();
@@ -205,13 +207,23 @@ public class CameraManager : MonoBehaviour
 	public void FreezeCamY()
 	{
 		pCam.m_YAxis.m_MaxSpeed = 0;
-		Debug.Log("Y가정지됨ㅋㅋㅋㅋ");
+		//Debug.Log("Y가정지됨ㅋㅋㅋㅋ");
 	}
 
 	public void UnfreezeCamY()
 	{
 		pCam.m_YAxis.m_MaxSpeed = originYSpeed;
-		Debug.Log("Y가정지안됨ㅋㅋㅋㅋ");
+		//Debug.Log("Y가정지안됨ㅋㅋㅋㅋ");
+	}
+
+	public void Zoom(float power)
+	{
+		pCam.m_Lens.FieldOfView -= power;
+	}
+
+	public void RevertZoom()
+	{
+		pCam.m_Lens.FieldOfView = originFOV;
 	}
 
 	public void ShakeCam(float ampGain, float frqGain)
