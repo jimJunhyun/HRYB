@@ -69,7 +69,7 @@ public class OnePunchGrabSkill : YGComboAttackBase
 
 
 
-				if (t >= 1 && _life.tag != "Jansung")
+				if (t >= 0 && _life.tag != "Jansung")
 				{
 					if((_life.yy.white.Value > 0))
 					{
