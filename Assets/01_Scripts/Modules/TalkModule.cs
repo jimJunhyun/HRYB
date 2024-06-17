@@ -35,6 +35,8 @@ public class TalkModule : Module, IInterable
 
 	public UnityEvent onNextTalk;
 
+	GameObject canv;
+
 	private void Awake()
 	{
 		charInfo.self = GetActor();
@@ -44,8 +46,11 @@ public class TalkModule : Module, IInterable
 	private void Start()
 	{
 		GameObject obj = PoolManager.GetObject(QUESTCANVASNAME, transform);
-		obj.transform.localPosition = Vector3.up * yOffset;
+		obj.transform.localPosition = Vector3.up * yOffset * 1.5f;
 		qMark = obj.transform.Find("QMark").GetComponent<Image>();
+
+		canv = PoolManager.GetObject(FarmingPoint.CANVASNAME, transform);
+		canv.transform.localPosition = Vector3.up * yOffset;
 	}
 
 	private void Update()
@@ -64,6 +69,15 @@ public class TalkModule : Module, IInterable
 		{
 			qMark.enabled = false;
 
+		}
+
+		if ((transform.position - GameManager.instance.player.transform.position).sqrMagnitude <= GameManager.instance.pActor.sight.GetSightRange() * GameManager.instance.pActor.sight.GetSightRange())
+		{
+			canv.SetActive(true);
+		}
+		else
+		{
+			canv.SetActive(false);
 		}
 	}
 
