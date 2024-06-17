@@ -11,6 +11,7 @@ public class JangsungGirlAttack : EnemyAttackModule
 	
 	int fireIndex = 0;
 
+
 	public override void Attack()
 	{
 		fireIndex = 0;
@@ -132,7 +133,7 @@ public class JangsungGirlAttack : EnemyAttackModule
 	IEnumerator RootPatton()
 	{
 		JangsungGirlLifeModule lf = GetComponent<JangsungGirlLifeModule>();
-		lf.BarrierON(16);
+		lf.BarrierON(4);
 
 		// 바닥 범위 보여주기 <= 에니메이션 처리
 

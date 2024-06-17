@@ -547,8 +547,6 @@ public class PlayerInven : MonoBehaviour
 	{
 		if( GameManager.instance.pActor.move.moveModuleStat.Paused)
 			return;
-
-		GameManager.instance.pActor.life.superArmor = true;
 		if (context.performed)
 		{
 			if(Time.time - prevChange >= changeCool)

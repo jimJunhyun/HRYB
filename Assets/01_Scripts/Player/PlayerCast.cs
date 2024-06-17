@@ -634,11 +634,6 @@ public class PlayerCast : CastModule
 		}
 	}
 
-	public SkillRoot GetSkillRoot(SkillSlotInfo info)
-	{
-		return nowSkillSlot[((int)info)].skInfo;
-	}
-
 	public void SetCooldownTo(int info, float amt)
 	{
 		if (nowSkillSlot[info].skInfo != null)
@@ -745,5 +740,10 @@ public class PlayerCast : CastModule
 	internal void NowSkillUseReset()
 	{
 		_nowSkillUse = null;
+	}
+
+	public SkillRoot GetSkillRoot(SkillSlotInfo rClick)
+	{
+		return nowSkillSlot[(int)rClick].skInfo;
 	}
 }

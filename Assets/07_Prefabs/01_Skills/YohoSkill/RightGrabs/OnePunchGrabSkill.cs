@@ -5,9 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Skills/Yoho/첫번째공격스")]
 public class OnePunchGrabSkill : YGComboAttackBase
 {
+
 	[Header("SkillIcon")]
 	public Sprite spi1;
 	public Sprite spi2;
+
 	public override void OnAnimationStart(Actor self, AnimationEvent evt)
 	{
 		GameManager.instance.DisableCtrl();

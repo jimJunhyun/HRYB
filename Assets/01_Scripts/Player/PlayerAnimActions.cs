@@ -317,8 +317,6 @@ public class PlayerAnimActions : MonoBehaviour
 				self.anim.SetChangeAnimation("Left", _pldmHuman.Left);
 				break;
 		}
-
-		self.life.superArmor = false;
 		
 	}
 
