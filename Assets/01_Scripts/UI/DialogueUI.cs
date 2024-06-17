@@ -54,6 +54,7 @@ public class DialogueUI : MonoBehaviour
 			GameManager.instance.DisableCtrl(ControlModuleMode.Status);
 			GameManager.instance.camManager.FreezeCamX(true);
 			GameManager.instance.camManager.FreezeCamY();
+			GameManager.instance.camManager.Zoom(30);
 
 			GameManager.instance.uiManager.basicUIGroup.SetActive(false);
 		}
@@ -84,6 +85,7 @@ public class DialogueUI : MonoBehaviour
 		GameManager.instance.EnableCtrl(ControlModuleMode.Status);
 		GameManager.instance.camManager.UnfreezeCamX();
 		GameManager.instance.camManager.UnfreezeCamY();
+		GameManager.instance.camManager.RevertZoom();
 		GameManager.instance.uiManager.basicUIGroup.SetActive(true);
 	}
 
