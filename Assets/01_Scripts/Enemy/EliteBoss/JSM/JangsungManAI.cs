@@ -200,11 +200,14 @@ public class JangsungManAI : AISetter
 		StartInvoke();
 	}
 
-    protected override void UpdateInvoke()
-    {
-	    
-    }
+	protected override void UpdateInvoke()
+	{
+		if (_friend.life.isDead)
+		{
+			(self.life as JangsungLifeModule).BarrierOff();
 
+		}
+	}
 	public override void ResetStatus()
 	{
 		base.ResetStatus();
