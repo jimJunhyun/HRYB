@@ -46,7 +46,7 @@ public class JangsungGirlAI : AISetter
 		    {
 			    waitBarrier.ResetReady();
 			    // AttackMoudle에서 이름 셋팅 << Attack에 유기하기
-			    _life.BarrierON(5);
+			    _life.BarrierON(2);
 				if (_friend.life.isDead == false)
 				{
 					_friend.GetComponent<JangsungLifeModule>().BarrierON();
