@@ -915,11 +915,22 @@ public class PlayerMove : MoveModule
 			dir = new Vector3(0, 0, -1);
 			//self.anim.SetIntigerModify("MoveX", -1);
 		}
+		self.anim.SetFloatModify("FlipX", (int)dir.x);
+		self.anim.SetFloatModify("FlipY", (int)dir.z);
+
+		if (GameManager.instance.camManager.curCamStat == CamStatus.Freelook)
+		{
+			Vector3 dir2 = Camera.main.transform.forward;
+			dir2.y = 0;
+			self.transform.rotation = Quaternion.LookRotation(dir2);
+
+		}
 
 		dir = ConvertToCamFront(dir);
 		dir = new Vector3(dir.x * 12, 3, dir.z * 12);
 
 		forceDir += dir;
+
 		StartCoroutine(AvoidDelay());
 
 		self.life._hitEvent += Hitting;

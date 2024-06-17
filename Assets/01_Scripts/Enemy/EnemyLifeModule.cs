@@ -108,37 +108,38 @@ public class EnemyLifeModule : LifeModule
 
 	public void OutJeungGi()
 	{
+		GameManager.instance.pActor.life.yy.black.Value += 0.1f;
 		if(yy.white.MaxValue * 0.66f > yy.white.Value && _66PercentWhite ==false)
 		{
 			_66PercentWhite = true;
-			OutValue(yy.white.MaxValue * 0.0005f);
+			OutValue(yy.white.MaxValue * 0.004f);
 		}
 		if (yy.white.MaxValue * 0.33f > yy.white.Value && _33PercentWhite == false)
 		{
 			_33PercentWhite = true;
-			OutValue(yy.white.MaxValue * 0.0005f);
+			OutValue(yy.white.MaxValue * 0.004f);
 		}
 		if(yy.white.Value <= 0 && _isDie == false)
 		{
 			_isDie = true;
-			OutValue(yy.white.MaxValue * 0.0005f);
+			OutValue(yy.white.MaxValue * 0.004f);
 		}
 
 		if (yy.black.MaxValue * 0.66f > yy.black.Value && _66PercentBlack == false)
 		{
 			_66PercentBlack = true;
-			OutValue(yy.black.MaxValue * 0.0005f);
+			OutValue(yy.black.MaxValue * 0.004f);
 		}
 		if (yy.black.MaxValue * 0.33f > yy.black.Value && _33PercentBlack == false)
 		{
 			_33PercentBlack = true;
-			OutValue(yy.black.MaxValue * 0.0005f);
+			OutValue(yy.black.MaxValue * 0.004f);
 		}
 
 		if (yy.black.Value <= 0 && _isDie ==false)
 		{
 			_isDie = true;
-			OutValue(yy.black.MaxValue * 0.0005f);
+			OutValue(yy.black.MaxValue * 0.004f);
 		}
 
 		/*

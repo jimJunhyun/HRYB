@@ -10,6 +10,6 @@ public class PreservedDataManager : MonoBehaviour
 
 	private void Awake()
 	{
-		DontDestroyOnLoad(this);
+		DontDestroyOnLoad(gameObject);
 	}
 }

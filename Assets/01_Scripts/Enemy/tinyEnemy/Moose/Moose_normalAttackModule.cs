@@ -42,7 +42,7 @@ public class Moose_normalAttackModule : EnemyAttackModule
 			_life.GetActor().move.forceDir = vec * 20 + new Vector3(0,8,0);
 			//_life.GetActor().move.forceDir.y = 40;
 
-		}, default, default, 1f);
+		}, default, default, default, 1f);
 		EffectObject eff =  PoolManager.GetEffect($"SandBoomb", transform);
 		eff.Begin();
 	}

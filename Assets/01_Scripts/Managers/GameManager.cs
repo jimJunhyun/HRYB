@@ -72,7 +72,7 @@ public struct ModuleController
 	{
 		get
 		{
-			return fixedSpeed == null ? speed : (float)fixedSpeed;
+			return fixedSpeed == null ? Mathf.Clamp(speed, -minmaxModifier, minmaxModifier) : (float)fixedSpeed;
 		}
 	}
 
@@ -187,7 +187,7 @@ public struct ModuleController
 				break;
 		}
 
-		speed = Mathf.Clamp(speed, -minmaxModifier, minmaxModifier);
+		
 	}
 
 	public void HandleSpeed(float amt, float dur, SpeedMode mode)
@@ -558,6 +558,7 @@ public class GameManager : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.B))
 		{
 			GameObject objs = GameObject.Find("JSPosition");
+			FindObjectOfType<JSInitBattle>(true).gameObject.SetActive(true);
 			player.GetComponent<PlayerMove>().PlayerTeleport(objs.transform.position);
 		}
 		if(Input.GetKeyDown(KeyCode.N))
