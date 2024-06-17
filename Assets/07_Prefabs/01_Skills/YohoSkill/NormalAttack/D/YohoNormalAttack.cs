@@ -113,7 +113,7 @@ public class YohoNormalAttack : AttackBase
 				    
 			}, (transform, module) =>
 			{
-			});
+			}, default, default, 1f);
 		}
 		
 		

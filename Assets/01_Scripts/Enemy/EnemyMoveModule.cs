@@ -59,6 +59,7 @@ public class EnemyMoveModule : MoveModule
 		_char = GetComponent<CharacterController>();
 		agent.speed = speed;
 		agent.acceleration = speed;
+		agent.acceleration = speed;
 	}
 
 	public void SetTarget(Transform target, MoveStates moves = MoveStates.Run)

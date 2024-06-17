@@ -109,7 +109,7 @@ public class YohoSharpnessSkill : AttackBase
 			(sans, enemy)=>
 			{
 				self.move.forceDir = self.transform.forward * 0.4f + new Vector3(0,0.5f,0);
-			});
+			}, default, default, 0.4f);
 		}
 		
 	}

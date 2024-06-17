@@ -102,8 +102,8 @@ public class YusungSmith : AttackBase
 				{
 
 					CameraManager.instance.ShakeCamFor(0.2f, 16, 16);
-				});
-		    }
+				}, default, default, 0.4f);
+			}
 
 			RaycastHit ray;
 			if (Physics.Raycast(self.transform.position, Vector3.down, out ray, 100, 1 << 11))

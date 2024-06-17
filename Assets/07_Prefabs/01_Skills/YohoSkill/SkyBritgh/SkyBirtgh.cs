@@ -104,24 +104,18 @@ public class SkyBirtgh : AttackBase
 						    DoDamage(to,by, _dmgs[1], obj.transform.position);
 					    }, (transform, module) =>
 					    {
-							Debug.LogError("기");
 							self.move.forceDir += new Vector3(0, 1f, 0);
-							Debug.LogError("기2");
 							CameraManager.instance.ShakeCamFor(0.1f, 2, 2);
-							Debug.LogError("기3");
 							GameManager.instance.TimeFreeze(0.1f, 0.01f);
-							Debug.LogError("기4");
 							GameObject obj1 = PoolManager.GetObject("SlashMiddle", self.transform);
-							Debug.LogError("기5");
 							if (obj1.TryGetComponent<EffectObject>(out EffectObject eff1))
 						    {
 							    eff1.Begin();
 							    self.StartCoroutine(DeleteObj(obj1));
 						    }
-							Debug.LogError("기6");
 							//
 							GameManager.instance.audioPlayer.PlayPoint("HitSound", self.transform.position);
-					    });
+					    }, default, default, 0.2f);
 				    }
 				}
 			    break;
@@ -156,7 +150,7 @@ public class SkyBirtgh : AttackBase
 						    DoDamage(to,by, _dmgs[2], obj.transform.position);
 						    CameraManager.instance.ShakeCamFor(0.18f, 12, 12);
 						    //GameManager.instance.TimeFreeze(0.3f, 0.08f);
-					    });
+					    }, default, default, 0.2f);
 				    }
 			    }
 			    break;
