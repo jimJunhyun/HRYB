@@ -8,12 +8,12 @@ using UnityEngine.UI;
 public class ComboRank : MonoBehaviour
 {
 	public const float none = 0;
-	public float VeryLow = 400;
-	public float Low = 800;
-	public float Middle = 1200;
-	public float High = 1600;
-	public float VeryHigh = 2000;
-	public float Z = 3000;
+	public float VeryLow = 1000;
+	public float Low = 2000;
+	public float Middle = 3000;
+	public float High = 4000;
+	public float VeryHigh = 5000;
+	public float Z = 6000;
 
 	public ComboRankSO _comboImage;
 
@@ -104,28 +104,28 @@ public class ComboRank : MonoBehaviour
 
 		if(_value >= VeryHigh)
 		{
-			for (int i = 0; i < 5; i++)
-				OutValue(Player.yy.black.MaxValue * 1.5f);
+			for (int i = 0; i < 10; i++)
+				OutValue(Player.yy.black.MaxValue * 0.2f);
 		}
 		else if(_value >= High)
 		{
-			for (int i = 0; i < 7; i++)
-				OutValue(Player.yy.black.MaxValue * 0.9f);
+			for (int i = 0; i < 8; i++)
+				OutValue(Player.yy.black.MaxValue * 0.1f);
 		}
 		else if(_value >= Middle)
 		{
-			for (int i = 0; i < 7; i++)
-				OutValue(Player.yy.black.MaxValue * 0.6f);
+			for (int i = 0; i < 6; i++)
+				OutValue(Player.yy.black.MaxValue * 0.1f);
 		}
 		else if(_value >= Low)
 		{
-			for (int i = 0; i < 8; i++)
-				OutValue(Player.yy.black.MaxValue * 0.4f);
+			for (int i = 0; i < 4; i++)
+				OutValue(Player.yy.black.MaxValue * 0.1f);
 		}
 		else if(_value >= VeryLow)
 		{
-			for (int i = 0; i < 4; i++)
-				OutValue(Player.yy.black.MaxValue * 0.2f);
+			for (int i = 0; i < 2; i++)
+				OutValue(Player.yy.black.MaxValue * 0.1f);
 		}
 
 		//for (int i = 0; i < 10; i++)
