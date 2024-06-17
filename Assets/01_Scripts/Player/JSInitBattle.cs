@@ -23,6 +23,7 @@ public class JSInitBattle : MonoBehaviour
 	public void StartReseet()
 	{
 		_IsStart = false;
+		SkyTimeManager.Instance.IsFixedOnDay = false;
 	}
 
 	private void Update()
@@ -38,6 +39,7 @@ public class JSInitBattle : MonoBehaviour
 	{
 		if (other.gameObject.layer == LayerMask.NameToLayer("Player") && _IsStart ==false)
 		{
+			SkyTimeManager.Instance.IsFixedOnDay = true;
 			_IsStart = true;
 			_init.Play();
 			GameManager.instance.audioPlayer.PlayBgm("JSPVPSound");
