@@ -62,8 +62,8 @@ public class Bear_AttackModule : EnemyAttackModule
 							_life.GetActor().move.forceDir = vec + new Vector3(0, 3, 0);
 							//_life.GetActor().move.forceDir.y = 40;
 
-							Debug.LogError("시발시발시발시발" + _life.GetActor().move.forceDir);
-						});
+							//Debug.LogError("시발시발시발시발" + _life.GetActor().move.forceDir);
+						}, default, default, 1f);
 					}
 
 				
@@ -136,7 +136,7 @@ public class Bear_AttackModule : EnemyAttackModule
 
 						_life.GetActor().move.forceDir = vec + new Vector3(0, 7, 0);
 						//_life.GetActor().move.forceDir.y = 40;
-					});
+					}, default, default, 1f);
 					EffectObject eff = PoolManager.GetEffect($"SandBoomb", transform);
 					eff.Begin();
 				}
@@ -179,7 +179,7 @@ public class Bear_AttackModule : EnemyAttackModule
 		left = !left;
 		int a = left ? 1 : 2;
 		string t = AttackStd;
-		Debug.LogError(AttackStd);
+		//Debug.LogError(AttackStd);
 		tempCount = 0;
 		if (_nowCols != null)
 		{

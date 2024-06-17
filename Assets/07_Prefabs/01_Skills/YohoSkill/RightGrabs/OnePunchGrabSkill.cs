@@ -69,7 +69,7 @@ public class OnePunchGrabSkill : YGComboAttackBase
 
 
 
-				if (t >= 1 && _life.tag != "Jansung")
+				if (t >= 0 && _life.tag != "Jansung")
 				{
 					if((_life.yy.white.Value > 0))
 					{
@@ -157,8 +157,9 @@ public class OnePunchGrabSkill : YGComboAttackBase
 
 	IEnumerator YeildTime(Actor self)
 	{
+		//Debug.LogError("되긴함");
 		(self.cast as PlayerCast).SetCooldownTo(SkillSlotInfo.RClick, 0.2f);
-		yield return new WaitForSeconds(0.2f);
+		yield return new WaitForSeconds(0.6f);
 		(self.cast as PlayerCast).SetCooldownSet(SkillSlotInfo.RClick, 0);
 	}
 }

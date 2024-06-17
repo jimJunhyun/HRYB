@@ -87,7 +87,7 @@ public class NextEnter : AttackBase
 					}, null, -1, -1, 0.2f);
 				}
 
-			});
+			}, default, default, 0.5f);
 		}
 
 

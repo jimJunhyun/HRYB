@@ -80,7 +80,7 @@ public class MoveModule : Module
 			return false;
 		}
 	}
-	public ModuleController moveModuleStat = new ModuleController(false);
+	public ModuleController moveModuleStat = new ModuleController(false, 2);
 
 	protected MoveStates curStat;
 	public virtual MoveStates moveStat

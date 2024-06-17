@@ -172,7 +172,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 						{
 							player.DamageYY(new YinYang(0, 20), DamageType.DirectHit);
 							CameraManager.instance.ShakeCamFor(0.5f);
-						});
+						}, default, default, 1f);
 					}
 					ef = PoolManager.GetEffect("JangsungEffect2", transform);
 					ef.Begin();
@@ -186,8 +186,8 @@ public class JangsungManAttackModule : EnemyAttackModule
 						{
 							player.DamageYY(new YinYang(0, 20), DamageType.DirectHit); 
 							CameraManager.instance.ShakeCamFor(0.8f);
-						});
-					}
+						}, default, default, 1f);
+				}
 					ef = PoolManager.GetEffect("JangsungEffect2", transform);
 					ef.Begin();
 					break;
@@ -198,8 +198,8 @@ public class JangsungManAttackModule : EnemyAttackModule
 						{
 							player.DamageYY(new YinYang(0, 20), DamageType.DirectHit);
 							CameraManager.instance.ShakeCamFor(0.3f);
-						});
-					}
+						}, default, default, 1f);
+				}
 					
 					ef = PoolManager.GetEffect("JangsungEffect2", transform);
 					ef.Begin();

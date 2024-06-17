@@ -221,7 +221,7 @@ public class QuestCreater : EditorWindow
 			
 			if(info == null)
 			{
-				Debug.LogError("CREATE FAILED");
+				//Debug.LogError("CREATE FAILED");
 				Close();
 			}
 		}

@@ -477,6 +477,9 @@ public class PlayerCast : CastModule
 		{
 			return 0;
 		}));
+
+
+		SetCooldownWhole(1);
 	}
 
 	public override void CastCancel()

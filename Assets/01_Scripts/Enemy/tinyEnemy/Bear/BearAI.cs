@@ -52,7 +52,7 @@ public class BearAI : AISetter
 	protected override void StartInvoke()
 	{
 		head.connecteds.Clear();
-		self.life._dieEvent = DieEvent;
+		self.life._dieEvent += DieEvent;
 		Bear_AttackModule _atkModule = self.atk as Bear_AttackModule;
 		BearMoveModule _moveModule = self.move as BearMoveModule;
 
@@ -66,7 +66,7 @@ public class BearAI : AISetter
 
 			StunNode _ishaveStun = new StunNode(self, () =>
 			{
-				Debug.LogError(gameObject.name + " 일어남");
+				//Debug.LogError(gameObject.name + " 일어남");
 			});
 			Sequencer stunSeq = new Sequencer();
 
