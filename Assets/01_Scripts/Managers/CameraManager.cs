@@ -18,6 +18,8 @@ public class CameraManager : MonoBehaviour
 	bool blinded = false;
 	Volume v;
 	Camera _main;
+
+	Coroutine ongoing;
 	
 	public CinemachineFreeLook _pCam;
 	public CinemachineFreeLook pCam
@@ -218,12 +220,36 @@ public class CameraManager : MonoBehaviour
 
 	public void Zoom(float power)
 	{
-		pCam.m_Lens.FieldOfView -= power;
+		ongoing = StartCoroutine(DelZoom(power, true));
+	}
+
+	IEnumerator DelZoom(float pow, bool zooming)
+	{
+		float t = 0;
+		float v = pCam.m_Lens.FieldOfView;
+		while (t< 0.75f)
+		{
+			yield return null;
+			t += Time.deltaTime;
+			if (zooming)
+			{
+				pCam.m_Lens.FieldOfView = Mathf.Lerp(originFOV, originFOV - pow, t / 0.75f);
+			}
+			else
+			{
+				pCam.m_Lens.FieldOfView = Mathf.Lerp(v, originFOV, t / 0.75f);
+
+			}
+		}
 	}
 
 	public void RevertZoom()
 	{
-		pCam.m_Lens.FieldOfView = originFOV;
+		if (ongoing!= null)
+		{
+			StopCoroutine(ongoing);
+		}
+		StartCoroutine(DelZoom(0, false));
 	}
 
 	public void ShakeCam(float ampGain, float frqGain)
