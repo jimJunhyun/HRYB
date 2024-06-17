@@ -108,6 +108,7 @@ public class EnemyLifeModule : LifeModule
 
 	public void OutJeungGi()
 	{
+		GameManager.instance.pActor.life.yy.black.Value += 0.1f;
 		if(yy.white.MaxValue * 0.66f > yy.white.Value && _66PercentWhite ==false)
 		{
 			_66PercentWhite = true;

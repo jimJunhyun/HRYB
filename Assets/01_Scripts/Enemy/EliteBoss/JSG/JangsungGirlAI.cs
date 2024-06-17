@@ -13,7 +13,7 @@ public class JangsungGirlAI : AISetter
 
 
 	public bool _isStart =false;
-	public void DieEvent()
+	public override void DieEvent()
 	{
 		//self.anim.ResetStatus();
 		StopExamine();

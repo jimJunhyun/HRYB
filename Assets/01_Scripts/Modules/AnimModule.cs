@@ -138,4 +138,9 @@ public class AnimModule : Module
 		if(self.AI != null)
 			self.AI.StartExamine();
 	}
+
+	public void SetFloatModify(string v, float x)
+	{
+		anim.SetFloat(Animator.StringToHash(v), x);
+	}
 }

@@ -116,7 +116,17 @@ public class PlayerLife : LifeModule
 	IEnumerator PlayerAvoidSucc()
 	{
 		Debug.LogError("회피 성공");
-		yield return new WaitForSeconds(3.0f);
+		yy.white.Value += initWhite * 0.20f;
+		yy.black.Value += initBlack * 0.33f;
+		float t = 0.3f;
+		while(t < 1)
+		{
+			yield return null;
+			Time.timeScale = t;
+			t += Time.unscaledDeltaTime;
+		}
+		yield return new WaitForSeconds(2.3f);
+		Time.timeScale = 1;
 		_playerAvoidSucc = false;
 	}
 
