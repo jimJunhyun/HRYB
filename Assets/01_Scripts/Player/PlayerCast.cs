@@ -741,4 +741,9 @@ public class PlayerCast : CastModule
 	{
 		_nowSkillUse = null;
 	}
+
+	public SkillRoot GetSkillRoot(SkillSlotInfo rClick)
+	{
+		return nowSkillSlot[(int)rClick].skInfo;
+	}
 }
