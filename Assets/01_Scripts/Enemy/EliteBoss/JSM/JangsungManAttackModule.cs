@@ -9,8 +9,13 @@ public class JangsungManAttackModule : EnemyAttackModule
 	[SerializeField] float DownAttackDist;
 	[SerializeField] float FallDownAttackDist;
 	[SerializeField] private float MoveAttackDist;
-	
-	
+
+
+	[Header("damage")]
+	[SerializeField] float DownAttackDmg = 10;
+	[SerializeField] float MoveAttackDmg = 10;
+	[SerializeField] float FallDownAttackDmg = 10;
+
 	private JangSungMoveModule _jsMoveModule;
 	private ColliderCast _curCols;
 
@@ -170,7 +175,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 					{
 						_curCols.Now(transform, (player) =>
 						{
-							player.DamageYY(new YinYang(0, 20), DamageType.DirectHit);
+							player.DamageYY(new YinYang(0, DownAttackDmg), DamageType.DirectHit);
 							CameraManager.instance.ShakeCamFor(0.5f);
 						}, default, default, default, 1f);
 					}
@@ -184,7 +189,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 					{
 						_curCols.Now(transform, (player) =>
 						{
-							player.DamageYY(new YinYang(0, 20), DamageType.DirectHit); 
+							player.DamageYY(new YinYang(0, FallDownAttackDmg), DamageType.DirectHit); 
 							CameraManager.instance.ShakeCamFor(0.8f);
 						}, default, default, default, 1f);
 				}
@@ -196,7 +201,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 					{
 						_curCols.Now(transform,(player) =>
 						{
-							player.DamageYY(new YinYang(0, 20), DamageType.DirectHit);
+							player.DamageYY(new YinYang(0, MoveAttackDmg), DamageType.DirectHit);
 							CameraManager.instance.ShakeCamFor(0.3f);
 						}, default, default, default, 1f);
 				}
