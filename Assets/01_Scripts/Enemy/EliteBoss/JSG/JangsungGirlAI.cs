@@ -51,7 +51,7 @@ public class JangsungGirlAI : AISetter
 				{
 					_friend.GetComponent<JangsungLifeModule>().BarrierON();
 				}
-			    Debug.LogError("보호막패턴");
+			   // Debug.LogError("보호막패턴");
 			    self.anim.SetAttackTrigger();
 			    self.anim.Animators.SetBool(_BarrierPattonname, true);
 			    StopExamine(); // LifeModule에서 풀어줘야됨 << 몇회 피격시니까
@@ -83,7 +83,7 @@ public class JangsungGirlAI : AISetter
 			    // 이름 셋팅 함 더하기
 			    self.anim.Animators.SetBool(_RootPatton, true);
 			    self.anim.SetAttackTrigger();
-			    Debug.LogError("땅바닥");
+			   // Debug.LogError("땅바닥");
 			    _friend.GetComponent<JangsungLifeModule>().BarrierON();
 			    StopExamine(); // 패턴 끝나거나 (코루틴) or 캔슬시 코루틴 끊고 Start 해주기 
 		    });
@@ -110,7 +110,7 @@ public class JangsungGirlAI : AISetter
 			    _att.SetAttackType(_MumukNansa);
 			    self.anim.Animators.SetBool(_MumukNansa, true);
 			    self.anim.SetAttackTrigger();
-			    Debug.LogError("뮤뮥");
+			   // Debug.LogError("뮤뮥");
 			    StopExamine();
 		    });
 

@@ -106,7 +106,7 @@ public int initCombo;
 			}
 			else
 			{
-				Debug.LogError("콤보 넘ㅇ거ㅏㅁ");
+				//Debug.LogError("콤보 넘ㅇ거ㅏㅁ");
 				NextCombo(true, self);
 
 			}
@@ -185,7 +185,7 @@ public int initCombo;
 	public void NextCombo(bool circular = true, Actor self = null)
 	{
 		
-		Debug.LogError(this.name);
+		//Debug.LogError(this.name);
 		
 		
 		

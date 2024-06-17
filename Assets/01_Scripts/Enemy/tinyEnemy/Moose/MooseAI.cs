@@ -52,7 +52,7 @@ public class MooseAI : AISetter
 
 		    StunNode _ishaveStun = new StunNode(self, () =>
 		    {
-			    Debug.LogError(gameObject.name + " 일어남");
+			    //Debug.LogError(gameObject.name + " 일어남");
 		    });
 		    Sequencer stunSeq = new Sequencer();
 

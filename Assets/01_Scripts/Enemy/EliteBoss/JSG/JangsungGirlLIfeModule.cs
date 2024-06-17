@@ -66,7 +66,7 @@ public class JangsungGirlLifeModule : LifeModule
 			{
 				_barrierNums--;
 			}
-			Debug.LogError($"보호막 : {_barrierNums}");
+			//Debug.LogError($"보호막 : {_barrierNums}");
 
 			if (_barrierNums <= 0)
 			{
@@ -94,7 +94,7 @@ public class JangsungGirlLifeModule : LifeModule
 			{
 				_barrierNums--;
 			}
-			Debug.LogError($"보호막 : {_barrierNums}" );
+			//Debug.LogError($"보호막 : {_barrierNums}" );
 
 			if(_barrierNums <=0)
 			{

@@ -68,7 +68,7 @@ public class SkillRoot : Composite
 		yield return base.DelOperate(self);
 		if (self.atk is PlayerAttack atk)
 		{
-			Debug.Log("각종강화효과지우기");
+			//Debug.Log("각종강화효과지우기");
 			atk.HandleRemoveCall();
 		}
 	}
@@ -76,12 +76,12 @@ public class SkillRoot : Composite
 	protected IEnumerator isSuperArmorCO(Actor self, float t)
 	{
 		self.life.superArmor = true;
-		Debug.LogError("슈퍼아머 돌입");
+		//Debug.LogError("슈퍼아머 돌입");
 		yield return new WaitForSeconds(t);
 		if (isSuperArmor)
 		{
 			self.life.superArmor = false;
-			Debug.LogError("슈퍼아머 방출");
+			//Debug.LogError("슈퍼아머 방출");
 		}
 	}
 
