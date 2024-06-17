@@ -6,6 +6,10 @@ using UnityEngine;
 public class OnePunchGrabSkill : YGComboAttackBase
 {
 
+	[Header("SkillIcon")]
+	public Sprite spi1;
+	public Sprite spi2;
+
 	public override void OnAnimationStart(Actor self, AnimationEvent evt)
 	{
 		GameManager.instance.DisableCtrl();
@@ -159,10 +163,10 @@ public class OnePunchGrabSkill : YGComboAttackBase
 	{
 		//Debug.LogError("되긴함");
 
-		(self.cast as PlayerCast).GetSkillRoot(SkillSlotInfo.RClick).skillIcon = spi1;
+		(self.cast as PlayerCast).GetSkillRoot(SkillSlotInfo.RClick).skillIcon = spi2;
 		(self.cast as PlayerCast).SetCooldownTo(SkillSlotInfo.RClick, 0.2f);
 		yield return new WaitForSeconds(0.6f);
-		(self.cast as PlayerCast).GetSkillRoot(SkillSlotInfo.RClick).skillIcon = spi2;
+		(self.cast as PlayerCast).GetSkillRoot(SkillSlotInfo.RClick).skillIcon = spi1;
 		(self.cast as PlayerCast).SetCooldownSet(SkillSlotInfo.RClick, 0);
 	}
 }
