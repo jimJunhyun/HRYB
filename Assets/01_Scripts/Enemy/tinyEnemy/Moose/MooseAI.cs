@@ -41,7 +41,7 @@ public class MooseAI : AISetter
     protected override void StartInvoke()
     {
 	    head.connecteds.Clear();
-	    self.life._dieEvent = DieEvent;
+	    self.life._dieEvent += DieEvent;
 	    Moose_normalAttackModule _atkModule = self.atk as Moose_normalAttackModule;
 	    MooseMoveModule _moveModule = self.move as MooseMoveModule;
 	    

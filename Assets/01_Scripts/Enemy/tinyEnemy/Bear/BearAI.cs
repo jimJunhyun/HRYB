@@ -52,7 +52,7 @@ public class BearAI : AISetter
 	protected override void StartInvoke()
 	{
 		head.connecteds.Clear();
-		self.life._dieEvent = DieEvent;
+		self.life._dieEvent += DieEvent;
 		Bear_AttackModule _atkModule = self.atk as Bear_AttackModule;
 		BearMoveModule _moveModule = self.move as BearMoveModule;
 
