@@ -207,9 +207,12 @@ public class EnemyLifeModule : LifeModule
 
 		GameManager.instance.pinven.AddExp(_expAmt);
 
-		if (self.show)
+		if (self)
 		{
-			GameManager.instance.minimap.RemoveRender(self.show);
+			if(self.show)
+			{
+				GameManager.instance.minimap.RemoveRender(self.show);
+			}
 		}
 	}
 }

@@ -60,7 +60,7 @@ public class WolfAI : AISetter
 	    if (_isWake)
 	    {
 		    self.anim.SetIdleState(true);
-		    self.life._dieEvent = DieEvent;
+		    self.life._dieEvent += DieEvent;
 
 		    StunNode _ishaveStun = new StunNode(self, () =>
 		    {
