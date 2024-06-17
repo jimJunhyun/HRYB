@@ -40,13 +40,6 @@ public class SkyBirtgh : AttackBase
     {
 	    string[] tt = evt.stringParameter.Split("$");
 	    
-	    
-	    if (_cols != null)
-	    {
-		    _cols.End();
-		    _cols = null;
-	    }
-	    
 	    switch (tt[0])
 	    {
 		    case "1":
@@ -68,7 +61,7 @@ public class SkyBirtgh : AttackBase
 					    _cols.Now(self.transform, (_life) =>
 					    {
 
-						    _life.GetActor().move.forceDir = self.transform.forward * 2 + new Vector3(0, 4, 0);
+						    _life.GetActor().move.forceDir = self.transform.forward * 2 + new Vector3(0, 2.8f, 0);
 						    //GameManager.instance.TimeFreeze(0, 0.1f);
 						    Actor to = _life.GetActor();
 						    Actor by = self;
@@ -80,7 +73,7 @@ public class SkyBirtgh : AttackBase
 					    {
 						    CameraManager.instance.ShakeCamFor(0.18f, 12, 12);
 						    GameManager.instance.TimeFreeze(0.3f, 0.08f);
-					    });
+					    }, default, default ,0.1f);
 				    }
 
 					GameManager.instance.audioPlayer.PlayPoint("HitSound", self.transform.position);
@@ -115,7 +108,7 @@ public class SkyBirtgh : AttackBase
 						    }
 							//
 							GameManager.instance.audioPlayer.PlayPoint("HitSound", self.transform.position);
-					    }, default, default, 0.2f);
+					    }, default, default, 0.1f);
 				    }
 				}
 			    break;
@@ -140,6 +133,7 @@ public class SkyBirtgh : AttackBase
 				    GameObject obj = PoolManager.GetObject("SkyBritghCollider", self.transform);
 				    if (obj.TryGetComponent<ColliderCast>(out _cols))
 				    {
+						Debug.LogError("스카이 브릿지 3");
 					    _cols.Now(self.transform, (_life) =>
 					    {
 						    //CameraManager.instance.ShakeCamFor(0.08f, 2, 2);
@@ -150,7 +144,7 @@ public class SkyBirtgh : AttackBase
 						    DoDamage(to,by, _dmgs[2], obj.transform.position);
 						    CameraManager.instance.ShakeCamFor(0.18f, 12, 12);
 						    //GameManager.instance.TimeFreeze(0.3f, 0.08f);
-					    }, default, default, 0.2f);
+					    }, default, default, 0.1f);
 				    }
 			    }
 			    break;
@@ -166,11 +160,6 @@ public class SkyBirtgh : AttackBase
     public override void OnAnimationEnd(Actor self, AnimationEvent evt)
     {
 	    self.move.forceDir= Vector3.zero;
-	    if (_cols != null)
-	    {
-		    _cols.End();
-		    //_cols = null;
-	    }
     }
 	
     public override void OnAnimationStop(Actor self, AnimationEvent evt)
