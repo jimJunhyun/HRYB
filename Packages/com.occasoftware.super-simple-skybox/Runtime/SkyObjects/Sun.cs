@@ -28,5 +28,14 @@ namespace OccaSoftware.SuperSimpleSkybox.Runtime
 			_light.color = Color.Lerp(_dayColor, _eveningColor, topDot + bottomDot);
 
 		}
+
+		protected override void Rotate()
+		{
+			base.Rotate();
+			if (IsFixedOnDay)
+			{
+				transform.eulerAngles = new Vector3(20.0f, 20.0f, 0.0f);
+			}
+		}
 	}
 }

@@ -10,5 +10,14 @@ namespace OccaSoftware.SuperSimpleSkybox.Runtime
             base.Update();
             Shader.SetGlobalVector(ShaderParams._MoonDirection, -transform.forward);
         }
-    }
+
+		protected override void Rotate()
+		{
+			base.Rotate();
+			if(IsFixedOnDay)
+			{
+				transform.eulerAngles = new Vector3(210.0f, 20.0f, 0.0f);
+			}
+		}
+	}
 }
