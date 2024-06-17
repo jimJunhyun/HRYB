@@ -5,7 +5,7 @@ using UnityEngine;
 public class FarmingPoint : MonoBehaviour, IInterable
 {
 	const float RECENTERINGTIME = 0.2f;
-	const string CANVASNAME = "IndicatorCanv";
+	public const string CANVASNAME = "IndicatorCanv";
 
 
 	public float interTime = 1.0f;
