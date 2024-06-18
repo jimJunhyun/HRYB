@@ -43,7 +43,7 @@ public class WolfAI : AISetter
 		base.DieEvent();
 	}
     	
-	public void LookAt(Transform t)
+	public override void LookAt(Transform t)
 	{
 		Vector3 lookPos = t.position - transform.position;
 		lookPos.y = transform.position.y;
