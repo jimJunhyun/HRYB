@@ -24,6 +24,8 @@ public class PoolManager : MonoBehaviour
 
 	public void Awake()
 	{
+		pooleds.Clear();
+
 		self = transform;
 
 		List<PoolElement> datas = new List<PoolElement>(Resources.LoadAll<PoolElement>("PoolList"));
@@ -170,6 +172,8 @@ public class PoolManager : MonoBehaviour
 			else
 			{
 				GameObject res = st.data.Peek();
+
+				Debug.Log(st.data.Count + " 개의 " + st.name);
 
 				GameObject added = Instantiate(res, Vector3.zero, Quaternion.identity, res.transform.parent);
 				string[] str = res.name.Trim('&').Split('&');

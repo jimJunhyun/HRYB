@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class SkillLoader
 {
-	private SkillDatabase HumanSkillDb;
-	private SkillDatabase YohoSkillDb;
+	private static SkillDatabase HumanSkillDb;
+	private static SkillDatabase YohoSkillDb;
 	public SkillLoader()
 	{
 		
