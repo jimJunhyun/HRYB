@@ -44,7 +44,9 @@ public class JangsungGirlAI : AISetter
 		    });
 		    Attacker BarrierGet = new Attacker(self, () =>
 		    {
-			    waitBarrier.ResetReady();
+				
+				GameManager.instance.loader.FadeInOut("지하여장군을 공격해서 보호막을 제거하세요!!!", 0.5f);
+				waitBarrier.ResetReady();
 			    // AttackMoudle에서 이름 셋팅 << Attack에 유기하기
 			    _life.BarrierON(2);
 				if (_friend.life.isDead == false)

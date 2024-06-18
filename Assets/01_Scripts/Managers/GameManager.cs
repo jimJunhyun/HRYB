@@ -302,8 +302,8 @@ public class GameManager : MonoBehaviour
 	public ComboRank ComboRankManager;
 
 	public MinimapManager minimap;
-	
-	
+	public TitleLoader loader;
+
 
 	public WaitForSeconds waitSec = new WaitForSeconds(1.0f);
 
@@ -370,6 +370,8 @@ public class GameManager : MonoBehaviour
 
 		saver = GameObject.Find("PreservedDataManager").GetComponent<PreservedDataManager>();
 		saver.lastSave = -1;
+
+		loader = GameObject.Find("TitleLoad").GetComponent<TitleLoader>();
 
 		StartCoroutine(InitializeAll());
 	}
