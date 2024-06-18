@@ -51,7 +51,7 @@ public class DialogueUI : MonoBehaviour
 			this.gameObject.SetActive(true);
 			stat = true;
 			GameManager.instance.UnLockCursor();
-			GameManager.instance.DisableCtrl(ControlModuleMode.Status);
+			GameManager.instance.DisableCtrl(ControlModuleMode.Timeline);
 			GameManager.instance.camManager.FreezeCamX(true);
 			GameManager.instance.camManager.FreezeCamY();
 			GameManager.instance.camManager.Zoom(30);
@@ -82,11 +82,13 @@ public class DialogueUI : MonoBehaviour
 		stat = false;
 		choiceStat = false;
 		GameManager.instance.LockCursor();
-		GameManager.instance.EnableCtrl(ControlModuleMode.Status);
+		GameManager.instance.EnableCtrl(ControlModuleMode.Timeline);
 		GameManager.instance.camManager.UnfreezeCamX();
 		GameManager.instance.camManager.UnfreezeCamY();
 		GameManager.instance.camManager.RevertZoom();
 		GameManager.instance.uiManager.basicUIGroup.SetActive(true);
+		
+		
 	}
 
 	public void ShowChoice(List<string> choice)
