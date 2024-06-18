@@ -63,8 +63,8 @@ public class CameraManager : MonoBehaviour
 		if (scr.y == 0)
 			return;
 
-		_pCam.m_Lens.FieldOfView += scr.y * Time.deltaTime;
-		_pCam.m_Lens.FieldOfView = Mathf.Clamp(_pCam.m_Lens.FieldOfView, 35, 95);
+		_pCam.m_Lens.FieldOfView -= scr.y * Time.deltaTime;
+		_pCam.m_Lens.FieldOfView = Mathf.Clamp(_pCam.m_Lens.FieldOfView, 40, 90);
 	}
 	
 
