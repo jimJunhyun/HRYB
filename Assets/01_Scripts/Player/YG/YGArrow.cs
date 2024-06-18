@@ -40,6 +40,11 @@ public class YGArrow : MonoBehaviour
 		tls = moveAction;
 		_isFollow = isFollow;
 		_owner = owner;
+
+		if(owner.atk.target == null)
+		{
+			StartCoroutine(DieIn());
+		}
 	}
 
 	public void Fire()
@@ -56,7 +61,7 @@ public class YGArrow : MonoBehaviour
 		else
 		{
 			_shootDir = _owner.transform.forward.normalized;
-			StartCoroutine(DieIn());
+
 		}
 	}
 
@@ -76,7 +81,7 @@ public class YGArrow : MonoBehaviour
 
 	IEnumerator DieIn()
 	{
-		yield return new WaitForSeconds(4f);
+		yield return new WaitForSeconds(4.5f);
 		if(gameObject)
 		{
 			PoolManager.ReturnObject(this.gameObject);
