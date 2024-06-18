@@ -57,18 +57,18 @@ public class FusionUI : MonoBehaviour, IOpenableWindowUI
 		
 		foreach (Recipe item in Crafter.recipeItemTable.Keys)
 		{
-			bool craftable = true;
-			foreach (ItemAmountPair recipeAtom in item.recipe)
-			{
-				craftable &= GameManager.instance.pinven.RemoveItemExamine(recipeAtom.info, recipeAtom.num);
-			}
-			if (craftable)
-			{
-				GameObject g = PoolManager.GetObject(CRAFTBUTTON, content);
-				CraftButtonUI btn = g.GetComponent<CraftButtonUI>();
-				btn.SetInfo(((ItemAmountPair)Crafter.recipeItemTable[item]).info as Medicines, item.recipe);
-				buttons.Add(g);
-			}
+			//bool craftable = true;
+			//foreach (ItemAmountPair recipeAtom in item.recipe)
+			//{
+			//	craftable &= GameManager.instance.pinven.RemoveItemExamine(recipeAtom.info, recipeAtom.num);
+			//}
+			//if (craftable)
+			//{
+			GameObject g = PoolManager.GetObject(CRAFTBUTTON, content);
+			CraftButtonUI btn = g.GetComponent<CraftButtonUI>();
+			btn.SetInfo(((ItemAmountPair)Crafter.recipeItemTable[item]).info as Medicines, item.recipe);
+			buttons.Add(g);
+			//}
 		}
 
 		GameManager.instance.uiManager.UpdateInvenUI();

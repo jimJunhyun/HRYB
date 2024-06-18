@@ -270,6 +270,7 @@ public class PlayerInven : MonoBehaviour
 	public Vector3 swapEffectScale;
 
 	public float changeCool;
+	public float changeGap;
 
 	bool clickWood = false;
 	bool clickFire = false;
@@ -591,8 +592,15 @@ public class PlayerInven : MonoBehaviour
 	public void RefreshStat()
 	{
 		(GameManager.instance.pActor.anim as PlayerAnim).SetChangeTrigger();
-		(GameManager.instance.pActor.cast as PlayerCast).ChangeSkillSlotTo(stat);
+		StartCoroutine(DelSwap(changeGap));
 		
+	}
+
+	IEnumerator DelSwap(float t)
+	{
+		yield return new WaitForSeconds(t);
+		animActions.ChangeForm();
+		(GameManager.instance.pActor.cast as PlayerCast).ChangeSkillSlotTo(stat);
 	}
 
 	public void Hold(int idx)

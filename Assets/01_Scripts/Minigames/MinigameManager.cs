@@ -62,7 +62,7 @@ public class MinigameManager
 		}
 
 		GameManager.instance.uiManager.OnCanvas();
-		Time.timeScale = 1;
+		//Time.timeScale = 1;
 		GameManager.instance.pinp.ActivateInput();
 		curMinigame = Minigames.None;
 	}

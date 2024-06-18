@@ -9,7 +9,7 @@ public class NodeLearnUI : MonoBehaviour
 	PlayerNode showing;
 	internal bool isOn = false;
 	Transform scroller;
-	public const float SCROLLMAX = 1030;
+	public float SCROLLMAX;
 	Coroutine ongoing;
 
 	TextMeshProUGUI title;
@@ -20,6 +20,7 @@ public class NodeLearnUI : MonoBehaviour
 		scroller = transform.Find("Scroller");
 		title = scroller.Find("Names/NodeName").GetComponent<TextMeshProUGUI>();
 		req = scroller.Find("Requires/NeededResource").GetComponent<NeededResource>();
+		SCROLLMAX = Screen.height;
 	}
 
 	private void Start()
@@ -75,7 +76,7 @@ public class NodeLearnUI : MonoBehaviour
 		while(t < NodeViewer.MOVESEC)
 		{
 			yield return null;
-			t += Time.deltaTime;
+			t += Time.unscaledDeltaTime;
 			accOffset = Mathf.Lerp(0, SCROLLMAX, t / NodeViewer.MOVESEC);
 			scroller.transform.position = originalPos + (direction ? Vector3.down : Vector3.up) * accOffset;
 		}
