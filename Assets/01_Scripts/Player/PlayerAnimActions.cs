@@ -40,6 +40,8 @@ public class PlayerAnimActions : MonoBehaviour
 	public float footRayDist;
 	public float footRayRad;
 	public float footRayOffset;
+	
+
 	Vector3 lFootPos;
 	Vector3 lFootForward;
 	float lFootAngle;

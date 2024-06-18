@@ -178,6 +178,7 @@ using System.Linq;
 		invenPanel.SetActive(true);
 		isOn = true;
 		GameManager.instance.UnLockCursor();
+		Time.timeScale = 0;
 	}
 
 	public void OffInven()
@@ -186,6 +187,7 @@ using System.Linq;
 		toolbarUIShower.ChangeStatus(ToolState.Inventory);
 		isOn = false;
 		GameManager.instance.LockCursor();
+		Time.timeScale = 1;
 	}
 
 	public void OffOption()

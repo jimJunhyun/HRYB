@@ -65,7 +65,7 @@ public class NodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 		while (t < NodeViewer.CIRCLESEC)
 		{
 			yield return null;
-			t += Time.deltaTime;
+			t += Time.unscaledDeltaTime;
 			circleIndicator.fillAmount = Mathf.Lerp(0, 1, t / NodeViewer.CIRCLESEC);
 		}
 	}
