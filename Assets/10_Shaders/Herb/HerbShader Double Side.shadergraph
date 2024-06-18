@@ -38,6 +38,12 @@
         },
         {
             "m_Id": "22dbb7c22a184322b0966263d7aa2822"
+        },
+        {
+            "m_Id": "b297abac3cde4127992a58d5aafb75b5"
+        },
+        {
+            "m_Id": "ebb4ac49971642c6a10601a1514db74f"
         }
     ],
     "m_Keywords": [],
@@ -57,6 +63,9 @@
         },
         {
             "m_Id": "c4a3f471616e413f812d8ac0cc6be4fb"
+        },
+        {
+            "m_Id": "a5263a20cbfe4507bcd75704ae7443d7"
         }
     ],
     "m_Nodes": [
@@ -3374,10 +3383,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -103.00001525878906,
-            "y": -160.99998474121095,
-            "width": 206.00003051757813,
-            "height": 131.00003051757813
+            "x": -236.99996948242188,
+            "y": -181.00001525878907,
+            "width": 206.0000457763672,
+            "height": 130.99998474121095
         }
     },
     "m_Slots": [
@@ -3505,6 +3514,21 @@
         "e32": 0.0,
         "e33": 1.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "a5263a20cbfe4507bcd75704ae7443d7",
+    "m_Name": "Outline",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "b297abac3cde4127992a58d5aafb75b5"
+        },
+        {
+            "m_Id": "ebb4ac49971642c6a10601a1514db74f"
+        }
+    ]
 }
 
 {
@@ -3651,6 +3675,29 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.BooleanShaderProperty",
+    "m_ObjectId": "b297abac3cde4127992a58d5aafb75b5",
+    "m_Guid": {
+        "m_GuidSerialized": "22d7a153-d5dc-405b-ad49-2137212ecccc"
+    },
+    "m_Name": "IsGlowOn",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "IsGlowOn",
+    "m_DefaultReferenceName": "_IsGlowOn",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": false
 }
 
 {
@@ -4635,6 +4682,34 @@
             "m_Id": "0ecaa701f4914714bfae7428da51213d"
         }
     ]
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "ebb4ac49971642c6a10601a1514db74f",
+    "m_Guid": {
+        "m_GuidSerialized": "b3d07a71-2d20-450e-8a6f-974b0d5adc17"
+    },
+    "m_Name": "GlowPower",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "GlowPower",
+    "m_DefaultReferenceName": "_GlowPower",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 0.5,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
 }
 
 {
