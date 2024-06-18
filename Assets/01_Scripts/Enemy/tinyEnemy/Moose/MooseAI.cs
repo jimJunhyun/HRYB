@@ -41,16 +41,17 @@ public class MooseAI : AISetter
     protected override void StartInvoke()
     {
 	    head.connecteds.Clear();
-	    self.life._dieEvent += DieEvent;
+
 	    Moose_normalAttackModule _atkModule = self.atk as Moose_normalAttackModule;
 	    MooseMoveModule _moveModule = self.move as MooseMoveModule;
 	    
 	    if (_isWake)
 	    {
 		    self.anim.SetIdleState(true);
+			self.life._hitEvent += _moveModule.StopMove;
+			self.life._dieEvent += DieEvent;
 
-
-		    StunNode _ishaveStun = new StunNode(self, () =>
+			StunNode _ishaveStun = new StunNode(self, () =>
 		    {
 			    //Debug.LogError(gameObject.name + " 일어남");
 		    });

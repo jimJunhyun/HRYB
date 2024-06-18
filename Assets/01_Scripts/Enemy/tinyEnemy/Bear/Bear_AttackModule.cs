@@ -69,7 +69,6 @@ public class Bear_AttackModule : EnemyAttackModule
 				
 				}
 				break;
-
 			case "EX":
 				{
 
@@ -95,7 +94,7 @@ public class Bear_AttackModule : EnemyAttackModule
 
 						_nowCols.Now(transform, (_life) =>
 						{
-							_life.DamageYY(new YinYang(0, 2), DamageType.DirectHit);
+							_life.DamageYY(new YinYang(0, 1.3f), DamageType.DirectHit);
 							// 기절 ++
 							Vector3 vec = _life.transform.position - transform.position;
 							vec.y = 0;

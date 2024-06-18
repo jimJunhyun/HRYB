@@ -566,6 +566,11 @@ public class PlayerMove : MoveModule
 
 	}
 
+	public void Wheel(InputAction.CallbackContext context)
+	{
+		CameraManager.instance.Wheel(context);
+	}
+
 	public void Run(InputAction.CallbackContext context)
 	{
 		if (moveStat != MoveStates.Sit && moveStat != MoveStates.Climb)
