@@ -115,7 +115,8 @@ public class PlayerLife : LifeModule
 
 	IEnumerator PlayerAvoidSucc()
 	{
-		Debug.LogError("회피 성공");
+		(self.anim as PlayerAnim).AnimAct.PlayerAfterImage(0.2f, 0.6f, 0.66f);
+
 		yy.white.Value += initWhite * 0.20f;
 		yy.black.Value += initBlack * 0.33f;
 		EffectObject obj = PoolManager.GetEffect("AvoidEffect", transform);

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 
 public class CameraManager : MonoBehaviour
@@ -56,6 +57,15 @@ public class CameraManager : MonoBehaviour
 		}
 	}
 
+	public void Wheel(InputAction.CallbackContext context)
+	{
+		Vector2 scr = context.ReadValue<Vector2>();
+		if (scr.y == 0)
+			return;
+
+		_pCam.m_Lens.FieldOfView += scr.y * Time.deltaTime;
+		_pCam.m_Lens.FieldOfView = Mathf.Clamp(_pCam.m_Lens.FieldOfView, 35, 95);
+	}
 	
 
 	public void RegisterSkillCam(SkillProduction _sk)
@@ -75,8 +85,8 @@ public class CameraManager : MonoBehaviour
 
 		aimCam = GameObject.Find("AimCam").GetComponent<CinemachineVirtualCamera>();
 
-		
-		
+
+
 		for (int i = 0; i < 3; i++)
 		{
 			camShakers.Add(pCam.GetRig(i).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>());
