@@ -41,7 +41,7 @@ public class YGArrow : MonoBehaviour
 		_isFollow = isFollow;
 		_owner = owner;
 
-		if(owner.atk.target == null)
+		//if(owner.atk.target == null)
 		{
 			StartCoroutine(DieIn());
 		}
