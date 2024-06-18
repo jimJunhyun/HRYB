@@ -187,21 +187,21 @@ public class PlayerCast : CastModule
 
 	public void DoInitialize()
 	{
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumanSkill("HumanNormal"), SkillSlotInfo.LClick, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumanSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("HumanNormal"), SkillSlotInfo.LClick, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
 
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumanSkill("MasterSpark"), SkillSlotInfo.One, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumanSkill("FireWall"), SkillSlotInfo.Two, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumanSkill("EnhanceIce"), SkillSlotInfo.Three, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumanSkill("LightingDown"), SkillSlotInfo.Q, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetHumanSkill("StarDust"), SkillSlotInfo.E, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("MasterSpark"), SkillSlotInfo.One, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("FireWall"), SkillSlotInfo.Two, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("EnhanceIce"), SkillSlotInfo.Three, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("LightingDown"), SkillSlotInfo.Q, PlayerForm.Magic);
+		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("StarDust"), SkillSlotInfo.E, PlayerForm.Magic);
 		
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YohoNormalAttack"), SkillSlotInfo.LClick, PlayerForm.Yoho);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YohoGrab"), SkillSlotInfo.RClick, PlayerForm.Yoho);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("NextEnter"), SkillSlotInfo.Q, PlayerForm.Yoho);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("SkyBritgh"), SkillSlotInfo.One, PlayerForm.Yoho);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YusungSmith"), SkillSlotInfo.Three, PlayerForm.Yoho);
-		ConnectSkillDataTo(GameManager.instance.skillLoader.GetYohoSkill("YohoSharpnessAtt"), SkillSlotInfo.Two, PlayerForm.Yoho);
+		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("YohoNormalAttack"), SkillSlotInfo.LClick, PlayerForm.Yoho);
+		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("YohoGrab"), SkillSlotInfo.RClick, PlayerForm.Yoho);
+		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("NextEnter"), SkillSlotInfo.Q, PlayerForm.Yoho);
+		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("SkyBritgh"), SkillSlotInfo.One, PlayerForm.Yoho);
+		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("YusungSmith"), SkillSlotInfo.Three, PlayerForm.Yoho);
+		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("YohoSharpnessAtt"), SkillSlotInfo.Two, PlayerForm.Yoho);
 
 
 		// YohoNormalAttack

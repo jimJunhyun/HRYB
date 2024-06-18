@@ -258,7 +258,7 @@ public class GameManager : MonoBehaviour
 	public UIManager uiManager;
 	public QuestManager qManager;
 	public SectionManager sManager;
-	public SkillLoader skillLoader;
+	public static SkillLoader skillLoader;
 	
 	public PrefabManager pManager;
 	public BossHPManager bHPManager;
@@ -462,7 +462,7 @@ public class GameManager : MonoBehaviour
 	public void DisableCtrl(ControlModuleMode mode)
 	{
 		_isCharacterInput = false;
-		Debug.Log("(*(*(*(*(*(");
+		Debug.Log("($($($($($( " + mode.ToString());
 		(pActor.move as PlayerMove).moveModuleStat.Pause(mode, true);
 		pActor.atk.attackModuleStat.Pause(mode, true);
 	}
@@ -470,7 +470,7 @@ public class GameManager : MonoBehaviour
 	public void EnableCtrl(ControlModuleMode mode)
 	{
 		_isCharacterInput = true;
-		Debug.Log("*)*)*)*)*)*)");
+		Debug.Log("$)$)$)$)$)" + mode.ToString());
 		(pActor.move as PlayerMove).moveModuleStat.Pause(mode, false);
 		pActor.atk.attackModuleStat.Pause(mode, false);
 

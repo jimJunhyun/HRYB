@@ -43,9 +43,8 @@ public class JangsungManAttackModule : EnemyAttackModule
 	{
 		Debug.LogWarning("Jangsung" + AttackStd);
 		GameObject obj = PoolManager.GetObject("Jangsung" + AttackStd, transform);
-
 		//Debug.LogWarning(obj);
-		if (obj.TryGetComponent(out ColliderCast cols))
+		if (obj && obj.TryGetComponent(out ColliderCast cols))
 		{
 			_curCols = cols;
 		}
