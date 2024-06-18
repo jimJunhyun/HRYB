@@ -123,7 +123,6 @@ public class LifeModule : Module
 		{
 			ongoingTickDamages.Add(i, new List<Coroutine>());
 		}
-		_hitEvent = null;
 		_hitEvent += () => { 
 			if(_stopCoroutine == null)
 			{
@@ -139,9 +138,9 @@ public class LifeModule : Module
 	protected virtual IEnumerator PlayWakeAgain(float t)
 	{
 
-		self?.AI.StopExamine();
+		self.AI.StopExamine();
 		yield return new WaitForSeconds(t); 
-		self?.AI.StartExamine();
+		self.AI.StartExamine();
 	}
 
 	public virtual void Update()
