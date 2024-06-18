@@ -61,8 +61,9 @@ public class WolfAI : AISetter
 	    {
 		    self.anim.SetIdleState(true);
 		    self.life._dieEvent += DieEvent;
+			self.life._hitEvent += _moveModule.StopMove;
 
-		    StunNode _ishaveStun = new StunNode(self, () =>
+			StunNode _ishaveStun = new StunNode(self, () =>
 		    {
 				//Debug.LogError(gameObject.name + " 일어남");//
 		    });

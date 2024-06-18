@@ -286,7 +286,7 @@ public class StatusEffects
 	void OnBleedingActivated(Actor self, Actor inflicter, float power)
 	{
 		
-		self.life.DamageYY(0, Mathf.Round(inflicter.atk.Damage.white.Value * 0.004f), DamageType.DotDamage, -1, 0.5f, null, DamageChannel.Bleeding);
+		self.life.DamageYY(0, Mathf.Round(inflicter.atk.Damage.white.Value * 0.02f), DamageType.DotDamage, -1, 0.5f, null, DamageChannel.Bleeding);
 	}
 	void OnBleedingUpdated(Actor self, float power)
 	{

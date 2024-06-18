@@ -40,6 +40,8 @@ public class PlayerAnimActions : MonoBehaviour
 	public float footRayDist;
 	public float footRayRad;
 	public float footRayOffset;
+	
+
 	Vector3 lFootPos;
 	Vector3 lFootForward;
 	float lFootAngle;
@@ -317,7 +319,7 @@ public class PlayerAnimActions : MonoBehaviour
 				self.anim.SetChangeAnimation("Left", _pldmHuman.Left);
 				break;
 		}
-		
+		self.life.superArmor = false;
 	}
 
 	//public void BowEquip()

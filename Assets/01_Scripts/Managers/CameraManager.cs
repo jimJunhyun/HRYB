@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 
 public class CameraManager : MonoBehaviour
@@ -18,6 +19,8 @@ public class CameraManager : MonoBehaviour
 	bool blinded = false;
 	Volume v;
 	Camera _main;
+
+	Coroutine ongoing;
 	
 	public CinemachineFreeLook _pCam;
 	public CinemachineFreeLook pCam
@@ -54,6 +57,15 @@ public class CameraManager : MonoBehaviour
 		}
 	}
 
+	public void Wheel(InputAction.CallbackContext context)
+	{
+		Vector2 scr = context.ReadValue<Vector2>();
+		if (scr.y == 0)
+			return;
+
+		_pCam.m_Lens.FieldOfView -= scr.y * Time.deltaTime;
+		_pCam.m_Lens.FieldOfView = Mathf.Clamp(_pCam.m_Lens.FieldOfView, 40, 90);
+	}
 	
 
 	public void RegisterSkillCam(SkillProduction _sk)
@@ -73,8 +85,8 @@ public class CameraManager : MonoBehaviour
 
 		aimCam = GameObject.Find("AimCam").GetComponent<CinemachineVirtualCamera>();
 
-		
-		
+
+
 		for (int i = 0; i < 3; i++)
 		{
 			camShakers.Add(pCam.GetRig(i).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>());
@@ -218,12 +230,36 @@ public class CameraManager : MonoBehaviour
 
 	public void Zoom(float power)
 	{
-		pCam.m_Lens.FieldOfView -= power;
+		ongoing = StartCoroutine(DelZoom(power, true));
+	}
+
+	IEnumerator DelZoom(float pow, bool zooming)
+	{
+		float t = 0;
+		float v = pCam.m_Lens.FieldOfView;
+		while (t< 0.75f)
+		{
+			yield return null;
+			t += Time.deltaTime;
+			if (zooming)
+			{
+				pCam.m_Lens.FieldOfView = Mathf.Lerp(originFOV, originFOV - pow, t / 0.75f);
+			}
+			else
+			{
+				pCam.m_Lens.FieldOfView = Mathf.Lerp(v, originFOV, t / 0.75f);
+
+			}
+		}
 	}
 
 	public void RevertZoom()
 	{
-		pCam.m_Lens.FieldOfView = originFOV;
+		if (ongoing!= null)
+		{
+			StopCoroutine(ongoing);
+		}
+		StartCoroutine(DelZoom(0, false));
 	}
 
 	public void ShakeCam(float ampGain, float frqGain)

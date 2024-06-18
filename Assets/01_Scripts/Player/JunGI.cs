@@ -38,7 +38,7 @@ public class JungGI : MonoBehaviour
 			MoveSet();
 		if(_goPlayer == true)
 		{
-			transform.position += (tls.position - transform.position) * 4 * Time.deltaTime;
+			transform.position += (tls.position - transform.position) * 9 * Time.deltaTime;
 		}
 	}
 

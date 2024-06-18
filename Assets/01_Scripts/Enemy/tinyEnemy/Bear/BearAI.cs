@@ -64,6 +64,8 @@ public class BearAI : AISetter
 			Sequencer grogeSeq = new Sequencer();
 			grogeSeq.connecteds.Add(_isGroge);
 
+			self.life._hitEvent += _moveModule.StopMove;
+
 			StunNode _ishaveStun = new StunNode(self, () =>
 			{
 				//Debug.LogError(gameObject.name + " 일어남");
