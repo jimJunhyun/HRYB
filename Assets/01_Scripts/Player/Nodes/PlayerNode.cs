@@ -69,10 +69,10 @@ public class PlayerNode : ScriptableObject
 			 		break;
 				case StatUpgradeType.LearnSkill:
 					//????????????????
-					SkillRoot sk = GameManager.instance.skillLoader.GetHumanSkill(amt);
+					SkillRoot sk = GameManager.skillLoader.GetHumanSkill(amt);
 					if(sk == null)
 					{
-						sk = GameManager.instance.skillLoader.GetYohoSkill(amt);
+						sk = GameManager.skillLoader.GetYohoSkill(amt);
 					}
 					if(sk == null)
 						break;

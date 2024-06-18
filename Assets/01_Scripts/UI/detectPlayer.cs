@@ -29,6 +29,8 @@ public class detectPlayer : MonoBehaviour
 	{
 		if (other.gameObject.layer == 7)
 		{
+			if(!obj)
+				return;
 			if(obj.CompareTag("Jansung"))
 			{
 				GameManager.instance.bHPManager.jangsungHP = false;
