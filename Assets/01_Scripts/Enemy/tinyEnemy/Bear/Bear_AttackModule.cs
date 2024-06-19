@@ -9,7 +9,12 @@ public class Bear_AttackModule : EnemyAttackModule
 	[SerializeField] GameObject _firePos;
 
 	private int tempCount = 0;
-	
+
+	[Header("AttackValue")]
+	public float _normalATKValue = 2f;
+	public float _upATKValue = 3f;
+	public float _fireATKValue = 0.1f;
+
 	public override void OnAnimationEnd()
 	{
 		if (_nowCols != null)
@@ -51,7 +56,7 @@ public class Bear_AttackModule : EnemyAttackModule
 					{
 						_nowCols.Now(transform, (_life) =>
 						{
-							_life.DamageYY(new YinYang(0, 15), DamageType.DirectHit);
+							_life.DamageYY(new YinYang(0, whiteDamage * _normalATKValue), DamageType.DirectHit);
 							// 기절 ++
 							Vector3 vec = _life.transform.position - transform.position;
 							vec.y = 0;
@@ -94,7 +99,7 @@ public class Bear_AttackModule : EnemyAttackModule
 
 						_nowCols.Now(transform, (_life) =>
 						{
-							_life.DamageYY(new YinYang(0, 1.3f), DamageType.DirectHit);
+							_life.DamageYY(new YinYang(0, whiteDamage * _fireATKValue), DamageType.DirectHit);
 							// 기절 ++
 							Vector3 vec = _life.transform.position - transform.position;
 							vec.y = 0;
@@ -124,7 +129,7 @@ public class Bear_AttackModule : EnemyAttackModule
 					
 					_nowCols.Now(transform, (_life) =>
 					{
-						_life.DamageYY(new YinYang(0, 30), DamageType.DirectHit);
+						_life.DamageYY(new YinYang(0, whiteDamage * _upATKValue), DamageType.DirectHit);
 						// 기절 ++
 						Vector3 vec = _life.transform.position - transform.position;
 						vec.y = 0;

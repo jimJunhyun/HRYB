@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class Moose_normalAttackModule : EnemyAttackModule
 {
-	
+
+	[Header("AttackValue")]
+	public float _normalATKValue = 1.2f;
 	public override void SetAttackRange(int idx)
 	{
 
@@ -31,7 +33,7 @@ public class Moose_normalAttackModule : EnemyAttackModule
 		GameManager.instance.audioPlayer.PlayPoint("MooseAttack", transform.position);
 		_nowCols.Now(transform,(_life) =>
 		{
-			_life.DamageYY(new YinYang(0,30), DamageType.DirectHit);
+			_life.DamageYY(new YinYang(0,whiteDamage * _normalATKValue), DamageType.DirectHit);
 			// 기절 ++
 			Vector3 vec = _life.transform.position - transform.position;
 			vec.y = 0;

@@ -5,7 +5,8 @@ using UnityEngine;
 public class Wolf_normalAttackModule : EnemyAttackModule
 {
 	private bool left = false;
-
+	[Header("AttackValue")]
+	public float _normalATKValue = 1.2f;
 	public override void SetAttackRange(int idx)
 	{
 
@@ -46,7 +47,7 @@ public class Wolf_normalAttackModule : EnemyAttackModule
 
 		_nowCols.Now(transform,(_life) =>
 		{
-			_life.DamageYY(new YinYang(0,10), DamageType.DirectHit);
+			_life.DamageYY(new YinYang(0,whiteDamage * _normalATKValue), DamageType.DirectHit);
 		}, default, default, default, 0.3f);
 
 		if(a== 2)
