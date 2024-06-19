@@ -123,11 +123,10 @@ public class LifeModule : Module
 		{
 			ongoingTickDamages.Add(i, new List<Coroutine>());
 		}
-		_hitEvent = null;
 		_hitEvent += () => { 
-			if(_stopCoroutine == null)
+			//if(_stopCoroutine == null)
 			{
-				_stopCoroutine = StartCoroutine(PlayWakeAgain(0.2f));  
+				StartCoroutine(PlayWakeAgain(0.2f));  
 			}
 		};
 		yy = new YinYang(initBlack, initWhite);
@@ -139,9 +138,9 @@ public class LifeModule : Module
 	protected virtual IEnumerator PlayWakeAgain(float t)
 	{
 
-		self?.AI.StopExamine();
+		self.AI.StopExamine();
 		yield return new WaitForSeconds(t); 
-		self?.AI.StartExamine();
+		self.AI.StartExamine();
 	}
 
 	public virtual void Update()
@@ -411,10 +410,11 @@ public class LifeModule : Module
 				if (!superArmor)
 				{
 					GetActor().anim.SetHitTrigger();
+					_hitEvent?.Invoke();
 				}
 				StatusEffects.ApplyStat(GetActor(), attacker, StatEffID.Immune, IMMUNETIME);
 				onNextDamaged?.Invoke(GetActor(), attacker, data);
-				_hitEvent?.Invoke();
+
 				break;
 			case DamageType.NoHit:
 				if (!(isImmune))
