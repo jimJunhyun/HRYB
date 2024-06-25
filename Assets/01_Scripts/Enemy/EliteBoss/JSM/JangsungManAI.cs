@@ -24,7 +24,7 @@ public class JangsungManAI : AISetter
 		GetComponent<BoxCollider>().enabled = false;
 	}
 
-    protected override void StartInvoke()
+    public override void StartInvoke()
     {
 		//GetComponent<BossHPBar>().Init(self);
 

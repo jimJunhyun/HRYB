@@ -43,12 +43,6 @@ public class PlayerLife : LifeModule
 
 		base.Awake();
 		_hitEvent = null;
-		_hitEvent += () => {
-			if (_stopCoroutine == null)
-			{
-				_stopCoroutine = StartCoroutine(PlayWakeAgain(0.2f));
-			}
-		};
 
 		pMove = self.move as PlayerMove;
 	}
@@ -68,10 +62,13 @@ public class PlayerLife : LifeModule
 		}
 	}
 
-	protected override IEnumerator PlayWakeAgain(float t)
+	public override void PlayhitAgain()
 	{
-		GameManager.instance.DisableCtrl(false);
-		yield return new WaitForSeconds(t);
+		GameManager.instance.DisableCtrl();
+	}
+
+	public override void PlayWakeAgain()
+	{
 		GameManager.instance.EnableCtrl();
 	}
 

@@ -82,12 +82,12 @@ public class JangSungMoveModule : MoveModule
 		if (_moveDecalOnShot)
 		{
 			_moveDecalOnShot = false;
-			GameObject obj = PoolManager.GetObject("MiddleBoxDecal", transform);
+			GameObject obj = PoolManager.GetObject("AttackDecal", transform);
 			//Debug.LogError("1111");
 
-			if (obj.TryGetComponent<BoxDecal>(out BoxDecal box))
+			if (obj.TryGetComponent<DecalBase>(out DecalBase box))
 			{
-				box.SetUpDecal(transform, new Vector3(0, 0, 0), new Vector3(1, 1, 1));
+				box.SetUpDecal(transform, new Vector3(0, 0, 0), new Vector3(8.5f, 1, 8.5f));
 				box.StartDecal(2f);
 			}
 		}
@@ -125,11 +125,11 @@ public class JangSungMoveModule : MoveModule
 
 			}
 
-			GameObject obj = PoolManager.GetObject("MiddleBoxDecal", transform);
+			GameObject obj = PoolManager.GetObject("AttackDecal", transform);
 
-			if (obj.TryGetComponent<BoxDecal>(out BoxDecal box))
+			if (obj.TryGetComponent <DecalBase>(out DecalBase box))
 			{
-				box.SetUpDecal(new Vector3(0, 0, 7), transform.rotation, new Vector3(0.55f, 0.55f, 0.55f), Vector3.zero, Vector3.one);
+				box.SetUpDecal(new Vector3(0, 0, 5), transform.rotation, Vector3.zero, new Vector3(6,0,6));
 				box.StartDecal(1f);
 			}
 			else
