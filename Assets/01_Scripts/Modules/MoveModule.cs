@@ -110,7 +110,7 @@ public class MoveModule : Module
 
 	public virtual bool idling
 	{
-		get => moveDir.sqrMagnitude < 0.01f;
+		get => moveDir.sqrMagnitude < 0.001f;
 	}
 
 

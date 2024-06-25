@@ -14,7 +14,10 @@ public class MinigameBase : MonoBehaviour
 	GameObject minigameZone;
 
 	protected List<Animator> feedbacks;
+	protected bool gameStarted = false;
+	
 	private readonly int ActHash = Animator.StringToHash("Act");
+
 	
 	public virtual void Awake()
 	{
@@ -23,6 +26,7 @@ public class MinigameBase : MonoBehaviour
 		}
 		minigameZone = GameObject.Find(minigameSceneName);
 		feedbacks = new List<Animator>(GetComponentsInChildren<Animator>());
+		gameStarted = false;
 	}
 
 	public virtual void StartGame(ItemAmountPair objName)
@@ -61,5 +65,11 @@ public class MinigameBase : MonoBehaviour
 		{
 			feedbacks[i].SetTrigger(ActHash);
 		}
+	}
+
+	public virtual void PerformGame()
+	{
+
+		gameStarted = true;
 	}
 }
