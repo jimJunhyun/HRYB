@@ -28,13 +28,13 @@ namespace MalbersAnimations.HAP
             float h = Input.GetAxis("Horizontal");
 
             var newVelocity = (transform.forward * Pullforce * v);
-            newVelocity.y = rb.velocity.y;
+            newVelocity.y = rb.linearVelocity.y;
 
             transform.RotateAround(rotationPivot.position, Vector3.up, h * RotationA);
 
             // rb.AddTorque(transform.up * RotationA * h, ForceMode.VelocityChange);
 
-            rb.velocity = newVelocity;
+            rb.linearVelocity = newVelocity;
         }
     }
 }

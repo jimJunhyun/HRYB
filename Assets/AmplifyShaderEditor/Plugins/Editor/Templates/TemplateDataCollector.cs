@@ -1394,7 +1394,6 @@ namespace AmplifyShaderEditor
 		public string GenerateRotationIndependentObjectScale( ref MasterNodeDataCollector dataCollector, int uniqueId )
 		{
 			string value = string.Empty;
-
 			if( m_currentSRPType != TemplateSRPType.BiRP )
 			{
 				value = "float3( length( GetWorldToObjectMatrix()[ 0 ].xyz ), length( GetWorldToObjectMatrix()[ 1 ].xyz ), length( GetWorldToObjectMatrix()[ 2 ].xyz ) )";
@@ -1411,7 +1410,6 @@ namespace AmplifyShaderEditor
 		public string GenerateObjectScale( ref MasterNodeDataCollector dataCollector, int uniqueId )
 		{
 			string value = string.Empty;
-
 			if( m_currentSRPType != TemplateSRPType.BiRP )
 			{
 				value = "float3( length( GetObjectToWorldMatrix()[ 0 ].xyz ), length( GetObjectToWorldMatrix()[ 1 ].xyz ), length( GetObjectToWorldMatrix()[ 2 ].xyz ) )";
@@ -1422,6 +1420,69 @@ namespace AmplifyShaderEditor
 			}
 			dataCollector.AddLocalVariable( uniqueId, PrecisionType.Float, WirePortDataType.FLOAT3, GeneratorUtils.ObjectScaleStr, value );
 			return GeneratorUtils.ObjectScaleStr;
+		}
+
+		public string GenerateObjectPosition( ref MasterNodeDataCollector dataCollector, int uniqueId )
+		{
+			string value = string.Empty;
+			if ( m_currentSRPType != TemplateSRPType.BiRP )
+			{
+				value = "GetAbsolutePositionWS( UNITY_MATRIX_M._m03_m13_m23 )";
+			}
+			else
+			{
+				value = "UNITY_MATRIX_M._m03_m13_m23";
+			}
+			dataCollector.AddLocalVariable( uniqueId, PrecisionType.Float, WirePortDataType.FLOAT3, GeneratorUtils.ObjectPositionStr, value );
+			return GeneratorUtils.ObjectPositionStr;
+		}
+
+		public string GenerateObjectBoundsMin( ref MasterNodeDataCollector dataCollector, int uniqueId )
+		{
+			string value = string.Empty;
+			if ( m_currentSRPType != TemplateSRPType.BiRP && ( ASEPackageManagerHelper.CurrentHDRPBaseline >= ASESRPBaseline.ASE_SRP_14 || 
+				ASEPackageManagerHelper.CurrentURPBaseline >= ASESRPBaseline.ASE_SRP_14  ) )
+			{
+				value = "unity_RendererBounds_Min.xyz";
+			}
+			else
+			{
+				value = "0"; // not supported
+			}
+			dataCollector.AddLocalVariable( uniqueId, PrecisionType.Float, WirePortDataType.FLOAT3, GeneratorUtils.ObjectBoundsMinStr, value );
+			return GeneratorUtils.ObjectBoundsMinStr;
+		}
+
+		public string GenerateObjectBoundsMax( ref MasterNodeDataCollector dataCollector, int uniqueId )
+		{
+			string value = string.Empty;
+			if ( m_currentSRPType != TemplateSRPType.BiRP && ( ASEPackageManagerHelper.CurrentHDRPBaseline >= ASESRPBaseline.ASE_SRP_14 ||
+				ASEPackageManagerHelper.CurrentURPBaseline >= ASESRPBaseline.ASE_SRP_14 ) )
+			{
+				value = "unity_RendererBounds_Max.xyz";
+			}
+			else
+			{
+				value = "0"; // not supported
+			}
+			dataCollector.AddLocalVariable( uniqueId, PrecisionType.Float, WirePortDataType.FLOAT3, GeneratorUtils.ObjectBoundsMaxStr, value );
+			return GeneratorUtils.ObjectBoundsMaxStr;
+		}
+
+		public string GenerateObjectBoundsSize( ref MasterNodeDataCollector dataCollector, int uniqueId )
+		{
+			string value = string.Empty;
+			if ( m_currentSRPType != TemplateSRPType.BiRP && ( ASEPackageManagerHelper.CurrentHDRPBaseline >= ASESRPBaseline.ASE_SRP_14 ||
+				ASEPackageManagerHelper.CurrentURPBaseline >= ASESRPBaseline.ASE_SRP_14 ) )
+			{
+				value = "( unity_RendererBounds_Max.xyz - unity_RendererBounds_Min.xyz )";
+			}
+			else
+			{
+				value = "0"; // not supported
+			}
+			dataCollector.AddLocalVariable( uniqueId, PrecisionType.Float, WirePortDataType.FLOAT3, GeneratorUtils.ObjectBoundsSizeStr, value );
+			return GeneratorUtils.ObjectBoundsSizeStr;
 		}
 
 		public string GetWorldPos( bool useMasterNodeCategory = true, MasterNodePortCategory customCategory = MasterNodePortCategory.Fragment )

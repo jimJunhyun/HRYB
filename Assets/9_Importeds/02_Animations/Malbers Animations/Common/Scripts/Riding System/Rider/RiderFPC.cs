@@ -70,7 +70,7 @@ namespace MalbersAnimations.HAP
             {
                 if (debug) Debug.Log($"<b>{name}:<color=cyan> [Dismount Animal] </color> </b>");  //Debug
                 transform.position = new Vector3(MountTrigger.transform.position.x, transform.position.y, MountTrigger.transform.position.z);
-                if (RB) RB.velocity = Vector3.zero;
+                if (RB) RB.linearVelocity = Vector3.zero;
                 End_Dismounting();
             }
         }

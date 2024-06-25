@@ -4,9 +4,8 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
-using System.IO;
-
-using System.Globalization;
+using System;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace AmplifyShaderEditor
@@ -215,7 +214,8 @@ namespace AmplifyShaderEditor
 		World,
 		View,
 		Tangent,
-		Clip
+		Clip,
+		Screen
 	}
 
 	public class UIUtils
@@ -448,7 +448,7 @@ namespace AmplifyShaderEditor
 			"Constants And Properties",
 			"Functions",
 			"Image Effects",
-			"Light",
+			"Lighting",
 			"Logical Operators",
 			"Math Operators",
 			"Matrix Operators",
@@ -575,7 +575,8 @@ namespace AmplifyShaderEditor
 			{ "Master",                             new Color( 0.6f, 0.52f, 0.43f, 1.0f )},
 			{ "Default",                            new Color( 0.26f, 0.35f, 0.44f, 1.0f )},
 			{ "Vertex Data",                        new Color( 0.8f, 0.07f, 0.18f, 1.0f)},
-			{ "Primitive",							new Color( 0.8f, 0.07f, 0.18f, 1.0f)},
+			{ "Primitive",                          new Color( 0.8f, 0.07f, 0.18f, 1.0f)},
+			{ "Object",                             new Color( 0.8f, 0.07f, 0.18f, 1.0f)},
 			{ "Math Operators",                     new Color( 0.26f, 0.35f, 0.44f, 1.0f )},
 			{ "Logical Operators",                  new Color( 0.0f, 0.55f, 0.45f, 1.0f)},
 			{ "Trigonometry Operators",             new Color( 0.1f, 0.20f, 0.35f, 1.0f)},
@@ -589,7 +590,7 @@ namespace AmplifyShaderEditor
 			{ "Functions",                          new Color( 1.00f, 0.4f, 0.0f, 1.0f) },
 			{ "Vector Operators",                   new Color( 0.22f, 0.20f, 0.45f, 1.0f)},
 			{ "Matrix Operators",                   new Color( 0.45f, 0.9f, 0.20f, 1.0f) },
-			{ "Light",                              new Color( 1.0f, 0.9f, 0.0f, 1.0f) },
+			{ "Lighting",                           new Color( 1.0f, 0.9f, 0.0f, 1.0f) },
 			{ "Textures",                           new Color( 0.15f, 0.40f, 0.8f, 1.0f)},
 			{ "Commentary",                         new Color( 0.7f, 0.7f, 0.7f, 1.0f)},
 			{ "UV Coordinates",                     new Color( 0.89f, 0.59f, 0.0f, 1.0f) },
@@ -1221,8 +1222,18 @@ namespace AmplifyShaderEditor
 			MinusStyle.imagePosition = ImagePosition.ImageOnly;
 			MinusStyle.overflow = new RectOffset( -2 , 0 , -4 , 0 );
 
-			ToolbarSearchTextfield = new GUIStyle( (GUIStyle)"ToolbarSeachTextField" );
-			ToolbarSearchCancelButton = new GUIStyle( (GUIStyle)"ToolbarSeachCancelButton" );
+			if ( GUI.skin.FindStyle( "ToolbarSearchTextField" ) != null )
+			{
+				// @diogo: new, fixed
+				ToolbarSearchTextfield = new GUIStyle( ( GUIStyle )"ToolbarSearchTextField" );
+				ToolbarSearchCancelButton = new GUIStyle( ( GUIStyle )"ToolbarSearchCancelButton" );
+			}
+			else
+			{
+				// @diogo: old, typo
+				ToolbarSearchTextfield = new GUIStyle( ( GUIStyle )"ToolbarSeachTextField" );
+				ToolbarSearchCancelButton = new GUIStyle( ( GUIStyle )"ToolbarSeachCancelButton" );
+			}
 		}
 
 		public static void UpdateMainSkin( DrawInfo drawInfo )
@@ -2067,7 +2078,16 @@ namespace AmplifyShaderEditor
 			return originalString;
 		}
 
-		public static string RemoveShaderInvalidCharacters( string originalString )
+        public static string RemoveRegisterInvalidCharacters(string originalString)
+        {
+            for (int i = 0; i < Constants.RegisterInvalidChars.Length; i++)
+            {
+                originalString = originalString.Replace(Constants.RegisterInvalidChars[i], string.Empty);
+            }
+            return originalString;
+        }
+
+        public static string RemoveShaderInvalidCharacters( string originalString )
 		{
 			originalString = originalString.Replace( '\\' , '/' );
 			for( int i = 0 ; i < Constants.ShaderInvalidChars.Length ; i++ )
@@ -3131,6 +3151,34 @@ namespace AmplifyShaderEditor
 					RenderTexture.active = temp;
 				}
 				return m_dummyPreviewRT;
+			}
+		}
+
+		static EditorGUIUtility obj = new EditorGUIUtility();
+		static MethodInfo drawColorSwatchMI = null;
+
+		public static void DrawColorSwatch( Rect position, Color color, bool showAlpha, bool hdr )
+		{
+			if ( drawColorSwatchMI == null )
+			{
+				MethodInfo[] methods = typeof( EditorGUIUtility ).GetMethods( BindingFlags.NonPublic | BindingFlags.Static );
+				foreach ( MethodInfo mi in methods )
+				{
+					if ( mi.Name == "DrawColorSwatch" && mi.GetParameters().Length == 4 )
+					{
+						drawColorSwatchMI = mi;
+						break;
+					}
+				}
+			}
+			
+			if ( drawColorSwatchMI != null )
+			{
+				drawColorSwatchMI.Invoke( obj, new object[] { position, color, showAlpha, hdr } );
+			}
+			else
+			{
+				Debug.LogError( "[AmplifyShaderEditor] Method EditorGUIUtility.DrawColorSwatch(Rect, Color, bool, bool) not found. Please contact support." );
 			}
 		}
 

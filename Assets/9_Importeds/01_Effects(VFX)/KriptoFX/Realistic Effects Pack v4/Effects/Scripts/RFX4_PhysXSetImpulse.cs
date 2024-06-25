@@ -24,6 +24,6 @@ public class RFX4_PhysXSetImpulse : MonoBehaviour
     void OnDisable()
     {
         if (rig != null)
-            rig.velocity = Vector3.zero;
+            rig.linearVelocity = Vector3.zero;
     }
 }

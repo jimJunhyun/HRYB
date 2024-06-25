@@ -127,9 +127,9 @@ namespace MalbersAnimations.HAP
                     DHorses.CanRotateInPlace = true;
                 }
 
-                if (RB.velocity.magnitude < 0.01f)
+                if (RB.linearVelocity.magnitude < 0.01f)
                 {
-                    RB.velocity = DHorses.PullingDirection; //Get a headStart
+                    RB.linearVelocity = DHorses.PullingDirection; //Get a headStart
                 }
             }
         }

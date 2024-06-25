@@ -147,10 +147,10 @@ namespace MalbersAnimations.Controller
             {
                 rb.collisionDetectionMode = collision;
 
-                rb.velocity = animal.RB.velocity; //Match the velocity that the animal had onto the ragdoll
+                rb.linearVelocity = animal.RB.linearVelocity; //Match the velocity that the animal had onto the ragdoll
 
-                rb.drag = Drag;
-                rb.angularDrag = AngularDrag;
+                rb.linearDamping = Drag;
+                rb.angularDamping = AngularDrag;
 
                 if (HitCollider != null && HitCollider.name.Contains(rb.name)) //Find the collider and the rigidbody
                 {

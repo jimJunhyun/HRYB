@@ -320,7 +320,7 @@ namespace MalbersAnimations.Controller
 
                         animal.ResetUPVector(); //IMPORTANT!
                         animal.hit_Hip.distance = Height;
-                        animal.InertiaPositionSpeed = Vector3.ProjectOnPlane(animal.RB.velocity * animal.DeltaTime, animal.UpVector); //This is for Helping on Slopes
+                        animal.InertiaPositionSpeed = Vector3.ProjectOnPlane(animal.RB.linearVelocity * animal.DeltaTime, animal.UpVector); //This is for Helping on Slopes
                         Debugging($"[Try Exit] (Grounded) + [Terrain Angle = {FallRayAngle:F2}]. [Align to Ground]");
                         return;
                     }

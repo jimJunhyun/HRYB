@@ -74,7 +74,7 @@ public class RFX4_PhysicsMotion : MonoBehaviour
     {
         rigid = gameObject.AddComponent<Rigidbody>();
         rigid.mass = effectSettings.Mass;
-        rigid.drag = effectSettings.AirDrag;
+        rigid.linearDamping = effectSettings.AirDrag;
         rigid.useGravity = effectSettings.UseGravity;
         if (FreezeRotation) rigid.constraints = RigidbodyConstraints.FreezeRotation;
         rigid.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;

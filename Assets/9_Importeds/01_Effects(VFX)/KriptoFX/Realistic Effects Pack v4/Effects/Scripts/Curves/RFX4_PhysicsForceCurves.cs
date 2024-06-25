@@ -73,8 +73,8 @@ public class RFX4_PhysicsForceCurves : MonoBehaviour
                 }
                 rig.AddForce(distVector.normalized * dist * ForceMultiplier * eval * forceAdditionalMultiplier, ForceMode);
                 if (DragGraphTimeMultiplier > 0) {
-                    rig.drag = DragCurve.Evaluate(time / DragGraphTimeMultiplier) * DragGraphIntensityMultiplier;
-                    rig.angularDrag = rig.drag / 10;
+                    rig.linearDamping = DragCurve.Evaluate(time / DragGraphTimeMultiplier) * DragGraphIntensityMultiplier;
+                    rig.angularDamping = rig.linearDamping / 10;
                 }
                 
             }

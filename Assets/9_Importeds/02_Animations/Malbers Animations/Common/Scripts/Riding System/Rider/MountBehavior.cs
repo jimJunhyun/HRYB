@@ -44,7 +44,7 @@ namespace MalbersAnimations.HAP
 
         override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            float DeltaTime = animator.updateMode == AnimatorUpdateMode.AnimatePhysics ? Time.fixedDeltaTime : Time.deltaTime;
+            float DeltaTime = animator.updateMode == AnimatorUpdateMode.Fixed ? Time.fixedDeltaTime : Time.deltaTime;
             var TargetRot = animator.rootRotation;
             var TargetPos = rider.RiderRoot.position += (animator.velocity * DeltaTime * AnimalScaleFactor * (Fix ? Fix.time : 1) * AnimationMult);
 

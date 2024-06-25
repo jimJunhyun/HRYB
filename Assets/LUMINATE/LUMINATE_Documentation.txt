@@ -1,0 +1,118 @@
+
+==-------------------------= Setup =-------------------------==
+
+- On your URP Settings Asset, set "Depth Bias" and "Normal Bias" to 0;
+- On your URP Renderer Asset add the "Sky Renderer" renderer feature.
+- On your URP Renderer Asset add the "Cloud Shadows" renderer feature.
+- On your URP Renderer Asset add the "Fog Renderer" renderer feature.
+
+Sky and Clouds:
+- On any object in your scene, add the component "Render Sky".
+- On any Volume in your scene, select "Add Override" and choose "GapperGames/Sky And Clouds".
+
+Fog
+- On any Volume in your scene, select "Add Override" and choose "GapperGames/Fog".
+
+- Setup Complete :)
+
+How to locate URP Settings/Renderer Asset:
+1. Go to Edit/Project Settings/Graphics and select the 'Scriptable Render Pipeline 
+Settings'. This is your URP Settings Asset
+2. From your URP Settings Asset, select the first item in the 'Renderer List'. This is 
+your URP Renderer Asset
+
+==-----------------------------= Sky Renderer =----------------------------==
+
+
+	Render Scale - The resolution that the sky renders at relative to the size of the screen.
+
+	Blur Radius - The radius of the gaussian blur filter used to denoise/upscale the lower resolution sky.
+	Blur Strength - The strength of the gaussian blur filter used to denoise/upscale the lower resolution sky.
+	Blur Iterations - The iterations of the gaussian blur filter used to denoise/upscale the lower resolution sky.
+
+	Alpha Step - Like Alpha Clipping but for the clouds. Will cut off clouds with a density below this threshold.
+	Alpha Softness - Controls the smoothness of the alpha cutoff described previously.
+
+	Sky/Cloud Brightness - Could do anything? Give it a try!
+
+	Sun Size - I'll give you one guess as to what this does. :)
+	Sun Size - See above.
+	Star Size - See above.
+
+	Light Wavelengths - The values used for the wavelengths of Red, Green and Blue light respectively in the Rayleigh Scattering Equation.
+	Density Power - The density of the sky towards the horizon.
+	Day scattering - The density of the sky during the day.
+	Evening scattering - The density of the sky during the evening.
+
+	Day Color, Evening Color - Remember, one guess!
+	Saturation - Saturation of the sky colors.
+
+	Quality - Controls the quality of the sky using the amount of steps and step size in the raymarcher. Higher quality means lower performance.
+	Steps - The amount of steps the raymarcher uses. More steps means better quality but worse performance.
+	Step Size - The size of the steps the raymarcher uses. Lower size means better quality but worse performance.
+
+	Cloud Layer Low - The first type of clouds rendered in the sky.
+	Cloud Layer High - The second type of clouds rendered in the sky.  
+
+	Cloud Shadows - Deletes all files on your computer (it doesn't).  
+
+	=---= To use custom clouds, create a CloudData asset by right clicking in the assets panel and selecting "Create/LUMINATE/New Cloud Data Asset" and assigning it 
+		  to either the "Cloud Data Low" or "Cloud Data High" slots.
+
+	=---= Warning: rendering clouds in "Cloud Layer High" with a lower altitude than the clouds in "Cloud Layer Low" will result in visual artefacts. =---=
+
+
+==------------------------------= Cloud Data =-----------------------------==
+
+
+	Noise Scale - The frequency of the noise used to detail the clouds. Higher values means more detail.
+	Coverage Scale - The frequency of the noise used to shape the clouds. Higher values means smaller shapes.
+	Invert Noise - I hope you haven't used your one guess yet!
+	Noise Weights - Controls the weights of Low, Medium and High frequency noise respectively.
+
+	Color - I hope you can guess this one...
+	Day Brightness - Brightness of the clouds during the day.
+	Evening Brightness - Brightness of the clouds during the evening.
+	Day Min Darkness - Minimum Darkness of the clouds during the day.
+	Evening Min Darkness - Based on those last ones, I'm sure you can figure this one out.
+
+	Density - Density of the clouds, use lower values for lighter, fluffier clouds.
+	Anisotropy - Controls convergence of light when facing the sun (silver lining).
+	Scattering - How much light scatters through the clouds.
+	
+	Height Falloff - Vertical falloff of the density of the clouds.
+	Thickness - Hmmmm, I wonder what this does.
+	Speed - Makes you run faster? 
+	Position - Position of the box the clouds are rendered inside.
+	Bounds - Size of the box the clouds are rendered inside.
+
+	Fog Density - Controls the clouds fading into the sky over distance.
+	Fog Strength - Strength of the fog effect.
+
+
+==-----------------------------= Fog Renderer =----------------------------==
+
+
+	Quality - Controls the quality of the fog using the amount of steps and step size in the raymarcher and also the resolution of the fog. Higher quality means lower performance.
+	Alpha Multiplier - Strength of the fog effect.
+	Additional Lights Intensity Multiplier - Intensity of volumetrics created by additional lights.
+
+	Fog Color - You already know what I'm going to say...
+	Brightness - fhguhohaeyganyuoiyouiayiutbyuiayuitn
+	Density - aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+	Min Density - THIS IS THE MINIMUM DENSITY OF THE FOG.
+	Anisotropy - See Cloud Data section.
+	Jitter - Applies randomness to the raymarching, which breaks up banding
+
+	Blur Radius - See Sky Renderer Section.
+	Blur Strength - See Sky Renderer Section.
+	Blur Iterations - See Sky Renderer Section.
+
+
+==-------------------------=---------------------=-------------------------==
+
+Please consider leaving a review for my asset as it really helps :)
+For any questions, or to show off what you have made with my asset, 
+please email me at wgappster@gmail.com
+
+==-------------------------=---------------------=-------------------------==

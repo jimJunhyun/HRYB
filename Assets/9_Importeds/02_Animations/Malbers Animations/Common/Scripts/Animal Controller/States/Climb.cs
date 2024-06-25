@@ -28,7 +28,7 @@ namespace MalbersAnimations.Controller
 
         //[Tooltip("Tag used to identify climbable surfaces. Default: [Climb]")]
         //public StringReference SurfaceTag =  new StringReference("Climb");
-        public PhysicMaterial Surface;
+        public PhysicsMaterial Surface;
         [Tooltip("Climb automatically when is near a climbable surface")]
         public BoolReference automatic = new();
 
@@ -769,7 +769,7 @@ namespace MalbersAnimations.Controller
         {
             base.Reset();
 
-            Surface = MTools.GetResource<PhysicMaterial>("Climbable");
+            Surface = MTools.GetResource<PhysicsMaterial>("Climbable");
 
             General = new AnimalModifier()
             {

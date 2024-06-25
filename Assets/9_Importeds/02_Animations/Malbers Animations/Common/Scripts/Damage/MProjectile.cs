@@ -177,7 +177,7 @@ namespace MalbersAnimations.Weapons
             {
             
                 EnableRigidBody();
-                rb.velocity = Vector3.zero; //Reset the velocity IMPORTANT!
+                rb.linearVelocity = Vector3.zero; //Reset the velocity IMPORTANT!
 
                 if (rotation == ProjectileRotation.Random)
                 {
@@ -433,7 +433,7 @@ namespace MalbersAnimations.Weapons
                     EnableRigidBody();
                     Enable_Collider();
                     
-                    if (rb) rb.drag = DragOnImpact;
+                    if (rb) rb.linearDamping = DragOnImpact;
                     
                     Debugging("Activate Rigid Body", null);
                     break;

@@ -335,7 +335,7 @@ Shader "Custom/WaterFall"
 			sampler2D _NormalMap;
 			sampler2D _FoamNormal;
 			sampler2D _FoamMask;
-			uniform float4 _CameraDepthTexture_TexelSize;
+			//uniform float4 _CameraDepthTexture_TexelSize;
 
 
 			//#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/Varyings.hlsl"
@@ -977,7 +977,7 @@ Shader "Custom/WaterFall"
 			#endif
 
 			sampler2D _FoamMask;
-			uniform float4 _CameraDepthTexture_TexelSize;
+			//uniform float4 _CameraDepthTexture_TexelSize;
 
 
 			//#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/Varyings.hlsl"
@@ -1327,7 +1327,7 @@ Shader "Custom/WaterFall"
 			#endif
 
 			sampler2D _FoamMask;
-			uniform float4 _CameraDepthTexture_TexelSize;
+			//uniform float4 _CameraDepthTexture_TexelSize;
 
 
 			//#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/Varyings.hlsl"
@@ -1660,7 +1660,7 @@ Shader "Custom/WaterFall"
 			sampler2D _NormalMap;
 			sampler2D _FoamNormal;
 			sampler2D _FoamMask;
-			uniform float4 _CameraDepthTexture_TexelSize;
+			//uniform float4 _CameraDepthTexture_TexelSize;
 
 
 			//#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/Varyings.hlsl"
@@ -2028,7 +2028,7 @@ Shader "Custom/WaterFall"
 			sampler2D _NormalMap;
 			sampler2D _FoamNormal;
 			sampler2D _FoamMask;
-			uniform float4 _CameraDepthTexture_TexelSize;
+			//uniform float4 _CameraDepthTexture_TexelSize;
 
 
 			//#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/Varyings.hlsl"

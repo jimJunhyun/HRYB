@@ -124,9 +124,9 @@ public class Arrow : DamageObject
 		switch (mode)
 		{
 			case ArrowMode.Normal:
-				if (rig.velocity.sqrMagnitude != 0)
+				if (rig.linearVelocity.sqrMagnitude != 0)
 				{
-					transform.rotation = Quaternion.LookRotation(rig.velocity);
+					transform.rotation = Quaternion.LookRotation(rig.linearVelocity);
 				}
 				break;
 			case ArrowMode.Homing:
@@ -144,8 +144,8 @@ public class Arrow : DamageObject
 			default:
 				break;
 		}
-		Vector3 vel = Vector3.ClampMagnitude(rig.velocity, maxSpeed);
-		rig.velocity = vel;
+		Vector3 vel = Vector3.ClampMagnitude(rig.linearVelocity, maxSpeed);
+		rig.linearVelocity = vel;
 
 	}
 
@@ -242,7 +242,7 @@ public class Arrow : DamageObject
 	void Returner()
 	{
 		Debug.Log("RETURN");
-		rig.velocity = Vector3.zero;
+		rig.linearVelocity = Vector3.zero;
 		StopAllCoroutines();
 		ResetOwner();
 		statData.Clear();

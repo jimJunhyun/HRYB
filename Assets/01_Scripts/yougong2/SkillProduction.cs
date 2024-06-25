@@ -1,4 +1,4 @@
-using Cinemachine;
+using Unity.Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,8 +29,8 @@ public class SkillProduction : MonoBehaviour
 
 	private void Update()
 	{
-		_shakes.m_AmplitudeGain = CameraManager.instance.camShakers[0].m_AmplitudeGain;
-		_shakes.m_FrequencyGain = CameraManager.instance.camShakers[0].m_FrequencyGain;
+		_shakes.AmplitudeGain = CameraManager.instance.camShakers[0].AmplitudeGain;
+		_shakes.FrequencyGain = CameraManager.instance.camShakers[0].FrequencyGain;
 	}
 
 	public void End()

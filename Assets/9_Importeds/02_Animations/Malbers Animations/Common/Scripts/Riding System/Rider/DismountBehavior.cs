@@ -33,7 +33,7 @@ namespace MalbersAnimations.HAP
         override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             var transition = animator.GetAnimatorTransitionInfo(layerIndex);
-            float deltaTime = animator.updateMode == AnimatorUpdateMode.AnimatePhysics ? Time.fixedDeltaTime : Time.deltaTime;
+            float deltaTime = animator.updateMode == AnimatorUpdateMode.Fixed ? Time.fixedDeltaTime : Time.deltaTime;
 
             var TargetRot = animator.rootRotation;
 

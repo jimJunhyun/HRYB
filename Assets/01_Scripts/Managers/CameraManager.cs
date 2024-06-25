@@ -1,4 +1,4 @@
-using Cinemachine;
+using Unity.Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -96,8 +96,9 @@ public class CameraManager : MonoBehaviour
 		//Debug.LogError(camShakers.Count);
 		for (int i = 0; i < camShakers.Count; i++)
 		{
-			camShakers[i].m_AmplitudeGain = 0;
-			camShakers[i].m_FrequencyGain = 0;
+			camShakers[i].AmplitudeGain = 0;
+			camShakers[i].FrequencyGain = 0;
+
 		}
 
 		originYSpeed = pCam.m_YAxis.m_MaxSpeed;
@@ -156,10 +157,12 @@ public class CameraManager : MonoBehaviour
 	public void SwitchTo(CamStatus stat)
 	{
 		curCamStat = stat;
+		CinemachineFollow cf;
 		switch (stat)
 		{
 			case CamStatus.Freelook:
-				pCam.m_BindingMode = CinemachineTransposer.BindingMode.WorldSpace;
+				//pCam.m_BindingMode = CinemachineTransposer.BindingMode.WorldSpace;
+				pCam.m_BindingMode = Unity.Cinemachine.TargetTracking.BindingMode.WorldSpace; 
 				pCam.Priority = FORWARDCAM;
 				pCam.LookAt = _playerModule.transform.Find("Middle").transform;
 				aimCam.Priority = BACKWARDCAM;
@@ -169,8 +172,8 @@ public class CameraManager : MonoBehaviour
 				pCam.Priority = BACKWARDCAM;
 				break;
 			case CamStatus.Locked:
-				pCam.m_BindingMode = CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
-
+				//pCam.m_BindingMode = CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
+				pCam.m_BindingMode = Unity.Cinemachine.TargetTracking.BindingMode.LockToTargetWithWorldUp;
 				pCam.Priority = FORWARDCAM;
 				aimCam.Priority = BACKWARDCAM;
 				
@@ -279,14 +282,14 @@ public class CameraManager : MonoBehaviour
 		//}
 		for (int i = 0; i < camShakers.Count; i++)
 		{
-			camShakers[i].m_AmplitudeGain += ampGain;
-			camShakers[i].m_FrequencyGain += frqGain;
+			camShakers[i].AmplitudeGain += ampGain;
+			camShakers[i].FrequencyGain += frqGain;
 		}
 
 		if (_skillProduct != null)
 		{
-			_skillProduct._shakes.m_AmplitudeGain = ampGain;
-			_skillProduct._shakes.m_FrequencyGain = frqGain;
+			_skillProduct._shakes.AmplitudeGain = ampGain;
+			_skillProduct._shakes.FrequencyGain = frqGain;
 
 		}
 	}
@@ -309,8 +312,8 @@ public class CameraManager : MonoBehaviour
 		//}
 		for (int i = 0; i < camShakers.Count; i++)
 		{
-			camShakers[i].m_AmplitudeGain -= ampGain;
-			camShakers[i].m_FrequencyGain -= frqGain;
+			camShakers[i].AmplitudeGain -= ampGain;
+			camShakers[i].FrequencyGain -= frqGain;
 		}
 	}
 	public void Blind(bool stat)

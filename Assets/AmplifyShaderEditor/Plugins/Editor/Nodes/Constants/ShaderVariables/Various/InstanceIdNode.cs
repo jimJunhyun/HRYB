@@ -2,6 +2,7 @@
 // Copyright (c) Amplify Creations, Lda <info@amplify.pt>
 
 using System;
+using UnityEngine;
 
 namespace AmplifyShaderEditor
 {
@@ -11,7 +12,7 @@ namespace AmplifyShaderEditor
 	{
 		private readonly string[] InstancingVariableAttrib =
 		{   "uint currInstanceId = 0;",
-			"#ifdef UNITY_INSTANCING_ENABLED",
+			"#if defined(UNITY_INSTANCING_ENABLED) || defined(UNITY_PROCEDURAL_INSTANCING_ENABLED)",
 			"currInstanceId = unity_InstanceID;",
 			"#endif"
 		};
@@ -19,6 +20,7 @@ namespace AmplifyShaderEditor
 		private const string TemplateSVInstanceIdVar = "instanceID";
 		private const string InstancingInnerVariable = "currInstanceId";
 		private bool m_useSVSemantic = false;
+		private bool m_procedural = false;
 
 		protected override void CommonInit( int uniqueId )
 		{
@@ -41,11 +43,26 @@ namespace AmplifyShaderEditor
 			{
 				m_useSVSemantic = EditorGUILayoutToggle( "Use SV semantic" , m_useSVSemantic );
 			}
-			
+
+			m_procedural = EditorGUILayoutToggle( "Procedural", m_procedural );
 		}
 
 		public override string GenerateShaderForOutput( int outputId, ref MasterNodeDataCollector dataCollector, bool ignoreLocalvar )
 		{
+			if ( m_procedural )
+			{
+				if ( dataCollector.IsSRP && ( dataCollector.CurrentPassName.Contains( "Forward" ) || dataCollector.CurrentPassName.Contains( "GBuffer" ) ) )
+				{
+					dataCollector.AddToPragmas( UniqueId, "instancing_options renderinglayer procedural:ASEProceduralSetup" );
+				}
+				else
+				{
+					dataCollector.AddToPragmas( UniqueId, "instancing_options procedural:ASEProceduralSetup" );
+				}
+				dataCollector.AddToPragmas( UniqueId, "multi_compile_instancing" );
+				dataCollector.AddFunction( "ASEProceduralSetup()", "void ASEProceduralSetup() { }" );
+			}
+
 			if( dataCollector.IsTemplate )
 			{
 				dataCollector.TemplateDataCollectorInstance.SetupInstancing();
@@ -72,12 +89,17 @@ namespace AmplifyShaderEditor
 			{
 				m_useSVSemantic = Convert.ToBoolean( GetCurrentParam( ref nodeParams ) );
 			}
+			if ( UIUtils.CurrentShaderVersion() >= 19500 )
+			{
+				m_procedural = Convert.ToBoolean( GetCurrentParam( ref nodeParams ) );
+			}
 		}
 
 		public override void WriteToString( ref string nodeInfo , ref string connectionsInfo )
 		{
 			base.WriteToString( ref nodeInfo , ref connectionsInfo );
 			IOUtils.AddFieldValueToString( ref nodeInfo , m_useSVSemantic );
+			IOUtils.AddFieldValueToString( ref nodeInfo, m_procedural );
 		}
 	}
 }
