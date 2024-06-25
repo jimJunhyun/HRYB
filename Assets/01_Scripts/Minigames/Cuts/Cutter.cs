@@ -30,6 +30,8 @@ public class Cutter : MinigameBase
 	TextMeshProUGUI sucsText;
 
 	Coroutine ongoings;
+
+
 	public override void Awake()
 	{
 		targ = GameObject.Find("TargetPointForCuttingMinigame").transform;
@@ -73,16 +75,26 @@ public class Cutter : MinigameBase
 		base.EndGame();
 	}
 
+	public override void PerformGame()
+	{
+		base.PerformGame();
+		scroller.DoStart();
+	}
+
 	private void Update()
 	{
-		if (Input.GetMouseButtonDown(0) && Time.unscaledTime - prevClick >= clickGap && ongoings == null)
+		if (gameStarted)
 		{
-			prevClick = Time.unscaledTime;
-			bool res = DoBarCheck();
-			ongoings = StartCoroutine(ShowText(res));
 
-			tries += 1;
-			scroller.ChangeSpeed();
+			if (Input.GetMouseButtonDown(0) && Time.unscaledTime - prevClick >= clickGap && ongoings == null)
+			{
+				prevClick = Time.unscaledTime;
+				bool res = DoBarCheck();
+				ongoings = StartCoroutine(ShowText(res));
+					
+				tries += 1;
+				scroller.ChangeSpeed();
+			}
 		}
 	}
 
