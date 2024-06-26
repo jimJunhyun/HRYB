@@ -71,47 +71,51 @@ public class Frier : MinigameBase
 
 	private void Update()
 	{
-		if (first)
+		if (gameStarted)
 		{
-			first = false;
-		}
-		else
-		{
-			accT += Time.fixedUnscaledDeltaTime;
-		}
-
-		if (accT >= timeLimit)
-		{
-			if (DoGameCheck())
+			if (first)
 			{
-				EndGame();
+				first = false;
 			}
 			else
 			{
-				FailGame();
+				accT += Time.fixedUnscaledDeltaTime;
 			}
-		}
-		else
-		{
-			timerBar.value = accT / timeLimit;
-		}
 
-		if (Input.GetMouseButtonDown(0))
-		{ 
-			if(Time.unscaledTime - prevIncreaseTime >= WindGap)
+			if (accT >= timeLimit)
 			{
-				IncreaseFireBar();
-
-				prevIncreaseTime = Time.unscaledTime;
+				if (DoGameCheck())
+				{
+					EndGame();
+				}
+				else
+				{
+					FailGame();
+				}
 			}
-		}
+			else
+			{
+				timerBar.value = accT / timeLimit;
+			}
 
-		if (Windresets && level > 0)
-		{
-			level = 0;
-		}
+			if (Input.GetMouseButtonDown(0))
+			{
+				if (Time.unscaledTime - prevIncreaseTime >= WindGap)
+				{
+					IncreaseFireBar();
 
-		DecreaseGauge();
+					prevIncreaseTime = Time.unscaledTime;
+				}
+			}
+
+			if (Windresets && level > 0)
+			{
+				level = 0;
+			}
+
+			DecreaseGauge();
+		}
+		
 	}
 
 	private void DecreaseGauge()

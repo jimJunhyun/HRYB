@@ -43,48 +43,52 @@ public class Stirrer : MinigameBase
 
 	private void Update()
 	{
-		if (Input.GetMouseButtonDown(0))
+		if (gameStarted)
 		{
-			posDiff = (ball.position - Input.mousePosition);
-			if(posDiff.sqrMagnitude <= moveBallRad * moveBallRad)
+			if (Input.GetMouseButtonDown(0))
 			{
-				ballMoveDir = posDiff.normalized;
-				ShowFeedback();
-			}
-
-			if(posDiff.x > 0)
-			{
-				for (int i = 0; i < feedbacks.Count; i++)
+				posDiff = (ball.position - Input.mousePosition);
+				if (posDiff.sqrMagnitude <= moveBallRad * moveBallRad)
 				{
-					feedbacks[i].SetBool(DirectionHash, true);
+					ballMoveDir = posDiff.normalized;
+					ShowFeedback();
+				}
+
+				if (posDiff.x > 0)
+				{
+					for (int i = 0; i < feedbacks.Count; i++)
+					{
+						feedbacks[i].SetBool(DirectionHash, true);
+					}
+				}
+				else
+				{
+					for (int i = 0; i < feedbacks.Count; i++)
+					{
+						feedbacks[i].SetBool(DirectionHash, false);
+					}
 				}
 			}
-			else
+
+
+			ball.Translate(ballMoveDir * ballSpeed * Time.unscaledDeltaTime);
+
+			if (FailCheck())
 			{
-				for (int i = 0; i < feedbacks.Count; i++)
+				FailGame();
+			}
+
+			if (CircleCheck())
+			{
+				successCount += 1;
+				SetTarget();
+				if (DoGameCheck())
 				{
-					feedbacks[i].SetBool(DirectionHash, false);
+					EndGame();
 				}
 			}
 		}
-
-
-		ball.Translate(ballMoveDir * ballSpeed * Time.unscaledDeltaTime);
-
-		if (FailCheck())
-		{
-			FailGame();
-		}
-
-		if (CircleCheck())
-		{
-			successCount += 1;
-			SetTarget();
-			if (DoGameCheck())
-			{
-				EndGame();
-			}
-		}
+		
 	}
 
 	public override void StartGame(ItemAmountPair objName)

@@ -47,47 +47,51 @@ public class Masher : MinigameBase
 
 	private void Update()
 	{
-		if (first)
+		if (gameStarted)
 		{
-			first = false;
-		}
-		else
-		{
-			accT += Time.unscaledDeltaTime;
-			hitAcc += Time.unscaledDeltaTime;
-			timer.value = accT / totalTime;
-			hitTimer.value = hitAcc / timePerHit;
-		}
-
-		if(hitAcc > timePerHit)
-		{
-			hitAcc = 0;
-			if (DoCircleCheck())
+			if (first)
 			{
-				successCount += 1;
-				ShowFeedback();
-				Debug.Log("빻");
-			}
-		}
-
-		if(accT > totalTime)
-		{
-			accT = 0;
-			if (DoGameCheck())
-			{
-				EndGame();
+				first = false;
 			}
 			else
 			{
-				FailGame();
+				accT += Time.unscaledDeltaTime;
+				hitAcc += Time.unscaledDeltaTime;
+				timer.value = accT / totalTime;
+				hitTimer.value = hitAcc / timePerHit;
 			}
-		}
 
-		if (Input.GetMouseButtonDown(0))
-		{
-			spinMod *= -1;
+			if (hitAcc > timePerHit)
+			{
+				hitAcc = 0;
+				if (DoCircleCheck())
+				{
+					successCount += 1;
+					ShowFeedback();
+					Debug.Log("빻");
+				}
+			}
+
+			if (accT > totalTime)
+			{
+				accT = 0;
+				if (DoGameCheck())
+				{
+					EndGame();
+				}
+				else
+				{
+					FailGame();
+				}
+			}
+
+			if (Input.GetMouseButtonDown(0))
+			{
+				spinMod *= -1;
+			}
+			indicator.transform.Rotate(Vector3.forward * spinMod * indicatorSpeed * Time.unscaledDeltaTime);
 		}
-		indicator.transform.Rotate(Vector3.forward * spinMod * indicatorSpeed * Time.unscaledDeltaTime);
+		
 
 	}
 
