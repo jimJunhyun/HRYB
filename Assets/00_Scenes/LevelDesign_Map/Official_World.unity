@@ -35347,7 +35347,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4172642110105464, guid: 385a9b1fbd327524dad93b19cee68111, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.8749046
+      value: 1.94
       objectReference: {fileID: 0}
     - target: {fileID: 4172642110105464, guid: 385a9b1fbd327524dad93b19cee68111, type: 3}
       propertyPath: m_LocalPosition.z
@@ -172247,7 +172247,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2130871555}
   - {fileID: 1307920395}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -216902,101 +216901,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7590211942141047994, guid: c4a9eb26825910d419b6b26dc499b717, type: 3}
   m_PrefabInstance: {fileID: 1187317864}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1187723707
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1187723708}
-  - component: {fileID: 1187723710}
-  - component: {fileID: 1187723709}
-  m_Layer: 0
-  m_Name: Digger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!4 &1187723708
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1187723707}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1307920395}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1187723709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1187723707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c12efbee81634dd78fa2cb2ab5a26c2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  digger: {fileID: 1187723710}
---- !u!114 &1187723710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1187723707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34d2e180125d4ac3a3e845f480befdfb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  master: {fileID: 2130871554}
-  guid: 1515ab6a873c21147b48208c75ec6efc
-  version: 2
-  basePathData: Assets\DiggerData\Scenes\Official_World\1515ab6a873c21147b48208c75ec6efc
-  cutter: {fileID: 1187723709}
-  heightmapScale: {x: 0.9765625, y: 1, z: 0.9765625}
-  holeMapScale: {x: 0.9765625, y: 1, z: 0.9765625}
-  Terrain: {fileID: 1307920394}
-  Materials:
-  - {fileID: 2100000, guid: 0006ae661058ab54abdb64f3c3ef3626, type: 2}
-  - {fileID: 2100000, guid: 72ac512ab647713448c78ec02b1bf9fc, type: 2}
-  - {fileID: 2100000, guid: f90992d00e0419d41a372c7c6095eecf, type: 2}
-  - {fileID: 2100000, guid: 185a22a6f10b0be4bac478ab24924e32, type: 2}
-  materialType: 2
-  terrainTextures:
-  - {fileID: 2800000, guid: 5c9044e41d033904bac4216a33c64d94, type: 3}
-  - {fileID: 2800000, guid: b0076ea7bd63231428f83169131767df, type: 3}
-  - {fileID: 2800000, guid: 3df2f8b332be1e54b80ddeb0b0e18d42, type: 3}
-  - {fileID: 2800000, guid: 1bbb6f363f884124aaa1cad8329f78cf, type: 3}
-  - {fileID: 2800000, guid: 1bbb6f363f884124aaa1cad8329f78cf, type: 3}
-  - {fileID: 2800000, guid: 4944753a01200334fb9c5b9b3a727740, type: 3}
-  - {fileID: 2800000, guid: 3fd4688830635be4db5368a5b86dba0c, type: 3}
-  - {fileID: 2800000, guid: 3fe1213c565022a49b6a6d3a9a66d60e, type: 3}
-  - {fileID: 2800000, guid: a7b05dec520c8cf4c8e08dfef1f84db4, type: 3}
-  - {fileID: 2800000, guid: a207d850508a70c46b922ceafbea7a7b, type: 3}
-  - {fileID: 2800000, guid: 6e03d6a07afb8314997276ef200d1f5d, type: 3}
-  - {fileID: 2800000, guid: af53ed92faa41fd4ebd43ac7e1a8c086, type: 3}
-  - {fileID: 2800000, guid: 29c626e9e6e470248a44438be202c7c0, type: 3}
-  - {fileID: 2800000, guid: 6dc316139475bb04e887760522945098, type: 3}
-  - {fileID: 2800000, guid: 16fdc16af892fc745890a4d5720a58dd, type: 3}
-  - {fileID: 2800000, guid: 85ed2b41abc7c82499e10ac4feaa0590, type: 3}
-  chunksInStreamingAssets: []
-  persistenceSubPath: 
-  ShowDebug: 0
-  onChunkObjectCreated:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1001 &1187990738
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -232943,7 +232847,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 2
-  m_MaterialTemplate: {fileID: 2100000, guid: 6a95a0e857cb3394dbef6e86430da3ca, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -232968,8 +232872,7 @@ Transform:
   m_LocalPosition: {x: -1781.4988, y: -25.884912, z: -718.1678}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1187723708}
+  m_Children: []
   m_Father: {fileID: 961895181}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!154 &1307920396
@@ -278123,11 +278026,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1480622149016750883, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.065376885
+      value: -0.065376915
       objectReference: {fileID: 0}
     - target: {fileID: 1480622149016750883, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.021588663
+      value: 0.021588678
       objectReference: {fileID: 0}
     - target: {fileID: 2109712079635487170, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_Follow
@@ -278231,15 +278134,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7309920490111502992, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.3128206
+      value: 0.31282064
       objectReference: {fileID: 0}
     - target: {fileID: 7309920490111502992, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.06537687
+      value: -0.065376885
       objectReference: {fileID: 0}
     - target: {fileID: 7309920490111502992, guid: e4d35515bac7a30488ee76800c7db886, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.021588659
+      value: 0.021588663
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -387355,65 +387258,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: deafc71853065c44a829b12549375234, type: 3}
---- !u!1 &2130871553
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2130871555}
-  - component: {fileID: 2130871554}
-  m_Layer: 11
-  m_Name: Digger Master
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2130871554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2130871553}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 521f8e3d06ab44cadaed6ad179732778, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chunkSize: 33
-  sceneDataFolder: Official_World
-  screenRelativeTransitionHeightLod0: 0.1
-  screenRelativeTransitionHeightLod1: 0.05
-  colliderLodIndex: 0
-  createLODs: 0
-  showUnderlyingObjects: 0
-  resolutionMult: 1
-  voxelHeight: 1
-  autoVoxelHeight: 0
-  layer: 0
-  chunksTag: Untagged
-  enableOcclusionCulling: 0
-  forceMicroSplatMaterialAssetUpdate: 0
-  autoSaveMeshesAsAssets: 1
---- !u!4 &2130871555
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2130871553}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1781.4988, y: -25.884912, z: -718.1678}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 961895181}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2131074454
 PrefabInstance:
   m_ObjectHideFlags: 0
