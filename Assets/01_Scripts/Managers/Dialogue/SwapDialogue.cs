@@ -13,7 +13,7 @@ public class SwapDialogue : Dialogue
 
 		if(next == null)
 		{
-			owner.SetDialogue(afterChange);
+			owner.SetSwapDialogue(afterChange);
 		}
 	}
 }

@@ -60,6 +60,7 @@ public class Character : ScriptableObject
 	public QuestInfo latestQuest;
 
 	Dialogue dia;
+	Dialogue swapCall;
 
 	private void Awake()
 	{
@@ -71,6 +72,20 @@ public class Character : ScriptableObject
 	{
 		q = null;
 		this.dia = dia;
+	}
+
+	public void SetSwapDialogue(Dialogue dia)
+	{
+		q = null;
+		swapCall = dia;
+	}
+	public void InvokeSwap()
+	{
+		if(swapCall != null)
+		{
+			this.dia = swapCall;
+			swapCall = null;
+		}
 	}
 
 	public void ResetDialogue()

@@ -73,6 +73,7 @@ public class Dialogue : ScriptableObject
 		{
 			GameManager.instance.uiManager.dialogueUI.Off();
 			owner.self.anim.Animators.SetBool(talkingHash, false);
+			owner.InvokeSwap();
 		}
 	}
 
