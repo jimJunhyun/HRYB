@@ -49,15 +49,17 @@ public class BearAI : AISetter
 	}
 
 
-	protected override void StartInvoke()
+	public override void StartInvoke()
 	{
 		head.connecteds.Clear();
-		self.life._dieEvent += DieEvent;
 		Bear_AttackModule _atkModule = self.atk as Bear_AttackModule;
 		BearMoveModule _moveModule = self.move as BearMoveModule;
-
 		if (_isWake)
 		{
+			self.life._dieEvent += DieEvent;
+			self.life._hitEvent += _moveModule.StopMove;
+
+			IsNotStarted = true;
 			self.anim.SetIdleState(true);
 
 			GrogeNode _isGroge = new GrogeNode(self);

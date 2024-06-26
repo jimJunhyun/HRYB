@@ -41,6 +41,17 @@ public class JangsungMumukMissile : MonoBehaviour
 	public void Fire()
 	{
 		_isFire = true;
+
+		if (PoolManager.GetObject("AttackDecal", transform).TryGetComponent<DecalBase>(out DecalBase _decal))
+		{
+			RaycastHit ray;
+			if (Physics.Raycast(transform.position, dir.normalized, out ray, 100, 1 << 11))
+			{
+				_decal.SetUpDecalRay(ray.point + new Vector3(0, -0.1f, 0), transform.rotation, new Vector3(0, 0, 0), new Vector3(1.4f, 2, 1.4f));
+				_decal.StartDecal(0.4f);
+			}
+		}
+
 		_cast.Now(transform,(a)=>
 		{
 			if(1 << a.gameObject.layer == (int)_enemy)

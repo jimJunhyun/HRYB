@@ -38,7 +38,7 @@ public class MooseAI : AISetter
 	}
     	
 	
-    protected override void StartInvoke()
+    public override void StartInvoke()
     {
 	    head.connecteds.Clear();
 
@@ -47,7 +47,8 @@ public class MooseAI : AISetter
 	    
 	    if (_isWake)
 	    {
-		    self.anim.SetIdleState(true);
+			IsNotStarted = true;
+			self.anim.SetIdleState(true);
 			self.life._hitEvent += _moveModule.StopMove;
 			self.life._dieEvent += DieEvent;
 
