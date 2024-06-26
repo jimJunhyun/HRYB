@@ -15,6 +15,12 @@ public class JangsungVS : MonoBehaviour
 
 	}
 
+	public void PlayerOnSpawn()
+	{
+		GameManager.instance.DisableCtrl();
+		GameManager.instance.player.GetComponent<PlayerMove>().PlayerTeleport(new Vector3(917.5f, 18f,222f));
+	}
+
 	public void SceneLoadSpawn()
 	{
 		SceneManager.LoadScene("Title");

@@ -36,6 +36,7 @@ public class JangsungMumukMissile : MonoBehaviour
 		dir = (_target - transform.position).normalized + damping;
 
 		_channel = dmg;
+		StartCoroutine(Returns());
 	}
 
 	public void Fire()
@@ -61,7 +62,6 @@ public class JangsungMumukMissile : MonoBehaviour
 				CameraManager.instance.ShakeCamFor(0.3f, 0.8f, 0.8f);
 			}
 		});
-		StartCoroutine(Returns());
 	}
 
 	private void Update()
@@ -79,7 +79,7 @@ public class JangsungMumukMissile : MonoBehaviour
 
 	IEnumerator Returns()
 	{
-		yield return new WaitForSeconds(5f);
+		yield return new WaitForSeconds(6f);
 		PoolManager.ReturnObject(gameObject);
 	}
 }
