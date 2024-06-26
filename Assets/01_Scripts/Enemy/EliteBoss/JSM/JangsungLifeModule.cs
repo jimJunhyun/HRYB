@@ -45,7 +45,7 @@ public class JangsungLifeModule : LifeModule
 
 	public void BarrierON()
 	{
-		_objs = Instantiate(_barrierEffect, transform);
+		_objs = Instantiate(_barrierEffect, _visualPos);
 		_isBarrier = true;
 	}
 
