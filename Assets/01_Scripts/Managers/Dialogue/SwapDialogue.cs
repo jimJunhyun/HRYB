@@ -9,11 +9,10 @@ public class SwapDialogue : Dialogue
 
 	public override void NextDialogue()
 	{
+		owner.SetSwapDialogue(afterChange);
+		
 		base.NextDialogue();
 
-		if(next == null)
-		{
-			owner.SetSwapDialogue(afterChange);
-		}
+		
 	}
 }

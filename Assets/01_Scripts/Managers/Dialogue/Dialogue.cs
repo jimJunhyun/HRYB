@@ -15,12 +15,17 @@ public class Dialogue : ScriptableObject
 
 	public Dialogue next;
 
+	public string rewardItem;
+	public int rewardAmt;
+
 	protected StringBuilder sb = new StringBuilder();
 	protected Coroutine ongoing;
 
 	WaitForSeconds ws;
 
 	private readonly int talkingHash = Animator.StringToHash("Talking");
+
+	protected bool isFirstTalk;
 
 	public virtual Dialogue Copy()
 	{
@@ -29,11 +34,15 @@ public class Dialogue : ScriptableObject
 		ret.typeDel = typeDel;
 		ret.owner = owner;
 		ret.next = next;
+		ret.isFirstTalk = isFirstTalk;
+		ret.rewardAmt = rewardAmt;
+		ret.rewardItem = rewardItem;
 		return ret;
 	}
 
 	public virtual void OnShown(Character owner)
 	{
+		
 		if(ws == null)
 		{
 			ws = new WaitForSeconds(typeDel);
@@ -67,6 +76,11 @@ public class Dialogue : ScriptableObject
 	{
 		if(next != null)
 		{
+			owner.self.talk.onNextTalk?.Invoke();
+			if(rewardItem.Length > 0)
+			{
+				GameManager.instance.pinven.AddItem(Item.GetItem<Item>(rewardItem), rewardAmt);
+			}
 			next.OnShown(owner);
 		}
 		else
@@ -74,6 +88,7 @@ public class Dialogue : ScriptableObject
 			GameManager.instance.uiManager.dialogueUI.Off();
 			owner.self.anim.Animators.SetBool(talkingHash, false);
 			owner.InvokeSwap();
+			owner.self.talk.onNextTalkChunkComplete?.Invoke();
 		}
 	}
 
