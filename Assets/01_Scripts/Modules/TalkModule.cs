@@ -37,13 +37,13 @@ public class TalkModule : Module, IInterable
 
 	GameObject canv;
 
-	private void Awake()
+	protected virtual void Awake()
 	{
 		charInfo.self = GetActor();
 		charInfo.latestQuest = null;
 	}
 
-	private void Start()
+	protected virtual void Start()
 	{
 		GameObject obj = PoolManager.GetObject(QUESTCANVASNAME, transform);
 		obj.transform.localPosition = Vector3.up * yOffset * 1.5f;
@@ -53,7 +53,7 @@ public class TalkModule : Module, IInterable
 		canv.transform.localPosition = Vector3.up * yOffset;
 	}
 
-	private void Update()
+	protected virtual void Update()
 	{
 		if (charInfo.Questing && charInfo.latestQuest == null) //받지않은 퀘스트 있음.
 		{
