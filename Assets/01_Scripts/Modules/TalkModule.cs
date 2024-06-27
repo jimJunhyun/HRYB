@@ -34,6 +34,7 @@ public class TalkModule : Module, IInterable
 	public AltInterType altInterType { get; set; }
 
 	public UnityEvent onNextTalk;
+	public UnityEvent onNextTalkChunkComplete;
 
 	GameObject canv;
 
