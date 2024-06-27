@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 
 
@@ -9,6 +10,8 @@ public class AudioPlayer : MonoBehaviour
     
 	AudioSource global;
 	AudioSource globalBgm;
+	AudioMixer audioMixer;
+
 	public NameAudioDictionary dict;
 
 	public bool IsPlaying { get => global.isPlaying;}
@@ -19,6 +22,11 @@ public class AudioPlayer : MonoBehaviour
 	{
 		global = Camera.main.GetComponent<AudioSource>();
 		globalBgm = GameObject.Find("BgmPlayer").GetComponent<AudioSource>();
+
+		if(globalBgm)
+		{
+			globalBgm.outputAudioMixerGroup = audioMixer.FindMatchingGroups("BGM")[0];
+		}
 	}
 
 	public void PlayBgm(string clipName)
@@ -71,7 +79,7 @@ public class AudioPlayer : MonoBehaviour
 		global.loop = false;
 	}
 
-	public void PlayPoint(string clipName, Vector3 point, float duration = -1)
+	public void PlayPoint(string clipName, Vector3 point, float duration = -1, EAudioType audioType = EAudioType.SFX)
 	{
 		if (dict.data.ContainsKey(clipName))
 		{
@@ -82,6 +90,7 @@ public class AudioPlayer : MonoBehaviour
 				delT = duration;
 			GameObject audioPt = PoolManager.GetObject("AudioPoint", point, Quaternion.identity, delT);
 			AudioSource audioPoint= audioPt.GetComponent<AudioSource>();
+			audioPoint.outputAudioMixerGroup = audioMixer.FindMatchingGroups(audioType.ToString())[0];
 			audioPoint.clip = clip;
 			audioPoint.pitch = 1 + Random.Range(-0.1f, 0);
 			audioPoint.Play();
