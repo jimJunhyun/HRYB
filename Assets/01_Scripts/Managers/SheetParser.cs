@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,14 +13,21 @@ public class SheetParser
 
 	string tsvFormatText;
 
+	/// <summary>
+	/// 가로줄갯수
+	/// </summary>
 	public readonly int attributeCount;
 
-	//데이터갯수
-	public int cardinality { get; private set;}
+	/// <summary>
+	/// 세로줄갯수
+	/// </summary>
+	public int cardinality { get; private set; }
 
 	bool indexed;
 
-	internal bool inited;
+	public  bool inited;
+
+	public event Action<SheetParser> onCompleted;
 
 	List<string> heads;
 
@@ -91,7 +99,7 @@ public class SheetParser
 	}
 
 	
-	public SheetParser(string link, string from, string to, bool hasIndex = true)
+	public SheetParser(string link, string from, string to, bool hasIndex = true, bool useCoroutine  = true)
 	{
 		url = link;
 		heads = new List<string>();
@@ -123,10 +131,73 @@ public class SheetParser
 		}
 		attributeCount = t - f + 1;
 
-		GameManager.instance.StartCoroutine(Load());
+		if (useCoroutine)
+		{
+			GameManager.instance.StartCoroutine(Load());
+		}
+		else
+		{
+			UnityWebRequest req = UnityWebRequest.Get(url);
+			var waiter = req.SendWebRequest();
+
+			waiter.completed += (x)=>OnLoadCompleted(x, req);
+			
+		}
+
 	}
 
+	public void OnLoadCompleted(AsyncOperation oper, UnityWebRequest req)
+	{
+		if (oper.isDone)
+		{
+			
+			
+			tsvFormatText = req.downloadHandler.text;
+			Debug.Log(tsvFormatText);
 
+			req.Dispose();
+
+			string[] rows = tsvFormatText.Split('\n');
+
+			cardinality = rows.Length - 1;
+
+			string[] cols;
+			for (int i = 0; i < rows.Length; i++)
+			{
+				cols = rows[i].Split('\t');
+				List<string> colsSplit = new List<string>();
+				for (int j = 0; j < cols.Length; j++)
+				{
+					if (i == 0)
+					{
+						heads.Add(cols[j].Trim());
+						headValuesPair.Add(cols[j].Trim(), new List<string>());
+					}
+					else
+					{
+						headValuesPair[heads[j]].Add(cols[j].Trim());
+						colsSplit.Add(cols[j].Trim());
+					}
+				}
+				if (i != 0)
+				{
+					tupleDatas.Add(colsSplit);
+				}
+
+				if (indexed && i != 0)
+				{
+					indexAttributePairs.Add(colsSplit[0], colsSplit);
+				}
+			}
+
+			inited = true;
+
+			onCompleted.Invoke(this);
+		}
+		
+	}
+
+	
 
 	public IEnumerator Load()
 	{
@@ -175,6 +246,7 @@ public class SheetParser
 		}
 
 		inited = true;
+		onCompleted?.Invoke(this);
 	}
 
 }
