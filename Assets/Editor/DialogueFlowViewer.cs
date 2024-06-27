@@ -150,7 +150,7 @@ public class DialogueFlowViewer : EditorWindow
 
 	int selectedIdx = 0;
 
-	const string DIALOGUEPATH = "Dialogues/";
+	public const string DIALOGUEPATH = "Dialogues/";
 
 	public const int NODESIZEX = 160;
 	public const int NODESIZEY = 100;
