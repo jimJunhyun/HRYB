@@ -22,7 +22,7 @@ public class JangsungGirlAI : AISetter
 		
 	}
 
-	protected override void StartInvoke()
+	public override void StartInvoke()
     {
 	    if (_isStart)
 	    {

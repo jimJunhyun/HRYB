@@ -50,7 +50,7 @@ public class WolfAI : AISetter
 		transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.LookRotation(lookPos), Time.deltaTime * 4);
 	}
 	
-    protected override void StartInvoke()
+    public override void StartInvoke()
     {
 	    head.connecteds.Clear();
 
@@ -59,7 +59,8 @@ public class WolfAI : AISetter
 
 	    if (_isWake)
 	    {
-		    self.anim.SetIdleState(true);
+			IsNotStarted = true;
+			self.anim.SetIdleState(true);
 		    self.life._dieEvent += DieEvent;
 			self.life._hitEvent += _moveModule.StopMove;
 

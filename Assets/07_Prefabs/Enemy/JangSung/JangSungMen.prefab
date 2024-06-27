@@ -244,6 +244,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
   _skinned: {fileID: 0}
+  IsNotStarted: 0
   _friend: {fileID: 0}
   _isStart: 0
 --- !u!114 &3885280090406563638
@@ -266,6 +267,9 @@ MonoBehaviour:
   DownAttackDist: 10
   FallDownAttackDist: 15
   MoveAttackDist: 100
+  DownAttackDmg: 10
+  MoveAttackDmg: 10
+  FallDownAttackDmg: 10
 --- !u!114 &2719180598335837514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,7 +358,7 @@ MonoBehaviour:
   powerExp: 0
   superArmor: 0
   _barrierEffect: {fileID: 8001687956726767954, guid: a17e70a02f8d081468e767010cf9643f, type: 3}
-  _visualPos: {fileID: 0}
+  _visualPos: {fileID: 8514724387342558365}
 --- !u!114 &1199267022448068303
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ public abstract class AISetter : MonoBehaviour
 	protected Actor self;
 	[SerializeField] Actor _player;
 	[SerializeField] SkinnedMeshRenderer _skinned;
+	public bool IsNotStarted = false;
 
 	public Actor player
 	{
@@ -25,8 +26,16 @@ public abstract class AISetter : MonoBehaviour
 	
 	protected bool stopped = false;
 	public bool StopState => stopped;
-	float stopEnAble = 0f;
 
+
+	public void IsNotAwake()
+	{
+		if(IsNotStarted == false)
+		{
+			StartInvoke();
+		}
+		self.life._hitEvent -= IsNotAwake;
+	}
 
 	public virtual void LookAt(Transform t)
 	{
@@ -64,13 +73,14 @@ public abstract class AISetter : MonoBehaviour
 	    //_skinned.materials[0].SetInteger("_IsDissolve", 0);
 	    self = GetComponent<Actor>();
 	    head = new Selecter();
+		self.life._hitEvent += IsNotAwake;
 		StartInvoke();
     }
 
-    /// <summary>
-    /// Same To Start
-    /// </summary>
-    protected abstract void StartInvoke();
+	/// <summary>
+	/// Same To Start
+	/// </summary>
+	public abstract void StartInvoke();
 
     // Update is called once per frame
     protected virtual void Update()
@@ -78,11 +88,10 @@ public abstract class AISetter : MonoBehaviour
 	    if (!stopped && head != null)
 	    {
 		    head.Examine();
-			stopEnAble = 0;
 	    }
 		else
 		{
-			stopEnAble += Time.deltaTime;
+			(self.move as EnemyMoveModule).StopMove();
 		}
 
 		//if(stopEnAble >= 0.5f)
@@ -101,8 +110,6 @@ public abstract class AISetter : MonoBehaviour
     public void StopExamine()
     {
 	    stopped = true;
-		stopEnAble = 0;
-
 	}
 
     public virtual void StartExamine()

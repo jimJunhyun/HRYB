@@ -123,23 +123,19 @@ public class LifeModule : Module
 		{
 			ongoingTickDamages.Add(i, new List<Coroutine>());
 		}
-		_hitEvent += () => { 
-			//if(_stopCoroutine == null)
-			{
-				StartCoroutine(PlayWakeAgain(0.2f));  
-			}
-		};
 		yy = new YinYang(initBlack, initWhite);
 
 		adequity = new YinYang(initAdeBlack, initAdeWhite);
 		//Debug.Log("INITADE : " + initAdeBlack + " : " + initAdeWhite);
 		//Debug.Log("ADE : " + adequity.ToString());
 	}
-	protected virtual IEnumerator PlayWakeAgain(float t)
+	public virtual void PlayhitAgain()
 	{
-
 		self.AI.StopExamine();
-		yield return new WaitForSeconds(t); 
+	}
+
+	public virtual void PlayWakeAgain()
+	{
 		self.AI.StartExamine();
 	}
 
@@ -444,6 +440,8 @@ public class LifeModule : Module
 			if(ongoingTickDamages.Count > 1)
 			{
 				int lastIdx = ongoingTickDamages[((int)channel)].Count - 1;
+				if (lastIdx < 0)
+					return;
 				if (ongoingTickDamages[((int)channel)][lastIdx] != null)
 				{
 					StopCoroutine(ongoingTickDamages[((int)channel)][lastIdx]);

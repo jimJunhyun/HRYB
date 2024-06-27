@@ -191,8 +191,8 @@ public class PlayerCast : CastModule
 		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
 
 		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("MasterSpark"), SkillSlotInfo.One, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("FireWall"), SkillSlotInfo.Two, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("EnhanceIce"), SkillSlotInfo.Three, PlayerForm.Magic);
+		//ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("FireWall"), SkillSlotInfo.Two, PlayerForm.Magic);
+		//ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("EnhanceIce"), SkillSlotInfo.Three, PlayerForm.Magic);
 		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("LightingDown"), SkillSlotInfo.Q, PlayerForm.Magic);
 		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("StarDust"), SkillSlotInfo.E, PlayerForm.Magic);
 		

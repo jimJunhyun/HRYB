@@ -95,9 +95,9 @@ public class JangsungManAttackModule : EnemyAttackModule
 
 		if (AttackStd == "DownAttack")
 		{
-			if (PoolManager.GetObject("ForwardBoxDecal", transform).TryGetComponent<BoxDecal>(out BoxDecal _decal))
+			if (PoolManager.GetObject("AttackDecal", transform).TryGetComponent<DecalBase>(out DecalBase _decal))
 			{
-				_decal.SetUpDecal(new Vector3(0,0,5), transform.rotation, new Vector3(0.3f,0.2f,1.1f), new Vector3(1,0,1), new Vector3(1,1,1));
+				_decal.SetUpDecal(new Vector3(0,0,6), transform.rotation,  new Vector3(1.4f,0,0f), new Vector3(1.4f,1, 6f));
 				_decal.StartDecal(0.8f);
 			}
 		}

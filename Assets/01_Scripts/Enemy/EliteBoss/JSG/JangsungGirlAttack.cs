@@ -157,14 +157,14 @@ public class JangsungGirlAttack : EnemyAttackModule
 			{
 				if (i % 5 == 0)
 				{
-					GameObject obj1 = PoolManager.GetObject("MumukMissile", mumukPos[0].position, mumukPos[0].rotation);
+					GameObject obj1 = PoolManager.GetObject("MumukMissile", mumukPos[Random.Range(0,mumukPos.Count)].position, mumukPos[Random.Range(0, mumukPos.Count)].rotation);
 					JangsungMumukMissile missile = obj1.GetComponent<JangsungMumukMissile>();
 					missile.Init(mumukPos[0], self.AI.player.transform, 50, DamageType.DirectHit, self.AI.player.transform.forward * 0.1f);
 					missile.Fire();
 				}
 				else
 				{
-					GameObject obj1 = PoolManager.GetObject("MumukMissile", mumukPos[0].position, mumukPos[0].rotation);
+					GameObject obj1 = PoolManager.GetObject("MumukMissile", mumukPos[Random.Range(0, mumukPos.Count)].position, mumukPos[Random.Range(0, mumukPos.Count)].rotation);
 					JangsungMumukMissile missile = obj1.GetComponent<JangsungMumukMissile>();
 					missile.Init(mumukPos[0], self.AI.player.transform, 50, DamageType.NoHit);
 					missile.Fire();
