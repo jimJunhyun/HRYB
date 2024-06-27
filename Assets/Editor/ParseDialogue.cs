@@ -9,7 +9,7 @@ public class ParseDialogue : Editor
 {
 	const int CONVTYPE = 1;
 	const int DIATEXT = 2;
-	const int NPCNAME = 3;
+	const int NPCNAME = 4;
 	const int QUESTNAME = 5;
 	const int REWARDITEM = 6;
 	const int NEXTDIA = 8;
@@ -24,7 +24,7 @@ public class ParseDialogue : Editor
 
 	static void CreateDialogue() //async로 바꾸는게?
 	{
-		SheetParser data = new SheetParser("https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/export?format=tsv&gid=649135811&range=B3:O", "B", "O", true, false);
+		SheetParser data = new SheetParser("https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/export?format=tsv&gid=649135811&range=B2:O", "B", "O", true, false);
 		data.onCompleted += ParseDia;
 	}
 
@@ -33,17 +33,20 @@ public class ParseDialogue : Editor
 		
 
 		string path = $"{QuestManager.ASSETPATH}{DialogueFlowViewer.DIALOGUEPATH}";
+		path = path.Substring(0, path.Length - 1);
 
-		//DirectoryInfo di = new DirectoryInfo(path);
+		DirectoryInfo di = new DirectoryInfo(path);
 
-		//foreach (FileInfo file in di.GetFiles())
-		//{
-		//	file.Delete();
-		//}
-		//foreach (DirectoryInfo dir in di.GetDirectories())
-		//{
-		//	dir.Delete(true);
-		//}
+		foreach (FileInfo file in di.GetFiles())
+		{
+			file.Delete();
+		}
+		foreach (DirectoryInfo dir in di.GetDirectories())
+		{
+			dir.Delete(true);
+		}
+
+		AssetDatabase.Refresh();
 
 		Dictionary<string, Dictionary<string, List<Dialogue>>> npcDatas = new Dictionary<string, Dictionary<string, List<Dialogue>>>();
 
@@ -51,6 +54,7 @@ public class ParseDialogue : Editor
 		{
 			if (!npcDatas.ContainsKey(ps.GetAttribute(i, NPCNAME)))
 			{
+				
 				string convChunk = ps.GetAttribute(i, 0).Split('0')[0];
 				Dictionary<string, List<Dialogue>> convSc = new Dictionary<string, List<Dialogue>>();
 				List<Dialogue> dia = new List<Dialogue>();
@@ -60,14 +64,14 @@ public class ParseDialogue : Editor
 				{
 					case 0:
 						{
-							cur = new Dialogue();
+							cur = CreateInstance<Dialogue>();
 						}
 						break;
 					case 1:
 						{
 
-							cur = new SwapDialogue();
-							if(cur is SwapDialogue sw)
+							cur = CreateInstance<SwapDialogue>();
+							if (cur is SwapDialogue sw)
 							{
 								string swapDiaName = ps.GetAttribute(i, SWAPDIA).Trim();
 								if (swapDiaName.Length > 0)
@@ -101,8 +105,8 @@ public class ParseDialogue : Editor
 					case 2:
 						{
 
-							cur = new QuestDialogue();
-							if(cur is QuestDialogue qu)
+							cur = CreateInstance<QuestDialogue>();
+							if (cur is QuestDialogue qu)
 							{
 								if(QuestManager.nameQuestPair[ps.GetAttribute(i, QUESTNAME)] != null)
 								{
@@ -114,7 +118,7 @@ public class ParseDialogue : Editor
 					case 3:
 						{
 
-							cur = new CallbackDialogue(); 
+							cur = CreateInstance<CallbackDialogue>();
 							//쓰면 뒤짐
 							//말그대로임 ㅇㅇ
 						}
@@ -122,9 +126,9 @@ public class ParseDialogue : Editor
 					case 4:
 						{
 
-							cur = new ChoiceDialogue();
+							cur = CreateInstance<ChoiceDialogue>();
 
-							if(cur is ChoiceDialogue ch)
+							if (cur is ChoiceDialogue ch)
 							{
 
 								string nexts;
@@ -195,7 +199,7 @@ public class ParseDialogue : Editor
 
 				convSc.Add(convChunk, dia);
 
-
+				Debug.Log(ps.GetAttribute(i, NPCNAME) + "데이터추가됨 하하");
 				npcDatas.Add(ps.GetAttribute(i, NPCNAME), convSc);
 			}
 			else
@@ -340,23 +344,42 @@ public class ParseDialogue : Editor
 					}
 					cur.name = $"{ps.GetAttribute(i, NPCNAME)}_{ps.GetAttribute(i, 0)}";
 
+					Debug.Log(ps.GetAttribute(i, NPCNAME) + "에다가 데이터추가됨 힣힣");
 					npcDatas[ps.GetAttribute(i, NPCNAME)][convSection].Add(cur);
 				}
 			}
 		}
 
+		Debug.Log(npcDatas.Count + " 개의 대화 NPC 데이터 확인");
+		foreach (var item in npcDatas.Keys)
+		{
+			Debug.Log(item + " 의 대화 " + npcDatas[item].Count + " 개.");
+			foreach (var dia in npcDatas[item])
+			{
+				Debug.Log(item + " 의 대화 " +  dia.Key + " 의 대사 " + dia.Value.Count + " 개.");
+			}
+		}
+
 		foreach (var item in npcDatas)
 		{
-			AssetDatabase.CreateFolder(path, item.Key);
+			if (!Directory.Exists($"{path}/{item.Key}"))
+			{
+				AssetDatabase.CreateFolder(path, item.Key);
+			}
+			
 			foreach (var data in item.Value)
 			{
-				AssetDatabase.CreateFolder($"{path}{item.Key}/", data.Key);
+				if (!Directory.Exists($"{path}/{item.Key}/{data.Key}"))
+				{
+					AssetDatabase.CreateFolder($"{path}/{item.Key}", data.Key);
+				}
 
 				foreach (var dia in data.Value)
 				{
-					AssetDatabase.CreateAsset(dia, $"{path}{item.Key}/{data.Key}");
+					AssetDatabase.CreateAsset(dia, $"{path}/{item.Key}/{data.Key}/{dia.name}.asset");
 				}
 			}
 		}
+		AssetDatabase.Refresh();
 	}
 }

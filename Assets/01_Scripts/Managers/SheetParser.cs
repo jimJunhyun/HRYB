@@ -246,7 +246,7 @@ public class SheetParser
 		}
 
 		inited = true;
-		onCompleted.Invoke(this);
+		onCompleted?.Invoke(this);
 	}
 
 }
