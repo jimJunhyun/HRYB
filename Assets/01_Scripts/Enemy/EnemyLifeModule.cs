@@ -28,6 +28,8 @@ public class EnemyLifeModule : LifeModule
 
 	Transform middle;
 
+	const string DROPITEM = "ItemPocket";
+
 	public override void Awake()
 	{
 		base.Awake();
@@ -201,10 +203,10 @@ public class EnemyLifeModule : LifeModule
 
 	public void DieEntity()
 	{
-		for (int i = 0; i < _dropItem.Count; i++)
-		{
-			GameManager.instance.pinven.AddItem(Item.GetItem<Item>(_dropItem[i]));
-		}
+		FarmingPoint f = PoolManager.GetObject(DROPITEM, transform.position, Quaternion.identity).GetComponent<FarmingPoint>();
+		f.resItem = _dropItem;
+		f.amount = 1;
+
 
 		GameManager.instance.pinven.AddExp(_expAmt);
 
