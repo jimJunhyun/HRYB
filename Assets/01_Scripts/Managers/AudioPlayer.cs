@@ -25,7 +25,7 @@ public class AudioPlayer : MonoBehaviour
 
 		if(globalBgm)
 		{
-			globalBgm.outputAudioMixerGroup = audioMixer.FindMatchingGroups("BGM")[0];
+			//globalBgm.outputAudioMixerGroup = audioMixer.FindMatchingGroups("BGM")[0];
 		}
 	}
 
@@ -81,6 +81,7 @@ public class AudioPlayer : MonoBehaviour
 
 	public void PlayPoint(string clipName, Vector3 point, float duration = -1, EAudioType audioType = EAudioType.SFX)
 	{
+		return;
 		if (dict.data.ContainsKey(clipName))
 		{
 			//Debug.LogError($"해당사운드 재생 : {clipName}");

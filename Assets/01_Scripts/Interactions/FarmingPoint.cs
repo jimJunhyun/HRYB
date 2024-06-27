@@ -131,8 +131,8 @@ public class FarmingPoint : MonoBehaviour, IInterable
 		}
 		else if (isDestroyed)
 		{
-			Destroy(gameObject);
-			//PoolManager.ReturnObject(gameObject);
+			//Destroy(gameObject);
+			PoolManager.ReturnObject(gameObject);
 		}
 	}
 
