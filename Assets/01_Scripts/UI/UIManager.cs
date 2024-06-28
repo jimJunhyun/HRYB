@@ -49,6 +49,8 @@ using System.Linq;
 
 	public ToolBarManager toolbarUIShower;
 
+	public FocusUI focus;
+
 	public AnimationCurve dropDownCurve;
 
 	public RectTransform CursorPos;
@@ -114,6 +116,8 @@ using System.Linq;
 
 		getItemUiSlot = GetitemUITransform.GetComponentsInChildren<RectTransform>().ToList();
 		getItemUiSlot.RemoveAt(0); //GetitemUITransform 제거
+
+		focus = GameObject.Find("FocusCanv").GetComponent<FocusUI>();
 	}
 
 	private void Start()
@@ -166,6 +170,11 @@ using System.Linq;
 		toolbarUIShower.RefreshWindows();
 		medicineButton.SetStatuses(GameManager.instance.pinven.CurHoldingItem.info);
 		medicineDetail.RefreshInfo();
+	}
+
+	public RectTransform GetInvenSlotUIRect(int idx)
+	{
+		return uis[idx].transform as RectTransform;
 	}
 
 	public void UpdateQuestUI()

@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
+[System.Flags]
 public enum AdditionalEffectFocusing
 {
 	None = 0,
 	Border = 1,
 	Arrow = 2,
+	Text = 4,
+	Subtitle = 8,
 
 }
 
@@ -18,6 +22,8 @@ public class FocusUI : MonoBehaviour
 
 	Image border;
 	Image arrow;
+	TextMeshProUGUI explain;
+	TextMeshProUGUI subtitle;
 
 	
 	Canvas c;
@@ -28,7 +34,7 @@ public class FocusUI : MonoBehaviour
 	bool bouncing;
 	AdditionalEffectFocusing focusMode;
 
-	const float LERPSPEED = 0.3f;
+	const float LERPSPEED = 0.7f;
 	const float BOUNCEAMOUNT = 0.2f;
 	const float BOUNCESPEED = 6f;
 
@@ -38,6 +44,8 @@ public class FocusUI : MonoBehaviour
 		shade = transform.Find("Foci/Shade").GetComponent<RectTransform>();
 		border = transform.Find("Foci/Border").GetComponent<Image>();
 		arrow = transform.Find("Arrow").GetComponent<Image>();
+		explain = transform.Find("Explain").GetComponent<TextMeshProUGUI>();
+		subtitle = transform.Find("Subtitle").GetComponent<TextMeshProUGUI>();
 		c = GetComponent<Canvas>();
 	}
 	private void Start()
@@ -45,11 +53,7 @@ public class FocusUI : MonoBehaviour
 		OffShade(false);
 	}
 
-	private void Update()
-	{
-		FocusAt(new Rect(Input.mousePosition, Vector2.one * 300), false, AdditionalEffectFocusing.Arrow);
-		DoBounce();
-	}
+	
 
 	public void OnShade()
 	{
@@ -81,30 +85,20 @@ public class FocusUI : MonoBehaviour
 	{
 		OnShade();
 
-		switch (eff)
-		{
-			case AdditionalEffectFocusing.None:
-				border.enabled = false;
-				arrow.enabled = false;
-				break;
-			case AdditionalEffectFocusing.Border:
-				border.enabled = true;
-				arrow.enabled = false;
-				break;
-			case AdditionalEffectFocusing.Arrow:
-				border.enabled = false;
-				arrow.enabled = true;
-				break;
-			case AdditionalEffectFocusing.Border | AdditionalEffectFocusing.Arrow:
-				border.enabled = true;
-				arrow.enabled = true;
-				break;
-		}
+
+		border.enabled = eff.HasFlag(AdditionalEffectFocusing.Border);
+
+		arrow.enabled = eff.HasFlag(AdditionalEffectFocusing.Arrow);
+
+		explain.enabled = eff.HasFlag(AdditionalEffectFocusing.Text);
+
+		subtitle.enabled = eff.HasFlag(AdditionalEffectFocusing.Subtitle);
+
 		if (isLerping)
 		{
 			if(ongoing != null)
 				StopCoroutine(ongoing);
-			ongoing = StartCoroutine(DelLerpFociOn(rt.rect));
+			ongoing = StartCoroutine(DelLerpFociOn(rt.rect, rt.position));
 		}
 		else
 		{
@@ -117,38 +111,25 @@ public class FocusUI : MonoBehaviour
 		
 	}
 
-	public void FocusAt(Rect rt, bool isLerping, AdditionalEffectFocusing eff)
+	public void FocusAt(Rect rt, Vector2 pos, bool isLerping, AdditionalEffectFocusing eff)
 	{
 		OnShade();
 
-		switch (eff)
-		{
-			case AdditionalEffectFocusing.None:
-				border.enabled = false;
-				arrow.enabled = false;
-				break;
-			case AdditionalEffectFocusing.Border:
-				border.enabled = true;
-				arrow.enabled = false;
-				break;
-			case AdditionalEffectFocusing.Arrow:
-				border.enabled = false;
-				arrow.enabled = true;
-				break;
-			case AdditionalEffectFocusing.Border | AdditionalEffectFocusing.Arrow:
-				border.enabled = true;
-				arrow.enabled = true;
-				break;
-		}
+		border.enabled = eff.HasFlag(AdditionalEffectFocusing.Border);
+
+		arrow.enabled = eff.HasFlag(AdditionalEffectFocusing.Arrow);
+
+		explain.enabled = eff.HasFlag(AdditionalEffectFocusing.Text);
+
 		if (isLerping)
 		{
 			if (ongoing != null)
 				StopCoroutine(ongoing);
-			ongoing = StartCoroutine(DelLerpFociOn(rt));
+			ongoing = StartCoroutine(DelLerpFociOn(rt, pos));
 		}
 		else
 		{
-			foci.position = new Vector3(rt.x, rt.y);
+			foci.position = pos;
 			foci.sizeDelta = new Vector2(rt.width, rt.height);
 			shade.position = transform.position;
 			focusing = true;
@@ -156,16 +137,28 @@ public class FocusUI : MonoBehaviour
 		focusMode = eff;
 	}
 
-	IEnumerator DelLerpFociOn(Rect target)
+	public void SetExplain(string txt)
+	{
+		explain.text = txt;
+	}
+
+	public void SetSubTitle(string txt)
+	{
+		subtitle.text = txt;
+	}
+
+	IEnumerator DelLerpFociOn(Rect target, Vector2 pos)
 	{
 		float t = 0;
 		Vector2 res = new Vector2(Screen.width, Screen.height);
 		Rect origin = new Rect(res * 0.5f, res);
+		Debug.Log(pos + " 가 위치임.");
 		while(t <= 1)
 		{
 			yield return null;
-			t += LERPSPEED * Time.deltaTime;
-			foci.position = Vector3.Lerp(new Vector3(origin.x, origin.y), new Vector3(target.x, target.y), t);
+			t += LERPSPEED * Time.unscaledDeltaTime;
+			foci.position = Vector3.Lerp(new Vector3(origin.x, origin.y), pos, t);
+			Debug.Log(foci.position + " 가 현재위치임 ㅐ ㅐ ㅐ ㅐ ㅐ .");
 			foci.sizeDelta = Vector2.Lerp(new Vector3(origin.width, origin.height), new Vector3(target.width, target.height), t);
 			shade.position = transform.position;
 		}
@@ -181,7 +174,7 @@ public class FocusUI : MonoBehaviour
 		while (t <= 1)
 		{
 			yield return null;
-			t += LERPSPEED * Time.deltaTime;
+			t += LERPSPEED * Time.unscaledDeltaTime;
 			foci.position = Vector3.Lerp(new Vector3(origin.x, origin.y), new Vector3(target.x, target.y), t);
 			foci.sizeDelta = Vector2.Lerp(new Vector3(origin.width, origin.height), new Vector3(target.width, target.height), t);
 			shade.position = transform.position;
@@ -198,7 +191,7 @@ public class FocusUI : MonoBehaviour
 		while(true)
 		{
 			yield return null;
-			accT += Time.deltaTime;
+			accT += Time.unscaledDeltaTime;
 			float t = 1 + Mathf.Abs(Mathf.Sin(accT * BOUNCESPEED)) * BOUNCEAMOUNT;
 			Rect rt = new Rect(new Vector2(origin.x, origin.y), new Vector2(origin.width, origin.height));
 			rt.width *= t;
