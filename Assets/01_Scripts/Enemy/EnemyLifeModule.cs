@@ -203,9 +203,12 @@ public class EnemyLifeModule : LifeModule
 
 	public void DieEntity()
 	{
-		FarmingPoint f = PoolManager.GetObject(DROPITEM, transform.position, Quaternion.identity).GetComponent<FarmingPoint>();
-		f.resItem = _dropItem;
-		f.amount = 1;
+		if(_dropItem.Count > 0)
+		{ 
+			FarmingPoint f = PoolManager.GetObject(DROPITEM, transform.position, Quaternion.identity).GetComponent<FarmingPoint>();
+			f.resItem = _dropItem;
+			f.amount = 1;
+		}
 
 
 		GameManager.instance.pinven.AddExp(_expAmt);

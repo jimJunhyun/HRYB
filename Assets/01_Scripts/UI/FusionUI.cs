@@ -12,7 +12,7 @@ public class FusionUI : MonoBehaviour, IOpenableWindowUI
 
 	Transform content;
 
-	List<GameObject> buttons = new List<GameObject>();
+	internal List<CraftButtonUI> buttons = new List<CraftButtonUI>();
 
 	const string CRAFTBUTTON = "CraftableMedicine";
 
@@ -27,7 +27,7 @@ public class FusionUI : MonoBehaviour, IOpenableWindowUI
 	{
 		for (int i = 0; i < buttons.Count; i++)
 		{
-			PoolManager.ReturnObject(buttons[i]);
+			PoolManager.ReturnObject(buttons[i].gameObject);
 		}
 		buttons.Clear();
 		GameManager.instance.uiManager.medicineDetail.Close();
@@ -67,7 +67,7 @@ public class FusionUI : MonoBehaviour, IOpenableWindowUI
 			GameObject g = PoolManager.GetObject(CRAFTBUTTON, content);
 			CraftButtonUI btn = g.GetComponent<CraftButtonUI>();
 			btn.SetInfo(((ItemAmountPair)Crafter.recipeItemTable[item]).info as Medicines, item.recipe);
-			buttons.Add(g);
+			buttons.Add(btn);
 			//}
 		}
 

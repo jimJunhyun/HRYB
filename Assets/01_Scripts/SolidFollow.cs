@@ -24,7 +24,7 @@ public class SolidFollow : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void FixedUpdate()
+	void LateUpdate()
     {
         transform.position = target.position + offset;
     }

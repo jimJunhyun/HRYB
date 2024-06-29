@@ -5,44 +5,34 @@ using UnityEngine;
 public class TooFarHPFar : MonoBehaviour
 {
 	[Header("HP바 감지범위")]
-	public int Range;
+	public int range;
 
+	GameObject player;
+	private float pRange;
 	GameObject obj;
-
-	[Header("감지할 대상의 레이어")]
-	public LayerMask layer;
-
-	private SphereCollider Collider;
-
-	private LifeModule lf;
-
-	private void Awake()
-	{
-		obj = this.gameObject;
-		Collider = GetComponent<SphereCollider>();
-		lf = GetComponent<LifeModule>();
-	}
+	HPBar bar;
 
 	private void Start()
 	{
-		//obj = GameManager.instance.bHPManager.HideHP(this.transform);
-		Collider.radius = Range;
+		obj = this.gameObject.GetComponentInParent<LifeModule>().gameObject;
+
+		player = GameManager.instance.player;
+		bar = GetComponentInChildren<HPBar>();
 	}
 
-	private void OnTriggerEnter(Collider other)
+	private void Update()
 	{
 
-		if (other.gameObject.layer == 7)
+		if (Vector3.Distance(this.gameObject.transform.position, player.transform.position) < range)
 		{
-			obj.SetActive(true);	
-		}
-	}
+			bar.gameObject.SetActive(true);
 
-	private void OnTriggerExit(Collider other)
-	{
-		if (other.gameObject.layer == 7)
-		{
-			obj.SetActive(false);
 		}
+		else
+		{
+			bar.gameObject.SetActive(false);
+		}
+
+		pRange = Vector3.Distance(obj.transform.position, player.transform.position);
 	}
 }
