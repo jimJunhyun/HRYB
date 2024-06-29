@@ -12,6 +12,7 @@ public enum AdditionalEffectFocusing
 	Arrow = 2,
 	Text = 4,
 	Subtitle = 8,
+	Bounce = 16,
 
 }
 
@@ -67,6 +68,11 @@ public class FocusUI : MonoBehaviour
 			StopCoroutine(bouncer);
 		}
 
+		border.enabled =false;
+		arrow.enabled =false;
+		explain.enabled =false;
+		subtitle.enabled =false;
+
 		if (isLerping)
 		{
 			if(ongoing != null)
@@ -77,6 +83,7 @@ public class FocusUI : MonoBehaviour
 		{
 			c.enabled = false;
 			focusing = false;
+			bouncing =false;
 			focusMode = AdditionalEffectFocusing.None;
 		}
 	}
@@ -94,11 +101,14 @@ public class FocusUI : MonoBehaviour
 
 		subtitle.enabled = eff.HasFlag(AdditionalEffectFocusing.Subtitle);
 
+		bouncing = eff.HasFlag(AdditionalEffectFocusing.Bounce);
+
 		if (isLerping)
 		{
 			if(ongoing != null)
 				StopCoroutine(ongoing);
 			ongoing = StartCoroutine(DelLerpFociOn(rt.rect, rt.position));
+
 		}
 		else
 		{
@@ -106,6 +116,13 @@ public class FocusUI : MonoBehaviour
 			foci.sizeDelta = rt.sizeDelta;
 			shade.position = transform.position;
 			focusing = true;
+
+			if (bouncer != null)
+				StopCoroutine(bouncer);
+			if (bouncing)
+			{
+				bouncer = StartCoroutine(DelBounceFoci(rt.rect));
+			}
 		}
 		focusMode = eff;
 		
@@ -121,11 +138,16 @@ public class FocusUI : MonoBehaviour
 
 		explain.enabled = eff.HasFlag(AdditionalEffectFocusing.Text);
 
+		subtitle.enabled= eff.HasFlag(AdditionalEffectFocusing.Subtitle);
+
+		bouncing = eff.HasFlag(AdditionalEffectFocusing.Bounce);
+
 		if (isLerping)
 		{
 			if (ongoing != null)
 				StopCoroutine(ongoing);
 			ongoing = StartCoroutine(DelLerpFociOn(rt, pos));
+
 		}
 		else
 		{
@@ -133,6 +155,13 @@ public class FocusUI : MonoBehaviour
 			foci.sizeDelta = new Vector2(rt.width, rt.height);
 			shade.position = transform.position;
 			focusing = true;
+
+			if(bouncer != null)
+				StopCoroutine(bouncer);
+			if (bouncing)
+			{
+				bouncer = StartCoroutine(DelBounceFoci(rt));
+			}
 		}
 		focusMode = eff;
 	}
@@ -152,22 +181,32 @@ public class FocusUI : MonoBehaviour
 		float t = 0;
 		Vector2 res = new Vector2(Screen.width, Screen.height);
 		Rect origin = new Rect(res * 0.5f, res);
-		Debug.Log(pos + " 가 위치임.");
-		while(t <= 1)
+		if (bouncer != null)
+			StopCoroutine(bouncer);
+		//Debug.Log(pos + " 가 위치임.");
+		while (t <= 1)
 		{
 			yield return null;
 			t += LERPSPEED * Time.unscaledDeltaTime;
 			foci.position = Vector3.Lerp(new Vector3(origin.x, origin.y), pos, t);
-			Debug.Log(foci.position + " 가 현재위치임 ㅐ ㅐ ㅐ ㅐ ㅐ .");
+			//Debug.Log(foci.position + " 가 현재위치임 ㅐ ㅐ ㅐ ㅐ ㅐ .");
 			foci.sizeDelta = Vector2.Lerp(new Vector3(origin.width, origin.height), new Vector3(target.width, target.height), t);
 			shade.position = transform.position;
 		}
 		focusing = true;
+
+		
+		if (bouncing)
+		{
+			bouncer = StartCoroutine(DelBounceFoci(target));
+		}
 	}
 
 	IEnumerator DelLerpFociOff()
 	{
 		float t = 0;
+		if (bouncer != null)
+			StopCoroutine(bouncer);
 		Rect origin = foci.rect;
 		Vector2 res = new Vector2(Screen.width, Screen.height);
 		Rect target = new Rect(res * 0.5f, res);
@@ -180,43 +219,24 @@ public class FocusUI : MonoBehaviour
 			shade.position = transform.position;
 		}
 		focusing = false;
+		bouncing = false;
 		c.enabled = false;
 	}
 
-	IEnumerator DelBounceFoci()
+	IEnumerator DelBounceFoci(Rect origin)
 	{
-		yield return new WaitUntil(()=>focusing);
-		Rect origin = foci.rect;
 		float accT = 0;
 		while(true)
 		{
 			yield return null;
 			accT += Time.unscaledDeltaTime;
 			float t = 1 + Mathf.Abs(Mathf.Sin(accT * BOUNCESPEED)) * BOUNCEAMOUNT;
-			Rect rt = new Rect(new Vector2(origin.x, origin.y), new Vector2(origin.width, origin.height));
+			Rect rt = new Rect(origin.position, new Vector2(origin.width, origin.height));
 			rt.width *= t;
 			rt.height *= t;
 			foci.sizeDelta = new Vector2(rt.width, rt.height);
 
 			shade.position = transform.position;
-		}
-	}
-
-	public void DoBounce()
-	{
-		bouncing = true;
-		if (bouncer == null)
-		{
-			bouncer = StartCoroutine(DelBounceFoci());
-		}
-	}
-
-	public void StopBounce()
-	{
-		bouncing = false;
-		if(bouncer != null)
-		{
-			StopCoroutine(bouncer);
 		}
 	}
 
