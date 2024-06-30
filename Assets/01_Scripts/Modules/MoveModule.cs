@@ -53,13 +53,13 @@ public class MoveModule : Module
 		get => !forced && isGrounded;
 	}
 
-	public int initRunSpeed;
+	public float initRunSpeed;
 	public UpgradableStatus runSpeed;
 
-	public int initWalkSpeed;
+	public float initWalkSpeed;
 	public UpgradableStatus walkSpeed;
 
-	public int initCrouchSpeed;
+	public float initCrouchSpeed;
 	public UpgradableStatus crouchSpeed;
 
 	public bool gravity = false;
