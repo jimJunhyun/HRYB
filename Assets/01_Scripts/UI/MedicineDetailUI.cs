@@ -6,7 +6,7 @@ using TMPro;
 
 public class MedicineDetailUI : MonoBehaviour //이미지, 이름, 필요아이템
 {
-	Medicines cur;
+	internal Medicines cur;
 	HashSet<ItemAmountPair> reqs;
 
 	Image image;
