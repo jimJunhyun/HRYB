@@ -36,6 +36,10 @@ public class CameraManager : MonoBehaviour
 	}
 	public CinemachineVirtualCamera aimCam;
 
+	public float minZoom;
+	public float maxZoom;
+	public float zoomSpd;
+
 	float originYSpeed;
 	float originFOV;
 
@@ -63,8 +67,11 @@ public class CameraManager : MonoBehaviour
 		if (scr.y == 0)
 			return;
 
-		_pCam.m_Lens.FieldOfView -= scr.y * Time.deltaTime;
-		_pCam.m_Lens.FieldOfView = Mathf.Clamp(_pCam.m_Lens.FieldOfView, 40, 90);
+		for (int i = 0; i < 3; i++)
+		{
+			_pCam.m_Orbits[i].m_Radius -= scr.y * Time.deltaTime * zoomSpd;
+			_pCam.m_Orbits[i].m_Radius = Mathf.Clamp(_pCam.m_Orbits[i].m_Radius, minZoom, maxZoom);
+		}
 	}
 	
 
@@ -228,38 +235,38 @@ public class CameraManager : MonoBehaviour
 		//Debug.Log("Y가정지안됨ㅋㅋㅋㅋ");
 	}
 
-	public void Zoom(float power)
+	public void Zoom(float power, float lerpSec = 0.75f)
 	{
-		ongoing = StartCoroutine(DelZoom(power, true));
+		ongoing = StartCoroutine(DelZoom(power, true, lerpSec));
 	}
 
-	IEnumerator DelZoom(float pow, bool zooming)
+	IEnumerator DelZoom(float pow, bool zooming, float lerpSec)
 	{
 		float t = 0;
 		float v = pCam.m_Lens.FieldOfView;
-		while (t< 0.75f)
+		while (t< lerpSec)
 		{
 			yield return null;
 			t += Time.deltaTime;
 			if (zooming)
 			{
-				pCam.m_Lens.FieldOfView = Mathf.Lerp(originFOV, originFOV - pow, t / 0.75f);
+				pCam.m_Lens.FieldOfView = Mathf.Lerp(v, v - pow, t / lerpSec);
 			}
 			else
 			{
-				pCam.m_Lens.FieldOfView = Mathf.Lerp(v, originFOV, t / 0.75f);
+				pCam.m_Lens.FieldOfView = Mathf.Lerp(v, originFOV, t / lerpSec);
 
 			}
 		}
 	}
 
-	public void RevertZoom()
+	public void RevertZoom(float lerpSec = 0.75f)
 	{
 		if (ongoing!= null)
 		{
 			StopCoroutine(ongoing);
 		}
-		StartCoroutine(DelZoom(0, false));
+		StartCoroutine(DelZoom(0, false, lerpSec));
 	}
 
 	public void ShakeCam(float ampGain, float frqGain)
