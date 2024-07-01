@@ -12,7 +12,7 @@ public class CraftButtonUI : MonoBehaviour
 	TextMeshProUGUI desc;
 
 
-	Item connected;
+	internal Item connected;
 	HashSet<ItemAmountPair> reqItem;
     public void SetInfo(Item i, HashSet<ItemAmountPair> reqItem)
 	{

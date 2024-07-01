@@ -47,7 +47,11 @@ using System.Linq;
 	public CollectionButtonUI collectionButton;
 	public YinyangItemDetailUI yinyangitemDetail;
 
+	public MedicineTutorialManager mediTutorial;
+
 	public ToolBarManager toolbarUIShower;
+
+	public FocusUI focus;
 
 	public AnimationCurve dropDownCurve;
 
@@ -76,6 +80,8 @@ using System.Linq;
 
     bool isOn = false;
     bool isOptionOn = false;
+
+	bool tutorialAppended = false;
 
 	List<SlotUI> uis = new List<SlotUI>();
 	List<QuickSlot> quickSlot = new List<QuickSlot>();
@@ -114,6 +120,8 @@ using System.Linq;
 
 		getItemUiSlot = GetitemUITransform.GetComponentsInChildren<RectTransform>().ToList();
 		getItemUiSlot.RemoveAt(0); //GetitemUITransform 제거
+
+		focus = GameObject.Find("FocusCanv").GetComponent<FocusUI>();
 	}
 
 	private void Start()
@@ -139,6 +147,10 @@ using System.Linq;
 			if (!isOn)
 			{
 				OnInven();
+				if (tutorialAppended)
+				{
+					mediTutorial.StartTutorial();
+				}
 			}
 			else
 			{
@@ -166,6 +178,12 @@ using System.Linq;
 		toolbarUIShower.RefreshWindows();
 		medicineButton.SetStatuses(GameManager.instance.pinven.CurHoldingItem.info);
 		medicineDetail.RefreshInfo();
+	}
+
+	public RectTransform GetInvenSlotUIRect(int idx)
+	{
+		
+		return (uis[idx].transform.parent.Find("Frame") as RectTransform);
 	}
 
 	public void UpdateQuestUI()
@@ -233,6 +251,11 @@ using System.Linq;
 	{
 		canvas.gameObject.SetActive(true);
 		comboCanv.gameObject.SetActive(true);
+	}
+
+	public void AppendTutorial()
+	{
+		tutorialAppended = true;
 	}
 
 
