@@ -11,7 +11,7 @@ public class Dialogue : ScriptableObject
 	public string text;
 	public float typeDel;
 
-	public Character owner;
+	public Actor owner;
 
 	public Dialogue next;
 
@@ -40,7 +40,7 @@ public class Dialogue : ScriptableObject
 		return ret;
 	}
 
-	public virtual void OnShown(Character owner)
+	public virtual void OnShown(Actor owner)
 	{
 		
 		if(ws == null)
@@ -76,7 +76,7 @@ public class Dialogue : ScriptableObject
 	{
 		if(next != null)
 		{
-			owner.self.talk.onNextTalk?.Invoke();
+			owner.talk.onNextTalk?.Invoke();
 			if(rewardItem.Length > 0)
 			{
 				GameManager.instance.pinven.AddItem(Item.GetItem<Item>(rewardItem), rewardAmt);
@@ -86,9 +86,9 @@ public class Dialogue : ScriptableObject
 		else
 		{
 			GameManager.instance.uiManager.dialogueUI.Off();
-			owner.self.anim.Animators.SetBool(talkingHash, false);
-			owner.InvokeSwap();
-			owner.self.talk.onNextTalkChunkComplete?.Invoke();
+			owner.anim.Animators.SetBool(talkingHash, false);
+			owner.talk.charInfo.InvokeSwap();
+			owner.talk.onNextTalkChunkComplete.Invoke();
 		}
 	}
 

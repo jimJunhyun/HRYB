@@ -5,6 +5,7 @@ using UnityEngine;
 public class ColliderTalkModule : TalkModule
 {
 
+	Canvas cans;
 	protected override void Awake()
 	{
 		base.Awake();
@@ -14,7 +15,11 @@ public class ColliderTalkModule : TalkModule
 			Inter();
 			Debug.LogError("닿음ㅇㅇ");
 		});
+
+
 	}
+
+	
 
 	protected override void Start()
 	{

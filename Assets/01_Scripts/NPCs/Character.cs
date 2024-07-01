@@ -94,11 +94,11 @@ public class Character : ScriptableObject
 		dia = initDia.Copy();
 	}
 	
-	public void OnTalk()
+	public void OnTalk(Actor caller)
 	{
 		GameManager.instance.uiManager.dialogueUI.talker = this;
 		//GameManager.instance.uiManager.dialogueUI.talker = this;
 		Debug.Log($"{FullName}이 말하는 중 ...");
-		dia.OnShown(this);
+		dia.OnShown(caller); 
 	}
 }
