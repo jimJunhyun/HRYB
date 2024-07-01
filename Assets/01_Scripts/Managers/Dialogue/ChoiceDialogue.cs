@@ -42,7 +42,7 @@ public class ChoiceDialogue : Dialogue
 		}
 	}
 
-	public override void OnShown(Character owner)
+	public override void OnShown(Actor owner)
 	{
 		chooseComp = false;
 		base.OnShown(owner);

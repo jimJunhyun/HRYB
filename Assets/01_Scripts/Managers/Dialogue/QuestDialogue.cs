@@ -22,13 +22,13 @@ public class QuestDialogue : Dialogue
 	{
 		if (info)
 		{
-			QuestManager.AssignQuest(info.questName, owner);
-			owner.latestQuest = info;
-			owner.latestQuest.onCompleteAction.AddListener(() =>
+			QuestManager.AssignQuest(info.questName, owner.talk.charInfo);
+			owner.talk.charInfo.latestQuest = info;
+			owner.talk.charInfo.latestQuest.onCompleteAction.AddListener(() =>
 			{
-				if(owner.latestQuest == info)
+				if(owner.talk.charInfo.latestQuest == info)
 				{
-					owner.latestQuest = null;
+					owner.talk.charInfo.latestQuest = null;
 					Debug.Log("QUEST REMOVEDEDED");
 				}
 				Debug.Log("QUEST NOTREMOVENVENV");
