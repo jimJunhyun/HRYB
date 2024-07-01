@@ -59,7 +59,7 @@ public class Frier : MinigameBase
 		timerBar.value = 0;
 		accT = 0;
 		//
-		SetRandomTargets();
+		
 	}
 
 	public override void StartGame(ItemAmountPair objName)
@@ -126,6 +126,12 @@ public class Frier : MinigameBase
 		//부채질게이지
 
 		fireBar.value = fireAmt / FIREMAXAMOUNT;
+	}
+
+	public override void PerformGame()
+	{
+		base.PerformGame();
+		SetRandomTargets();
 	}
 
 	public void SetRandomTargets()

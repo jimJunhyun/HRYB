@@ -214,6 +214,34 @@ public class Inventory
 		data[idx] = new InventoryItem(null, 0);
 		--Count;
 	}
+
+	public int FindFirstFilledSquare()
+	{
+		int ret = 0;
+		while(true)
+		{
+			if(!data[ret].isEmpty())
+				return ret;
+			if(ret >= data.Count)
+				return -1;
+
+			ret += 1;
+		}
+	}
+
+	public int FindLastFilledSquare()
+	{
+		int ret = data.Count - 1;
+		while (true)
+		{
+			if (!data[ret].isEmpty())
+				return ret;
+			if (ret < 0)
+				return -1;
+
+			ret -= 1;
+		}
+	}
 }
 
 public class SkillInventory

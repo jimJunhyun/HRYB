@@ -13,7 +13,7 @@ public class ParseDialogue : Editor
 	const int QUESTNAME = 5;
 	const int REWARDITEM = 6;
 	const int NEXTDIA = 8;
-	const int SWAPDIA = 13;
+	const int SWAPDIA = 18;
 
 	[MenuItem("대화/대화 가져오기")]
 	public static void DoParse()
@@ -136,7 +136,7 @@ public class ParseDialogue : Editor
 								{
 									if(ch.nexts.Count >= 5)
 										break;
-									nexts = ps.GetAttribute(i, NEXTDIA + ch.nexts.Count).Trim();
+									nexts = ps.GetAttribute(i, NEXTDIA + ch.nexts.Count * 2).Trim();
 									if(nexts.Length > 0)
 										break;
 									Dictionary<string, List<Dialogue>> target = npcDatas[ps.GetAttribute(i, NPCNAME)];
@@ -149,7 +149,7 @@ public class ParseDialogue : Editor
 											return sp[sp.Length - 1] == nexts;
 										}))
 										{
-											ch.choiceOptions.Add("???");
+											ch.choiceOptions.Add(ps.GetAttribute(i, NEXTDIA + ch.nexts.Count * 2 + 1));
 											ch.nexts.Add(nxt);
 										}
 									}
