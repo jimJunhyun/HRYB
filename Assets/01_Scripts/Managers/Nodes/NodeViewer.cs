@@ -154,7 +154,7 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 		while(t < MOVESEC)
 		{
 			yield return null;
-			t += Time.fixedDeltaTime;
+			t += Time.unscaledDeltaTime;
 			accOffset = Mathf.Lerp(0, VIEWPORTOFFSET, t / MOVESEC);
 			viewport.position = originalPos + (direction ? Vector3.right : Vector3.left) * accOffset;
 			Debug.Log("움직이는중임라");
