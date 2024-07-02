@@ -661,6 +661,12 @@ public class GameManager : MonoBehaviour
 		Time.timeScale = 1;
 	}
 
+	public void TimeFreezeSet(float t)
+	{
+
+		Time.timeScale = t;
+		Debug.LogError("시간은 멈춘다!");
+	}
 
 	public void PlayerDeath()
 	{

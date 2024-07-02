@@ -606,9 +606,8 @@ public class PlayerInven : MonoBehaviour
 						default:
 							break;
 					}
-					GameObject obj = PoolManager.GetObject(swapEffectName, transform, 1.5f);
-					obj.transform.rotation = Quaternion.Euler(swapEffectRot);
-					obj.transform.localScale = swapEffectScale;
+					
+					GameManager.instance.camManager.Zoom(25, changeGap);
 					RefreshStat();
 					prevChange = Time.time;
 				}
@@ -627,6 +626,12 @@ public class PlayerInven : MonoBehaviour
 	IEnumerator DelSwap(float t)
 	{
 		yield return new WaitForSeconds(t);
+		GameManager.instance.camManager.RevertZoom(0.05f);//@@@@@@@@@@
+
+		//GameObject obj = PoolManager.GetObject(swapEffectName, transform, 1f);
+		//obj.transform.rotation = Quaternion.Euler(swapEffectRot);
+		//obj.transform.localScale = swapEffectScale;
+
 		animActions.ChangeForm();
 		(GameManager.instance.pActor.cast as PlayerCast).ChangeSkillSlotTo(stat);
 	}

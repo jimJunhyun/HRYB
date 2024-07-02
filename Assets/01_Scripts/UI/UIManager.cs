@@ -122,6 +122,7 @@ using System.Linq;
 		getItemUiSlot.RemoveAt(0); //GetitemUITransform 제거
 
 		focus = GameObject.Find("FocusCanv").GetComponent<FocusUI>();
+		mediTutorial = GameObject.Find("MedicineTutorialManager").GetComponent<MedicineTutorialManager>();
 	}
 
 	private void Start()

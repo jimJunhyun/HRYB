@@ -9,7 +9,7 @@ public class SwapDialogue : Dialogue
 
 	public override void NextDialogue()
 	{
-		owner.SetSwapDialogue(afterChange);
+		owner.talk.charInfo.SetSwapDialogue(afterChange);
 		
 		base.NextDialogue();
 
