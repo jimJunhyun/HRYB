@@ -31,7 +31,7 @@ public class ToolBarManager : MonoBehaviour
 	{
 		List<Transform> childs = new List<Transform>();
 		ToolState[] arr = (ToolState[])System.Enum.GetValues(typeof(ToolState));
-		for (int i = 0; i < transform.childCount; i++)
+		for (int i = 0; i < transform.childCount-1; i++) // Last Index = ToolBar
 		{
 			childs.Add(transform.GetChild(i));
 		}

@@ -43,39 +43,39 @@ public class YinyangItemDetailUI : MonoBehaviour
 
 		if (image == null)
 		{
-			image = transform.Find("Img/ItemImg").GetComponent<Image>();
+			image = transform.Find("Center Section/Frame 2/ItemImg").GetComponent<Image>();
 		}
 		if (itemName == null)
 		{
-			itemName = transform.Find("Name/ItemName").GetComponent<TextMeshProUGUI>();
+			itemName = transform.Find("Center Section/Frame 1/Name/ItemName").GetComponent<TextMeshProUGUI>();
 		}
 		if(itemDesc == null)
 		{
-			itemDesc = transform.Find("Desc/DescText").GetComponent<TextMeshProUGUI>();
+			itemDesc = transform.Find("Center Section/Frame 3/DescText").GetComponent<TextMeshProUGUI>();
 		}
 		if (content == null)
 		{
-			content = transform.Find("ItemBack/ResultView/Viewport/Content");
+			content = transform.Find("Right Section/Frame 2/ItemBack/ResultView/Viewport/Content");
 		}
 		if (statPolygon == null)
 		{
-			statPolygon = transform.Find("StatBack/StatPolygon").GetComponent<UIPolygon>();
+			statPolygon = transform.Find("Right Section/Frame 1/StatBack/StatPolygon").GetComponent<UIPolygon>();
 		}
 		if(moistGauge == null)
 		{
-			moistGauge = transform.Find("StatBack/MoistGauge").GetComponent<Image>();
+			moistGauge = transform.Find("Right Section/Frame 1/StatBack/MoistGauge").GetComponent<Image>();
 		}
 		if(poisonGauge == null)
 		{
-			poisonGauge = transform.Find("StatBack/PoisonGauge").GetComponent<Image>();
+			poisonGauge = transform.Find("Right Section/Frame 1/StatBack/PoisonGauge").GetComponent<Image>();
 		}
 		if (maskItem == null)
 		{
-			maskItem = transform.Find("Img/ItemImg/ItemMask").gameObject;
+			maskItem = transform.Find("Center Section/Frame 2/ItemImg/ItemMask").gameObject;
 		}
 		if (maskGroup == null)
 		{
-			maskGroup = transform.Find("StatBack/MaskGroup").gameObject;
+			maskGroup = transform.Find("Right Section/Frame 1/StatBack/MaskGroup").gameObject;
 		}
 
 		gameObject.SetActive(true);
