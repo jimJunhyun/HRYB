@@ -35,6 +35,7 @@ public class AudioPlayer : MonoBehaviour
 		{
 			globalBgm.Stop();
 			globalBgm.clip = dict.data[clipName];
+			globalBgm.loop = true;
 			globalBgm.Play();
 		}
 	}
