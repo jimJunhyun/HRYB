@@ -85,10 +85,10 @@ public class Dialogue : ScriptableObject
 		}
 		else
 		{
+			GameManager.instance.uiManager.dialogueUI.Off();
 			owner.anim.Animators.SetBool(talkingHash, false);
 			owner.talk.charInfo.InvokeSwap();
 			owner.talk.onNextTalkChunkComplete.Invoke();
-			GameManager.instance.uiManager.dialogueUI.Off();
 		}
 	}
 
