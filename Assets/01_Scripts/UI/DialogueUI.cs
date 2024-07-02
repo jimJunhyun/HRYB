@@ -81,12 +81,12 @@ public class DialogueUI : MonoBehaviour
 		chosen = -1;
 		stat = false;
 		choiceStat = false;
-		GameManager.instance.LockCursor();
 		GameManager.instance.EnableCtrl(ControlModuleMode.Timeline);
 		GameManager.instance.camManager.UnfreezeCamX();
 		GameManager.instance.camManager.UnfreezeCamY();
 		GameManager.instance.camManager.RevertZoom();
 		GameManager.instance.uiManager.basicUIGroup.SetActive(true);
+		GameManager.instance.LockCursor();
 		
 		
 	}
