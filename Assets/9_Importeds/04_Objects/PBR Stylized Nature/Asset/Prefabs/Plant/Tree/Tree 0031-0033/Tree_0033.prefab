@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7299940125520388688}
   - component: {fileID: 7274609079557022294}
-  - component: {fileID: 2745954289030312962}
   m_Layer: 0
   m_Name: Tree_0033
   m_TagString: Untagged
@@ -61,27 +60,6 @@ LODGroup:
     renderers:
     - renderer: {fileID: 4971543872795970927}
   m_Enabled: 1
---- !u!65 &2745954289030312962
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 633316707852660641}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2648059470580918083
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -142,7 +120,10 @@ PrefabInstance:
     - {fileID: 4742473837712756890, guid: 26d1ec5938c206146962ac998d3245e7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 26d1ec5938c206146962ac998d3245e7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3324026462223542026}
   m_SourcePrefab: {fileID: 100100000, guid: 26d1ec5938c206146962ac998d3245e7, type: 3}
 --- !u!23 &206473570050802409 stripped
 MeshRenderer:
@@ -154,6 +135,34 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 26d1ec5938c206146962ac998d3245e7, type: 3}
   m_PrefabInstance: {fileID: 2648059470580918083}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2917951986250324498 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 26d1ec5938c206146962ac998d3245e7, type: 3}
+  m_PrefabInstance: {fileID: 2648059470580918083}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &3324026462223542026
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2917951986250324498}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.23
+  m_Height: 4.01
+  m_Direction: 1
+  m_Center: {x: 0.06, y: 1.47, z: 0}
 --- !u!23 &4971543872795970927 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -2287348394113127892, guid: 26d1ec5938c206146962ac998d3245e7, type: 3}
