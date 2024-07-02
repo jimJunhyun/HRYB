@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1030995030}
-  - component: {fileID: 1030995031}
   m_Layer: 0
   m_Name: Wall20a
   m_TagString: Untagged
@@ -33,28 +32,6 @@ Transform:
   - {fileID: 1030995033}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &1030995031
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1030995029}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300004, guid: abc00000000016337138651084117850, type: 3}
 --- !u!1 &1030995032
 GameObject:
   m_ObjectHideFlags: 0
@@ -66,6 +43,7 @@ GameObject:
   - component: {fileID: 1030995033}
   - component: {fileID: 1030995034}
   - component: {fileID: 1030995035}
+  - component: {fileID: 8590871345925774838}
   m_Layer: 0
   m_Name: SM_Wall20a
   m_TagString: Untagged
@@ -139,3 +117,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030995032}
   m_Mesh: {fileID: 4300000, guid: abc00000000016337138651084117850, type: 3}
+--- !u!65 &8590871345925774838
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1030995032}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.07000082, y: 2.5, z: 2.1569905}
+  m_Center: {x: 0.017832603, y: 1.25, z: -1.0729392}

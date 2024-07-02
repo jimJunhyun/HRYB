@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1030994976}
-  - component: {fileID: 1030994977}
   m_Layer: 0
   m_Name: Wall14a
   m_TagString: Untagged
@@ -33,28 +32,6 @@ Transform:
   - {fileID: 1030994979}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &1030994977
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1030994975}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300004, guid: abc00000000013547056053890569331, type: 3}
 --- !u!1 &1030994978
 GameObject:
   m_ObjectHideFlags: 0
@@ -66,6 +43,7 @@ GameObject:
   - component: {fileID: 1030994979}
   - component: {fileID: 1030994980}
   - component: {fileID: 1030994981}
+  - component: {fileID: 8093692306603317908}
   m_Layer: 0
   m_Name: SM_Wall14a
   m_TagString: Untagged
@@ -139,3 +117,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030994978}
   m_Mesh: {fileID: 4300000, guid: abc00000000013547056053890569331, type: 3}
+--- !u!65 &8093692306603317908
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1030994978}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.05000309, y: 2.5, z: 1.0751915}
+  m_Center: {x: -0.015741259, y: 1.25, z: 0.5375954}
