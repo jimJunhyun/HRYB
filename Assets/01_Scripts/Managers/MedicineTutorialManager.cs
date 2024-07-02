@@ -10,6 +10,9 @@ public class MedicineTutorialManager : MonoBehaviour
 
 	bool foc = false;
 
+	
+	public int gridLayoutGroupWaitFrame = 10;
+
 	int firstTarget = -1;
 	float secondFocusTime = 3.5f;
 	float sixthFocusTime = 5f;
@@ -51,12 +54,17 @@ public class MedicineTutorialManager : MonoBehaviour
 						}
 						if(firstTarget == -1)
 							return;
+						if(gridLayoutGroupWaitFrame > 0)
+						{
+							gridLayoutGroupWaitFrame -= 1;
+							return;
+						}
 						if (!foc)
 						{
 							RectTransform trm = GameManager.instance.uiManager.GetInvenSlotUIRect(firstTarget);
 							Rect rt = trm.rect;
 							rt.position = trm.position;
-							rt.position += new Vector2(375, 390); //???????????/
+							Debug.Log("POS : " + rt.position);
 							foc = true;
 							GameManager.instance.uiManager.focus.FocusAt(rt, rt.position , true, AdditionalEffectFocusing.Border | AdditionalEffectFocusing.Arrow | AdditionalEffectFocusing.Subtitle | AdditionalEffectFocusing.Bounce);
 							GameManager.instance.uiManager.focus.SetSubTitle("인벤토리에서는 채집한 약재나 제약한 한약을 확인할 수 있습니다.");
