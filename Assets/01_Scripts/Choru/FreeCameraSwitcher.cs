@@ -34,6 +34,9 @@ public class FreeCameraSwitcher : MonoBehaviour
 	private KeyCode uiToggleModeKey;
 
 	private PlayerInput input;
+
+	int tempPt = 0;
+
 	private void Awake()
 	{
 		uiToggleModeKey = KeyCode.F10;
@@ -122,6 +125,14 @@ public class FreeCameraSwitcher : MonoBehaviour
 						break;
 				}
 				print($"Action Map = {GameManager.instance.pinp.currentActionMap}");
+			}
+
+			if (Input.GetKeyDown(KeyCode.Tab))
+			{
+				tempPt = ((tempPt + 1) % (GameManager.instance.pActor.life as PlayerLife).spawnPoint.Length);
+				freeCam.transform.position = (GameManager.instance.pActor.life as PlayerLife).spawnPoint[tempPt];
+				freeCam.transform.position += Vector3.up * 3;
+				freeCam.transform.LookAt((GameManager.instance.pActor.life as PlayerLife).spawnPoint[tempPt]);
 			}
 
 		}

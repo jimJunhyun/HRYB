@@ -379,6 +379,7 @@ public class GameManager : MonoBehaviour
 	private void Start()
 	{
 		audioPlayer.PlayBgm(NORMALBGM);
+
 		
 	}
 
@@ -406,6 +407,8 @@ public class GameManager : MonoBehaviour
 		}
 
 		(pActor.cast as PlayerCast).DoInitialize();
+		GameManager.instance.pinven.AddItem(Item.GetItem<YinyangItem>("작약"), 1);
+		GameManager.instance.pinven.AddItem(Item.GetItem<YinyangItem>("인삼"), 2);
 	}
 
 
@@ -574,7 +577,6 @@ public class GameManager : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.P))
 		{
 			GameManager.instance.pinven.AddItem(Item.GetItem <YinyangItem>("작약"), 1);
-			GameManager.instance.pinven.AddItem(Item.GetItem <YinyangItem>("녹각"), 1);
 			GameManager.instance.pinven.AddItem(Item.GetItem <YinyangItem>("인삼"), 2);
 		}
 

@@ -183,7 +183,7 @@ using System.Linq;
 
 	public RectTransform GetInvenSlotUIRect(int idx)
 	{
-		
+		Debug.Log("NAME : " + uis[idx].transform.parent.name);
 		return (uis[idx].transform.parent.Find("Frame") as RectTransform);
 	}
 

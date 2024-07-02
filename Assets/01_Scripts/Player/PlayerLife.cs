@@ -12,7 +12,7 @@ public class PlayerLife : LifeModule
 
 	CanvasGroup fadeImg;
 
-	Vector3[] spawnPoint = new Vector3[8];
+	internal Vector3[] spawnPoint = new Vector3[8];
 	PlayerMove pMove;
 
 	Vector3 initPos;
