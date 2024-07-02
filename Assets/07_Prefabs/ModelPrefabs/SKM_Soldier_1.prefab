@@ -1266,7 +1266,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 32eefab30edeed0418d43ffb7bd33565, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1231612510094257132, guid: 32eefab30edeed0418d43ffb7bd33565, type: 3}
       propertyPath: m_Layer
@@ -2537,10 +2537,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78dfed7ee8286a04cada60571dc8231c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  charInfo: {fileID: 11400000, guid: e9105018c3dca46498f294658417ed71, type: 2}
+  charInfo: {fileID: 11400000, guid: abc03ffc2c182374bbff52eeb393eefc, type: 2}
   qMark: {fileID: 0}
   yOffset: 2
   onNextTalk:
+    m_PersistentCalls:
+      m_Calls: []
+  onNextTalkChunkComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!136 &562902843312975459

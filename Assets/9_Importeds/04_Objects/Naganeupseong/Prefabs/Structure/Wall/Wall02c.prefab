@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1030994805}
-  - component: {fileID: -7931823100693858434}
   m_Layer: 0
   m_Name: Wall02c
   m_TagString: Untagged
@@ -34,28 +33,6 @@ Transform:
   - {fileID: 9077746016179210745}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &-7931823100693858434
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1030994804}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 1589346529189736011, guid: abc00000000004093361269233889044, type: 3}
 --- !u!1 &4237272088581346046
 GameObject:
   m_ObjectHideFlags: 0
@@ -67,6 +44,7 @@ GameObject:
   - component: {fileID: 4504473587588589288}
   - component: {fileID: 7837794594857621932}
   - component: {fileID: 9080591194204171034}
+  - component: {fileID: 1553682937359334954}
   m_Layer: 0
   m_Name: SM_Wall02c_01
   m_TagString: Untagged
@@ -139,6 +117,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1553682937359334954
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4237272088581346046}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5518412, y: 1.4951485, z: 1.0533859}
+  m_Center: {x: -0.22570834, y: 0.74985605, z: 0.5258897}
 --- !u!1 &5049392389685858487
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,6 +149,7 @@ GameObject:
   - component: {fileID: 9077746016179210745}
   - component: {fileID: 109238270912930767}
   - component: {fileID: 5006263382817345746}
+  - component: {fileID: 6882152598386885071}
   m_Layer: 0
   m_Name: SM_Wall02c_02
   m_TagString: Untagged
@@ -222,3 +222,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6882152598386885071
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5049392389685858487}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.42, y: 0.5548675, z: 1.0520759}
+  m_Center: {x: -0.23255488, y: 1.4029468, z: 0.52586627}
