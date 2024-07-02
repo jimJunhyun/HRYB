@@ -258,6 +258,52 @@ public class PlayerAnimActions : MonoBehaviour
 		}
 	}
 
+	public void ImNotPlayerForm()
+	{
+		switch (GameManager.instance.pActor.anim.Animators.GetComponent<PlayerAnimActions>().form)
+		{
+			case PlayerForm.Magic:
+				tail.enabled = false;
+				ear.enabled = false;
+				hair.material = hairMats[((int)PlayerForm.Magic)];
+				head.materials[1] = eyeMats[((int)PlayerForm.Magic)];
+
+
+				foxCloth.SetActive(false);
+				for (int i = 0; i < foxCloth.transform.childCount; i++)
+				{
+					foxCloth.transform.GetChild(i).gameObject.SetActive(false);
+				}
+				humanCloth.SetActive(true);
+				for (int i = 0; i < humanCloth.transform.childCount; i++)
+				{
+					humanCloth.transform.GetChild(i).gameObject.SetActive(true);
+				}
+				break;
+
+
+			case PlayerForm.Yoho:
+				tail.enabled = true;
+				ear.enabled = true;
+				hair.material = hairMats[((int)PlayerForm.Yoho)];
+				head.materials[1] = eyeMats[((int)PlayerForm.Yoho)];
+
+				foxCloth.SetActive(true);
+				for (int i = 0; i < foxCloth.transform.childCount; i++)
+				{
+					foxCloth.transform.GetChild(i).gameObject.SetActive(true);
+				}
+				humanCloth.SetActive(false);
+				for (int i = 0; i < humanCloth.transform.childCount; i++)
+				{
+					humanCloth.transform.GetChild(i).gameObject.SetActive(false);
+				}
+				break;
+			default:
+				break;
+		}
+	}
+
 	public void ChangeFormTo(PlayerForm f)
 	{
 		form = f;
