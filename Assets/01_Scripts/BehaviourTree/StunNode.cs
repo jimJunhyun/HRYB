@@ -26,8 +26,16 @@ public class StunNode : INode
 			    self.anim.SetBoolModify("Stun", true);
 			    if (F == false || self.anim.Animators.GetBool("Stun") == false)
 			    {
-				    EnemyAttackModule atk  = self.atk as EnemyAttackModule;
-				    atk.ResetCols();
+					try
+					{
+						EnemyAttackModule atk = self.atk as EnemyAttackModule;
+						atk.ResetCols();
+					}
+					catch
+					{
+						Debug.Log("어텍모듈이 없음");
+					}
+
 					F = true;
 			    }
 			    

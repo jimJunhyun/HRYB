@@ -913,7 +913,7 @@ public class PlayerMove : MoveModule
 
 		GameManager.instance.DisableCtrl();
 		self.anim.SetBoolModify("Avoid", true);
-		Debug.LogError("Move ment : " + moveDir);
+		//Debug.LogError("Move ment : " + moveDir);
 		Vector3 dir = moveDir;
 		if (dir == Vector3.zero)
 		{

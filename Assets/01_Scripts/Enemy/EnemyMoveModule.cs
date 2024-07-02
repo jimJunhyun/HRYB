@@ -60,7 +60,7 @@ public class EnemyMoveModule : MoveModule
 		agent.speed = speed;
 	}
 
-	public void SetTarget(Transform target, MoveStates moves = MoveStates.Run)
+	public virtual void SetTarget(Transform target, MoveStates moves = MoveStates.Run)
 	{
 		this._target = target;
 		if(agent.enabled)

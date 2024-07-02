@@ -1,32 +1,72 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class EscaperMove : MoveModule
+public class EscaperMove : EnemyMoveModule
 {
-	Transform target;
+	Transform _target;
+
+
+	private bool _isMove = false;
+	UnityEngine.AI.NavMeshAgent _agent;
+
+	NavMeshAgent agent
+	{
+		get
+		{
+			if (_agent == null)
+			{
+				_agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+			}
+
+			return _agent;
+		}
+	}
+	private CharacterController _char;
+
+	public UnityEngine.AI.NavMeshAgent Agent => agent;
+	public CharacterController Character => _char;
+
+
+	public override void SetTarget(Transform target, MoveStates moves = MoveStates.Run)
+	{
+		_target = target;
+		if (agent.enabled)
+		{
+			moveStat = moves;
+			agent.isStopped = false;
+			agent.updatePosition = true;
+			agent.updateRotation = false;
+		}
+	}
 
 	public override void Move()
 	{
-		if (target != null)
-		{
+		_isMove = true;
 
-			Vector3 v = (target.position - transform.position);
+
+		Debug.LogError($"모브브느아므리ㅡ {_isMove == true} {_target != null}  {Agent.enabled == true}");
+		if (_isMove == true && _target != null && Agent.enabled == true)
+		{
+			Vector3 v = (_target.position - transform.position);
 			v.y = 0;
 			moveDir = -v.normalized;
-			transform.Translate(moveDir * Speed * Time.deltaTime, Space.World); // NavMesh사용예정
+
 			if (moveDir.sqrMagnitude > 0.01)
 			{
 				transform.rotation = Quaternion.LookRotation(moveDir);
 			}
-			GetActor().anim.SetMoveState(1);
+
+			self.anim.SetMoveState(true);
+			UnityEngine.AI.NavMesh.SamplePosition(moveDir*3, out UnityEngine.AI.NavMeshHit hit, 1f, UnityEngine.AI.NavMesh.AllAreas);
+			Agent.SetDestination(hit.position);
 		}
-
-	}
-
-	public void SetTarget(Transform t)
-	{
-		target = t;
+		else
+		{
+			self.anim.SetMoveState(false);
+			StopMove();
+		}
 	}
 
 }
