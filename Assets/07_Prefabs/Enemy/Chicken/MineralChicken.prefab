@@ -172,7 +172,6 @@ GameObject:
   - component: {fileID: -6239129562676367919}
   - component: {fileID: -1244192596843611286}
   - component: {fileID: 6845556527381628590}
-  - component: {fileID: 7730745177065260665}
   - component: {fileID: -5757247085495103461}
   - component: {fileID: 5002575135962262591}
   - component: {fileID: 5120396437808230857}
@@ -181,8 +180,9 @@ GameObject:
   - component: {fileID: 3237647902740161308}
   - component: {fileID: 609324829139788850}
   - component: {fileID: 8538530355459144846}
+  - component: {fileID: 1374160262979631055}
   m_Layer: 9
-  m_Name: Chicken_Raven
+  m_Name: MineralChicken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -242,7 +242,7 @@ MonoBehaviour:
   _player: {fileID: 0}
   _skinned: {fileID: 2894730029821108661}
   IsNotStarted: 0
-  _section2Range: 40
+  _section2Range: 14
 --- !u!114 &-1244192596843611286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,34 +273,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveDir: {x: 0, y: 0, z: 0}
-  initRunSpeed: 4
-  initWalkSpeed: 4
+  initRunSpeed: 20
+  initWalkSpeed: 20
   initCrouchSpeed: 0
   gravity: 1
   groundThreshold: 0.5
   _isCanMove: 0
---- !u!114 &7730745177065260665
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1183807145861108818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cd1cfdc8b01b404f8b56a0e6ede7766, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isImmune: 0
-  initBlack: 1
-  initWhite: 1
-  initAdeBlack: 0
-  initAdeWhite: 0
-  regenThreshold: 10
-  power: 0
-  powerExpReq: 0
-  powerExp: 0
-  superArmor: 0
 --- !u!114 &-5757247085495103461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,12 +368,12 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 12
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
@@ -448,6 +426,38 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &1374160262979631055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183807145861108818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b37e62ba803571346977e61a3f22c9c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isImmune: 0
+  initBlack: 1
+  initWhite: 1
+  initAdeBlack: 1
+  initAdeWhite: 1
+  regenThreshold: 10
+  power: 0
+  powerExpReq: 0
+  powerExp: 0
+  superArmor: 0
+  _isItGroge: 0
+  _grogeInitValue: 100
+  _timePerGrogeAdd: 50
+  _66PercentBlack: 0
+  _66PercentWhite: 0
+  _33PercentBlack: 0
+  _33PercentWhite: 0
+  _isDie: 0
+  _dropItem: []
+  _expAmt: 0
 --- !u!1 &1494453265798295968
 GameObject:
   m_ObjectHideFlags: 0

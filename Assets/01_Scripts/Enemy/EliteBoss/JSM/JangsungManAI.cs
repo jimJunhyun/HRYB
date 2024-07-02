@@ -33,7 +33,7 @@ public class JangsungManAI : AISetter
 		if (_isStart)
 		{
 			head = new Selecter();
-			self.life._dieEvent += DieEvent;
+			self.life._dieEvent += () => { DieEvent(); };
 
 
 			JangsungManAttackModule _jsAttckModule = self.atk as JangsungManAttackModule;

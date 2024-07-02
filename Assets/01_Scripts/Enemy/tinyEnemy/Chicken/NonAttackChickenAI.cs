@@ -11,20 +11,24 @@ public class NonAttackChickenAI : AISetter
 		return _section2Range;
 	}
 
+
+	public override void DieEvent(float delay = 0, float time = 3)
+	{
+		//self.anim.ResetStatus();
+		StopExamine();
+		EscaperMove _moveModule = self.move as EscaperMove;
+		GetComponent<BoxCollider>().enabled = false;
+		_moveModule.StopMove();
+		base.DieEvent(0.7f);
+	}
+
+
 	public override void StartInvoke()
 	{
 		head = new Selecter();
 
 		EscaperMove _moveModule = self.move as EscaperMove;
-
-
-
-		StunNode _ishaveStun = new StunNode(self, () =>
-		{
-			//Debug.LogError(gameObject.name + " 일어남");//
-		});
-		Sequencer stunSeq = new Sequencer();
-		stunSeq.connecteds.Add(_ishaveStun);
+		self.life._dieEvent += () => { DieEvent(); };
 
 
 		IsInRange SectionRange = new IsInRange(self, player.transform, OutSectionRanged, null, () =>
@@ -49,8 +53,6 @@ public class NonAttackChickenAI : AISetter
 		Faridler.connecteds.Add(LongaRange);
 		Faridler.connecteds.Add(idles);
 
-
-		head.connecteds.Add(stunSeq);
 		head.connecteds.Add(Moved);
 		head.connecteds.Add(Faridler);
 

@@ -38,7 +38,7 @@ public class BearAI : AISetter
 		return _section2Range;
 	}
 
-	public override void DieEvent()
+	public override void DieEvent(float delay = 0, float time = 3)
 	{
 		//self.anim.ResetStatus();
 		StopExamine();
@@ -56,7 +56,7 @@ public class BearAI : AISetter
 		BearMoveModule _moveModule = self.move as BearMoveModule;
 		if (_isWake)
 		{
-			self.life._dieEvent += DieEvent;
+			self.life._dieEvent += () => { DieEvent(); };
 			self.life._hitEvent += _moveModule.StopMove;
 
 			IsNotStarted = true;

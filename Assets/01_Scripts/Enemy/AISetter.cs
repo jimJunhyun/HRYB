@@ -47,17 +47,18 @@ public abstract class AISetter : MonoBehaviour
 			transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);
 	}
 
-	public virtual void DieEvent()
+	public virtual void DieEvent(float delay = 0, float time =3)
 	{
 		_skinned.materials[0].SetInt("_IsDissolve", 1);
 		_skinned.materials[0].SetFloat("_DissolveHeight", 5);
-		StartCoroutine(DissolveMat());
+		StartCoroutine(DissolveMat(delay, time));
 	}
 
-	IEnumerator DissolveMat()
+	IEnumerator DissolveMat(float delay, float time)
 	{
+		yield return new WaitForSeconds(delay);
 		float t = 0;
-		while (t < 3)
+		while (t < time)
 		{
 			t += Time.deltaTime;
 			_skinned.materials[0].SetFloat("_DissolveHeight", Mathf.Lerp(5,-5, t / 3.0f));

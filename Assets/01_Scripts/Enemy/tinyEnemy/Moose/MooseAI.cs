@@ -27,7 +27,7 @@ public class MooseAI : AISetter
 		return _section2Range;
 	}
 
-	public override void DieEvent()
+	public override void DieEvent(float delay = 0, float time = 3)
 	{
 		//self.anim.ResetStatus();
 		StopExamine();
@@ -50,7 +50,7 @@ public class MooseAI : AISetter
 			IsNotStarted = true;
 			self.anim.SetIdleState(true);
 			self.life._hitEvent += _moveModule.StopMove;
-			self.life._dieEvent += DieEvent;
+			self.life._dieEvent += () => { DieEvent(); };
 
 			StunNode _ishaveStun = new StunNode(self, () =>
 		    {

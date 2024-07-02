@@ -33,7 +33,7 @@ public class WolfAI : AISetter
 	
 
 	
-	public override void DieEvent()
+	public override void DieEvent(float delay = 0, float time = 3)
 	{
 		//self.anim.ResetStatus();
 		StopExamine();
@@ -61,7 +61,7 @@ public class WolfAI : AISetter
 	    {
 			IsNotStarted = true;
 			self.anim.SetIdleState(true);
-		    self.life._dieEvent += DieEvent;
+			self.life._dieEvent += () => { DieEvent(); };
 			self.life._hitEvent += _moveModule.StopMove;
 
 			StunNode _ishaveStun = new StunNode(self, () =>

@@ -3,10 +3,10 @@ using UnityEngine.AI;
 
 public class EnemyMoveModule : MoveModule
 {
-	Transform _target;
+	protected Transform _target;
 
 
-	private bool _isMove = false;
+	protected bool _isMove = false;
 	UnityEngine.AI.NavMeshAgent _agent;
 
 	NavMeshAgent agent

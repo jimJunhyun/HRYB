@@ -13,7 +13,7 @@ public class JangsungGirlAI : AISetter
 
 
 	public bool _isStart =false;
-	public override void DieEvent()
+	public override void DieEvent(float delay = 0, float time = 3)
 	{
 		//self.anim.ResetStatus();
 		StopExamine();
@@ -29,7 +29,7 @@ public class JangsungGirlAI : AISetter
 			JangsungGirlAttack _att = self.atk as JangsungGirlAttack;
 		    JangsungGirlLifeModule _life = self.life as JangsungGirlLifeModule;
 			head = new Selecter();
-			_life._dieEvent += DieEvent;
+			_life._dieEvent += () => { DieEvent(); };
 			GetComponent<BoxCollider>().enabled = true;
 
 			#region 보호막

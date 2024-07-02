@@ -2,43 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class EscaperMove : EnemyMoveModule
 {
-	Transform _target;
-
-
-	private bool _isMove = false;
-	UnityEngine.AI.NavMeshAgent _agent;
-
-	NavMeshAgent agent
-	{
-		get
-		{
-			if (_agent == null)
-			{
-				_agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-			}
-
-			return _agent;
-		}
-	}
-	private CharacterController _char;
-
-	public UnityEngine.AI.NavMeshAgent Agent => agent;
-	public CharacterController Character => _char;
-
+	Coroutine _escapeCO;
 
 	public override void SetTarget(Transform target, MoveStates moves = MoveStates.Run)
 	{
 		_target = target;
-		if (agent.enabled)
+		if (Agent.enabled)
 		{
 			moveStat = moves;
-			agent.isStopped = false;
-			agent.updatePosition = true;
-			agent.updateRotation = false;
+			Agent.isStopped = false;
+			Agent.updatePosition = true;
+			Agent.updateRotation = false;
 		}
+	}
+
+	IEnumerator EscapeSetter()
+	{
+		Vector3 v = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+		v.y = 0;
+		moveDir = v.normalized * 2;
+
+
+		yield return new WaitForSeconds(Random.Range(0.4f,1.2f));
+		_escapeCO = null;
 	}
 
 	public override void Move()
@@ -46,20 +36,19 @@ public class EscaperMove : EnemyMoveModule
 		_isMove = true;
 
 
-		Debug.LogError($"모브브느아므리ㅡ {_isMove == true} {_target != null}  {Agent.enabled == true}");
+		//Debug.LogError($"모브브느아므리ㅡ {_isMove == true} {_target != null}  {Agent.enabled == true}");
 		if (_isMove == true && _target != null && Agent.enabled == true)
 		{
-			Vector3 v = (_target.position - transform.position);
-			v.y = 0;
-			moveDir = -v.normalized;
+			if (_escapeCO == null)
+				_escapeCO = StartCoroutine(EscapeSetter());
+
 
 			if (moveDir.sqrMagnitude > 0.01)
 			{
-				transform.rotation = Quaternion.LookRotation(moveDir);
+				transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(moveDir),Time.deltaTime * 9);
 			}
-
 			self.anim.SetMoveState(true);
-			UnityEngine.AI.NavMesh.SamplePosition(moveDir*3, out UnityEngine.AI.NavMeshHit hit, 1f, UnityEngine.AI.NavMesh.AllAreas);
+			UnityEngine.AI.NavMesh.SamplePosition(transform.position + moveDir, out UnityEngine.AI.NavMeshHit hit, 1f, UnityEngine.AI.NavMesh.AllAreas);
 			Agent.SetDestination(hit.position);
 		}
 		else
