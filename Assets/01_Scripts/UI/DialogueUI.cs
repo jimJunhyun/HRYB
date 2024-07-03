@@ -57,6 +57,8 @@ public class DialogueUI : MonoBehaviour
 			GameManager.instance.camManager.Zoom(30);
 
 			GameManager.instance.uiManager.basicUIGroup.SetActive(false);
+			GameManager.instance.uiManager.converter.gameObject.SetActive(false);
+			GameManager.instance.uiManager.yinYangUI.gameObject.SetActive(false);
 		}
 
 		if(talker == null)
@@ -86,6 +88,8 @@ public class DialogueUI : MonoBehaviour
 		GameManager.instance.camManager.UnfreezeCamY();
 		GameManager.instance.camManager.RevertZoom();
 		GameManager.instance.uiManager.basicUIGroup.SetActive(true);
+		GameManager.instance.uiManager.converter.gameObject.SetActive(true);
+		GameManager.instance.uiManager.yinYangUI.gameObject.SetActive(true);
 		GameManager.instance.LockCursor();
 		
 		

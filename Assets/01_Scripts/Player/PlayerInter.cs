@@ -144,10 +144,23 @@ public class PlayerInter : SightModule
 			if (context.canceled)
 			{
 				GameManager.instance.uiManager.dialogueUI.currentShown.OnClick();
+			Debug.Log("대화하고자 했으나");
 			}
+		}
+		else if(GameManager.instance.uiManager.toolbarUIShower.opened)
+		{
+			if(GameManager.instance.uiManager.toolbarUIShower.state == ToolState.Inventory && GameManager.instance.pinven.CurHoldingItem.info != null)
+			{
+				if(GameManager.instance.pinven.CurHoldingItem.info is Medicines md)
+				{
+					md.Use();
+				}
+			}
+			Debug.Log("약을 사용하고자 했으나");
 		}
 		else if(true)
 		{
+			Debug.Log("상호작요했으나");
 			if (context.performed)
 			{
 				pressStart = Time.time;
