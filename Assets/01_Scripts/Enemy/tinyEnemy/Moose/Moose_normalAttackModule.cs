@@ -18,38 +18,38 @@ public class Moose_normalAttackModule : EnemyAttackModule
 
 	}
 
-	public override void OnAnimationStart()
+	public override void OnAnimationStart(AnimationEvent evt)
 	{
 
 	}
 
-	public override void OnAnimationMove()
+	public override void OnAnimationMove(AnimationEvent evt)
 	{
 
 	}
 
-	public override void OnAnimationEvent()
+	public override void OnAnimationEvent(AnimationEvent evt)
 	{
 		GameManager.instance.audioPlayer.PlayPoint("MooseAttack", transform.position);
-		_nowCols.Now(transform,(_life) =>
+		_nowCols.Now(transform, (_life) =>
 		{
-			_life.DamageYY(new YinYang(0,whiteDamage * _normalATKValue), DamageType.DirectHit);
+			_life.DamageYY(new YinYang(0, whiteDamage * _normalATKValue), DamageType.DirectHit);
 			// 기절 ++
 			Vector3 vec = _life.transform.position - transform.position;
 			vec.y = 0;
 			vec.Normalize();
 
-			
-			
-			_life.GetActor().move.forceDir = vec * 20 + new Vector3(0,8,0);
+
+
+			_life.GetActor().move.forceDir = vec * 20 + new Vector3(0, 8, 0);
 			//_life.GetActor().move.forceDir.y = 40;
 
 		}, default, default, default, 1f);
-		EffectObject eff =  PoolManager.GetEffect($"SandBoomb", transform);
+		EffectObject eff = PoolManager.GetEffect($"SandBoomb", transform);
 		eff.Begin();
 	}
 
-	public override void OnAnimationEnd()
+	public override void OnAnimationEnd(AnimationEvent evt)
 	{
 
 		if (_nowCols != null)
@@ -59,12 +59,12 @@ public class Moose_normalAttackModule : EnemyAttackModule
 		}
 	}
 
-	public override void OnAnimationSound()
+	public override void OnAnimationSound(AnimationEvent evt)
 	{
-		
+
 	}
 
-	public override void OnAnimationStop()
+	public override void OnAnimationStop(AnimationEvent evt)
 	{
 		self.AI.StartExamine();
 	}
@@ -79,15 +79,15 @@ public class Moose_normalAttackModule : EnemyAttackModule
 			_nowCols = null;
 		}
 		GameObject obj = PoolManager.GetObject($"Moose_noraml_Attack", transform);
-		
+
 		if (obj.TryGetComponent(out ColliderCast cols))
 		{
 			_nowCols = cols;
 		}
-		
-		
+
+
 		//GetActor().anim.SetAttackTrigger();
-		
+
 		GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"Attack1"));
 
 	}

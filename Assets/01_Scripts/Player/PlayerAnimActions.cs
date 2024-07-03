@@ -542,4 +542,13 @@ public class PlayerAnimActions : MonoBehaviour
 		self.move.forceDir = Vector3.zero;
 	}
 
+	public void TimelineControlPause()
+	{
+		GameManager.instance.DisableCtrlTimeline();
+	}
+	public void TimelineControlResume()
+	{
+		GameManager.instance.EnableCtrlTimeline();
+	}
+
 }

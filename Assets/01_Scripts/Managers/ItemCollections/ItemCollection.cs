@@ -49,6 +49,7 @@ public class ItemCollection
 		if (allowRepeat || !useCount.Contains(data))
 		{
 			useCount.Add(data);
+			GameManager.instance.pinven.AddExp(1000);
 		}
 	}
 

@@ -56,6 +56,7 @@ public class Specials
 			}
 		}
 
+
 		effTime = float.Parse(effT);
 	}
 
@@ -63,6 +64,7 @@ public class Specials
 	{
 		for (int i = 0; i < MODCOUNT; i++)
 		{
+			Debug.Log(((StatUpgradeType)i).ToString() + " 가 " + modAdd[i] + " 만큼 증가, " + modMult[i] + "% 만큼 증가. " + effTime + " 초 동안.");
 			user.HandleStatus((StatUpgradeType)i, modAdd[i], modMult[i], effTime);
 		}
 	}
@@ -221,7 +223,7 @@ public class Item : IComparable // #################
 		nameDataHashT.Clear();
 		GameManager.instance.imageManager.dictionary.Dict.Clear();
 		SheetParser data = new SheetParser("https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/export?format=tsv&gid=607348165&range=B3:R", "B", "R");
-		SheetParser useData = new SheetParser("https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/export?format=tsv&gid=36776999&range=B3:H", "B", "H");
+		SheetParser useData = new SheetParser("https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/export?format=tsv&gid=36776999&range=B3:M", "B", "M");
 		yield return new WaitUntil(() => data.inited && useData.inited);
 		
 		for (int i = 0; i < data.cardinality; i++)
@@ -349,7 +351,9 @@ public class Item : IComparable // #################
 	{
 		bool res = false;
 		GameManager.instance.qManager.InvokeOnChanged(CompletionAct.UseItem, MyName);
-		Use();
+		
+		onUse.Use(GameManager.instance.pActor);
+
 		GameManager.instance.pinven.RemoveItem(this);
 		//if (onUse?.onActivated != null && (res = onUse.onActivated.Invoke()))
 		//{

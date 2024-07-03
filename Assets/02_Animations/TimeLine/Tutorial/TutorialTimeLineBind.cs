@@ -20,5 +20,6 @@ public class TutorialTimeLineBind : MonoBehaviour
 	public void PlayerActive()
 	{
 		GameManager.instance.EnableCtrl();
+		GameManager.instance.PlayTimeline("StartTimeline");
 	}
 }

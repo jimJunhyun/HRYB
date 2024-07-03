@@ -10,6 +10,7 @@ public class InventoryUI : MonoBehaviour, IOpenableWindowUI
 
 	public TextMeshProUGUI itemName;
 	public TextMeshProUGUI itemDesc;
+	public TextMeshProUGUI useInst;
 	public Image itemIcon;
 	public ItemDetailInfoShower itemDetail;
 
@@ -24,6 +25,7 @@ public class InventoryUI : MonoBehaviour, IOpenableWindowUI
 		itemName = transform.Find("ItemInfo/ItemText").GetComponent<TextMeshProUGUI>();
 		itemDesc = transform.Find("ItemInfo/ItemInfo").GetComponent<TextMeshProUGUI>();
 		itemIcon = transform.Find("ItemInfo/ItemImg").GetComponent<Image>();
+		useInst = transform.Find("ItemInfo/UseInstruction").GetComponent<TextMeshProUGUI>();
 		itemDetail = transform.Find("ItemDetail").GetComponent<ItemDetailInfoShower>();
 		slotUI = GetComponentsInChildren<SlotUI>();
 		dragHandler = GetComponentsInChildren<DragHandler>();
@@ -33,6 +35,8 @@ public class InventoryUI : MonoBehaviour, IOpenableWindowUI
 			slotUI[i].value = i;
 			dragHandler[i].value = i;
 		}
+
+		useInst.enabled = false;
 	}
 
 	public void OnClose()
@@ -66,6 +70,11 @@ public class InventoryUI : MonoBehaviour, IOpenableWindowUI
 			if(GameManager.instance.pinven.CurHoldingItem.info is YinyangItem yy)
 			{
 				itemDetail.SetInfo(yy.processes);
+				useInst.enabled = false;
+				if(GameManager.instance.pinven.CurHoldingItem.info is Medicines md)
+				{
+					useInst.enabled = true;
+				}
 			}
 			else
 			{

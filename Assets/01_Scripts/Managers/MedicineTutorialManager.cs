@@ -18,7 +18,7 @@ public class MedicineTutorialManager : MonoBehaviour
 	float sixthFocusTime = 5f;
 	float curFocusTime = 0f;
 
-	const string TARGETITEMNAME=  "작녹탕";
+	const string TARGETITEMNAME=  "계심환";
 
 	public void StartTutorial()
 	{
@@ -37,6 +37,7 @@ public class MedicineTutorialManager : MonoBehaviour
 			step = 0;
 			ended = true;
 			started = false;
+			GameManager.instance.uiManager.CompleteTutorial();
 		}
 	}
 
@@ -81,7 +82,7 @@ public class MedicineTutorialManager : MonoBehaviour
 					{
 						if (!foc)
 						{
-							Rect rt = new Rect(new Vector2(960, 740), new Vector2(1500, 250));
+							Rect rt = new Rect(new Vector2(960, 690), new Vector2(1500, 250));
 							GameManager.instance.uiManager.focus.FocusAt(rt,rt.position, true, AdditionalEffectFocusing.Border  | AdditionalEffectFocusing.Subtitle);
 							GameManager.instance.uiManager.focus.SetSubTitle("인벤토리에서는 채집한 약재나 제약한 한약을 확인할 수 있습니다.");
 							foc = true;

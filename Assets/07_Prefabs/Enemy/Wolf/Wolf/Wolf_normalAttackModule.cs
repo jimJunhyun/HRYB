@@ -17,17 +17,17 @@ public class Wolf_normalAttackModule : EnemyAttackModule
 
 	}
 
-	public override void OnAnimationStart()
+	public override void OnAnimationStart(AnimationEvent evt)
 	{
 
 	}
 
-	public override void OnAnimationMove()
+	public override void OnAnimationMove(AnimationEvent evt)
 	{
 
 	}
 
-	public override void OnAnimationEvent()
+	public override void OnAnimationEvent(AnimationEvent evt)
 	{
 		int a = left ? 2 : 1;
 
@@ -45,29 +45,29 @@ public class Wolf_normalAttackModule : EnemyAttackModule
 			_nowCols = cols;
 		}
 
-		_nowCols.Now(transform,(_life) =>
+		_nowCols.Now(transform, (_life) =>
 		{
-			_life.DamageYY(new YinYang(0,whiteDamage * _normalATKValue), DamageType.DirectHit);
+			_life.DamageYY(new YinYang(0, whiteDamage * _normalATKValue), DamageType.DirectHit);
 		}, default, default, default, 0.3f);
 
-		if(a== 2)
+		if (a == 2)
 		{
 			GameManager.instance.audioPlayer.PlayPoint("WolfRightAttack", transform.position);
 		}
 		else
 		{
-			
+
 			GameManager.instance.audioPlayer.PlayPoint("WolfLeftAttack", transform.position);
-			
+
 		}
 
-		EffectObject eff =  PoolManager.GetEffect($"Wolf_noraml_Attack{a}", transform);
+		EffectObject eff = PoolManager.GetEffect($"Wolf_noraml_Attack{a}", transform);
 		eff.Begin();
 	}
 
-	public override void OnAnimationEnd()
+	public override void OnAnimationEnd(AnimationEvent evt)
 	{
-		if(_nowCols != null)
+		if (_nowCols != null)
 		{
 
 			_nowCols.End();
@@ -75,12 +75,12 @@ public class Wolf_normalAttackModule : EnemyAttackModule
 		}
 	}
 
-	public override void OnAnimationSound()
+	public override void OnAnimationSound(AnimationEvent evt)
 	{
 
 	}
 
-	public override void OnAnimationStop()
+	public override void OnAnimationStop(AnimationEvent evt)
 	{
 		self.AI.StartExamine();
 	}
@@ -96,13 +96,13 @@ public class Wolf_normalAttackModule : EnemyAttackModule
 			_nowCols = null;
 		}
 
-	
-		
+
+
 		//GetActor().anim.SetAttackTrigger();
-		
+
 		GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"normallAtt{a}"));
 
 	}
-	
+
 
 }

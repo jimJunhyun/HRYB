@@ -96,6 +96,7 @@ public enum RewardType
 	Quest,
 	EnableObject,
 	DisableObject,
+	PlayTimeline,
 }
 
 public enum QuestType
@@ -586,6 +587,8 @@ public class QuestManager
 				return "오브젝트 활성화 : ";
 			case RewardType.DisableObject:
 				return "오브젝트 비활성화 : ";
+			case RewardType.PlayTimeline:
+				return "타임라인 재생 : ";
 			default:
 				Debug.LogWarning($"{act} 상태에 대한 한글 번역이 제공되지 않습니다.");
 				return act.ToString();

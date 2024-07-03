@@ -24,3 +24,17 @@ public interface IAnimationEventActor
 	public void OnAnimationHit(Actor self, AnimationEvent evt);
 }
 
+
+public interface IAnimationEventActorEv
+{
+	public void OnAnimationStart(AnimationEvent evt);
+
+	public void OnAnimationMove(AnimationEvent evt);
+	public void OnAnimationEvent(AnimationEvent evt);
+
+	public void OnAnimationStop(AnimationEvent evt);
+	public void OnAnimationEnd(AnimationEvent evt);
+
+	public void OnAnimationHit(AnimationEvent evt);
+}
+
