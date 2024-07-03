@@ -50,7 +50,7 @@ public class ParseDialogue : Editor
 
 		Dictionary<string, Dictionary<string, List<Dialogue>>> npcDatas = new Dictionary<string, Dictionary<string, List<Dialogue>>>();
 
-		for (int i = ps.cardinality - 1; i >= 0; --i)
+		for (int i = ps.cardinality - 1; i >= 1; --i)
 		{
 			if (!npcDatas.ContainsKey(ps.GetAttribute(i, NPCNAME)))
 			{
@@ -137,7 +137,7 @@ public class ParseDialogue : Editor
 									if(ch.nexts.Count >= 5)
 										break;
 									nexts = ps.GetAttribute(i, NEXTDIA + ch.nexts.Count * 2).Trim();
-									if(nexts.Length > 0)
+									if(nexts.Length <= 0)
 										break;
 									Dictionary<string, List<Dialogue>> target = npcDatas[ps.GetAttribute(i, NPCNAME)];
 									Dialogue nxt = null;
@@ -153,7 +153,7 @@ public class ParseDialogue : Editor
 											ch.nexts.Add(nxt);
 										}
 									}
-									if (cur.next == null)
+									if (nxt == null)
 									{
 										Debug.LogError($"이름이 {nexts}인 대화는 존재하지 않습니다!");
 									}
@@ -165,7 +165,10 @@ public class ParseDialogue : Editor
 						break;
 				}
 				cur.rewardItem = ps.GetAttribute(i, REWARDITEM).Trim();
-				cur.rewardAmt = int.Parse(ps.GetAttribute(i, REWARDITEM+1));
+				if(cur.rewardItem.Length > 0)
+				{
+					cur.rewardAmt = int.Parse(ps.GetAttribute(i, REWARDITEM+1));
+				}
 				cur.text = ps.GetAttribute(i, DIATEXT);
 				cur.typeDel = float.Parse(ps.GetAttribute(i, DIATEXT + 1));
 				string nextDiaName = ps.GetAttribute(i, NEXTDIA).Trim();
@@ -199,7 +202,7 @@ public class ParseDialogue : Editor
 
 				convSc.Add(convChunk, dia);
 
-				Debug.Log(ps.GetAttribute(i, NPCNAME) + "데이터추가됨 하하");
+				Debug.Log(ps.GetAttribute(i, NPCNAME) + "데이터추가됨 " + cur.name);
 				npcDatas.Add(ps.GetAttribute(i, NPCNAME), convSc);
 			}
 			else
@@ -213,13 +216,13 @@ public class ParseDialogue : Editor
 					{
 						case 0:
 							{
-								cur = new Dialogue();
+								cur = CreateInstance<Dialogue>();
 							}
 							break;
 						case 1:
 							{
 
-								cur = new SwapDialogue();
+								cur = CreateInstance<SwapDialogue>();
 								if (cur is SwapDialogue sw)
 								{
 									string swapDiaName = ps.GetAttribute(i, SWAPDIA).Trim();
@@ -254,20 +257,17 @@ public class ParseDialogue : Editor
 						case 2:
 							{
 
-								cur = new QuestDialogue();
+								cur = CreateInstance<QuestDialogue>();
 								if (cur is QuestDialogue qu)
 								{
-									if (QuestManager.nameQuestPair[ps.GetAttribute(i, QUESTNAME)] != null)
-									{
-										qu.info = QuestManager.nameQuestPair[ps.GetAttribute(i, QUESTNAME)];
-									}
+									qu.info = Resources.Load<QuestInfo>($"AllQuest/{ps.GetAttribute(i, QUESTNAME)}");
 								}
 							}
 							break;
 						case 3:
 							{
 
-								cur = new CallbackDialogue();
+								cur = CreateInstance<CallbackDialogue>();
 								//쓰면 뒤짐
 								//말그대로임 ㅇㅇ
 							}
@@ -275,18 +275,19 @@ public class ParseDialogue : Editor
 						case 4:
 							{
 
-								cur = new ChoiceDialogue();
+								cur = CreateInstance<ChoiceDialogue>();
 
 								if (cur is ChoiceDialogue ch)
 								{
 
 									string nexts;
+									ch.nexts = new List<Dialogue>();
 									while (true)
 									{
 										if (ch.nexts.Count >= 5)
 											break;
-										nexts = ps.GetAttribute(i, NEXTDIA + ch.nexts.Count).Trim();
-										if (nexts.Length > 0)
+										nexts = ps.GetAttribute(i, NEXTDIA + ch.nexts.Count * 2).Trim();
+										if (nexts.Length <= 0)
 											break;
 										Dictionary<string, List<Dialogue>> target = npcDatas[ps.GetAttribute(i, NPCNAME)];
 										Dialogue nxt = null;
@@ -298,11 +299,11 @@ public class ParseDialogue : Editor
 												return sp[sp.Length - 1] == nexts;
 											}))
 											{
-												ch.choiceOptions.Add("???");
+												ch.choiceOptions.Add(ps.GetAttribute(i, NEXTDIA + ch.nexts.Count * 2 + 1));
 												ch.nexts.Add(nxt);
 											}
 										}
-										if (cur.next == null)
+										if (nxt == null)
 										{
 											Debug.LogError($"이름이 {nexts}인 대화는 존재하지 않습니다!");
 										}
@@ -314,7 +315,10 @@ public class ParseDialogue : Editor
 							break;
 					}
 					cur.rewardItem = ps.GetAttribute(i, REWARDITEM).Trim();
-					cur.rewardAmt = int.Parse(ps.GetAttribute(i, REWARDITEM + 1));
+					if (cur.rewardItem.Length > 0)
+					{
+						cur.rewardAmt = int.Parse(ps.GetAttribute(i, REWARDITEM + 1));
+					}
 					cur.text = ps.GetAttribute(i, DIATEXT);
 					cur.typeDel = float.Parse(ps.GetAttribute(i, DIATEXT + 1));
 					string nextDiaName = ps.GetAttribute(i, NEXTDIA).Trim();
@@ -344,7 +348,7 @@ public class ParseDialogue : Editor
 					}
 					cur.name = $"{ps.GetAttribute(i, NPCNAME)}_{ps.GetAttribute(i, 0)}";
 
-					Debug.Log(ps.GetAttribute(i, NPCNAME) + "에다가 데이터추가됨 힣힣");
+					Debug.Log(ps.GetAttribute(i, NPCNAME) + "에다가 데이터추가됨 " + cur.name);
 					npcDatas[ps.GetAttribute(i, NPCNAME)][convSection].Add(cur);
 				}
 			}
