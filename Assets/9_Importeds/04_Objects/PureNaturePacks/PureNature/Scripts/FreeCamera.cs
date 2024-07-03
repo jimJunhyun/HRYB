@@ -15,10 +15,22 @@ public class FreeCamera : MonoBehaviour
 
     void Update()
     {
+
+		if (Input.GetKey(KeyCode.RightBracket))
+		{
+			this.movementSpeed += Time.deltaTime;
+			this.movementSpeed = Mathf.Clamp(this.movementSpeed, 0.01f, fastMovementSpeed);
+		}
+		if (Input.GetKey(KeyCode.LeftBracket))
+		{
+			this.movementSpeed -= Time.deltaTime;
+			this.movementSpeed = Mathf.Clamp(this.movementSpeed, 0.01f, fastMovementSpeed);
+		}
+
         var fastMode = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         var movementSpeed = fastMode ? this.fastMovementSpeed : this.movementSpeed;
 
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+		if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             transform.position = transform.position + (-transform.right * movementSpeed * Time.deltaTime);
         }
@@ -83,6 +95,8 @@ public class FreeCamera : MonoBehaviour
         {
             StopLooking();
         }
+
+		
     }
 
     void OnDisable()

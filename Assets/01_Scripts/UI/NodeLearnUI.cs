@@ -35,7 +35,6 @@ public class NodeLearnUI : MonoBehaviour
 			gameObject.SetActive(true);
 			showing = node;
 			ongoing = StartCoroutine(DelScroll(true));
-			
 		}
 
 		RefreshInfo();
@@ -102,6 +101,7 @@ public class NodeLearnUI : MonoBehaviour
 			}
 			else
 			{
+				showing = node;
 				RefreshInfo();
 				Debug.Log("이미켜져있다");
 			}

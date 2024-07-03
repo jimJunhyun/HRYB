@@ -102,8 +102,8 @@ public class PlayerAnimActions : MonoBehaviour
 				{
 					Vector3 v = Vector3.Cross(Vector3.up, hit.normal);
 					lFootForward = Vector3.Cross(hit.normal, v);
-					animator.SetIKRotation(AvatarIKGoal.LeftFoot,  UnityEngine.Quaternion.LookRotation(lFootForward));
-					animator.SetIKRotationWeight(AvatarIKGoal.LeftFoot, 1);
+					//animator.SetIKRotation(AvatarIKGoal.LeftFoot,  UnityEngine.Quaternion.LookRotation(lFootForward));
+					//animator.SetIKRotationWeight(AvatarIKGoal.LeftFoot, 1);
 				}
 
 				lFootPos = hit.point + lFootOffset;
@@ -119,8 +119,8 @@ public class PlayerAnimActions : MonoBehaviour
 				{
 					Vector3 v = Vector3.Cross(Vector3.up, hit.normal);
 					rFootForward = Vector3.Cross(hit.normal, v);
-					animator.SetIKRotation(AvatarIKGoal.RightFoot, UnityEngine.Quaternion.LookRotation(rFootForward));
-					animator.SetIKRotationWeight(AvatarIKGoal.RightFoot, 1);
+					//animator.SetIKRotation(AvatarIKGoal.RightFoot, UnityEngine.Quaternion.LookRotation(rFootForward));
+					//animator.SetIKRotationWeight(AvatarIKGoal.RightFoot, 1);
 				}
 				
 
