@@ -86,17 +86,17 @@ public class ParseDialogue : Editor
 											return sp[sp.Length - 1] == swapDiaName;
 										}))
 										{
-											cur.next = nxt;
+											sw.afterChange = nxt;
 										}
 									}
-									if (cur.next == null)
+									if (sw.afterChange == null)
 									{
 										Debug.LogError($"이름이 {swapDiaName}인 대화는 존재하지 않습니다!");
 									}
 								}
 								else
 								{
-									cur.next = null;
+									sw.afterChange = null;
 								}
 
 							}
@@ -238,17 +238,17 @@ public class ParseDialogue : Editor
 												return sp[sp.Length - 1] == swapDiaName;
 											}))
 											{
-												cur.next = nxt;
+												sw.afterChange = nxt;
 											}
 										}
-										if (cur.next == null)
+										if (sw.afterChange == null)
 										{
 											Debug.LogError($"이름이 {swapDiaName}인 대화는 존재하지 않습니다!");
 										}
 									}
 									else
 									{
-										cur.next = null;
+										sw.afterChange = null;
 									}
 
 								}
