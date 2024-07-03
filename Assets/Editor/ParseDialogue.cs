@@ -24,7 +24,7 @@ public class ParseDialogue : Editor
 
 	static void CreateDialogue() //async로 바꾸는게?
 	{
-		SheetParser data = new SheetParser("https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/export?format=tsv&gid=649135811&range=B2:O", "B", "O", true, false);
+		SheetParser data = new SheetParser("https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/export?format=tsv&gid=649135811&range=B2:T", "B", "T", true, false);
 		data.onCompleted += ParseDia;
 	}
 
