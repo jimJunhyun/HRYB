@@ -6,9 +6,9 @@ using UnityEngine;
 public class ChoiceDialogue : Dialogue
 {
 
-	public List<string> choiceOptions;
+	public List<string> choiceOptions = new List<string>();
 
-	public List<Dialogue> nexts;
+	public List<Dialogue> nexts = new List<Dialogue>();
 
 	bool choosing = false;
 	bool chooseComp = false;
