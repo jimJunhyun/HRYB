@@ -133,7 +133,7 @@ public class SkyBirtgh : AttackBase
 				    GameObject obj = PoolManager.GetObject("SkyBritghCollider", self.transform);
 				    if (obj.TryGetComponent<ColliderCast>(out _cols))
 				    {
-						Debug.LogError("스카이 브릿지 3");
+						//Debug.LogError("스카이 브릿지 3");
 					    _cols.Now(self.transform, (_life) =>
 					    {
 						    //CameraManager.instance.ShakeCamFor(0.08f, 2, 2);

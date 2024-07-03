@@ -83,7 +83,7 @@ public abstract class AttackBase : Leaf
 
 		white = white + ( white * UnityEngine.Random.Range(-0.2f, 0.2f));
 		black = black + (black * UnityEngine.Random.Range(-0.2f, 0.2f));
-		Debug.LogError($"DMGS : {value.white} | {value.black}");
+		//Debug.LogError($"DMGS : {value.white} | {value.black}");
 
 		if (white > 0)
 		{
