@@ -2,20 +2,24 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: WaterFall01
   m_Shader: {fileID: 4800000, guid: 26e13bf8edcdbbf41bf773cd53e524ea, type: 3}
-  m_ShaderKeywords: 
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2999
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -103,8 +107,22 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _099: 0.07
+    - _AlphaCutoff: 0.5
     - _BumpScale: 1
     - _CausticsScale: 0
     - _CausticsSpeed: 0
@@ -123,6 +141,7 @@ Material:
     - _EdgeLength: 50
     - _EdgePower: 1
     - _EdgesFade: 0.2
+    - _EnvironmentReflections: 1
     - _Fade: -0.03
     - _Float3: 0.744
     - _Float6: 1
@@ -151,6 +170,9 @@ Material:
     - _NormalTiling: 0.05
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
     - _RefractionPower: 2.03
     - _SmoothnessPower: 1
     - _SmoothnessTextureChannel: 0
@@ -195,3 +217,4 @@ Material:
     - _WavesScale: {r: 1, g: 1, b: 0, a: 0}
     - _WavesScaleOLD: {r: 1, g: 1, b: 0, a: 0}
     - _WavesScaleXY: {r: 0.1, g: 0.1, b: 0, a: 0}
+  m_BuildTextureStacks: []
