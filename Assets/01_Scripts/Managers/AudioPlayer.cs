@@ -10,7 +10,7 @@ public class AudioPlayer : MonoBehaviour
     
 	AudioSource global;
 	AudioSource globalBgm;
-	AudioMixer audioMixer;
+	public AudioMixer audioMixer;
 
 	public NameAudioDictionary dict;
 
