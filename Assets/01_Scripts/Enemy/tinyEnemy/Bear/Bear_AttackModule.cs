@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bear_AttackModule : EnemyAttackModule
 {
 	private bool left = false;
-	
+
 	[SerializeField] GameObject _firePos;
 
 	private int tempCount = 0;
@@ -15,7 +15,7 @@ public class Bear_AttackModule : EnemyAttackModule
 	public float _upATKValue = 3f;
 	public float _fireATKValue = 0.1f;
 
-	public override void OnAnimationEnd()
+	public override void OnAnimationEnd(AnimationEvent evt)
 	{
 		if (_nowCols != null)
 		{
@@ -24,17 +24,17 @@ public class Bear_AttackModule : EnemyAttackModule
 		}
 	}
 
-	public override void OnAnimationEvent()
+	public override void OnAnimationEvent(AnimationEvent evt)
 	{
-		
 
-		
-		switch(AttackStd)
+
+
+		switch (AttackStd)
 		{
 			case "Normal":
 				{
-					
-					if(_nowCols != null)
+
+					if (_nowCols != null)
 					{
 						_nowCols.End();
 						_nowCols = null;
@@ -44,7 +44,7 @@ public class Bear_AttackModule : EnemyAttackModule
 
 					GameObject objs = PoolManager.GetObject("BearNormalCollider", transform);
 
-					if(at == -1)
+					if (at == -1)
 					{
 						GameManager.instance.audioPlayer.PlayPoint("BearAttackLeft", transform.position);
 					}
@@ -52,7 +52,7 @@ public class Bear_AttackModule : EnemyAttackModule
 					{
 						GameManager.instance.audioPlayer.PlayPoint("BearAttackRight", transform.position);
 					}
-					if(objs.TryGetComponent<ColliderCast>(out _nowCols))
+					if (objs.TryGetComponent<ColliderCast>(out _nowCols))
 					{
 						_nowCols.Now(transform, (_life) =>
 						{
@@ -71,7 +71,7 @@ public class Bear_AttackModule : EnemyAttackModule
 						}, default, default, default, 1f);
 					}
 
-				
+
 				}
 				break;
 			case "EX":
@@ -108,16 +108,16 @@ public class Bear_AttackModule : EnemyAttackModule
 
 							_life.GetActor().move.forceDir = vec * 2; //+ new Vector3(0, 32, 0);
 																	  //_life.GetActor().move.forceDir.y = 40;
-						}, default, default, default, 0.2f) ;
+						}, default, default, default, 0.2f);
 
 					}
-					
-					
+
+
 				}
 				break;
 			case "EX2":
 				{
-					
+
 					GameObject obj = PoolManager.GetObject($"BearEXCollider", transform); ;
 
 					GameManager.instance.audioPlayer.PlayPoint("BearAttackRight", transform.position);
@@ -126,7 +126,7 @@ public class Bear_AttackModule : EnemyAttackModule
 					{
 						_nowCols = cols;
 					}
-					
+
 					_nowCols.Now(transform, (_life) =>
 					{
 						_life.DamageYY(new YinYang(0, whiteDamage * _upATKValue), DamageType.DirectHit);
@@ -134,7 +134,7 @@ public class Bear_AttackModule : EnemyAttackModule
 						Vector3 vec = _life.transform.position - transform.position;
 						vec.y = 0;
 						vec.Normalize();
-						
+
 						//GiveBuff(_life.GetActor(), StatEffID.Stun, 0.8f);
 
 
@@ -146,23 +146,23 @@ public class Bear_AttackModule : EnemyAttackModule
 				}
 				break;
 		}
-		
-		
+
+
 	}
 
-	public override void OnAnimationMove()
+	public override void OnAnimationMove(AnimationEvent evt)
 	{
 	}
 
-	public override void OnAnimationSound()
+	public override void OnAnimationSound(AnimationEvent evt)
 	{
 	}
 
-	public override void OnAnimationStart()
+	public override void OnAnimationStart(AnimationEvent evt)
 	{
 	}
 
-	public override void OnAnimationStop()
+	public override void OnAnimationStop(AnimationEvent evt)
 	{
 		self.AI.StartExamine();
 	}
@@ -179,7 +179,7 @@ public class Bear_AttackModule : EnemyAttackModule
 
 	public override void Attack()
 	{
-		
+
 		left = !left;
 		int a = left ? 1 : 2;
 		string t = AttackStd;
@@ -190,8 +190,8 @@ public class Bear_AttackModule : EnemyAttackModule
 			_nowCols.End();
 			_nowCols = null;
 		}
-		
-		switch(AttackStd)
+
+		switch (AttackStd)
 		{
 			case "Normal":
 				{
@@ -203,14 +203,14 @@ public class Bear_AttackModule : EnemyAttackModule
 				{
 					//GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"Attack{AttackStd}"));
 					GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"Buff"));
-					
+
 				}
 				break;
 			case "EX2":
 				{
 					//GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"Attack{AttackStd}"));
 					GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"AttackEX"));
-					
+
 				}
 				break;
 		}

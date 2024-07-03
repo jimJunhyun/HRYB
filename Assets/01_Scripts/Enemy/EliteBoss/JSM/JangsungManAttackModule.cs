@@ -89,7 +89,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 		
 	}
 
-	public override void OnAnimationStart()
+	public override void OnAnimationStart(AnimationEvent evt)
 	{
 		_jsMoveModule.ResetDest();
 
@@ -103,7 +103,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 		}
 	}
 
-	public override void OnAnimationMove()
+public override void OnAnimationMove(AnimationEvent evt)
 	{
 		_jsMoveModule.ResetDest();
 		switch (AttackStd)
@@ -121,7 +121,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 		Debug.Log("실행ㅇㅇㅇ");
 	}
 
-	public override void OnAnimationSound()
+public override void OnAnimationSound(AnimationEvent evt)
 	{
 		switch (AttackStd)
 		{
@@ -137,7 +137,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 		}
 	}
 
-	public override void OnAnimationStop()
+public override void OnAnimationStop(AnimationEvent evt)
 	{
 		self.AI.StartExamine();	
 		//Debug.LogWarning("Anim Stop!!!!");
@@ -146,7 +146,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 
 	}
 
-	public override void OnAnimationEvent()
+public override void OnAnimationEvent(AnimationEvent evt)
 	{
 		
 		EffectObject ef;
@@ -214,7 +214,7 @@ public class JangsungManAttackModule : EnemyAttackModule
 		
 	}
 
-	public override void OnAnimationEnd()
+public override void OnAnimationEnd(AnimationEvent evt)
 	{
 		_jsMoveModule.ResetDest();
 		

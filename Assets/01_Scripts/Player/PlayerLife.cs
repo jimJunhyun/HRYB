@@ -43,6 +43,10 @@ public class PlayerLife : LifeModule
 
 		base.Awake();
 		_hitEvent = null;
+		//_hitEvent += () => {
+		//	EffectObject obj = PoolManager.GetEffect("DefaultHitEffect", transform);
+		//	obj.Begin();
+		//};
 
 		pMove = self.move as PlayerMove;
 	}
