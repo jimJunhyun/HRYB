@@ -37,6 +37,7 @@ public class MedicineTutorialManager : MonoBehaviour
 			step = 0;
 			ended = true;
 			started = false;
+			GameManager.instance.uiManager.CompleteTutorial();
 		}
 	}
 

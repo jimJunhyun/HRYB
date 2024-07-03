@@ -83,6 +83,7 @@ using System.Linq;
     bool isOptionOn = false;
 
 	bool tutorialAppended = false;
+	bool tutorialCompleted = false;
 
 	List<SlotUI> uis = new List<SlotUI>();
 	List<QuickSlot> quickSlot = new List<QuickSlot>();
@@ -145,6 +146,8 @@ using System.Linq;
 
 	public void OnInventory(InputAction.CallbackContext context)
 	{
+		if (!tutorialCompleted && tutorialAppended)
+			return;
 		if (GameManager.instance.uiManager.dialogueUI.currentShown != null)
 		{
 			if (context.canceled)
@@ -162,6 +165,7 @@ using System.Linq;
 					if (tutorialAppended)
 					{
 						mediTutorial.StartTutorial();
+						
 					}
 				}
 				else
@@ -272,6 +276,11 @@ using System.Linq;
 	public void AppendTutorial()
 	{
 		tutorialAppended = true;
+	}
+
+	public void CompleteTutorial()
+	{
+		tutorialCompleted = true;
 	}
 
 

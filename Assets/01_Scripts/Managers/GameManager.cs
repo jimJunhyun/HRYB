@@ -462,7 +462,17 @@ public class GameManager : MonoBehaviour
 		//self.move.forceDir = Vector3.zero;
 		DisableCtrl(ControlModuleMode.Animated);
 	}
-	
+
+	public void DisableCtrlTimeline()
+	{
+		DisableCtrl(ControlModuleMode.Timeline);
+	}
+
+	public void EnableCtrlTimeline()
+	{
+		EnableCtrl(ControlModuleMode.Timeline);
+	}
+
 	public void EnableCtrl()
 	{
 
