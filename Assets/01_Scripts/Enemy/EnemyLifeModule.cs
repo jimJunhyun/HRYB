@@ -37,6 +37,9 @@ public class EnemyLifeModule : LifeModule
 
 		_dieEvent += OutJeungGi;
 		_dieEvent += DieEntity;
+		_hitEvent += () => { EffectObject obj = PoolManager.GetEffect("DefaultHitEffect", middle);
+			obj.Begin();
+		};
 
 		if(transform.Find("Middle"))
 		{

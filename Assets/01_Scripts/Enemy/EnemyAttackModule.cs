@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
-public abstract class EnemyAttackModule : AttackModule
+public abstract class EnemyAttackModule : AttackModule, IAnimationEventActorEv
 {
 	Actor _target;
 	protected ColliderCast _nowCols;
@@ -37,17 +38,34 @@ public abstract class EnemyAttackModule : AttackModule
 		StatusEffects.ApplyStat(act, self, id, duration, 0);
 	}
 	
+	public virtual void OnAnimationStart(AnimationEvent evt)
+	{
 
-	public abstract void SetAttackRange(int idx);
-	public abstract void ResetAttackRange(int idx);
+	}
+	public virtual void OnAnimationMove(AnimationEvent evt)
+	{
 
-	public abstract void OnAnimationStart();
-	public abstract void OnAnimationMove();
+	}
 
-	public abstract void OnAnimationSound();
-	public abstract void OnAnimationStop();
-	public abstract void OnAnimationEvent();
-	public abstract void OnAnimationEnd();
+	public virtual void OnAnimationSound(AnimationEvent evt)
+	{
 
+	}
+	public virtual void OnAnimationStop(AnimationEvent evt)
+	{
 
+	}
+	public virtual void OnAnimationEvent(AnimationEvent evt)
+	{
+
+	}
+	public virtual void OnAnimationEnd(AnimationEvent evt)
+	{
+
+	}
+
+	public virtual void OnAnimationHit(AnimationEvent evt)
+	{
+
+	}
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-public class AttackModule : Module, IAnimationEvent
+public class AttackModule : Module
 {
 	public float initAtkDist;
 	public float initAtkGap;
