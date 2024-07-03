@@ -187,21 +187,24 @@ public class PlayerCast : CastModule
 
 	public void DoInitialize()
 	{
+		//Q, E, 1 을 사용할것이다...........
+
 		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("HumanNormal"), SkillSlotInfo.LClick, PlayerForm.Magic);
 		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
 
 		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("MasterSpark"), SkillSlotInfo.One, PlayerForm.Magic);
-		//ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("FireWall"), SkillSlotInfo.Two, PlayerForm.Magic);
-		//ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("EnhanceIce"), SkillSlotInfo.Three, PlayerForm.Magic);
 		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("LightingDown"), SkillSlotInfo.Q, PlayerForm.Magic);
 		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("StarDust"), SkillSlotInfo.E, PlayerForm.Magic);
-		
+		//ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("FireWall"), SkillSlotInfo.Two, PlayerForm.Magic);
+		//ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("EnhanceIce"), SkillSlotInfo.Three, PlayerForm.Magic);
+
 		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("YohoNormalAttack"), SkillSlotInfo.LClick, PlayerForm.Yoho);
 		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("YohoGrab"), SkillSlotInfo.RClick, PlayerForm.Yoho);
+
 		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("NextEnter"), SkillSlotInfo.Q, PlayerForm.Yoho);
-		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("SkyBritgh"), SkillSlotInfo.One, PlayerForm.Yoho);
-		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("YusungSmith"), SkillSlotInfo.Three, PlayerForm.Yoho);
-		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("YohoSharpnessAtt"), SkillSlotInfo.Two, PlayerForm.Yoho);
+		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("SkyBritgh"), SkillSlotInfo.E, PlayerForm.Yoho);
+		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("YusungSmith"), SkillSlotInfo.One, PlayerForm.Yoho);
+		//ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("YohoSharpnessAtt"), SkillSlotInfo.Two, PlayerForm.Yoho);
 
 
 		// YohoNormalAttack
