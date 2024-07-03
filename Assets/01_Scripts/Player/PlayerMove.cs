@@ -620,29 +620,41 @@ public class PlayerMove : MoveModule
 
 	public void Jump(InputAction.CallbackContext context)
 	{
-		if (!NoInput.Paused && !moveModuleStat.Paused)
+		if (GameManager.instance.uiManager.dialogueUI.currentShown != null)
 		{
-			if (context.performed && jumpable)
+			if (context.canceled)
 			{
-				if (moveStat == MoveStates.Climb)
+				GameManager.instance.uiManager.dialogueUI.currentShown.OnClick();
+				Debug.Log("대화하고자 했으나");
+			}
+		}
+		else
+		{
+			if (!NoInput.Paused && !moveModuleStat.Paused)
+			{
+				if (context.performed && jumpable)
 				{
-					forceDir += Vector3.up * (jumpPwer / climbSpeed);
-					Vector3 ropeJumpDir = (ropeNormal + Vector3.up).normalized;
-					forceDir += ropeJumpDir * jumpPwer;
-					ResetClimb();
-				}
-				else
-				{
-					if (ctrl.isGrounded && Time.time - prevJump >= jumpGap)
+					if (moveStat == MoveStates.Climb)
 					{
-						prevJump = Time.time;
-						forceDir += Vector3.up * jumpPwer;
-						(GetActor().anim as PlayerAnim).SetJumpTrigger();
-						GameManager.instance.audioPlayer.PlayPoint(JUMPSOUNDCLIP, transform.position);
+						forceDir += Vector3.up * (jumpPwer / climbSpeed);
+						Vector3 ropeJumpDir = (ropeNormal + Vector3.up).normalized;
+						forceDir += ropeJumpDir * jumpPwer;
+						ResetClimb();
+					}
+					else
+					{
+						if (ctrl.isGrounded && Time.time - prevJump >= jumpGap)
+						{
+							prevJump = Time.time;
+							forceDir += Vector3.up * jumpPwer;
+							(GetActor().anim as PlayerAnim).SetJumpTrigger();
+							GameManager.instance.audioPlayer.PlayPoint(JUMPSOUNDCLIP, transform.position);
+						}
 					}
 				}
 			}
 		}
+		
 
 
 	}
