@@ -304,6 +304,8 @@ public class GameManager : MonoBehaviour
 	public MinimapManager minimap;
 	public TitleLoader loader;
 
+	public List<TimelinePlayer> timelines;
+
 
 	public WaitForSeconds waitSec = new WaitForSeconds(1.0f);
 
@@ -372,6 +374,8 @@ public class GameManager : MonoBehaviour
 		saver.lastSave = -1;
 
 		loader = GameObject.Find("TitleLoad").GetComponent<TitleLoader>();
+
+		timelines = new List<TimelinePlayer>(FindObjectsByType<TimelinePlayer>(FindObjectsSortMode.None)); //나중에 다른 방시그올 매니저관리하는 편이 좋겠지요 ############
 
 		StartCoroutine(InitializeAll());
 	}
@@ -557,6 +561,14 @@ public class GameManager : MonoBehaviour
 	public void TPToOutCave()
 	{
 		player.transform.position = outCaveTmp.position;
+	}
+
+	public void PlayTimeline(int idx = 0, bool disactivateMode = true)
+	{
+		if(timelines.Count > idx)
+		{
+			timelines[idx].DoPlay(disactivateMode);
+		}
 	}
 
 	private void Update()

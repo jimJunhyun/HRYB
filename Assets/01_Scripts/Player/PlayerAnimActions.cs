@@ -258,9 +258,18 @@ public class PlayerAnimActions : MonoBehaviour
 		}
 	}
 
-	public void ImNotPlayerForm()
+	public void ImNotPlayerForm(int q = 0)
 	{
-		switch (GameManager.instance.pActor.anim.Animators.GetComponent<PlayerAnimActions>().form)
+		PlayerForm f;
+		if (q == 0)
+			f =GameManager.instance.pActor.anim.Animators.GetComponent<PlayerAnimActions>().form;
+		else if(q == 1)
+			f = PlayerForm.Magic;
+		else
+			f = PlayerForm.Yoho;
+
+
+		switch (f)
 		{
 			case PlayerForm.Magic:
 				tail.enabled = false;
