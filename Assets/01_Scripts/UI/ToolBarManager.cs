@@ -27,6 +27,8 @@ public class ToolBarManager : MonoBehaviour
 
 	IOpenableWindowUI curOpened;
 
+	internal bool opened = false;
+
 	private void Awake()
 	{
 		List<Transform> childs = new List<Transform>();
@@ -49,6 +51,7 @@ public class ToolBarManager : MonoBehaviour
 			if(toolButtons[i].indicating == ToolState.None)
 				parents.Add(toolButtons[i]);
 		}
+		opened = false;
 	}
 
 	private void Start()

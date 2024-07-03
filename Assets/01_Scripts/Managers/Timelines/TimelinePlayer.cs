@@ -11,8 +11,11 @@ public class TimelinePlayer : MonoBehaviour
 
 	private void Awake()
 	{
-		self.playOnAwake = false;
+
 		self = GetComponent<PlayableDirector>();
+
+
+		self.playOnAwake = false;
 	}
 
 	public void DoPlay(bool disableOnEnded)

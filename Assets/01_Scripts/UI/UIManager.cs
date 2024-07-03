@@ -40,6 +40,7 @@ using System.Linq;
 	
 
 	public GameObject basicUIGroup;
+	public CConvert converter;
 
 	public MedicineButtonsUI medicineButton;
 	public MedicineDetailUI medicineDetail;
@@ -82,6 +83,7 @@ using System.Linq;
     bool isOptionOn = false;
 
 	bool tutorialAppended = false;
+	bool tutorialCompleted = false;
 
 	List<SlotUI> uis = new List<SlotUI>();
 	List<QuickSlot> quickSlot = new List<QuickSlot>();
@@ -97,6 +99,7 @@ using System.Linq;
 		invenPanel = canvas.transform.Find("ToolPanel").gameObject;
 		optionPanel = canvas.transform.Find("OptionUI").gameObject;
 		yinYangUI = canvas.GetComponentInChildren<YYCtrl>();
+		converter = canvas.GetComponentInChildren<CConvert>();
 		aimUI = canvas.GetComponentInChildren<AimPointCtrl>();
 		//infoUI = canvas.GetComponentInChildren<InfoCtrl>();
 		//crafterUI = canvas.GetComponentInChildren<SimpleCrafter>();
@@ -143,21 +146,35 @@ using System.Linq;
 
 	public void OnInventory(InputAction.CallbackContext context)
 	{
-		if (context.performed)
+		if (!tutorialCompleted && tutorialAppended)
+			return;
+		if (GameManager.instance.uiManager.dialogueUI.currentShown != null)
 		{
-			if (!isOn)
+			if (context.canceled)
 			{
-				OnInven();
-				if (tutorialAppended)
-				{
-					mediTutorial.StartTutorial();
-				}
-			}
-			else
-			{
-				OffInven();
+				GameManager.instance.uiManager.dialogueUI.currentShown.OnClick();
 			}
 		}
+		else
+		{
+			if (context.performed)
+			{
+				if (!isOn)
+				{
+					OnInven();
+					if (tutorialAppended)
+					{
+						mediTutorial.StartTutorial();
+						
+					}
+				}
+				else
+				{
+					OffInven();
+				}
+			}
+		}
+		
 		
 	}
 
@@ -198,12 +215,14 @@ using System.Linq;
 		isOn = true;
 		GameManager.instance.UnLockCursor();
 		Time.timeScale = 0;
+		toolbarUIShower.opened = true;
 	}
 
 	public void OffInven()
 	{
 		invenPanel.SetActive(false);
 		toolbarUIShower.ChangeStatus(ToolState.Inventory);
+		toolbarUIShower.opened = false;
 		isOn = false;
 		GameManager.instance.LockCursor();
 		Time.timeScale = 1;
@@ -257,6 +276,11 @@ using System.Linq;
 	public void AppendTutorial()
 	{
 		tutorialAppended = true;
+	}
+
+	public void CompleteTutorial()
+	{
+		tutorialCompleted = true;
 	}
 
 

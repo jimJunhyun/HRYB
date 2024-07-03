@@ -11,7 +11,7 @@ public class PlayerAnim : AnimModule
 	protected readonly int atkStatHash = Animator.StringToHash("AtkStat");
 	protected readonly int jumpHash = Animator.StringToHash("Jump");
 	protected readonly int onAirHash = Animator.StringToHash("OnAir");
-	protected readonly int interactHash = Animator.StringToHash("Interact");
+	protected readonly int interactHash = Animator.StringToHash("Intering");
 	protected readonly int vertPowerHash = Animator.StringToHash("VertPower");
 	protected readonly int aimSpeedHash = Animator.StringToHash("AimSpeed");
 	protected readonly int interSpeedHash = Animator.StringToHash("InterSpeed");
@@ -174,7 +174,11 @@ public class PlayerAnim : AnimModule
 
 	public void SetInteractTrigger()
 	{
-		anim.SetTrigger(interactHash);
+		anim.SetBool(interactHash, true);
+	}
+	public void ResetInteractTrigger()
+	{
+		anim.SetBool(interactHash, false);
 	}
 
 	public void SetAttackState(int val)

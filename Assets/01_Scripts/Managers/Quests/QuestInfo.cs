@@ -325,6 +325,11 @@ public class QuestInfo : ScriptableObject, System.IComparable
 						relatedObjects[rewardInfo[i].parameter].SetActive(false);
 					}
 					break;
+				case RewardType.PlayTimeline:
+					{
+						GameManager.instance.PlayTimeline(rewardInfo[i].parameter, false);
+					}
+					break;
 				default:
 					break;
 			}
