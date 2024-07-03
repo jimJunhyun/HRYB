@@ -304,7 +304,7 @@ public class GameManager : MonoBehaviour
 	public MinimapManager minimap;
 	public TitleLoader loader;
 
-	public List<TimelinePlayer> timelines;
+	public Dictionary<string, TimelinePlayer> timelines;
 
 
 	public WaitForSeconds waitSec = new WaitForSeconds(1.0f);
@@ -375,7 +375,12 @@ public class GameManager : MonoBehaviour
 
 		loader = GameObject.Find("TitleLoad").GetComponent<TitleLoader>();
 
-		timelines = new List<TimelinePlayer>(FindObjectsByType<TimelinePlayer>(FindObjectsSortMode.None)); //나중에 다른 방시그올 매니저관리하는 편이 좋겠지요 ############
+		timelines = new Dictionary<string, TimelinePlayer>();
+		TimelinePlayer[] p = FindObjectsByType<TimelinePlayer>(FindObjectsSortMode.None);
+		for (int i = 0; i < p.Length; i++)
+		{
+			timelines.Add(p[i].name, p[i]);
+		}
 
 		StartCoroutine(InitializeAll());
 	}
@@ -563,11 +568,11 @@ public class GameManager : MonoBehaviour
 		player.transform.position = outCaveTmp.position;
 	}
 
-	public void PlayTimeline(int idx = 0, bool disactivateMode = true)
+	public void PlayTimeline(string name, bool disactivateMode = true)
 	{
-		if(timelines.Count > idx)
+		if(timelines.ContainsKey(name))
 		{
-			timelines[idx].DoPlay(disactivateMode);
+			timelines[name].DoPlay(disactivateMode);
 		}
 	}
 
@@ -591,6 +596,7 @@ public class GameManager : MonoBehaviour
 		{
 			GameManager.instance.pinven.AddItem(Item.GetItem <YinyangItem>("작약"), 1);
 			GameManager.instance.pinven.AddItem(Item.GetItem <YinyangItem>("인삼"), 2);
+			GameManager.instance.pinven.AddItem(Item.GetItem <YinyangItem>("인숙탕"), 1);
 		}
 
 

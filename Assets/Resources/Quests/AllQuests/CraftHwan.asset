@@ -17,26 +17,29 @@ MonoBehaviour:
   - objective: 0
     parameter: "\uACC4\uC2EC\uD658"
     repeatCount: 1
-    afterAct: 0
+    afterAct: 2
     inverted: 0
     everSince: 0
-    isVisibleCondition: 0
+    isVisibleCondition: 1
     itemMode: 0
     itemRequirement: 0
     defeatMode: 0
     defeatParameter: 
   - objective: 7
-    parameter: StatueAltar
+    parameter: Statues_Moak
     repeatCount: 1
     afterAct: 3
     inverted: 0
     everSince: 0
-    isVisibleCondition: 0
+    isVisibleCondition: 1
     itemMode: 0
     itemRequirement: 0
     defeatMode: 0
     defeatParameter: 
-  rewardInfo: []
+  rewardInfo:
+  - rewardType: 8
+    parameter: TimeLineOpenDoor
+    amount: 0
   completableCount: 1
   onCompleteAction:
     m_PersistentCalls:
@@ -47,7 +50,8 @@ MonoBehaviour:
   onDismissedAction:
     m_PersistentCalls:
       m_Calls: []
-  questingDia: {fileID: 0}
-  questedDia: {fileID: 0}
-  descriptions: "\uACC4\uC2EC\uD658\uC744 \uB9CC\uB4E4\uC5B4 \uC11D\uC0C1\uC5D0 \uBC14\uCE58\uC790."
+  questingDia: {fileID: 11400000, guid: 513bd683d6cc91941b29a67b03676183, type: 2}
+  questedDia: {fileID: 11400000, guid: 83caf7bab203eb940856a45b5ac0c57d, type: 2}
+  descriptions: "\uC11D\uC0C1\uC5D0 \uC57D\uC744 \uBC14\uCCD0\uBCF4\uC790. \uB2ED\uC758
+    \uC2EC\uC7A5\uC73C\uB85C \uC57D\uC744 \uB9CC\uB4E4 \uC218 \uC788\uB2E4."
   type: 0

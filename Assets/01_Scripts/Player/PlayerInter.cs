@@ -146,6 +146,16 @@ public class PlayerInter : SightModule
 				GameManager.instance.uiManager.dialogueUI.currentShown.OnClick();
 			}
 		}
+		else if(GameManager.instance.uiManager.toolbarUIShower.state == ToolState.Inventory)
+		{
+			if(GameManager.instance.pinven.CurHoldingItem.info != null)
+			{
+				if(GameManager.instance.pinven.CurHoldingItem.info is Medicines md)
+				{
+					md.Use();
+				}
+			}
+		}
 		else if(true)
 		{
 			if (context.performed)

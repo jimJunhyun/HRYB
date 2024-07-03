@@ -108,10 +108,7 @@ public class ParseDialogue : Editor
 							cur = CreateInstance<QuestDialogue>();
 							if (cur is QuestDialogue qu)
 							{
-								if(QuestManager.nameQuestPair[ps.GetAttribute(i, QUESTNAME)] != null)
-								{
-									qu.info = QuestManager.nameQuestPair[ps.GetAttribute(i, QUESTNAME)];
-								}
+								qu.info = Resources.Load<QuestInfo>($"Quests/AllQuests/{ps.GetAttribute(i, QUESTNAME)}");
 							}
 						}
 						break;
@@ -260,7 +257,7 @@ public class ParseDialogue : Editor
 								cur = CreateInstance<QuestDialogue>();
 								if (cur is QuestDialogue qu)
 								{
-									qu.info = Resources.Load<QuestInfo>($"AllQuest/{ps.GetAttribute(i, QUESTNAME)}");
+									qu.info = Resources.Load<QuestInfo>($"Quests/AllQuests/{ps.GetAttribute(i, QUESTNAME)}");
 								}
 							}
 							break;
