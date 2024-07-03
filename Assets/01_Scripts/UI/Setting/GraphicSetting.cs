@@ -38,16 +38,18 @@ public class GraphicSetting : MonoBehaviour
 
 	private void Awake()
 	{
-		JsonManager<GraphicSet>.LoadJson(fileName, out Set);
+		if(JsonManager<GraphicSet>.LoadJson(fileName, out Set))
+		{
+			Option = Set.Option;
+			Resolution = Set.Resolution;
+			ScreenMode = Set.ScreenMode;
+			VSync = Set.VSync;
+			MaxFPS = Set.MaxFPS;
+			AntiAliasing = Set.AntiAliasing;
+			Shadow = Set.Shadow;
+			Effect = Set.Effect;
+		}
 
-		Option = Set.Option;
-		Resolution = Set.Resolution;
-		ScreenMode = Set.ScreenMode;
-		VSync = Set.VSync;
-		MaxFPS = Set.MaxFPS;
-		AntiAliasing = Set.AntiAliasing;
-		Shadow = Set.Shadow;
-		Effect = Set.Effect;
 	}
 
 	public void Save()
