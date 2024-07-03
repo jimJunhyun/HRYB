@@ -723,9 +723,14 @@ public class PlayerInven : MonoBehaviour
 
 	public void OnPressTwo(InputAction.CallbackContext context)
 	{
+		//#######################
+		return;
+		//#######################
+
+
 		//if (stat == PlayerForm.Magic)
 		//{
-			if (GameManager.instance.pActor.atk.attackModuleStat.Paused && !clickFire)
+		if (GameManager.instance.pActor.atk.attackModuleStat.Paused && !clickFire)
 				return;
 			if (context.started && !clickFire)
 			{
@@ -750,6 +755,10 @@ public class PlayerInven : MonoBehaviour
 
 	public void OnPressThree(InputAction.CallbackContext context)
 	{
+		//#######################
+		return;
+		//#######################
+
 		//if (stat == PlayerForm.Magic)
 		//{
 			if (GameManager.instance.pActor.atk.attackModuleStat.Paused && !clickEarth)
