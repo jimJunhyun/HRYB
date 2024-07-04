@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class PlayerLife : LifeModule 
@@ -27,14 +28,14 @@ public class PlayerLife : LifeModule
 
 	public override void Awake()
 	{
-		spawnPoint[0] = new Vector3(836, 14, 136);
-		spawnPoint[1] = new Vector3(794, 16, 174);
-		spawnPoint[2] = new Vector3(776, 14, 159);
-		spawnPoint[3] = new Vector3(773, 11, 196);
-		spawnPoint[4] = new Vector3(771, 18, 262);
-		spawnPoint[5] = new Vector3(811, 18, 441);
-		spawnPoint[6] = new Vector3(723, 24, 432);
-		spawnPoint[7] = new Vector3(531, 13, 250);
+		
+
+		StoneLamp[] lamps = FindObjectsByType<StoneLamp>(FindObjectsSortMode.None);
+		spawnPoint = new Vector3[lamps.Length];
+		for (int i = 0; i < lamps.Length; i++)
+		{
+			spawnPoint[lamps[i].StoneLampIdx] = lamps[i].transform.position;
+		}
 
 		initPos = transform.position;
 
@@ -170,7 +171,10 @@ public class PlayerLife : LifeModule
 
 		if (GameManager.instance.saver.lastSave >= 0)
 		{
-			pMove.PlayerTeleport(spawnPoint[GameManager.instance.saver.lastSave]);
+			if(NavMesh.SamplePosition(spawnPoint[GameManager.instance.saver.lastSave], out NavMeshHit hit, Mathf.Infinity, -1))
+			{
+				pMove.PlayerTeleport(hit.position);
+			}
 		}
 		else
 		{
