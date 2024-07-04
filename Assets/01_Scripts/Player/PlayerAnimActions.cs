@@ -556,4 +556,13 @@ public class PlayerAnimActions : MonoBehaviour
 		(self.life as PlayerLife).initPos = self.transform.position;
 	}
 
+	public void SunStop()
+	{
+		SkyTimeManager.Instance.IsFixedOnDay = true;
+	}
+	public void SunResume()
+	{
+		SkyTimeManager.Instance.IsFixedOnDay = false;
+	}
+
 }
