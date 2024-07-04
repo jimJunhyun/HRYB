@@ -21,7 +21,7 @@ public class AdjustmentFogColor : MonoBehaviour
     {
 		if (_light.intensity < 2)
 		{
-			RenderSettings.fogColor = OriginalFogColor * (_light.intensity * 0.2f);
+			RenderSettings.fogColor = OriginalFogColor * (_light.intensity * 0.4f);
 		}
 		else RenderSettings.fogColor = OriginalFogColor;
 	}
