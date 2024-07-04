@@ -93,6 +93,7 @@ public class MinigameBase : MonoBehaviour
 
 	IEnumerator DelEndGame()
 	{
+		gameStarted = false;
 		yield return new WaitForSecondsRealtime(ENDDELSEC);
 		minigameZone.SetActive(false);
 
