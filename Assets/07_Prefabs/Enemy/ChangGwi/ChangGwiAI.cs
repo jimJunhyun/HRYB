@@ -21,7 +21,7 @@ public class ChangGwiAI : AISetter
 	{
 		//self.anim.ResetStatus();
 		StopExamine();
-		WolfMoveModule _moveModule = self.move as WolfMoveModule;
+		ChangGwiMoveModule _moveModule = self.move as ChangGwiMoveModule;
 		GetComponent<BoxCollider>().enabled = false;
 		_moveModule.StopMove();
 		base.DieEvent();
@@ -39,7 +39,7 @@ public class ChangGwiAI : AISetter
 	{
 		head.connecteds.Clear();
 
-		Wolf_normalAttackModule _atkModule = self.atk as Wolf_normalAttackModule;
+		ChangGwiAttackModule _atkModule = self.atk as ChangGwiAttackModule;
 		ChangGwiMoveModule _moveModule = self.move as ChangGwiMoveModule;
 
 
@@ -58,12 +58,13 @@ public class ChangGwiAI : AISetter
 
 
 		#region 대쉬
-		Waiter _dashWait = new Waiter(6.5f);
+		Waiter _dashWait = new Waiter(1.5f);
 
-		IsInRange _dashRange = new IsInRange(self, player.transform, Attackrange, null, () =>
+		IsInRange _dashRange = new IsInRange(self, player.transform, DashAttackRange, null, () =>
 		{
 			_dashWait.StartReady();
 			_atkModule.SetAttackType(DashAttack);
+			Debug.LogError("이거 왜안됨???");
 			_moveModule.StopMove();
 		});
 
@@ -74,8 +75,8 @@ public class ChangGwiAI : AISetter
 		});
 
 		Sequencer dashSeq = new Sequencer();
-		dashSeq.connecteds.Add(_dashWait);
 		dashSeq.connecteds.Add(_dashRange);
+		dashSeq.connecteds.Add(_dashWait);
 		dashSeq.connecteds.Add(_dashAttack);
 
 
@@ -140,11 +141,13 @@ public class ChangGwiAI : AISetter
 		ShowIdler.connecteds.Add(idles);
 
 		head.connecteds.Add(stunSeq);
-		head.connecteds.Add(dashSeq);
+		//head.connecteds.Add(dashSeq);
 		head.connecteds.Add(normalATK);
 		head.connecteds.Add(ShowIdler);
 		head.connecteds.Add(Moved);
 		head.connecteds.Add(Faridler);
+
+		StartExamine();
 	}
 
 	protected override void UpdateInvoke()
@@ -152,7 +155,7 @@ public class ChangGwiAI : AISetter
 		if (self.AI.StopState)
 			return;
 
-		if (self.life.isDead == false && self.life.isDead == false && self.anim.Animators.GetBool("Stun") == false)
+		if (self.life.isDead == false && self.anim.Animators.GetBool("Stun") == false)
 		{
 			LookAt(player.transform);
 

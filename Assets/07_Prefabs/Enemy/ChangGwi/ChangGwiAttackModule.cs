@@ -8,17 +8,33 @@ public class ChangGwiAttackModule : EnemyAttackModule
 	public float _normalATKValue = 1.4f;
 	public float _dashATKValue = 3.2f;
 
+	int t = 0;
+
 	public override void OnAnimationEnd(AnimationEvent evt)
 	{
+		self.AI.StartExamine();
 	}
 
 	public override void OnAnimationEvent(AnimationEvent evt)
 	{
-		switch(evt.stringParameter)
+		switch (evt.stringParameter)
 		{
 			case "1":
-			{
-				GameObject objs = PoolManager.GetObject("BearNormalCollider", transform);
+				{
+					if (t % 2 == 0)
+					{
+						EffectObject ebg = PoolManager.GetEffect("Slash11WhiteLeft", transform);
+						ebg.Begin();
+						ebg.transform.parent = null;
+					}
+					else
+					{
+						EffectObject ebg = PoolManager.GetEffect("Slash11WhiteRight", transform);
+						ebg.Begin();
+						ebg.transform.parent = null;
+					}
+					t++;
+					GameObject objs = PoolManager.GetObject("BearNormalCollider", transform);
 
 					if (objs.TryGetComponent<ColliderCast>(out _nowCols))
 					{
@@ -29,14 +45,14 @@ public class ChangGwiAttackModule : EnemyAttackModule
 						}, default, default, default, 0.4f);
 					}
 				}
-			break;
+				break;
 			case "2":
 				{
 					GameObject objs = PoolManager.GetObject("BearNormalCollider", transform);
 
 					if (objs.TryGetComponent<ColliderCast>(out _nowCols))
 					{
-						self.move.forceDir += transform.forward * 8f;
+						self.move.forceDir = transform.forward * 9f;// + new Vector3(0, 3, 0);
 						_nowCols.Now(transform, (_life) =>
 						{
 							_life.DamageYY(new YinYang(0, whiteDamage * _dashATKValue), DamageType.DirectHit);

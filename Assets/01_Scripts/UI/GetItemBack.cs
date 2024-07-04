@@ -64,7 +64,7 @@ public class GetItemBack : MonoBehaviour
 		float t = 0.0f;
 		while (t <= time)
 		{
-			t += Time.deltaTime;
+			t += Time.unscaledDeltaTime;
 
 			transform.localPosition = Vector3.Lerp(current, target, t / time);
 
