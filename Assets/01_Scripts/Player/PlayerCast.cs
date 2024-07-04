@@ -201,8 +201,8 @@ public class PlayerCast : CastModule
 		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("YohoNormalAttack"), SkillSlotInfo.LClick, PlayerForm.Yoho);
 		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("YohoGrab"), SkillSlotInfo.RClick, PlayerForm.Yoho);
 
-		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("NextEnter"), SkillSlotInfo.Q, PlayerForm.Yoho);
-		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("SkyBritgh"), SkillSlotInfo.E, PlayerForm.Yoho);
+		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("SkyBritgh"), SkillSlotInfo.Q, PlayerForm.Yoho);
+		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("YohoSharpnessAtt"), SkillSlotInfo.E, PlayerForm.Yoho);
 		ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("YusungSmith"), SkillSlotInfo.One, PlayerForm.Yoho);
 		//ConnectSkillDataTo(GameManager.skillLoader.GetYohoSkill("YohoSharpnessAtt"), SkillSlotInfo.Two, PlayerForm.Yoho);
 
