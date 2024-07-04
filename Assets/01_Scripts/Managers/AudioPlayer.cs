@@ -82,7 +82,6 @@ public class AudioPlayer : MonoBehaviour
 
 	public void PlayPoint(string clipName, Vector3 point, float duration = -1, EAudioType audioType = EAudioType.SFX)
 	{
-		return;
 		if (dict.data.ContainsKey(clipName))
 		{
 			//Debug.LogError($"해당사운드 재생 : {clipName}");
@@ -92,7 +91,7 @@ public class AudioPlayer : MonoBehaviour
 				delT = duration;
 			GameObject audioPt = PoolManager.GetObject("AudioPoint", point, Quaternion.identity, delT);
 			AudioSource audioPoint= audioPt.GetComponent<AudioSource>();
-			audioPoint.outputAudioMixerGroup = audioMixer.FindMatchingGroups(audioType.ToString())[0];
+			//audioPoint.outputAudioMixerGroup = audioMixer.FindMatchingGroups(audioType.ToString())[0];
 			audioPoint.clip = clip;
 			audioPoint.pitch = 1 + Random.Range(-0.1f, 0);
 			audioPoint.Play();
