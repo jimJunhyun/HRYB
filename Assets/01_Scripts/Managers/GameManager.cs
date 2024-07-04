@@ -613,14 +613,14 @@ public class GameManager : MonoBehaviour
 		}
 
 
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			LockUnlockCursor();
-		}
-		if(Input.GetKeyDown(KeyCode.U))
-		{
-			LockCursor();
-		}
+		//if (Input.GetKeyDown(KeyCode.Escape))
+		//{
+		//	LockUnlockCursor();
+		//}
+		//if(Input.GetKeyDown(KeyCode.U))
+		//{
+		//	LockCursor();
+		//}
 
 		if(Time.time % 1 <= float.Epsilon)
 		{

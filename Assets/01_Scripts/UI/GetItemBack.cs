@@ -19,7 +19,7 @@ public class GetItemBack : MonoBehaviour
 	private void OnEnable()
 	{
 		CancelInvoke();
-		Invoke("Destroy", 3f);
+		StartCoroutine(DelDestroy());
 	}
  
 	public void SetInfo(Item i, int cnt)
@@ -72,8 +72,9 @@ public class GetItemBack : MonoBehaviour
 		}
 	}
 
-	private void Destroy()
+	private IEnumerator DelDestroy()
 	{
+		yield return new WaitForSecondsRealtime(3);
 		GameManager.instance.uiManager.getItemList.Remove(this);
 		PoolManager.ReturnObject(gameObject);
 	}
