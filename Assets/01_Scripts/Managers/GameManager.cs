@@ -609,9 +609,7 @@ public class GameManager : MonoBehaviour
 		}
 		if (Input.GetKeyDown(KeyCode.P))
 		{
-			GameManager.instance.pinven.AddItem(Item.GetItem <YinyangItem>("작약"), 1);
-			GameManager.instance.pinven.AddItem(Item.GetItem <YinyangItem>("인삼"), 2);
-			GameManager.instance.pinven.AddItem(Item.GetItem <YinyangItem>("인숙탕"), 1);
+			pActor.life.DamageYY(0, 99999999, DamageType.NoHit);
 		}
 
 
