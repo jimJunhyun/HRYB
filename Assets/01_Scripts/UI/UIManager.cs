@@ -146,8 +146,7 @@ using System.Linq;
 
 	public void OnInventory(InputAction.CallbackContext context)
 	{
-		if (!tutorialCompleted && tutorialAppended)
-			return;
+		
 		if (GameManager.instance.uiManager.dialogueUI.currentShown != null)
 		{
 			if (context.canceled)
@@ -170,6 +169,8 @@ using System.Linq;
 				}
 				else
 				{
+					if (!tutorialCompleted && tutorialAppended)
+						return;
 					OffInven();
 				}
 			}

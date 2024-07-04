@@ -551,4 +551,9 @@ public class PlayerAnimActions : MonoBehaviour
 		GameManager.instance.EnableCtrlTimeline();
 	}
 
+	public void ResetInitPos()
+	{
+		(self.life as PlayerLife).initPos = self.transform.position;
+	}
+
 }

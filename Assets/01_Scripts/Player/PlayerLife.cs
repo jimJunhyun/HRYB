@@ -16,7 +16,7 @@ public class PlayerLife : LifeModule
 	internal Vector3[] spawnPoint = new Vector3[8];
 	PlayerMove pMove;
 
-	Vector3 initPos;
+	internal Vector3 initPos;
 
 	bool _playerAvoidSucc = false;
 
@@ -175,9 +175,14 @@ public class PlayerLife : LifeModule
 
 		if (GameManager.instance.saver.lastSave >= 0)
 		{
-			if(NavMesh.SamplePosition(spawnPoint[GameManager.instance.saver.lastSave], out NavMeshHit hit, Mathf.Infinity, -1))
+			if(NavMesh.SamplePosition(spawnPoint[GameManager.instance.saver.lastSave], out NavMeshHit hit, 3f, -1))
 			{
+				
 				pMove.PlayerTeleport(hit.position);
+			}
+			else
+			{
+				pMove.PlayerTeleport(spawnPoint[GameManager.instance.saver.lastSave]);
 			}
 		}
 		else
