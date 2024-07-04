@@ -49,19 +49,23 @@ public abstract class AISetter : MonoBehaviour
 
 	public virtual void DieEvent(float delay = 0, float time =3)
 	{
-		_skinned.materials[0].SetInt("_IsDissolve", 1);
-		_skinned.materials[0].SetFloat("_DissolveHeight", 5);
-		StartCoroutine(DissolveMat(delay, time));
+		for(int i = 0; i < _skinned.materials.Length;i++)
+		{
+			_skinned.materials[i].SetInt("_IsDissolve", 1);
+			_skinned.materials[i].SetFloat("_DissolveHeight", 5);
+			StartCoroutine(DissolveMat(_skinned.materials[i], delay, time));
+		}
+
 	}
 
-	IEnumerator DissolveMat(float delay, float time)
+	IEnumerator DissolveMat(Material ms, float delay, float time)
 	{
 		yield return new WaitForSeconds(delay);
 		float t = 0;
 		while (t < time)
 		{
 			t += Time.deltaTime;
-			_skinned.materials[0].SetFloat("_DissolveHeight", Mathf.Lerp(5,-5, t / 3.0f));
+			ms.SetFloat("_DissolveHeight", Mathf.Lerp(5,-5, t / 3.0f));
 			//Debug.LogError(_skinned.materials[0].GetInteger("_IsDissolve")	+ " + " +Mathf.Lerp(5,0, t / 3.0f) +" 돼잖앗 ㅣ발");
 			yield return null;
 		}

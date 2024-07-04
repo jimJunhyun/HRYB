@@ -77,7 +77,7 @@ public class Dialogue : ScriptableObject
 		if(next != null)
 		{
 			owner.talk.onNextTalk?.Invoke();
-			if(rewardItem.Length > 0)
+			if(rewardItem != null && rewardItem.Length > 0)
 			{
 				GameManager.instance.pinven.AddItem(Item.GetItem<Item>(rewardItem), rewardAmt);
 			}
