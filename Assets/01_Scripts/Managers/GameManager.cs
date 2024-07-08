@@ -371,7 +371,9 @@ public class GameManager : MonoBehaviour
 		minimap = GameObject.Find("MinimapManager").GetComponent<MinimapManager>();
 
 		#if UNITY_EDITOR
-		saver = transform.Find("PreservedDataManager_EDITOR").GetComponent<PreservedDataManager>();
+		saver = GameObject.Find("PreservedDataManager_EDITOR").GetComponent<PreservedDataManager>();
+		saver.imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
+		saver.pManager = GameObject.Find("PrefabManager").GetComponent<PrefabManager>();
 		#else
 		saver = GameObject.Find("PreservedDataManager").GetComponent<PreservedDataManager>();
 		#endif
@@ -386,8 +388,12 @@ public class GameManager : MonoBehaviour
 			timelines.Add(p[i].name, p[i]);
 		}
 
-		
+		#if UNITY_EDITOR
+		StartCoroutine(InitializeAll());
+		#else
+
 		(pActor.cast as PlayerCast).DoInitialize();
+		#endif
 	}
 
 	private void Start()
@@ -422,6 +428,7 @@ public class GameManager : MonoBehaviour
 			saver.assetbundleLoaded = true;
 		}
 		Debug.Log("로드 다했다...!");
+		(pActor.cast as PlayerCast).DoInitialize();
 	}
 
 
