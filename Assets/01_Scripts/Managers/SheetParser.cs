@@ -133,7 +133,14 @@ public class SheetParser
 
 		if (useCoroutine)
 		{
-			GameManager.instance.StartCoroutine(Load());
+			if (GameManager.instance)
+			{
+				GameManager.instance.StartCoroutine(Load());
+			}
+			else if (PreservedDataManager.instance)
+			{
+				PreservedDataManager.instance.StartCoroutine(Load());
+			}
 		}
 		else
 		{

@@ -21,9 +21,9 @@ public class CollectionUI : MonoBehaviour, IOpenableWindowUI
 
 	public void OnOpen()
 	{
-		Debug.Log(GameManager.instance.pedia.materialCollections.Values.Count);
+		Debug.Log(GameManager.instance.saver.pedia.materialCollections.Values.Count);
 		bool first = true;
-		foreach (ItemCollection item in GameManager.instance.pedia.materialCollections.Values)
+		foreach (ItemCollection item in GameManager.instance.saver.pedia.materialCollections.Values)
 		{
 			if (first)
 			{

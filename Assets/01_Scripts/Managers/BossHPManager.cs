@@ -17,7 +17,7 @@ public class BossHPManager : MonoBehaviour
 
 			if (!jangsungHP)
 			{
-				obj = Instantiate(GameManager.instance.pManager.jangsungHP, transform);
+				obj = Instantiate(GameManager.instance.saver.pManager.jangsungHP, transform);
 				jangsungHP = true;
 				GameObject.Find("Boy").GetComponentInChildren<BossHPBar>().lf = GameObject.Find("JangSungMen").GetComponent<LifeModule>();
 				GameObject.Find("Girl").GetComponentInChildren<BossHPBar>().lf = GameObject.Find("JangSungGirl").GetComponent<LifeModule>();
@@ -26,7 +26,7 @@ public class BossHPManager : MonoBehaviour
 		}
 		else
 		{
-			obj = Instantiate(GameManager.instance.pManager.bossHPBar, transform);
+			obj = Instantiate(GameManager.instance.saver.pManager.bossHPBar, transform);
 			obj.GetComponentInChildren<BossHPBar>().lf = lf;
 			obj.GetComponentInChildren<TMP_Text>().text = name;
 		}
@@ -39,7 +39,7 @@ public class BossHPManager : MonoBehaviour
 	{
 
 		GameObject obj;
-		obj = Instantiate(GameManager.instance.pManager.HPBar, trm);	
+		obj = Instantiate(GameManager.instance.saver.pManager.HPBar, trm);	
 
 		return obj;
 	}

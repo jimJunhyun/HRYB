@@ -66,7 +66,7 @@ public class TitleBtn : MonoBehaviour
 
 	public void GameStart()
 	{
-		SceneManager.LoadScene("Official_World");
+		SceneManager.LoadScene("Loading");
 		Debug.Log("시작");
 	}
 	public void GameExit()

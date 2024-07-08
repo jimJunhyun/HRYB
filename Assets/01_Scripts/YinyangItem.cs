@@ -170,7 +170,7 @@ public class YinyangItem : Item
 		{
 
 			//GameManager.instance.pActor.life.DamageYY(yy, DamageType.Continuous, ApplySpeed);
-			GameManager.instance.pedia.UseItem(this);
+			GameManager.instance.saver.pedia.UseItem(this);
 			base.Use();
 		}
 	}
