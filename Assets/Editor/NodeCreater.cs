@@ -123,7 +123,7 @@ public class NodeCreater : EditorWindow
 			node.learnable = !node.learnable;
 		}
 
-		node.needPoint = EditorGUILayout.FloatField("필요 경험치 : ", node.needPoint);
+		node.needPoint = EditorGUILayout.IntField("필요 경험치 : ", node.needPoint);
 
 		EditorGUILayout.EndHorizontal();
 

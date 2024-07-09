@@ -121,27 +121,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3691215131594128557}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 6743810737709722747}
+        m_TargetAssemblyTypeName: TutCanvOff, Assembly-CSharp
+        m_MethodName: OffWind
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: TimeFreezeSet
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 1
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -886,7 +874,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _layer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 192
   Owner: {fileID: 0}
   _OnTriggerEvent:
     m_PersistentCalls:
@@ -1018,6 +1006,7 @@ GameObject:
   - component: {fileID: 285920988561849741}
   - component: {fileID: 7960083510875003989}
   - component: {fileID: 6715017666319000579}
+  - component: {fileID: 9101546189199712079}
   m_Layer: 11
   m_Name: TutoCanvas
   m_TagString: Untagged
@@ -1110,6 +1099,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &9101546189199712079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071992308791912749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 062fe447aa9831c459422a790c099119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1321734622260521280
 GameObject:
   m_ObjectHideFlags: 0
@@ -3638,6 +3639,7 @@ GameObject:
   - component: {fileID: 4832818513344618033}
   - component: {fileID: 2030856285726823905}
   - component: {fileID: 7148621709271104528}
+  - component: {fileID: 6414020472675261959}
   m_Layer: 11
   m_Name: TutoCanvas
   m_TagString: Untagged
@@ -3730,6 +3732,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6414020472675261959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3409362175733656389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 062fe447aa9831c459422a790c099119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3547183024306093702
 GameObject:
   m_ObjectHideFlags: 0
@@ -3876,6 +3890,7 @@ GameObject:
   - component: {fileID: 6504910130525915453}
   - component: {fileID: 6632913000954594100}
   - component: {fileID: 2737788293466470865}
+  - component: {fileID: 6743810737709722747}
   m_Layer: 11
   m_Name: TutoCanvas
   m_TagString: Untagged
@@ -3971,6 +3986,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6743810737709722747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3691215131594128557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 062fe447aa9831c459422a790c099119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3754958023450989346
 GameObject:
   m_ObjectHideFlags: 0
@@ -4773,6 +4800,7 @@ GameObject:
   - component: {fileID: 8293399646152415796}
   - component: {fileID: 4137427524664034678}
   - component: {fileID: 1204090940730908684}
+  - component: {fileID: 2974670280946856413}
   m_Layer: 11
   m_Name: TutoCanvas
   m_TagString: Untagged
@@ -4866,6 +4894,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2974670280946856413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4567565870383586816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 062fe447aa9831c459422a790c099119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4719867422280863863
 GameObject:
   m_ObjectHideFlags: 0
@@ -5307,6 +5347,7 @@ GameObject:
   - component: {fileID: 9098734991192166602}
   - component: {fileID: 3541652251915528903}
   - component: {fileID: 4533976643521693675}
+  - component: {fileID: 1989552450752054171}
   m_Layer: 11
   m_Name: TutoCanvas
   m_TagString: Untagged
@@ -5399,6 +5440,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1989552450752054171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5364392435425447251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 062fe447aa9831c459422a790c099119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5619967561235780638
 GameObject:
   m_ObjectHideFlags: 3
@@ -5490,6 +5543,7 @@ GameObject:
   - component: {fileID: 6374291380092435447}
   - component: {fileID: 230006461268510433}
   - component: {fileID: 228439258873243162}
+  - component: {fileID: 8760867725876908365}
   m_Layer: 11
   m_Name: TutoCanvas
   m_TagString: Untagged
@@ -5583,6 +5637,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8760867725876908365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5652329715074479472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 062fe447aa9831c459422a790c099119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5870972759050252897
 GameObject:
   m_ObjectHideFlags: 3
@@ -6020,6 +6086,7 @@ GameObject:
   - component: {fileID: 7171576689578502388}
   - component: {fileID: 4425653957674995264}
   - component: {fileID: 6461660576608237062}
+  - component: {fileID: 2707420027652441197}
   m_Layer: 11
   m_Name: TutoCanvas
   m_TagString: Untagged
@@ -6113,6 +6180,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2707420027652441197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6183045276055601123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 062fe447aa9831c459422a790c099119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6733907466251029937
 GameObject:
   m_ObjectHideFlags: 0
@@ -8659,7 +8738,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _layer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 192
   Owner: {fileID: 0}
   _OnTriggerEvent:
     m_PersistentCalls:
@@ -8676,10 +8755,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: DisableCtrl
-        m_Mode: 6
+      - m_Target: {fileID: 5382446333427102790}
+        m_TargetAssemblyTypeName: TutorialTimeLineBind, Assembly-CSharp
+        m_MethodName: PlayerOnMove
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

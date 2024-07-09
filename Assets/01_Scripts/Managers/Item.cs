@@ -221,7 +221,15 @@ public class Item : IComparable // #################
 	public static IEnumerator InitializeItem()
 	{
 		nameDataHashT.Clear();
-		PreservedDataManager.instance.imageManager.dictionary.Dict.Clear();
+		if (GameManager.instance)
+		{
+			GameManager.instance.saver.imageManager.dictionary.Dict.Clear();
+		}
+		else if (PreservedDataManager.instance)
+		{
+			PreservedDataManager.instance.imageManager.dictionary.Dict.Clear();
+
+		}
 		SheetParser data = new SheetParser("https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/export?format=tsv&gid=607348165&range=B3:R", "B", "R");
 		SheetParser useData = new SheetParser("https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/export?format=tsv&gid=36776999&range=B3:M", "B", "M");
 		yield return new WaitUntil(() => data.inited && useData.inited);
@@ -276,7 +284,15 @@ public class Item : IComparable // #################
 				default:
 					break;
 			}
-			PreservedDataManager.instance.imageManager.dictionary.Dict.Add(tup[NAMEFROM + 14].Trim(), itm.originalName);
+			if (GameManager.instance)
+			{
+				GameManager.instance.saver.imageManager.dictionary.Dict.Add(tup[NAMEFROM + 14].Trim(), itm.originalName);
+
+			}
+			else if (PreservedDataManager.instance)
+			{
+				PreservedDataManager.instance.imageManager.dictionary.Dict.Add(tup[NAMEFROM + 14].Trim(), itm.originalName);
+			}
 			
 		}
 
