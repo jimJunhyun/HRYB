@@ -15,6 +15,7 @@ public class TutCanvOff : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			OffWind();
+			GameManager.instance.TimeFreezeSet(0);
 		}
 	}
 }

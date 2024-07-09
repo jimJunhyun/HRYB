@@ -146,8 +146,6 @@ using System.Linq;
 
 	public void OnInventory(InputAction.CallbackContext context)
 	{
-		if((GameManager.instance.pActor.move as PlayerMove).moveModuleStat.Paused)
-			return;
 		if (GameManager.instance.uiManager.dialogueUI.currentShown != null)
 		{
 			if (context.canceled)
@@ -162,7 +160,7 @@ using System.Linq;
 				if (!isOn)
 				{
 					OnInven();
-					if (tutorialAppended)
+					if (tutorialAppended && !tutorialCompleted)
 					{
 						mediTutorial.StartTutorial();
 						
@@ -171,7 +169,10 @@ using System.Linq;
 				else
 				{
 					if (!tutorialCompleted && tutorialAppended)
+					{
 						return;
+					}
+
 					OffInven();
 				}
 			}
