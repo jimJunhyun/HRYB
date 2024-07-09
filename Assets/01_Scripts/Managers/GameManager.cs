@@ -622,6 +622,10 @@ public class GameManager : MonoBehaviour
 		{
 			pActor.life.DamageYY(0, 99999999, DamageType.NoHit);
 		}
+		if (Input.GetKeyDown(KeyCode.Semicolon))
+		{
+			pinven.AddExp(10000);
+		}
 
 
 		//if (Input.GetKeyDown(KeyCode.Escape))
@@ -633,7 +637,7 @@ public class GameManager : MonoBehaviour
 		//	LockCursor();
 		//}
 
-		if(Time.time % 1 <= float.Epsilon)
+		if (Time.time % 1 <= float.Epsilon)
 		{
 			qManager.InvokeOnChanged(CompletionAct.CountSecond, Time.time.ToString());
 		}

@@ -48,6 +48,11 @@ public class PlayerNode : ScriptableObject
 		needPoint = 0;
 	}
 
+	private void OnEnable()
+	{
+		completed = false;
+	}
+
 	public bool ExamineLearnable()
 	{
 		bool res = true;
@@ -56,7 +61,7 @@ public class PlayerNode : ScriptableObject
 		{
 			res &= requirements[i].completed;
 		}
-		return learnable && res && GameManager.instance.pinven.currentExp < needPoint;
+		return !completed && learnable && res && GameManager.instance.pinven.currentExp >= needPoint;
 	}
 
 	public bool LearnNode()
@@ -97,13 +102,16 @@ public class PlayerNode : ScriptableObject
 					if (percentage)
 					{
 			 			GameManager.instance.pActor.MultStat(float.Parse(amt), nodeType);
+						Debug.Log("스탯 : " + nodeType + " * " + float.Parse(amt) + " % ");
 					}
 					else
 					{
 			 			GameManager.instance.pActor.AddStat(float.Parse(amt), nodeType);
+						Debug.Log("스탯 : " + nodeType + " + " + float.Parse(amt));
 					}
 			 		break;
 			 }
+			completed = true;
 			GameManager.instance.pinven.AddExp(-needPoint);
 		}
 

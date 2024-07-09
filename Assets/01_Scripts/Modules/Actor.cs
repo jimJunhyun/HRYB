@@ -140,7 +140,7 @@ public class Actor : MonoBehaviour
 				life.yy.black.MultMod(amt);
 				break;
 			case StatUpgradeType.WhiteAtk:
-				atk.Damage.black.MultMod(amt);
+				atk.Damage.white.MultMod(amt);
 				break;
 			case StatUpgradeType.BlackAtk:
 				atk.Damage.black.MultMod(amt);
@@ -149,6 +149,7 @@ public class Actor : MonoBehaviour
 				move.runSpeed.MultMod(amt);
 				move.walkSpeed.MultMod(amt);
 				move.crouchSpeed.MultMod(amt);
+				move.RefreshSpeed();
 				break;
 			case StatUpgradeType.CooldownRdc:
 				cast.cooldownModuleStat.HandleSpeed(-amt, ModuleController.SpeedMode.Slow);

@@ -187,7 +187,7 @@ public class PlayerCast : CastModule
 
 	public void DoInitialize()
 	{
-		//Q, E, 1 을 사용할것이다...........
+		//Q, E, 1(R) 을 사용할것이다...........
 
 		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("HumanNormal"), SkillSlotInfo.LClick, PlayerForm.Magic);
 		ConnectSkillDataTo(GameManager.skillLoader.GetHumanSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);

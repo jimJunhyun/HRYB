@@ -20,6 +20,9 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 	
 	Transform viewport;
 
+	Vector3 onPos;
+	Vector3 offPos;
+
 	internal NodeUI curSelected;
 
 	Transform innermostNode;
@@ -49,6 +52,9 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 		nodeLearner = transform.Find("NodeLearnWindow").GetComponent<NodeLearnUI>();
 		viewport = transform.Find("NodeBgnd/Viewport");
 		exp = transform.Find("EXPText").GetComponent<ExpTextUI>();
+
+		offPos = viewport.position;
+		onPos = offPos + Vector3.left * VIEWPORTOFFSET;
 	}
 
 	private void Start()
@@ -65,7 +71,7 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 			partedNode[i].SetActive(false);
 		}
 		SetSelected(null);
-		UnshowLearner();
+		ImmediateUnshow();
 	}
 	//public void GenerateView()
 	//{
@@ -105,23 +111,39 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 
 	public void ShowLearner(PlayerNode node)
 	{
-		if (!nodeLearner.isOn && ongoing == null)
+		if (!nodeLearner.isOn)
 		{
+			if (ongoing != null)
+				StopCoroutine(ongoing);
 			nodeLearner.On(node);
-			ongoing = GameManager.instance.StartCoroutine(DelMoveViewport(false));
+			ongoing = GameManager.instance.StartCoroutine(DelMoveViewport(true));
 			Debug.Log("켜라");
 		}
 	}
 
 	public void UnshowLearner()
 	{
-		if(nodeLearner.isOn && ongoing == null)
+		if (nodeLearner.isOn)
 		{
+			if(ongoing != null)
+				StopCoroutine(ongoing);
 			nodeLearner.Off();
-			ongoing = GameManager.instance.StartCoroutine(DelMoveViewport(true));
+			ongoing = GameManager.instance.StartCoroutine(DelMoveViewport(false));
 			Debug.Log("꺼라");
 		}
 
+	}
+
+	public void ImmediateUnshow()
+	{
+		if(ongoing != null)
+			StopCoroutine(ongoing);
+
+		nodeLearner.ImmediateOff();
+		viewport.position = offPos;
+		ongoing = null;
+		
+		Debug.Log("꺼라");
 	}
 
 	public void SetSelected(NodeUI node)
@@ -148,20 +170,14 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 	IEnumerator DelMoveViewport(bool direction)
 	{
 		float t = 0;
-		Vector3 originalPos = viewport.position;
-		float accOffset = 0;
-		Debug.Log("움직임시작함라 " + t + " / " + MOVESEC);
 		while(t < MOVESEC)
 		{
 			yield return null;
 			t += Time.unscaledDeltaTime;
-			accOffset = Mathf.Lerp(0, VIEWPORTOFFSET, t / MOVESEC);
-			viewport.position = originalPos + (direction ? Vector3.right : Vector3.left) * accOffset;
-			Debug.Log("움직이는중임라");
+			viewport.position = Vector3.Lerp(onPos, offPos, (direction ? 1 - t / MOVESEC : t / MOVESEC));
 		}
-		viewport.position = originalPos + (direction ? Vector3.right : Vector3.left) * VIEWPORTOFFSET;
+		viewport.position = (direction ? onPos : offPos);
 		ongoing = null;
-		Debug.Log("다움직임라");
 	}
 
 	//public void GenerateLine(Transform from, Transform to)
