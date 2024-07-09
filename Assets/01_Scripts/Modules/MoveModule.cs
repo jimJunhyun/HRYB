@@ -113,7 +113,10 @@ public class MoveModule : Module
 		get => moveDir.sqrMagnitude < 0.001f;
 	}
 
-
+	public void RefreshSpeed()
+	{
+		moveStat = moveStat;
+	}
 	public virtual void Move()
 	{
 		ForceCalc();

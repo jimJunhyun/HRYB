@@ -9,19 +9,26 @@ public class NodeLearnUI : MonoBehaviour
 	PlayerNode showing;
 	internal bool isOn = false;
 	Transform scroller;
-	public float SCROLLMAX;
 	Coroutine ongoing;
 	Button learnBtn;
 
 	TextMeshProUGUI title;
 	NeededResource req;
 
+	Vector3 offPos;
+	Vector3 onPos;
+
 	private void Awake()
 	{
 		scroller = transform.Find("Scroller");
 		title = scroller.Find("Names/NodeName").GetComponent<TextMeshProUGUI>();
 		req = scroller.Find("Requires/NeededResource").GetComponent<NeededResource>();
-		SCROLLMAX = Screen.height;
+		learnBtn = scroller.Find("LearnButton").GetComponent<Button>();
+
+		offPos = scroller.position;
+		onPos = offPos + Vector3.down * Screen.height;
+
+		isOn = false;
 	}
 
 	private void Start()
@@ -31,25 +38,37 @@ public class NodeLearnUI : MonoBehaviour
 
 	public void On(PlayerNode node)
 	{
-		if (!isOn && ongoing == null)
+		if(ongoing != null)
 		{
-			gameObject.SetActive(true);
-			showing = node;
-			ongoing = StartCoroutine(DelScroll(true));
+			StopCoroutine(ongoing);
 		}
+		gameObject.SetActive(true);
+		showing = node;
+		ongoing = StartCoroutine(DelScroll(true));
 
 		RefreshInfo();
 	}
 
 	public void Off()
 	{
-		if (isOn && ongoing == null)
-		{
-			showing = null;
-			ongoing = GameManager.instance.StartCoroutine(DelScroll(false));
-		}
-		
+		if(ongoing != null)
+			StopCoroutine(ongoing);
+		showing = null;
+		ongoing = GameManager.instance.StartCoroutine(DelScroll(false));
 
+	}
+
+	public void ImmediateOff()
+	{
+		if (ongoing != null)
+			StopCoroutine(ongoing);
+		showing = null;
+		ongoing = null;
+
+		scroller.position = offPos;
+		gameObject.SetActive(false);
+
+		isOn = false;
 	}
 
 	public void Learn()
@@ -57,6 +76,7 @@ public class NodeLearnUI : MonoBehaviour
 		if (isOn && showing != null)
 		{
 			showing.LearnNode();
+			RefreshInfo();
 		}
 	}
 
@@ -72,16 +92,13 @@ public class NodeLearnUI : MonoBehaviour
 	public IEnumerator DelScroll(bool direction)
 	{
 		float t = 0;
-		float accOffset;
-		Vector3 originalPos = scroller.transform.position;
 		while(t < NodeViewer.MOVESEC)
 		{
 			yield return null;
 			t += Time.unscaledDeltaTime;
-			accOffset = Mathf.Lerp(0, SCROLLMAX, t / NodeViewer.MOVESEC);
-			scroller.transform.position = originalPos + (direction ? Vector3.down : Vector3.up) * accOffset;
+			scroller.transform.position = Vector3.Lerp(onPos, offPos, (direction ? 1 - t / NodeViewer.MOVESEC : t / NodeViewer.MOVESEC));
 		}
-		scroller.position = originalPos + (direction ? Vector3.down : Vector3.up) * SCROLLMAX;
+		scroller.position = (direction ? onPos : offPos);
 
 		isOn = direction;
 		ongoing = null;
