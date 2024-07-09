@@ -208,7 +208,12 @@ public class EnemyLifeModule : LifeModule
 	{
 		if(_dropItem.Count > 0)
 		{ 
-			FarmingPoint f = PoolManager.GetObject(DROPITEM, transform.position, Quaternion.identity).GetComponent<FarmingPoint>();
+			Vector3 pt = transform.position;
+			if(Physics.SphereCast(transform.position, 0.4f, Vector3.down, out RaycastHit hit, 100f, (1 << GameManager.GROUNDLAYER)))
+			{
+				pt = hit.point;
+			}
+			FarmingPoint f = PoolManager.GetObject(DROPITEM, pt, Quaternion.identity).GetComponent<FarmingPoint>();
 			f.resItem = _dropItem;
 			f.amount = 1;
 		}

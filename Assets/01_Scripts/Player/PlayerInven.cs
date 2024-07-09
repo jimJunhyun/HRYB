@@ -371,7 +371,7 @@ public class PlayerInven : MonoBehaviour
 		btn.SetInfo(data, num);
 		if (data is YinyangItem yy)
 		{
-			GameManager.instance.pedia.GotItem(yy);
+			GameManager.instance.saver.pedia.GotItem(yy);
 		}
 		if ((idxes = inven.Contains(data)).Count > 0)
 		{

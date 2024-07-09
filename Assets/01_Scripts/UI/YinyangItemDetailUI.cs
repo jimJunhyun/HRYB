@@ -102,7 +102,7 @@ public class YinyangItemDetailUI : MonoBehaviour
 			{
 				GameObject g = PoolManager.GetObject(MAKABLEITEM, content);
 				CollectionButtonUI btn = g.GetComponent<CollectionButtonUI>();
-				btn.SetInfo(GameManager.instance.pedia.materialCollections[(YinyangItem)i]);
+				btn.SetInfo(GameManager.instance.saver.pedia.materialCollections[(YinyangItem)i]);
 				buttons.Add(g);
 			}
 		}

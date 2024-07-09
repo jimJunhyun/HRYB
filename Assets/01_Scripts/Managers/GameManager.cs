@@ -260,13 +260,13 @@ public class GameManager : MonoBehaviour
 	public SectionManager sManager;
 	public static SkillLoader skillLoader;
 	
-	public PrefabManager pManager;
+	
+
 	public BossHPManager bHPManager;
 
 	public PlayableDirector timeliner;
 	public PlayableDirector timeliner2;
 
-	public ImageManager imageManager;
 	public CameraManager camManager;
 
 	//public Arrow arrow;
@@ -282,7 +282,7 @@ public class GameManager : MonoBehaviour
 	
 
 	public PreservedDataManager saver;
-	public ItemPedia pedia;
+	
 
 	[Header("따로 설정이 필요함")]
 	public Sprite uiBase;
@@ -346,7 +346,7 @@ public class GameManager : MonoBehaviour
 
 		
 		craftManager = GameObject.Find("CraftManager").GetComponent<CraftManager>();
-		imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
+		
 		uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
 		terrain = GameObject.Find("Terrain").GetComponentInChildren<Terrain>();
 		audioPlayer = GameObject.Find("AudioManager").GetComponent<AudioPlayer>();
@@ -358,7 +358,7 @@ public class GameManager : MonoBehaviour
 		//timeliner = GameObject.Find("Timeliner").GetComponent<PlayableDirector>(); //////////#####타임라인매니저?????
 		//timeliner2 = GameObject.Find("Timeliner2").GetComponent<PlayableDirector>();
 		camManager = GameObject.Find("PCam").GetComponent<CameraManager>();
-		pManager = GameObject.Find("PrefabManager").GetComponent<PrefabManager>();
+		
 		bHPManager = GameObject.Find("bossHPGroup").GetComponent<BossHPManager>();
 
 		statEff = new StatusEffects();
@@ -370,9 +370,15 @@ public class GameManager : MonoBehaviour
 		
 		minimap = GameObject.Find("MinimapManager").GetComponent<MinimapManager>();
 
+		#if UNITY_EDITOR
+		saver = GameObject.Find("PreservedDataManager_EDITOR").GetComponent<PreservedDataManager>();
+		saver.imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
+		saver.pManager = GameObject.Find("PrefabManager").GetComponent<PrefabManager>();
+		#else
 		saver = GameObject.Find("PreservedDataManager").GetComponent<PreservedDataManager>();
-		saver.lastSave = -1;
+		#endif
 
+		saver.lastSave = -1;
 		loader = GameObject.Find("TitleLoad").GetComponent<TitleLoader>();
 
 		timelines = new Dictionary<string, TimelinePlayer>();
@@ -382,7 +388,12 @@ public class GameManager : MonoBehaviour
 			timelines.Add(p[i].name, p[i]);
 		}
 
+		#if UNITY_EDITOR
 		StartCoroutine(InitializeAll());
+		#else
+
+		(pActor.cast as PlayerCast).DoInitialize();
+		#endif
 	}
 
 	private void Start()
@@ -392,33 +403,33 @@ public class GameManager : MonoBehaviour
 		
 	}
 
+
 	IEnumerator InitializeAll()
 	{
-		//아이템을 초기화
-		//제작법을 초기허ㅘ하맙.
 		if (!saver.gameDataLoaded)
 		{
 			yield return StartCoroutine(Item.InitializeItem());
 
 			yield return StartCoroutine(Crafter.InitializeRecipe());
+
 			yield return StartCoroutine(Crafter.InitializeTrim());
+
+			saver.gameDataLoaded = true;
 		}
 		yield return null;
-		saver.gameDataLoaded = true;
-		pedia = new ItemPedia();
+		saver.pedia = new ItemPedia();
+
 		if (!saver.assetbundleLoaded)
 		{
-			imageManager.DoLoad();
-			pManager.DoLoad();
+			saver.imageManager.DoLoad();
+			saver.pManager.DoLoad();
 			skillLoader = new SkillLoader();
 
 			saver.assetbundleLoaded = true;
 		}
-
+		Debug.Log("로드 다했다...!");
 		(pActor.cast as PlayerCast).DoInitialize();
-		
 	}
-
 
 
 	public void LockCursor()
@@ -613,14 +624,14 @@ public class GameManager : MonoBehaviour
 		}
 
 
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			LockUnlockCursor();
-		}
-		if(Input.GetKeyDown(KeyCode.U))
-		{
-			LockCursor();
-		}
+		//if (Input.GetKeyDown(KeyCode.Escape))
+		//{
+		//	LockUnlockCursor();
+		//}
+		//if(Input.GetKeyDown(KeyCode.U))
+		//{
+		//	LockCursor();
+		//}
 
 		if(Time.time % 1 <= float.Epsilon)
 		{
