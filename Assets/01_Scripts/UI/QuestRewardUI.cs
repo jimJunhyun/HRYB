@@ -48,6 +48,7 @@ public class QuestRewardUI : MonoBehaviour
 			case RewardType.Quest:
 			case RewardType.EnableObject:
 			case RewardType.DisableObject:
+			case RewardType.PlayTimeline:
 				return;
 		}
 

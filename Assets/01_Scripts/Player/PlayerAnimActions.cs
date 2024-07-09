@@ -557,7 +557,7 @@ public class PlayerAnimActions : MonoBehaviour
 
 	public void ResetInitPos()
 	{
-		(GameManager.instance.pActor.life as PlayerLife).initPos = self.transform.position;
+		(GameManager.instance.pActor.life as PlayerLife).initPos = GameManager.instance.pActor.transform.position;
 	}
 
 	public void SunStop()

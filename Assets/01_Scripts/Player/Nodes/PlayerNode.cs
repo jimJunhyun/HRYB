@@ -31,7 +31,7 @@ public class PlayerNode : ScriptableObject
 
 	public bool learnable;
 
-	public float needPoint;
+	public int needPoint;
 
 	public UnityEvent onLearn;
 
@@ -48,9 +48,22 @@ public class PlayerNode : ScriptableObject
 		needPoint = 0;
 	}
 
+	public bool ExamineLearnable()
+	{
+		bool res = true;
+
+		for (int i = 0; i < requirements.Count; i++)
+		{
+			res &= requirements[i].completed;
+		}
+		return learnable && res && GameManager.instance.pinven.currentExp < needPoint;
+	}
+
 	public bool LearnNode()
 	{
 		if(!learnable)
+			return false;
+		if (GameManager.instance.pinven.currentExp < needPoint)
 			return false;
 
 		bool res = true;
@@ -59,6 +72,7 @@ public class PlayerNode : ScriptableObject
 		{
 			res &= requirements[i].completed;
 		}
+		
 
 		if (res)
 		{
@@ -90,8 +104,7 @@ public class PlayerNode : ScriptableObject
 					}
 			 		break;
 			 }
-			
-			//자원 소비시켜주기.
+			GameManager.instance.pinven.AddExp(-needPoint);
 		}
 
 		return res;

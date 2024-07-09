@@ -11,6 +11,7 @@ public class NodeLearnUI : MonoBehaviour
 	Transform scroller;
 	public float SCROLLMAX;
 	Coroutine ongoing;
+	Button learnBtn;
 
 	TextMeshProUGUI title;
 	NeededResource req;
@@ -65,6 +66,7 @@ public class NodeLearnUI : MonoBehaviour
 			return;
 		req.SetInfo(((int)showing.needPoint));
 		title.text = NodeUtility.GetName(showing);
+		learnBtn.interactable = showing.ExamineLearnable();
 	}
 
 	public IEnumerator DelScroll(bool direction)
