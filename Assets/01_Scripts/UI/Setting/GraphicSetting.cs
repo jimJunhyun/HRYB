@@ -30,70 +30,111 @@ public struct GraphicSet
 	public bool Effect;
 }
 
-public class GraphicSetting : MonoBehaviour
+public class GraphicSetting : MonoBehaviour, ISettings
 {
 
-	private GraphicSet Set;
+	private GraphicSet set;
+	private GraphicSet previousSet;
+
 	private readonly string fileName = "GraphicSetting";
+
+	private bool notSaved;
 
 	private void Awake()
 	{
-		if(JsonManager<GraphicSet>.LoadJson(fileName, out Set))
-		{
-			Option = Set.Option;
-			Resolution = Set.Resolution;
-			ScreenMode = Set.ScreenMode;
-			VSync = Set.VSync;
-			MaxFPS = Set.MaxFPS;
-			AntiAliasing = Set.AntiAliasing;
-			Shadow = Set.Shadow;
-			Effect = Set.Effect;
-		}
+		Load();
+	}
 
+	private void OnEnable()
+	{
+		previousSet = set;
 	}
 
 	public void Save()
 	{
-		JsonManager<GraphicSet>.SaveJson(Set, fileName);
+		JsonManager<GraphicSet>.SaveJson(set, fileName);
+		previousSet = set;
+		notSaved = false;
+	}
+
+	public void Load()
+	{
+		if (JsonManager<GraphicSet>.LoadJson(fileName, out set))
+		{
+			Option = set.Option;
+			Resolution = set.Resolution;
+			ScreenMode = set.ScreenMode;
+			VSync = set.VSync;
+			MaxFPS = set.MaxFPS;
+			AntiAliasing = set.AntiAliasing;
+			Shadow = set.Shadow;
+			Effect = set.Effect;
+		}
+	}
+
+	public void Revert()
+	{
+		Option = previousSet.Option;
+		Resolution = previousSet.Resolution;
+		ScreenMode = previousSet.ScreenMode;
+		VSync = previousSet.VSync;
+		MaxFPS = previousSet.MaxFPS;
+		AntiAliasing = previousSet.AntiAliasing;
+		Shadow = previousSet.Shadow;
+		Effect = previousSet.Effect;
+	}
+
+	public void Close()
+	{
+		gameObject.SetActive(false);
+	}
+
+	public void Open()
+	{
+		gameObject.SetActive(true);
 	}
 
 	public EGraphicOption Option
 	{
-		get { return Set.Option; }
+		get { return set.Option; }
 		set
 		{
-			Set.Option = value;
-			QualitySettings.SetQualityLevel((int)Set.Option);
+			set.Option = value;
+			QualitySettings.SetQualityLevel((int)set.Option);
+			notSaved = true;
 		}
 	}
 
 	public Vector2 Resolution
 	{
-		get { return Set.Resolution; }
+		get { return set.Resolution; }
 		set
 		{
-			Set.Resolution = value;
-			Screen.SetResolution((int)Set.Resolution.x, (int)Set.Resolution.y, Set.ScreenMode);
+			set.Resolution = value;
+			Screen.SetResolution((int)set.Resolution.x, (int)set.Resolution.y, set.ScreenMode);
+			notSaved = true;
 		}
 	}
 
 	public FullScreenMode ScreenMode
 	{
-		get { return Set.ScreenMode; }
+		get { return set.ScreenMode; }
 		set
 		{
-			Set.ScreenMode = value;
-			Screen.SetResolution((int)Set.Resolution.x, (int)Set.Resolution.y, Set.ScreenMode);
+			set.ScreenMode = value;
+			Screen.SetResolution((int)set.Resolution.x, (int)set.Resolution.y, set.ScreenMode);
+			notSaved = true;
 		}
 	}
 
 	public bool VSync
 	{
-		get { return Set.VSync; }
+		get { return set.VSync; }
 		set
 		{
-			Set.VSync = value;
-			QualitySettings.vSyncCount = Set.VSync ? 1 : 0;
+			set.VSync = value;
+			QualitySettings.vSyncCount = set.VSync ? 1 : 0;
+			notSaved = true;
 		}
 	}
 
@@ -102,32 +143,35 @@ public class GraphicSetting : MonoBehaviour
 	/// </summary>
 	public int MaxFPS
 	{
-		get { return Set.MaxFPS; }
+		get { return set.MaxFPS; }
 		set
 		{
-			Set.MaxFPS = value;
+			set.MaxFPS = value;
 
-			Application.targetFrameRate = Set.MaxFPS;
+			Application.targetFrameRate = set.MaxFPS;
+			notSaved = true;
 		}
 	}
 
 	public int AntiAliasing
 	{
-		get { return Set.AntiAliasing; }
+		get { return set.AntiAliasing; }
 		set
 		{
-			Set.AntiAliasing = value;
-			QualitySettings.antiAliasing = Set.AntiAliasing;
+			set.AntiAliasing = value;
+			QualitySettings.antiAliasing = set.AntiAliasing;
+			notSaved = true;
 		}
 	}
 
 	public int Shadow
 	{
-		get { return Set.Shadow; }
+		get { return set.Shadow; }
 		set
 		{
-			Set.Shadow = value;
-			if (Set.Shadow == -1)
+			set.Shadow = value;
+			notSaved = true;
+			if (set.Shadow == -1)
 			{
 				QualitySettings.shadows = UnityEngine.ShadowQuality.Disable;
 				QualitySettings.shadowResolution = UnityEngine.ShadowResolution.Low;
@@ -135,7 +179,7 @@ public class GraphicSetting : MonoBehaviour
 			else
 			{
 				QualitySettings.shadows = UnityEngine.ShadowQuality.All;
-				QualitySettings.shadowResolution = (UnityEngine.ShadowResolution)Set.Shadow;
+				QualitySettings.shadowResolution = (UnityEngine.ShadowResolution)set.Shadow;
 			}
 
 		}
@@ -143,11 +187,14 @@ public class GraphicSetting : MonoBehaviour
 
 	public bool Effect
 	{
-		get { return Set.Effect; }
+		get { return set.Effect; }
 		set
 		{
-			Set.Effect = value;
+			set.Effect = value;
+			notSaved = true;
 			//Do Something
 		}
 	}
+
+	public bool NotSaved => notSaved;
 }

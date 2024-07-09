@@ -33,7 +33,7 @@ using System.Linq;
 	public InterPrevUI preInterUI;
 	public InterProcessUI interingUI;
     public GameObject invenPanel;
-    public GameObject optionPanel;
+    public SettingUI settingPanel;
 	public DialogueUI dialogueUI;
 
 	public NodeDetailUI detailer;
@@ -97,7 +97,8 @@ using System.Linq;
 		canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
 		comboCanv = GameObject.Find("UICombo").GetComponent<Canvas>();
 		invenPanel = canvas.transform.Find("ToolPanel").gameObject;
-		optionPanel = canvas.transform.Find("OptionUI").gameObject;
+		//optionPanel = canvas.transform.Find("OptionUI").gameObject;
+		settingPanel = canvas.transform.Find("ToolPanel/Setting").GetComponent<SettingUI>();
 		yinYangUI = canvas.GetComponentInChildren<YYCtrl>();
 		converter = canvas.GetComponentInChildren<CConvert>();
 		aimUI = canvas.GetComponentInChildren<AimPointCtrl>();
@@ -119,7 +120,7 @@ using System.Linq;
 		toolbarUIShower = GameObject.Find("ToolPanel").GetComponent<ToolBarManager>();
 
 		invenPanel.SetActive(true);
-		optionPanel.SetActive(false);
+		settingPanel.gameObject.SetActive(false);
 
 		getItemUiSlot = GetitemUITransform.GetComponentsInChildren<RectTransform>().ToList();
 		getItemUiSlot.RemoveAt(0); //GetitemUITransform 제거
@@ -235,7 +236,7 @@ using System.Linq;
 		if (isOptionOn)
 		{
 			isOptionOn = false;
-			optionPanel.SetActive(false);
+			settingPanel.gameObject.SetActive(false);
 			GameManager.instance.LockCursor();
 		}		
 	}
@@ -244,7 +245,7 @@ using System.Linq;
 	{
 		if (!isOptionOn)
 		{
-			optionPanel.SetActive(true);
+			settingPanel.gameObject.SetActive(true);
 			GameManager.instance.UnLockCursor();
 			isOptionOn = true;
 		}
