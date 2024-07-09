@@ -160,6 +160,8 @@ public class CameraManager : MonoBehaviour
 
 	}
 
+
+
 	public void SwitchTo(CamStatus stat)
 	{
 		curCamStat = stat;

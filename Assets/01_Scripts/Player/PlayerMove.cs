@@ -44,6 +44,9 @@ public class PlayerMove : MoveModule
 
 	bool AvoidSuccess = false;
 
+	public float runCamMod = 5;
+	public float runCamModSec = 0.1f;
+	bool prevMoved = false;
 
 	public override Vector3 forceDir
 	{
@@ -362,6 +365,19 @@ public class PlayerMove : MoveModule
 						{
 							to = Quaternion.LookRotation(vec, Vector3.up);
 							RotateTo();
+							if(moveStat == MoveStates.Run && !prevMoved)
+							{
+								GameManager.instance.camManager.Zoom(-runCamMod, runCamModSec);
+							}
+							prevMoved = true;
+						}
+						else
+						{
+							if(moveStat == MoveStates.Run && prevMoved)
+							{
+								GameManager.instance.camManager.Zoom(runCamMod, runCamModSec);
+							}
+							prevMoved = false;
 						}
 						PlayerControllerMove(vec);
 					}
@@ -580,10 +596,18 @@ public class PlayerMove : MoveModule
 				if (moveStat == MoveStates.Run)
 				{
 					moveStat = MoveStates.Walk;
+					if (prevMoved)
+					{
+						GameManager.instance.camManager.Zoom(runCamMod, runCamModSec);
+					}
 				}
 				else if (moveStat == MoveStates.Walk)
 				{
 					moveStat = MoveStates.Run;
+					if (prevMoved)
+					{
+						GameManager.instance.camManager.Zoom(-runCamMod, runCamModSec);
+					}
 				}
 
 			}
