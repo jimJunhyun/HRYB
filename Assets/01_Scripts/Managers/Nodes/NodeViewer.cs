@@ -114,7 +114,7 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 		if (!nodeLearner.isOn)
 		{
 			if (ongoing != null)
-				StopCoroutine(ongoing);
+				GameManager.instance.StopCoroutine(ongoing);
 			nodeLearner.On(node);
 			ongoing = GameManager.instance.StartCoroutine(DelMoveViewport(true));
 			Debug.Log("켜라");
@@ -126,7 +126,7 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 		if (nodeLearner.isOn)
 		{
 			if(ongoing != null)
-				StopCoroutine(ongoing);
+				GameManager.instance.StopCoroutine(ongoing);
 			nodeLearner.Off();
 			ongoing = GameManager.instance.StartCoroutine(DelMoveViewport(false));
 			Debug.Log("꺼라");
@@ -137,7 +137,7 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 	public void ImmediateUnshow()
 	{
 		if(ongoing != null)
-			StopCoroutine(ongoing);
+			GameManager.instance.StopCoroutine(ongoing);
 
 		nodeLearner.ImmediateOff();
 		viewport.position = offPos;
@@ -148,22 +148,25 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 
 	public void SetSelected(NodeUI node)
 	{
-		if(curSelected != null)
+		if (ongoing == null)
 		{
-			curSelected.OffBrush();
-		}
-		if(curSelected != node)
-		{
-			curSelected = node;
-		}
-		else
-		{
-			curSelected = null;
-		}
-		if(curSelected != null)
-		{
-			curSelected.BrushStroke();
-			Debug.Log(node.name + " 선택됨!!!!!!!11");
+			if (curSelected != null)
+			{
+				curSelected.OffBrush();
+			}
+			if (curSelected != node)
+			{
+				curSelected = node;
+			}
+			else
+			{
+				curSelected = null;
+			}
+			if (curSelected != null)
+			{
+				curSelected.BrushStroke();
+				Debug.Log(node.name + " 선택됨!!!!!!!11");
+			}
 		}
 	}
 

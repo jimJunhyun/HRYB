@@ -13,6 +13,11 @@ public class NodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 	Image circleIndicator;
 	Coroutine ongoing;
 
+	internal bool Brushing
+	{
+		get => ongoing != null;
+	}
+
 	private void Start()
 	{
 		button = GetComponent<Button>();
@@ -42,15 +47,18 @@ public class NodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 				break;
 		}
 		circleIndicator.fillAmount = 0;
-		button.onClick.AddListener(() => { (GameManager.instance.uiManager.toolbarUIShower.openables[ToolState.Node] as NodeViewer)?.nodeLearner.OnOff(indicating);});
 		button.onClick.AddListener(() => { (GameManager.instance.uiManager.toolbarUIShower.openables[ToolState.Node] as NodeViewer)?.SetSelected(this); });
+		button.onClick.AddListener(() => { (GameManager.instance.uiManager.toolbarUIShower.openables[ToolState.Node] as NodeViewer)?.nodeLearner.OnOff(indicating);});
 	}
 
 	public void BrushStroke()
 	{
-		circleIndicator.enabled = true;
-		
-		ongoing = StartCoroutine(DelStroke());
+		if(!Brushing)
+		{
+			circleIndicator.enabled = true;
+			
+			ongoing = StartCoroutine(DelStroke());
+		}
 	}
 
 	public void OffBrush()
@@ -68,6 +76,8 @@ public class NodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 			t += Time.unscaledDeltaTime;
 			circleIndicator.fillAmount = Mathf.Lerp(0, 1, t / NodeViewer.CIRCLESEC);
 		}
+		ongoing = null;
+		
 	}
 
 	public void SetUpNodeUI(PlayerNode node) //안씀.

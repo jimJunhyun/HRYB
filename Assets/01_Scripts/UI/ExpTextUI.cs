@@ -34,7 +34,7 @@ public class ExpTextUI : MonoBehaviour
 		sb.Append(GameManager.instance.pActor.atk.Damage.white.MaxValue);
 		sb.Append("</color>\n");
 		sb.Append("<#000000>정신 : </color><#00dd00>");
-		sb.Append(GameManager.instance.pActor.atk.Damage.white.MaxValue);
+		sb.Append(GameManager.instance.pActor.atk.Damage.black.MaxValue);
 		sb.Append("</color>\n");
 		sb.Append("<#000000>속도 : </color><#00dd00>");
 		sb.Append(GameManager.instance.pActor.move.Speed);
