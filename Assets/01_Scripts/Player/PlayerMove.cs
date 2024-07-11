@@ -625,7 +625,7 @@ public class PlayerMove : MoveModule
 		{
 			if (moveStat == MoveStates.Sit)
 			{
-				Debug.DrawRay(middle.position, Vector3.up * ctrl.height, Color.green, 1000f);
+				//Debug.DrawRay(middle.position, Vector3.up * ctrl.height, Color.green, 1000f);
 				if (!Physics.Raycast(middle.position, Vector3.up, ctrl.height, ~(1 << GameManager.PLAYERLAYER), QueryTriggerInteraction.Ignore))
 				{
 					moveStat = MoveStates.Walk;
@@ -651,7 +651,7 @@ public class PlayerMove : MoveModule
 			if (context.canceled)
 			{
 				GameManager.instance.uiManager.dialogueUI.currentShown.OnClick();
-				Debug.Log("대화하고자 했으나");
+				//Debug.Log("대화하고자 했으나");
 			}
 		}
 		else
@@ -881,7 +881,7 @@ public class PlayerMove : MoveModule
 				{
 					nearestDist = distVec.sqrMagnitude;
 					pAttack.target = item.transform;
-					Debug.Log("ATARETEGET");
+					//Debug.Log("ATARETEGET");
 				}
 
 			}

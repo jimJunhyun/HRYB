@@ -66,7 +66,7 @@ public class MedicineTutorialManager : MonoBehaviour
 							RectTransform trm = GameManager.instance.uiManager.GetInvenSlotUIRect(firstTarget);
 							Rect rt = trm.rect;
 							rt.position = trm.position;
-							Debug.Log("POS : " + rt.position);
+							//Debug.Log("POS : " + rt.position);
 							foc = true;
 							GameManager.instance.uiManager.focus.FocusAt(rt, rt.position , true, AdditionalEffectFocusing.Border | AdditionalEffectFocusing.Arrow | AdditionalEffectFocusing.Subtitle | AdditionalEffectFocusing.Bounce);
 							GameManager.instance.uiManager.focus.SetSubTitle("인벤토리에서는 채집한 약재나 제약한 한약을 확인할 수 있습니다.");
@@ -126,7 +126,7 @@ public class MedicineTutorialManager : MonoBehaviour
 							//GameObject d = new GameObject("Down3");
 							//d.transform.position = new Vector3(rt.x, rt.yMax);
 
-							Debug.Log("마우스호버링한듯?????");
+							//Debug.Log("마우스호버링한듯?????");
 							foc = false;
 							step += 1;
 						}
@@ -135,16 +135,18 @@ public class MedicineTutorialManager : MonoBehaviour
 				case 4:
 					{
 						RectTransform trm = (GameManager.instance.uiManager.toolbarUIShower.parents[MEDICINEPARENTBUTTONINDEX].transform as RectTransform);
-						RectTransform trmFoc = (GameManager.instance.uiManager.toolbarUIShower.toolStateButtonPair[ToolState.Fusion].transform as RectTransform);
 						Rect rt = trm.rect;
-						Rect rtFoc = trmFoc.rect;
 						rt.position = trm.position;
-						rtFoc.position = trmFoc.position;
 						rt.position -= Vector2.up * rt.height;
 						rt.height *= 3;
-							GameManager.instance.uiManager.focus.FocusAt(rtFoc, rtFoc.position, false, AdditionalEffectFocusing.Border | AdditionalEffectFocusing.Arrow | AdditionalEffectFocusing.Bounce);
 						rt.x -= rt.width * 0.5f;
 						rt.y -= rt.height * 0.5f;
+
+						RectTransform trmFoc = (GameManager.instance.uiManager.toolbarUIShower.toolStateButtonPair[ToolState.Fusion].transform as RectTransform);
+						Rect rtFoc = trmFoc.rect;
+						rtFoc.position = trmFoc.position;
+						
+						GameManager.instance.uiManager.focus.FocusAt(rtFoc, rtFoc.position, false, AdditionalEffectFocusing.Border | AdditionalEffectFocusing.Arrow | AdditionalEffectFocusing.Bounce);
 						//GameObject l = new GameObject("Lft4");
 						//l.transform.position = new Vector3(rt.xMin, rt.y);
 						//GameObject r = new GameObject("Rht4");
@@ -156,7 +158,7 @@ public class MedicineTutorialManager : MonoBehaviour
 						if (!rt.Contains(Input.mousePosition))
 						{
 
-							Debug.Log("범위벗어난듯?????");
+							//Debug.Log("범위벗어난듯?????");
 							foc = false;
 							step -= 1;
 						}
