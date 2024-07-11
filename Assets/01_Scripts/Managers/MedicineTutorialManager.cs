@@ -19,6 +19,7 @@ public class MedicineTutorialManager : MonoBehaviour
 	float curFocusTime = 0f;
 
 	const string TARGETITEMNAME=  "계심환";
+	const int MEDICINEPARENTBUTTONINDEX =  0;
 
 	public void StartTutorial()
 	{
@@ -98,7 +99,7 @@ public class MedicineTutorialManager : MonoBehaviour
 					break;
 				case 3:
 					{
-						RectTransform trm = (GameManager.instance.uiManager.toolbarUIShower.toolButtons[((int)ToolState.Medicine)].transform as RectTransform);
+						RectTransform trm = (GameManager.instance.uiManager.toolbarUIShower.parents[MEDICINEPARENTBUTTONINDEX].transform as RectTransform);
 						Rect rt = trm.rect;
 						rt.position = trm.position;
 
@@ -133,18 +134,15 @@ public class MedicineTutorialManager : MonoBehaviour
 					break;
 				case 4:
 					{
-						RectTransform trm = (GameManager.instance.uiManager.toolbarUIShower.toolButtons[((int)ToolState.Medicine)].transform as RectTransform);
+						RectTransform trm = (GameManager.instance.uiManager.toolbarUIShower.parents[MEDICINEPARENTBUTTONINDEX].transform as RectTransform);
+						RectTransform trmFoc = (GameManager.instance.uiManager.toolbarUIShower.toolStateButtonPair[ToolState.Fusion].transform as RectTransform);
 						Rect rt = trm.rect;
+						Rect rtFoc = trmFoc.rect;
 						rt.position = trm.position;
+						rtFoc.position = trmFoc.position;
 						rt.position -= Vector2.up * rt.height;
 						rt.height *= 3;
-						if (!foc)
-						{
-							GameManager.instance.uiManager.focus.FocusAt(rt, rt.position, true, AdditionalEffectFocusing.Border | AdditionalEffectFocusing.Arrow | AdditionalEffectFocusing.Bounce);
-							
-							foc = true;
-
-						}
+							GameManager.instance.uiManager.focus.FocusAt(rtFoc, rtFoc.position, false, AdditionalEffectFocusing.Border | AdditionalEffectFocusing.Arrow | AdditionalEffectFocusing.Bounce);
 						rt.x -= rt.width * 0.5f;
 						rt.y -= rt.height * 0.5f;
 						//GameObject l = new GameObject("Lft4");

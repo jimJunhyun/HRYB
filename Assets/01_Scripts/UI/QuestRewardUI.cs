@@ -30,7 +30,7 @@ public class QuestRewardUI : MonoBehaviour
 		switch (rew.rewardType)
 		{
 			case RewardType.Exp:
-				//typeImg.sprite = GameManager.instance.expSprite;
+				typeImg.sprite = GameManager.instance.expSprite;
 				rewNameTxt.text = "경험치";
 				break;
 			case RewardType.Skill:
@@ -49,6 +49,9 @@ public class QuestRewardUI : MonoBehaviour
 			case RewardType.EnableObject:
 			case RewardType.DisableObject:
 			case RewardType.PlayTimeline:
+				typeImg.sprite=  GameManager.instance.questionMark;
+				rewNameTxt.text = "???";
+				rewAmtTxt.text = "";
 				return;
 		}
 
@@ -62,7 +65,10 @@ public class QuestRewardUI : MonoBehaviour
 		sb.Append("<#00dd00>");
 		sb.Append(rew.amount);
 		sb.Append("</color>");
-		sb.Append(" 개");
+		if(rew.rewardType != RewardType.Exp && rew.rewardType != RewardType.HealWhite && rew.rewardType != RewardType.HealBlack)
+		{
+			sb.Append(" 개"); 
+		}
 		rewAmtTxt.text = sb.ToString();
 		sb.Clear();
 

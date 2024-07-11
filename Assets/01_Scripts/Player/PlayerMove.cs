@@ -589,6 +589,8 @@ public class PlayerMove : MoveModule
 
 	public void Run(InputAction.CallbackContext context)
 	{
+		if (NoInput.Paused || moveModuleStat.Paused)
+			return;
 		if (moveStat != MoveStates.Sit && moveStat != MoveStates.Climb)
 		{
 			if (context.started)
@@ -940,6 +942,9 @@ public class PlayerMove : MoveModule
 
 	public void AvoidPlayer()
 	{
+		if(NoInput.Paused || moveModuleStat.Paused)
+			return;
+
 		if(_currentAvoidTime < AvoidTime)
 		{
 			return;

@@ -280,12 +280,16 @@ public class GameManager : MonoBehaviour
 	public DecalControl decalCtrl;
 
 	
+	
 
 	public PreservedDataManager saver;
 	
 
 	[Header("따로 설정이 필요함")]
 	public Sprite uiBase;
+	public Sprite expSprite;
+	public Sprite questionMark;
+
 	public TMPro.TMP_FontAsset tmpText;
 
 	public float ampGain = 0.5f;
