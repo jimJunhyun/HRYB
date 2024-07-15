@@ -161,8 +161,8 @@ public class ToolBtn : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 			subButtonPanel.enabled = true;
 		}
 		if (ongoing != null)
-			StopCoroutine(ongoing);
-		ongoing = StartCoroutine(DelDropdownCtrl(true));
+			GameManager.instance.StopCoroutine(ongoing);
+		ongoing = GameManager.instance.StartCoroutine(DelDropdownCtrl(true));
 		
 	}
 
@@ -174,8 +174,8 @@ public class ToolBtn : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 			subButtonPanel.enabled = false;
 		}
 		if (ongoing != null)
-			StopCoroutine(ongoing);
-		ongoing = StartCoroutine(DelDropdownCtrl(false));
+			GameManager.instance.StopCoroutine(ongoing);
+		ongoing = GameManager.instance.StartCoroutine(DelDropdownCtrl(false));
 	}
 
 	IEnumerator DelDropdownCtrl(bool isShow)

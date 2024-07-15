@@ -16,6 +16,7 @@ public class CollectionUI : MonoBehaviour, IOpenableWindowUI
 	private void Awake()
 	{
 		content = transform.Find("Left Section/ItemView/Viewport/Content");
+		detail = GetComponent<YinyangItemDetailUI>();
 		
 	}
 
@@ -26,7 +27,7 @@ public class CollectionUI : MonoBehaviour, IOpenableWindowUI
 			detail = GetComponent<YinyangItemDetailUI>();
 		}
 
-		Debug.Log(GameManager.instance.saver.pedia.materialCollections.Values.Count);
+		Debug.Log("$$$$$$$$$$$$" + GameManager.instance.saver.pedia.materialCollections.Values.Count);
 		bool first = true;
 		foreach (ItemCollection item in GameManager.instance.saver.pedia.materialCollections.Values)
 		{
@@ -59,6 +60,10 @@ public class CollectionUI : MonoBehaviour, IOpenableWindowUI
 
 	public void Refresh()
 	{
+		if (detail == null)
+		{
+			detail = GetComponent<YinyangItemDetailUI>();
+		}
 		for (int i = 0; i < buttons.Count; i++)
 		{
 			buttons[i].RefreshInfo();

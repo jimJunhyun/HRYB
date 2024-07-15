@@ -34,7 +34,7 @@ public class YinyangItemDetailUI : MonoBehaviour
 	}
 	public void SetInfo(ItemCollection item)
 	{
-
+		
 		for (int i = 0; i < buttons.Count; i++)
 		{
 			PoolManager.ReturnObject(buttons[i]);
@@ -76,6 +76,12 @@ public class YinyangItemDetailUI : MonoBehaviour
 		if (maskGroup == null)
 		{
 			maskGroup = transform.Find("Right Section/Frame 1/StatBack/MaskGroup").gameObject;
+		}
+
+		if (item == null)
+		{
+			gameObject.SetActive(false);
+			return;
 		}
 
 		gameObject.SetActive(true);

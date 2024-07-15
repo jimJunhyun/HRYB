@@ -106,14 +106,16 @@ public class PreservedDataManager : MonoBehaviour
 
 
 		var op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("Official_World");
-
-		while (!op.isDone)
+		op.allowSceneActivation = false;
+		while (op.progress < 0.9f)
 		{
 			Debug.Log("PROG " + op.progress);
 			yield return null;
 		}
 
 		LoadComplete(1f);
+		yield return new WaitForSeconds(0.5f);
+		op.allowSceneActivation = true;
 		Debug.Log("로드 다했다...!");
 	}
 //#endif
