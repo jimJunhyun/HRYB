@@ -18,11 +18,11 @@ public class SkillLoader
 		SkillDatabase database2 = null;
 		if (asset != null)
 		{
-			database= asset.LoadAsset<SkillDatabase>("SkillDatabase");
+			database= asset.LoadAsset<SkillDatabase>("skilldatabase");
 		}
 		if(asset2 != null)
 		{
-			database2 = asset2.LoadAsset<SkillDatabase>("YohoSkilldataBase");
+			database2 = asset2.LoadAsset<SkillDatabase>("yohoskilldatabase");
 		}
 
 		if (database != null)
