@@ -258,7 +258,7 @@ public class GameManager : MonoBehaviour
 	public UIManager uiManager;
 	public QuestManager qManager;
 	public SectionManager sManager;
-	public static SkillLoader skillLoader;
+	
 	
 	
 
@@ -427,7 +427,7 @@ public class GameManager : MonoBehaviour
 		{
 			saver.imageManager.DoLoad();
 			saver.pManager.DoLoad();
-			skillLoader = new SkillLoader();
+			saver.skillLoader = new SkillLoader();
 
 			saver.assetbundleLoaded = true;
 		}

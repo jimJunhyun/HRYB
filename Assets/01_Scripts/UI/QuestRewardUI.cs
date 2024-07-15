@@ -34,7 +34,7 @@ public class QuestRewardUI : MonoBehaviour
 				rewNameTxt.text = "경험치";
 				break;
 			case RewardType.Skill:
-				typeImg.sprite = GameManager.skillLoader.GetSkill(rew.parameter).skillIcon;
+				typeImg.sprite = GameManager.instance.saver.skillLoader.GetSkill(rew.parameter).skillIcon;
 				break;
 			case RewardType.Item:
 				typeImg.sprite = Item.GetItem <Item> (rew.parameter).icon;

@@ -14,6 +14,7 @@ public class PreservedDataManager : MonoBehaviour
 	public PrefabManager pManager;
 	public ImageManager imageManager;
 	public ItemPedia pedia;
+	public SkillLoader skillLoader;
 
 	public static PreservedDataManager instance;
 
@@ -94,7 +95,7 @@ public class PreservedDataManager : MonoBehaviour
 			LoadComplete(0.1f);
 			pManager.DoLoad();
 			LoadComplete(0.1f);
-			GameManager.skillLoader = new SkillLoader();
+			skillLoader = new SkillLoader();
 			LoadComplete(0.1f);
 
 			assetbundleLoaded = true;
