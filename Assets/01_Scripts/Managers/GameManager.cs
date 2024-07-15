@@ -396,12 +396,12 @@ public class GameManager : MonoBehaviour
 		//StartCoroutine(InitializeAll());
 		//#else
 
-		(pActor.cast as PlayerCast).DoInitialize();
 		//#endif
 	}
 
 	private void Start()
 	{
+		(pActor.cast as PlayerCast).DoInitialize();
 		audioPlayer.PlayBgm(NORMALBGM);
 
 		
