@@ -114,7 +114,7 @@ public class PreservedDataManager : MonoBehaviour
 			yield return null;
 		}
 
-		LoadComplete(1f);
+		LoadComplete(0.95f);
 		yield return new WaitForSeconds(0.5f);
 		op.allowSceneActivation = true;
 		Debug.Log("로드 다했다...!");
