@@ -21,7 +21,7 @@ public class PreservedDataManager : MonoBehaviour
 	float loadAmount;
 	Slider loadBar;
 
-#if !UNITY_EDITOR
+//#if !UNITY_EDITOR
 	private void Awake()
 	{
 		instance = this;
@@ -116,5 +116,5 @@ public class PreservedDataManager : MonoBehaviour
 		LoadComplete(1f);
 		Debug.Log("로드 다했다...!");
 	}
-#endif
+//#endif
 }
