@@ -46,15 +46,15 @@ public struct ModuleController
 	//뭐면 뭔속도
 	//배율임.
 
-	bool AnimPause
+	internal bool AnimPause
 	{
 		get => animPause > 0;
 	}
-	bool StatPause
+	internal bool StatPause
 	{
 		get => statPause > 0;
 	}
-	bool TimelinePause
+	internal bool TimelinePause
 	{
 		get => timelinePause > 0;
 	}
@@ -67,6 +67,7 @@ public struct ModuleController
 			return AnimPause || StatPause || TimelinePause || stopFlag; 
 		}
 	}
+	
 
 	public float Speed
 	{

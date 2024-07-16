@@ -6,6 +6,15 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 
+public enum ZoomChannel
+{
+	Auto = -1,
+	Dialogue = 1,
+	Swap,
+	Move,
+
+}
+
 public class CameraManager : MonoBehaviour
 {
 	public List<CinemachineBasicMultiChannelPerlin> camShakers = new List<CinemachineBasicMultiChannelPerlin>();
@@ -20,7 +29,9 @@ public class CameraManager : MonoBehaviour
 	Volume v;
 	Camera _main;
 
-	Coroutine ongoing;
+	Dictionary<int, float> zooms = new Dictionary<int, float>();
+	Dictionary<int, Coroutine> ongoingZooms = new Dictionary<int, Coroutine>();
+	float zoomSum;
 	
 	public CinemachineFreeLook _pCam;
 	public CinemachineFreeLook pCam
@@ -40,9 +51,11 @@ public class CameraManager : MonoBehaviour
 	public float maxZoom;
 	public float zoomSpd;
 
+	public float minAngle;
+	public float maxAngle;
+
 	float originYSpeed;
 	float originFOV;
-
 	public static CameraManager instance;
 
 	PlayerMove _playerModule;
@@ -157,7 +170,8 @@ public class CameraManager : MonoBehaviour
 		{
 			SwitchTo(CamStatus.Freelook);
 		}
-
+		
+		pCam.m_Lens.FieldOfView = Mathf.Clamp(originFOV - zoomSum, minAngle, maxAngle);
 	}
 
 
@@ -237,38 +251,87 @@ public class CameraManager : MonoBehaviour
 		//Debug.Log("Y가정지안됨ㅋㅋㅋㅋ");
 	}
 
-	public void Zoom(float power, float lerpSec = 0.75f)
+	public void Zoom(float power, float lerpSec = 0.75f, int channel = -1)
 	{
-		ongoing = StartCoroutine(DelZoom(power, true, lerpSec));
+		if (channel == -1)
+		{
+			channel = 1;
+			while (zooms.ContainsKey(channel))
+			{
+				channel += 1;
+			}
+		}
+		if (!zooms.ContainsKey(channel))
+		{
+			zooms.Add(channel, 0);
+		}
+		if(ongoingZooms.ContainsKey(channel) && ongoingZooms[channel] != null)
+		{
+			return;
+		}
+		if (!ongoingZooms.ContainsKey(channel))
+		{
+			ongoingZooms.Add(channel, null);
+		}
+		ongoingZooms[channel] = StartCoroutine(DelZoom(power, lerpSec, channel));
 	}
 
-	IEnumerator DelZoom(float pow, bool zooming, float lerpSec)
+	IEnumerator DelZoom(float power, float lerpSec, int channel)
 	{
+		Debug.Log(power + "만큼 줌시작, " + channel+"채널");
 		float t = 0;
-		float v = pCam.m_Lens.FieldOfView;
-		while (t< lerpSec)
+		float origin = zooms[channel];
+		while(t < lerpSec)
 		{
 			yield return null;
 			t += Time.deltaTime;
-			if (zooming)
-			{
-				pCam.m_Lens.FieldOfView = Mathf.Lerp(v, v - pow, t / lerpSec);
-			}
-			else
-			{
-				pCam.m_Lens.FieldOfView = Mathf.Lerp(v, originFOV, t / lerpSec);
 
+			zooms[channel] = Mathf.Lerp(origin, origin + power, t / lerpSec);
+			zoomSum = 0;
+			foreach (var item in zooms)
+			{
+				zoomSum += item.Value;
 			}
+		}
+
+		ongoingZooms[channel] = null;
+	}
+
+	public void RevertZoom(float lerpSec = 0.75f, int channel = -1)
+	{
+		if(channel == -1)
+		{
+			zooms.Clear();
+			zoomSum = 0;
+		}
+		else if(zooms.ContainsKey(channel))
+		{
+			if(ongoingZooms.ContainsKey(channel) && ongoingZooms[channel] != null)
+			{
+				StopCoroutine(ongoingZooms[channel]);
+				ongoingZooms[channel] = null;
+			}
+			StartCoroutine(DelUnZoom(lerpSec, channel));
 		}
 	}
 
-	public void RevertZoom(float lerpSec = 0.75f)
+	IEnumerator DelUnZoom(float lerpSec, int channel)
 	{
-		if (ongoing!= null)
+		float t = 0;
+		float origin = zooms[channel];
+		while(t < lerpSec)
 		{
-			StopCoroutine(ongoing);
+			yield return null;
+			t += Time.deltaTime;
+			zooms[channel] = Mathf.Lerp(origin, 0, t / lerpSec);
+
+			zoomSum = 0;
+			foreach (var item in zooms)
+			{
+				zoomSum += item.Value;
+			}
 		}
-		StartCoroutine(DelZoom(0, false, lerpSec));
+		
 	}
 
 	public void ShakeCam(float ampGain, float frqGain)
