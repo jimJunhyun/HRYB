@@ -156,6 +156,8 @@ using System.Linq;
 		}
 		else
 		{
+			if(GameManager.instance.pActor.move.moveModuleStat.Paused || (GameManager.instance.pActor.move as PlayerMove).NoInput.Paused)
+				return;
 			if (context.performed)
 			{
 				if (!isOn)
