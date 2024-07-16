@@ -115,6 +115,7 @@ public class ToolBarManager : MonoBehaviour
 		foreach (var item in windows.Values)
 		{
 			item.SetActive(false);
+			Debug.Log(item.name + " 끔ㄻㄻㅁ");
 		}
 	}
 	public void RefreshButtons()

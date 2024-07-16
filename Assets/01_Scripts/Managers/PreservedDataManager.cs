@@ -22,10 +22,13 @@ public class PreservedDataManager : MonoBehaviour
 	float loadAmount;
 	Slider loadBar;
 
-//#if !UNITY_EDITOR
+#if !UNITY_EDITOR
 	private void Awake()
 	{
-		instance = this;
+		if(PreservedDataManager.instance == null)
+		{
+			instance = this;
+		}
 
 		imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
 		pManager = GameObject.Find("PrefabManager").GetComponent<PrefabManager>();
@@ -119,5 +122,5 @@ public class PreservedDataManager : MonoBehaviour
 		op.allowSceneActivation = true;
 		Debug.Log("로드 다했다...!");
 	}
-//#endif
+#endif
 }
