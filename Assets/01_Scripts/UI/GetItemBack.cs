@@ -14,6 +14,7 @@ public class GetItemBack : MonoBehaviour
 
 	Image img;
 	TextMeshProUGUI text;
+	TextMeshProUGUI cntText;
 
 
 	private void OnEnable()
@@ -37,9 +38,14 @@ public class GetItemBack : MonoBehaviour
 		{
 			text = transform.Find("Name").GetComponent<TextMeshProUGUI>();
 		}
+		if (cntText == null)
+		{
+			cntText = transform.Find("Count").GetComponent<TextMeshProUGUI>();
+		}
 
 		img.sprite = i.icon;
-		text.text = $"{i.MyName} x{cnt}";
+		text.text = $"{i.MyName}";
+		cntText.text = $"x{ cnt}";
 
 		GameManager.instance.uiManager.RefreshGetItemQ(this);
 	}
