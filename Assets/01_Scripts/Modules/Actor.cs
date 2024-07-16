@@ -109,7 +109,7 @@ public class Actor : MonoBehaviour
 				life.yy.black.AddMod(amt);
 				break;
 			case StatUpgradeType.WhiteAtk:
-				atk.Damage.black.AddMod(amt);
+				atk.Damage.white.AddMod(amt);
 				break;
 			case StatUpgradeType.BlackAtk:
 				atk.Damage.black.AddMod(amt);

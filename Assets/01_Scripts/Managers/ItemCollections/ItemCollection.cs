@@ -85,13 +85,5 @@ public class ItemCollection
 		return HashCode.Combine(myItem);
 	}
 
-	public static bool operator ==(ItemCollection lft, ItemCollection rht)
-	{
-		return lft.myItem == rht.myItem;
-	}
 
-	public static bool operator !=(ItemCollection lft, ItemCollection rht)
-	{
-		return lft.myItem != rht.myItem;
-	}
 }

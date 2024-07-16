@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -16,7 +16,7 @@ public class ReadmeEditor : Editor {
 	
 	static ReadmeEditor()
 	{
-		EditorApplication.delayCall += SelectReadmeAutomatically;
+		//EditorApplication.delayCall += SelectReadmeAutomatically;
 	}
 	
 	static void SelectReadmeAutomatically()

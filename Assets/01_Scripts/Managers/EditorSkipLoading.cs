@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class EditorSkipLoading : MonoBehaviour
 {
-    void Awake()
-    {
-		UnityEngine.SceneManagement.SceneManager.LoadScene("Official_World");
-	}
+	//#if UNITY_EDITOR
+    //void Awake()
+    //{
+	//	UnityEngine.SceneManagement.SceneManager.LoadScene("Official_World");
+	//}
+	//#endif
 }

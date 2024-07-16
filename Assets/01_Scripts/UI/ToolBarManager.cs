@@ -23,7 +23,9 @@ public class ToolBarManager : MonoBehaviour
 	internal Dictionary<ToolState, IOpenableWindowUI> openables = new Dictionary<ToolState, IOpenableWindowUI>();
 
 	public List<ToolBtn> toolButtons;
-	List<ToolBtn> parents;
+	internal List<ToolBtn> parents;
+
+	internal Dictionary<ToolState, ToolBtn> toolStateButtonPair = new Dictionary<ToolState, ToolBtn>();
 
 	IOpenableWindowUI curOpened;
 
@@ -46,10 +48,15 @@ public class ToolBarManager : MonoBehaviour
 
 		toolButtons = new List<ToolBtn>(GetComponentsInChildren<ToolBtn>());
 		parents = new List<ToolBtn>();
+		toolStateButtonPair = new Dictionary<ToolState, ToolBtn>();
 		for (int i = 0; i < toolButtons.Count; i++)
 		{
 			if(toolButtons[i].indicating == ToolState.None)
 				parents.Add(toolButtons[i]);
+			else if (!toolStateButtonPair.ContainsKey(toolButtons[i].indicating))
+			{
+				toolStateButtonPair.Add(toolButtons[i].indicating, toolButtons[i]);
+			}
 		}
 		opened = false;
 	}

@@ -258,7 +258,7 @@ public class GameManager : MonoBehaviour
 	public UIManager uiManager;
 	public QuestManager qManager;
 	public SectionManager sManager;
-	public static SkillLoader skillLoader;
+	
 	
 	
 
@@ -280,12 +280,16 @@ public class GameManager : MonoBehaviour
 	public DecalControl decalCtrl;
 
 	
+	
 
 	public PreservedDataManager saver;
 	
 
 	[Header("따로 설정이 필요함")]
 	public Sprite uiBase;
+	public Sprite expSprite;
+	public Sprite questionMark;
+
 	public TMPro.TMP_FontAsset tmpText;
 
 	public float ampGain = 0.5f;
@@ -370,13 +374,13 @@ public class GameManager : MonoBehaviour
 		
 		minimap = GameObject.Find("MinimapManager").GetComponent<MinimapManager>();
 
-		#if UNITY_EDITOR
-		saver = GameObject.Find("PreservedDataManager_EDITOR").GetComponent<PreservedDataManager>();
-		saver.imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
-		saver.pManager = GameObject.Find("PrefabManager").GetComponent<PrefabManager>();
-		#else
+		//#if UNITY_EDITOR
+		//saver = GameObject.Find("PreservedDataManager_EDITOR").GetComponent<PreservedDataManager>();
+		//saver.imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
+		//saver.pManager = GameObject.Find("PrefabManager").GetComponent<PrefabManager>();
+		//#else
 		saver = GameObject.Find("PreservedDataManager").GetComponent<PreservedDataManager>();
-		#endif
+		//#endif
 
 		saver.lastSave = -1;
 		loader = GameObject.Find("TitleLoad").GetComponent<TitleLoader>();
@@ -388,16 +392,16 @@ public class GameManager : MonoBehaviour
 			timelines.Add(p[i].name, p[i]);
 		}
 
-		#if UNITY_EDITOR
-		StartCoroutine(InitializeAll());
-		#else
+		//#if UNITY_EDITOR
+		//StartCoroutine(InitializeAll());
+		//#else
 
-		(pActor.cast as PlayerCast).DoInitialize();
-		#endif
+		//#endif
 	}
 
 	private void Start()
 	{
+		(pActor.cast as PlayerCast).DoInitialize();
 		audioPlayer.PlayBgm(NORMALBGM);
 
 		
@@ -423,7 +427,7 @@ public class GameManager : MonoBehaviour
 		{
 			saver.imageManager.DoLoad();
 			saver.pManager.DoLoad();
-			skillLoader = new SkillLoader();
+			saver.skillLoader = new SkillLoader();
 
 			saver.assetbundleLoaded = true;
 		}

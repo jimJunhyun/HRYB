@@ -40,11 +40,12 @@ public class NodeLearnUI : MonoBehaviour
 	{
 		if(ongoing != null)
 		{
-			StopCoroutine(ongoing);
+			GameManager.instance.StopCoroutine(ongoing);
+			Debug.Log("다른프로세스취소됨노드런유아이키기");
 		}
 		gameObject.SetActive(true);
 		showing = node;
-		ongoing = StartCoroutine(DelScroll(true));
+		ongoing = GameManager.instance.StartCoroutine(DelScroll(true));
 
 		RefreshInfo();
 	}
@@ -52,7 +53,11 @@ public class NodeLearnUI : MonoBehaviour
 	public void Off()
 	{
 		if(ongoing != null)
-			StopCoroutine(ongoing);
+		{
+
+			GameManager.instance.StopCoroutine(ongoing);
+			Debug.Log("다른프로세스취소됨노드런유아이끄기");
+		}
 		showing = null;
 		ongoing = GameManager.instance.StartCoroutine(DelScroll(false));
 
@@ -61,7 +66,7 @@ public class NodeLearnUI : MonoBehaviour
 	public void ImmediateOff()
 	{
 		if (ongoing != null)
-			StopCoroutine(ongoing);
+			GameManager.instance.StopCoroutine(ongoing);
 		showing = null;
 		ongoing = null;
 
@@ -108,6 +113,8 @@ public class NodeLearnUI : MonoBehaviour
 	public void OnOff(PlayerNode node)
 	{
 		Debug.Log("창키고끄는중.....");
+		if(ongoing != null)
+			return;
 		if (!isOn)
 		{
 			(GameManager.instance.uiManager.toolbarUIShower.openables[ToolState.Node] as NodeViewer)?.ShowLearner(node);	

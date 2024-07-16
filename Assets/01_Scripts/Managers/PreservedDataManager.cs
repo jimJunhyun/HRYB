@@ -14,6 +14,7 @@ public class PreservedDataManager : MonoBehaviour
 	public PrefabManager pManager;
 	public ImageManager imageManager;
 	public ItemPedia pedia;
+	public SkillLoader skillLoader;
 
 	public static PreservedDataManager instance;
 
@@ -21,7 +22,7 @@ public class PreservedDataManager : MonoBehaviour
 	float loadAmount;
 	Slider loadBar;
 
-#if !UNITY_EDITOR
+//#if !UNITY_EDITOR
 	private void Awake()
 	{
 		instance = this;
@@ -94,7 +95,7 @@ public class PreservedDataManager : MonoBehaviour
 			LoadComplete(0.1f);
 			pManager.DoLoad();
 			LoadComplete(0.1f);
-			GameManager.skillLoader = new SkillLoader();
+			skillLoader = new SkillLoader();
 			LoadComplete(0.1f);
 
 			assetbundleLoaded = true;
@@ -106,15 +107,17 @@ public class PreservedDataManager : MonoBehaviour
 
 
 		var op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("Official_World");
-
-		while (!op.isDone)
+		op.allowSceneActivation = false;
+		while (op.progress < 0.9f)
 		{
 			Debug.Log("PROG " + op.progress);
 			yield return null;
 		}
 
-		LoadComplete(1f);
+		LoadComplete(0.95f);
+		yield return new WaitForSeconds(0.5f);
+		op.allowSceneActivation = true;
 		Debug.Log("로드 다했다...!");
 	}
-#endif
+//#endif
 }

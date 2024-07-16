@@ -9,19 +9,25 @@ public class CollectionUI : MonoBehaviour, IOpenableWindowUI
 {
 	Transform content;
 	public const string COLLECTIONBUTTON = "CollectionItem";
-	List<GameObject> buttons = new List<GameObject>();
+	List<CollectionButtonUI> buttons = new List<CollectionButtonUI>();
 
 	YinyangItemDetailUI detail;
 
 	private void Awake()
 	{
-		content = transform.Find("ItemView/Viewport/Content");
+		content = transform.Find("Left Section/ItemView/Viewport/Content");
 		detail = GetComponent<YinyangItemDetailUI>();
+		
 	}
 
 	public void OnOpen()
 	{
-		Debug.Log(GameManager.instance.saver.pedia.materialCollections.Values.Count);
+		if(detail == null)
+		{
+			detail = GetComponent<YinyangItemDetailUI>();
+		}
+
+		Debug.Log("$$$$$$$$$$$$" + GameManager.instance.saver.pedia.materialCollections.Values.Count);
 		bool first = true;
 		foreach (ItemCollection item in GameManager.instance.saver.pedia.materialCollections.Values)
 		{
@@ -31,9 +37,11 @@ public class CollectionUI : MonoBehaviour, IOpenableWindowUI
 			}
 			Debug.Log(item.myItem.MyName + " : " + item.myItem.desc);
 			GameObject g = PoolManager.GetObject(COLLECTIONBUTTON, content);
+			Debug.Log(g == null);
 			CollectionButtonUI btn = g.GetComponent<CollectionButtonUI>();
+			Debug.Log(btn == null);
 			btn.SetInfo(item);
-			buttons.Add(g);
+			buttons.Add(btn);
 		}
 	}
 
@@ -41,7 +49,7 @@ public class CollectionUI : MonoBehaviour, IOpenableWindowUI
 	{
 		for (int i = 0; i < buttons.Count; i++)
 		{
-			PoolManager.ReturnObject(buttons[i]);
+			PoolManager.ReturnObject(buttons[i].gameObject);
 		}
 		buttons.Clear();
 	}
@@ -52,21 +60,14 @@ public class CollectionUI : MonoBehaviour, IOpenableWindowUI
 
 	public void Refresh()
 	{
+		if (detail == null)
+		{
+			detail = GetComponent<YinyangItemDetailUI>();
+		}
 		for (int i = 0; i < buttons.Count; i++)
 		{
-			if(buttons[i].GetComponent<CollectionButtonUI>() != null)
-			{
-				buttons[i].GetComponent<CollectionButtonUI>().RefreshInfo();
-			}
-
-
-			if(buttons[i].GetComponent<YinyangItemDetailUI>() != null)
-			{
-				buttons[i].GetComponent<YinyangItemDetailUI>().RefreshInfo();
-			}
-
-			
-			
+			buttons[i].RefreshInfo();
 		}
+		detail.RefreshInfo();
 	}
 }
