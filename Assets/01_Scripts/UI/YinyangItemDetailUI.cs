@@ -80,13 +80,13 @@ public class YinyangItemDetailUI : MonoBehaviour
 
 		if (item == null)
 		{
-			gameObject.SetActive(false);
+			//gameObject.SetActive(false);
 			return;
 		}
+		//
+		//gameObject.SetActive(true);
 
-		gameObject.SetActive(true);
 
-		
 
 		image.sprite = item.myItem.icon;
 		itemName.text = item.discovered ? item.myItem.MyName : "???";

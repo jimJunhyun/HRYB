@@ -206,6 +206,8 @@ public class PlayerCast : CastModule
 
 		// YohoNormalAttack
 
+		nameCastPair.Clear();
+
 		nameCastPair.Add("interact" , new Preparation(
 		(self)=>
 		{
