@@ -45,10 +45,10 @@ public class AudioSetting : MonoBehaviour, ISettings
 		{
 			string path = "BG/Panel/Detail/";
 
-			masterSlider = transform.Find(path + "Master Volume Slider/Slider").GetComponent<Slider>();
-			sfxSlider = transform.Find(path + "SFX Volume Slider/Slider").GetComponent<Slider>();
-			environmentSlider = transform.Find(path + "Environment Volume Slider/Slider").GetComponent<Slider>();
-			bgmSlider = transform.Find(path + "BGM Volume Slider/Slider").GetComponent<Slider>();
+			masterSlider = transform.Find(path + "Master Volume Slider/Frame/Slider").GetComponent<Slider>();
+			sfxSlider = transform.Find(path + "SFX Volume Slider/Frame/Slider").GetComponent<Slider>();
+			environmentSlider = transform.Find(path + "Environment Volume Slider/Frame/Slider").GetComponent<Slider>();
+			bgmSlider = transform.Find(path + "BGM Volume Slider/Frame/Slider").GetComponent<Slider>();
 		}
 
 		if(audioMixer == null)
@@ -102,6 +102,16 @@ public class AudioSetting : MonoBehaviour, ISettings
 		gameObject.SetActive(true);
 	}
 
+	public void ApplyVolume(EAudioType audioType, float value)
+	{
+		if(audioMixer != null)
+		{
+			float finalValue = Mathf.Lerp(-40.0f, 0.0f, value);
+			if (finalValue == -40.0f) finalValue = -80.0f;
+			audioMixer.SetFloat(audioType.ToString(), finalValue);
+		}
+	}
+
 	public float MasterVolume
 	{
 		get { return set.MasterVolume; }
@@ -113,6 +123,8 @@ public class AudioSetting : MonoBehaviour, ISettings
 			{
 				masterSlider.value = value;
 			}
+			ApplyVolume(EAudioType.Master, value);
+
 
 			notSaved = true;
 		}
@@ -129,6 +141,7 @@ public class AudioSetting : MonoBehaviour, ISettings
 			{
 				sfxSlider.value = value;
 			}
+			ApplyVolume(EAudioType.SFX, value);
 
 			notSaved = true;
 		}
@@ -145,6 +158,7 @@ public class AudioSetting : MonoBehaviour, ISettings
 			{
 				bgmSlider.value = value;
 			}
+			ApplyVolume(EAudioType.BGM, value);
 
 			notSaved = true;
 		}
@@ -161,6 +175,7 @@ public class AudioSetting : MonoBehaviour, ISettings
 			{
 				environmentSlider.value = value;
 			}
+			ApplyVolume(EAudioType.Environment, value);
 
 			notSaved = true;
 		}
