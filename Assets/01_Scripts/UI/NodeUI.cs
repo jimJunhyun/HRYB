@@ -9,7 +9,7 @@ public class NodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 	public PlayerNode indicating;
 
 	Button button;
-	Image img;
+	Image nodeIcon;
 	Image circleIndicator;
 	Coroutine ongoing;
 
@@ -21,30 +21,16 @@ public class NodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 	private void Start()
 	{
 		button = GetComponent<Button>();
-		img = GetComponent<Image>();
+		nodeIcon = transform.Find("NodeIcon").GetComponent<Image>();
 		circleIndicator = transform.Find("CircleIndicator").GetComponent<Image>();
-		switch (indicating?.nodeType) //여기서 이미지를 정해주든 뭐든
+		if(indicating == null)
 		{
-			case StatUpgradeType.White:
-				//양
-				break;
-			case StatUpgradeType.Black:
-				//음
-				break;
-			case StatUpgradeType.WhiteAtk:
-				//양공격력
-				break;
-			case StatUpgradeType.BlackAtk:
-				//음공격력
-				break;
-			case StatUpgradeType.MoveSpeed:
-				//이속
-				break;
-			case StatUpgradeType.CooldownRdc:
-				//쿨감?
-				break;
-			default:
-				break;
+			nodeIcon.enabled = false;
+		}
+		else if((GameManager.instance.uiManager.toolbarUIShower.openables[ToolState.Node] as NodeViewer).nodeSprites.Count > ((int)indicating.nodeType))
+		{
+			nodeIcon.enabled = true;
+			nodeIcon.sprite = (GameManager.instance.uiManager.toolbarUIShower.openables[ToolState.Node] as NodeViewer).nodeSprites[((int)indicating.nodeType)];
 		}
 		circleIndicator.fillAmount = 0;
 		button.onClick.AddListener(() => { (GameManager.instance.uiManager.toolbarUIShower.openables[ToolState.Node] as NodeViewer)?.SetSelected(this); });
@@ -83,7 +69,7 @@ public class NodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 	public void SetUpNodeUI(PlayerNode node) //안씀.
 	{
 		button = GetComponent<Button>();
-		img = GetComponent<Image>();
+		nodeIcon = GetComponent<Image>();
 		indicating = node;
 		switch (indicating.nodeType) //여기서 이미지를 정해주든 뭐든
 		{

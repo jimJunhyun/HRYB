@@ -17,7 +17,10 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 
 	public NodeLearnUI nodeLearner;
 	public ExpTextUI exp;
+	public StatTxtUI stt;
 	
+	public List<Sprite> nodeSprites;
+
 	Transform viewport;
 
 	Vector3 onPos;
@@ -26,6 +29,7 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 	internal NodeUI curSelected;
 
 	Transform innermostNode;
+
 
 	public const float RADIAN360 = Mathf.PI * 2;
 	public const float VIEWPORTOFFSET = 300;
@@ -211,5 +215,6 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 	public void Refresh()
 	{
 		exp.DoRefresh();
+		stt.DoRefresh();
 	}
 }

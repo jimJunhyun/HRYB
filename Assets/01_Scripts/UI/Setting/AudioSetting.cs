@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +22,24 @@ public struct AudioSet
 	public float BGMVolume;
 	public float EnvironmentVolume;
 	public float CharacterVoiceVolume;
+
+	public float GetVolumeOfAudioType(EAudioType audioType)
+	{
+		switch(audioType)
+		{
+			case EAudioType.Master:
+				return MasterVolume;
+			case EAudioType.SFX:
+				return SFXVolume;
+			case EAudioType.BGM:
+				return BGMVolume;
+			case EAudioType.Environment:
+				return EnvironmentVolume;
+			case EAudioType.CharacterVoice:
+				return CharacterVoiceVolume;
+		}
+		return 0.0f;
+	}
 }
 
 public class AudioSetting : MonoBehaviour, ISettings
@@ -38,6 +57,8 @@ public class AudioSetting : MonoBehaviour, ISettings
 	private Slider environmentSlider;
 	private Slider bgmSlider;
 
+	private Button saveBtn;
+
 	private bool notSaved;
 	private void Awake()
 	{
@@ -49,6 +70,7 @@ public class AudioSetting : MonoBehaviour, ISettings
 			sfxSlider = transform.Find(path + "SFX Volume Slider/Frame/Slider").GetComponent<Slider>();
 			environmentSlider = transform.Find(path + "Environment Volume Slider/Frame/Slider").GetComponent<Slider>();
 			bgmSlider = transform.Find(path + "BGM Volume Slider/Frame/Slider").GetComponent<Slider>();
+			saveBtn = transform.Find(path + "Save Button").GetComponent<Button>();
 		}
 
 		if(audioMixer == null)
@@ -57,6 +79,14 @@ public class AudioSetting : MonoBehaviour, ISettings
 		}
 
 		Load();
+	}
+
+	private void OnDisable()
+	{
+		if(NotSaved)
+		{
+			Revert();
+		}
 	}
 
 	private void OnEnable()
@@ -69,27 +99,39 @@ public class AudioSetting : MonoBehaviour, ISettings
 		JsonManager<AudioSet>.SaveJson(set, fileName);
 		previousSet = set;
 
-		notSaved = false;
+		ApplyAllVolume(set);
+
+		NotSaved = false;
 	}
 
 	public void Load()
 	{
-		if (JsonManager<AudioSet>.LoadJson(fileName, out set))
+		if (JsonManager<AudioSet>.LoadJson(fileName, out AudioSet loadedSet))
 		{
-			MasterVolume = set.MasterVolume;
-			SFXVolume = set.SFXVolume;
-			BGMVolume = set.BGMVolume;
-			EnvironmentVolume = set.EnvironmentVolume;
-			CharacterVoiceVolume = set.CharacterVoiceVolume;
+			MasterVolume = loadedSet.MasterVolume;
+			SFXVolume = loadedSet.SFXVolume;
+			BGMVolume = loadedSet.BGMVolume;
+			EnvironmentVolume = loadedSet.EnvironmentVolume;
+			CharacterVoiceVolume = loadedSet.CharacterVoiceVolume;
+			previousSet = set;
+			ApplyAllVolume(set);
 		}
+
+		NotSaved = false;
 	}
 
 	public void Revert()
 	{
+		Debug.Log($"AudioSetting | {set.BGMVolume} | {previousSet.BGMVolume}");
 		MasterVolume = previousSet.MasterVolume;
 		SFXVolume = previousSet.SFXVolume;
 		EnvironmentVolume = previousSet.EnvironmentVolume;
 		CharacterVoiceVolume = previousSet.CharacterVoiceVolume;
+
+		ApplyAllVolume(previousSet);
+		NotSaved = false;
+
+		Debug.Log("AudioSetting Revert");
 	}
 
 	public void Close()
@@ -109,6 +151,19 @@ public class AudioSetting : MonoBehaviour, ISettings
 			float finalValue = Mathf.Lerp(-40.0f, 0.0f, value);
 			if (finalValue == -40.0f) finalValue = -80.0f;
 			audioMixer.SetFloat(audioType.ToString(), finalValue);
+			Debug.Log($"Apply {audioType} Volume Successed");
+		}
+		else
+		{
+			Debug.LogError($"Apply {audioType} Volume Failed");
+		}
+	}
+
+	public void ApplyAllVolume(AudioSet set)
+	{
+		for(int i = 0; i<(int)EAudioType.None; i++)
+		{
+			ApplyVolume((EAudioType)i, set.GetVolumeOfAudioType((EAudioType)i));
 		}
 	}
 
@@ -123,10 +178,9 @@ public class AudioSetting : MonoBehaviour, ISettings
 			{
 				masterSlider.value = value;
 			}
-			ApplyVolume(EAudioType.Master, value);
 
 
-			notSaved = true;
+			NotSaved = true;
 		}
 	}
 
@@ -141,9 +195,9 @@ public class AudioSetting : MonoBehaviour, ISettings
 			{
 				sfxSlider.value = value;
 			}
-			ApplyVolume(EAudioType.SFX, value);
 
-			notSaved = true;
+
+			NotSaved = true;
 		}
 	}
 
@@ -158,9 +212,9 @@ public class AudioSetting : MonoBehaviour, ISettings
 			{
 				bgmSlider.value = value;
 			}
-			ApplyVolume(EAudioType.BGM, value);
 
-			notSaved = true;
+
+			NotSaved = true;
 		}
 	}
 
@@ -175,9 +229,9 @@ public class AudioSetting : MonoBehaviour, ISettings
 			{
 				environmentSlider.value = value;
 			}
-			ApplyVolume(EAudioType.Environment, value);
 
-			notSaved = true;
+
+			NotSaved = true;
 		}
 	}
 
@@ -188,9 +242,19 @@ public class AudioSetting : MonoBehaviour, ISettings
 		{
 			set.CharacterVoiceVolume = value;
 
-			notSaved = true;
+			NotSaved = true;
 		}
 	}
 
-	public bool NotSaved => notSaved;
+
+	public bool NotSaved
+	{
+		get => notSaved;
+		private set
+		{
+				saveBtn.gameObject.SetActive(value);
+				notSaved = value;
+		}
+	}
+
 }
