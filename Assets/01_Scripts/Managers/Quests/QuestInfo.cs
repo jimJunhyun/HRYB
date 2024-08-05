@@ -50,7 +50,7 @@ public class QuestInfo : ScriptableObject, System.IComparable
 		{
 			if(everSince == null)
 			{
-				everSince = myInfo.Find(item => item.everSince) != null;
+				everSince = myInfo.Find(item => item.everSince && !item.isCompleted) != null;
 			}
 			return !IsDeprived && (assigned || (bool)everSince);
 		}

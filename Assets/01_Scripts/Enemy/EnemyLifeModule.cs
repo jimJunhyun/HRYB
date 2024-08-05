@@ -209,7 +209,7 @@ public class EnemyLifeModule : LifeModule
 		if(_dropItem.Count > 0)
 		{ 
 			Vector3 pt = transform.position;
-			if(Physics.SphereCast(transform.position, 0.4f, Vector3.down, out RaycastHit hit, 100f, (1 << GameManager.GROUNDLAYER)))
+			if(Physics.SphereCast(transform.position + Vector3.up * 2f, 0.4f, Vector3.down, out RaycastHit hit, 100f, (1 << GameManager.GROUNDLAYER)))
 			{
 				pt = hit.point;
 			}
