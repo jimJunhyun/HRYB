@@ -7,6 +7,7 @@ using UnityEngine;
 public class WolfAI : AISetter
 {
 	[Header("IsWake")] [SerializeField] private bool _isWake;
+	bool _isFind = false;
 	
 	
 	[Header("공격 시작 범위")]
@@ -100,24 +101,36 @@ public class WolfAI : AISetter
 		    normalATK.connecteds.Add(_normalAtt);
 		    normalATK.connecteds.Add(normalAttack);
 
-		    #endregion
+			#endregion
 
-		    IsInRange SectionRange = new IsInRange(self, player.transform, this.SectionRanged, null, () =>
+			#region Noramled
+			IsInRange DetectedRange = new IsInRange(self, player.transform, this.OutSectionRanged, null, () =>
+			{
+				if(_isFind)
+					_moveModule.SetTarget(player.transform);
+			});
+			Mover move = new Mover(self);
+
+			Sequencer Moved = new Sequencer();
+			Moved.connecteds.Add(DetectedRange);
+			Moved.connecteds.Add(move);
+
+
+			IsInRange SectionRange = new IsInRange(self, player.transform, this.SectionRanged, null, () =>
 		    {
-
-			    _moveModule.SetTarget(player.transform);
-				
+				_isFind = true;
 
 		    });
-		    Mover move = new Mover(self);
+			Sequencer Detected = new Sequencer();
+			Detected.connecteds.Add(SectionRange);
 
-		    Sequencer Moved = new Sequencer();
-		    Moved.connecteds.Add(SectionRange);
-		    Moved.connecteds.Add(move);
+
 
 		    IsOutRange LongaRange = new IsOutRange(self, player.transform, OutSectionRanged, null, () =>
 			{
 				_moveModule.StopMove();
+				_isFind = false;
+
 			});
 		    IsInRange Idler = new IsInRange(self, player.transform, Attackrange, null, () =>
 		    {
@@ -134,8 +147,9 @@ public class WolfAI : AISetter
 
 		    ShowIdler.connecteds.Add(Idler);
 		    ShowIdler.connecteds.Add(idles);
-
-		    head.connecteds.Add(stunSeq);
+			#endregion
+			head.connecteds.Add(stunSeq);
+			head.connecteds.Add(SectionRange);
 		    head.connecteds.Add(normalATK);
 		    head.connecteds.Add(ShowIdler);
 		    head.connecteds.Add(Moved);

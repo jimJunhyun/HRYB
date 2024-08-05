@@ -137,7 +137,7 @@ public class JangsungGirlAttack : EnemyAttackModule
 
 		// 바닥 범위 보여주기 <= 에니메이션 처리
 
-		GameManager.instance.loader.FadeInOut("지하여장군을 공격해서 보호막을 제거하세요!!!", 0.8f);
+		GameManager.instance.loader.FadeInOut("지하여장군을 공격해서 보호막을 제거하세요!!!", 0.8f, 0f, 999f);
 
 		GameObject objs = PoolManager.GetObject("JSRootATK", transform);
 		objs.GetComponent<ColliderCast>().Now(transform, (player) =>

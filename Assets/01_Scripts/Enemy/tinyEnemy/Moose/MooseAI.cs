@@ -11,7 +11,8 @@ public class MooseAI : AISetter
 
 	[Header("탐색 범위")] [SerializeField] public float _sectionRange = 10f;
 	[Header("초기화 범위")] [SerializeField] public float _section2Range = 15f;
-	
+
+	bool _isFind = false;
 	public float Attackrange()
 	{
 		return _attackRange;
@@ -85,42 +86,57 @@ public class MooseAI : AISetter
 		    normalATK.connecteds.Add(_normalAtt);
 		    normalATK.connecteds.Add(normalAttack);
 
-		    #endregion
+			#endregion
 
-		    IsInRange SectionRange = new IsInRange(self, player.transform, this.SectionRanged, null, () =>
-		    {
+			#region Noramled
+			IsInRange DetectedRange = new IsInRange(self, player.transform, this.OutSectionRanged, null, () =>
+			{
+				if (_isFind)
+					_moveModule.SetTarget(player.transform);
+			});
+			Mover move = new Mover(self);
 
-			    _moveModule.SetTarget(player.transform);
+			Sequencer Moved = new Sequencer();
+			Moved.connecteds.Add(DetectedRange);
+			Moved.connecteds.Add(move);
 
 
-		    });
-		    Mover move = new Mover(self);
+			IsInRange SectionRange = new IsInRange(self, player.transform, this.SectionRanged, null, () =>
+			{
+				_isFind = true;
 
-		    Sequencer Moved = new Sequencer();
-		    Moved.connecteds.Add(SectionRange);
-		    Moved.connecteds.Add(move);
+			});
+			Sequencer Detected = new Sequencer();
+			Detected.connecteds.Add(SectionRange);
 
-		    IsOutRange LongaRange = new IsOutRange(self, player.transform, OutSectionRanged, null, () =>
-		    {
+
+
+			IsOutRange LongaRange = new IsOutRange(self, player.transform, OutSectionRanged, null, () =>
+			{
+				_moveModule.StopMove();
+				_isFind = false;
+
+			});
+			IsInRange Idler = new IsInRange(self, player.transform, Attackrange, null, () =>
+			{
 				_moveModule.StopMove();
 			});
-		    IsInRange Idler = new IsInRange(self, player.transform, Attackrange, null, () =>
-		    {
-			    _moveModule.StopMove();
-		    });
-		    Idler idles = new Idler(self);
 
-		    Sequencer Faridler = new Sequencer();
-		    Faridler.connecteds.Add(LongaRange);
-		    Faridler.connecteds.Add(idles);
+			Idler idles = new Idler(self);
 
-		    Sequencer ShowIdler = new Sequencer();
+			Sequencer Faridler = new Sequencer();
+			Faridler.connecteds.Add(LongaRange);
+			Faridler.connecteds.Add(idles);
 
-		    ShowIdler.connecteds.Add(Idler);
-		    ShowIdler.connecteds.Add(idles);
+			Sequencer ShowIdler = new Sequencer();
+
+			ShowIdler.connecteds.Add(Idler);
+			ShowIdler.connecteds.Add(idles);
+			#endregion
 
 
 			head.connecteds.Add(stunSeq);
+			head.connecteds.Add(SectionRange);
 			head.connecteds.Add(normalATK);
 		    head.connecteds.Add(ShowIdler);
 		    head.connecteds.Add(Moved);
