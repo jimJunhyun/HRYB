@@ -88,28 +88,22 @@ public class MooseAI : AISetter
 
 			#endregion
 
+
 			#region Noramled
 			IsInRange DetectedRange = new IsInRange(self, player.transform, this.OutSectionRanged, null, () =>
 			{
-				if (_isFind)
-					_moveModule.SetTarget(player.transform);
-			});
+				Vector3 dir = (self.transform.position - player.transform.position);
+				if (SectionRanged() * SectionRanged() < dir.sqrMagnitude)
+					_isFind = true;
+
+				if(_isFind)
+				_moveModule.SetTarget(player.transform);
+			});	
 			Mover move = new Mover(self);
 
 			Sequencer Moved = new Sequencer();
 			Moved.connecteds.Add(DetectedRange);
 			Moved.connecteds.Add(move);
-
-
-			IsInRange SectionRange = new IsInRange(self, player.transform, this.SectionRanged, null, () =>
-			{
-				_isFind = true;
-
-			});
-			Sequencer Detected = new Sequencer();
-			Detected.connecteds.Add(SectionRange);
-
-
 
 			IsOutRange LongaRange = new IsOutRange(self, player.transform, OutSectionRanged, null, () =>
 			{
@@ -136,7 +130,6 @@ public class MooseAI : AISetter
 
 
 			head.connecteds.Add(stunSeq);
-			head.connecteds.Add(SectionRange);
 			head.connecteds.Add(normalATK);
 		    head.connecteds.Add(ShowIdler);
 		    head.connecteds.Add(Moved);

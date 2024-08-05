@@ -12,7 +12,7 @@ public class ChangGwiAI : AISetter
 	[Header("탐색 범위")][SerializeField] public float _sectionRange = 10f;
 	[Header("초기화 범위")][SerializeField] public float _section2Range = 15f;
 
-
+	bool _isFind = false;
 
 	private const string NormalAttack = "NormallAtt";
 	private const string DashAttack = "DashAtt";
@@ -107,22 +107,28 @@ public class ChangGwiAI : AISetter
 
 		#endregion
 
-		IsInRange SectionRange = new IsInRange(self, player.transform, this.SectionRanged, null, () =>
+
+		#region Noramled
+		IsInRange DetectedRange = new IsInRange(self, player.transform, this.OutSectionRanged, null, () =>
 		{
+			Vector3 dir = (self.transform.position - player.transform.position);
+			if (SectionRanged() * SectionRanged() < dir.sqrMagnitude)
+				_isFind = true;
 
-			_moveModule.SetTarget(player.transform);
-
-
+			if(_isFind)
+				_moveModule.SetTarget(player.transform);
 		});
 		Mover move = new Mover(self);
 
 		Sequencer Moved = new Sequencer();
-		Moved.connecteds.Add(SectionRange);
+		Moved.connecteds.Add(DetectedRange);
 		Moved.connecteds.Add(move);
 
 		IsOutRange LongaRange = new IsOutRange(self, player.transform, OutSectionRanged, null, () =>
 		{
 			_moveModule.StopMove();
+			_isFind = false;
+
 		});
 		IsInRange Idler = new IsInRange(self, player.transform, Attackrange, null, () =>
 		{
@@ -139,6 +145,7 @@ public class ChangGwiAI : AISetter
 
 		ShowIdler.connecteds.Add(Idler);
 		ShowIdler.connecteds.Add(idles);
+		#endregion
 
 		head.connecteds.Add(stunSeq);
 		//head.connecteds.Add(dashSeq);
