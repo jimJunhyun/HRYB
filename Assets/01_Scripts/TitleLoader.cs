@@ -23,22 +23,27 @@ public class TitleLoader : MonoBehaviour
 		canvasGroup.alpha = 0f;
 	}
 
-	public void FadeInOut(string text, float time)
+	public void FadeStop()
+	{
+		StopAllCoroutines();
+		isFade = false;
+		titleText.text = "";
+	}
+
+	public void FadeInOut(string text, float fadeIn = 0.8f, float fadeOut = 0.8f, float holdTime = 1f)
 	{
 		if (isFade) return;
-
-		fadeInOutTime = time;
 		isFade = true;
 		titleText.text = text;
 
 		GameManager.instance.audioPlayer.PlayPoint("TextOn", transform.position);
 
-		StartCoroutine(FadeInOutRoutine());
+		StartCoroutine(FadeInOutRoutine(fadeIn, fadeOut,holdTime));
 	}
 
-	IEnumerator FadeInOutRoutine()
+	IEnumerator FadeInOutRoutine(float fadeIn, float fadeOut, float holdTime)
 	{
-		float elapsedTime = 0f;
+		float elapsedTime = fadeIn;
 
 		// Fade In
 		while (elapsedTime <= fadeInOutTime)
@@ -51,10 +56,10 @@ public class TitleLoader : MonoBehaviour
 		canvasGroup.alpha = 1f;
 
 		// Wait for a moment
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(holdTime);
 
 		// Fade Out
-		elapsedTime = fadeInOutTime; // Reset elapsed time for fade out
+		elapsedTime = fadeOut; // Reset elapsed time for fade out
 		while (elapsedTime >= 0f)
 		{
 			elapsedTime -= Time.deltaTime;

@@ -18,6 +18,8 @@ public class BearAI : AISetter
 	const string NormalAttack = "Normal";
 	const string EXAttack = "EX";
 	const string EX2Attack = "EX2";
+
+	bool _isFind = false;
 	public float Attackrange()
 	{
 		return _attackRange;
@@ -159,30 +161,42 @@ public class BearAI : AISetter
 
 
 			#endregion
-			
-			
-			#region Normal
-			IsInRange SectionRange = new IsInRange(self, player.transform, this.SectionRanged, null, () =>
+
+
+			#region Noramled
+			IsInRange DetectedRange = new IsInRange(self, player.transform, this.OutSectionRanged, null, () =>
 			{
-
-				_moveModule.SetTarget(player.transform);
-
-
+				if (_isFind)
+					_moveModule.SetTarget(player.transform);
 			});
 			Mover move = new Mover(self);
 
 			Sequencer Moved = new Sequencer();
-			Moved.connecteds.Add(SectionRange);
+			Moved.connecteds.Add(DetectedRange);
 			Moved.connecteds.Add(move);
+
+
+			IsInRange SectionRange = new IsInRange(self, player.transform, this.SectionRanged, null, () =>
+			{
+				_isFind = true;
+
+			});
+			Sequencer Detected = new Sequencer();
+			Detected.connecteds.Add(SectionRange);
+
+
 
 			IsOutRange LongaRange = new IsOutRange(self, player.transform, OutSectionRanged, null, () =>
 			{
 				_moveModule.StopMove();
+				_isFind = false;
+
 			});
 			IsInRange Idler = new IsInRange(self, player.transform, Attackrange, null, () =>
 			{
 				_moveModule.StopMove();
 			});
+
 			Idler idles = new Idler(self);
 
 			Sequencer Faridler = new Sequencer();
@@ -193,11 +207,11 @@ public class BearAI : AISetter
 
 			ShowIdler.connecteds.Add(Idler);
 			ShowIdler.connecteds.Add(idles);
-
 			#endregion
 
 			head.connecteds.Add(grogeSeq);
 			head.connecteds.Add(stunSeq);
+			head.connecteds.Add(SectionRange);
 			head.connecteds.Add(ex2Atk);
 			head.connecteds.Add(exAtk);
 			head.connecteds.Add(normalATK);

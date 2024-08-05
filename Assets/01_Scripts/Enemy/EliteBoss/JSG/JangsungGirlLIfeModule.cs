@@ -80,6 +80,10 @@ public class JangsungGirlLifeModule : LifeModule
 			{
 				_isBarrier = false;
 				// 대충 베리어 이팩트 같은거 터지게 만들기
+
+				GameManager.instance.loader.FadeStop();
+				GameManager.instance.loader.FadeInOut("보호막이 파괴되었습니다.", 0.8f, 0.8f, 0.4f);
+
 				JangsungGirlAttack a = self.atk as JangsungGirlAttack;
 				a.OnAnimationEnd(null);
 

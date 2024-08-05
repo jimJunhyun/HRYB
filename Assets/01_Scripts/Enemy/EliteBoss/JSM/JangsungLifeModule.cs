@@ -51,8 +51,13 @@ public class JangsungLifeModule : LifeModule
 
 	public void BarrierOff()
 	{
-		_isBarrier = false;
-		if(_objs != null )
+		if(_isBarrier==true)
+		{
+
+			_isBarrier = false;
+		}
+
+		if (_objs != null )
 		{
 			Destroy(_objs);
 		}
