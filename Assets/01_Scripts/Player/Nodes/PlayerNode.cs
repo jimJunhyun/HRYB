@@ -87,7 +87,9 @@ public class PlayerNode : ScriptableObject
 			 		onLearn?.Invoke();
 			 		break;
 				case StatUpgradeType.LearnSkill:
-					//????????????????
+					//$로구분하자.
+					string[] skills = amt.Split('$');
+					amt = skills[1];
 					SkillRoot sk = GameManager.instance.saver.skillLoader.GetHumanSkill(amt);
 					if(sk == null)
 					{
@@ -95,8 +97,22 @@ public class PlayerNode : ScriptableObject
 					}
 					if(sk == null)
 						break;
-					//스킬을 꽂느냐 배우게 하느냐
-					
+					//스킬을 꽂는다.
+					switch (skills[0])
+					{
+						case "Q":
+							//#######################
+							break;
+						case "E":
+							break;
+						case "R":
+							break;
+						case "RMB":
+							break;
+
+						default:
+							break;
+					}
 					break;
 			 	default:
 					if (percentage)
