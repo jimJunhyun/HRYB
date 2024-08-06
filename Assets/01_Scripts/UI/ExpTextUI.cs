@@ -21,7 +21,7 @@ public class ExpTextUI : MonoBehaviour
 
 		
 		bool b = GameManager.GetGlobalSB(out System.Text.StringBuilder sb);
-		sb.Append("<#000000>내공 : </color><#555555>");
+		sb.Append("<#ffffff>내공 : </color><#00dd00>");
 		sb.Append(GameManager.instance.pinven.currentExp);
 		sb.Append("</color>\n");
 		txt.text = sb.ToString();
