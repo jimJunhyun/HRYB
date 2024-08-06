@@ -149,7 +149,7 @@ public class PlayerLife : LifeModule
 			GameManager.instance.qManager.currentAbleQuest[i].ResetQuestStartTime(CompletionAct.CountSecond);
 		}
 
-		GameManager.instance.DisableCtrl();
+		GameManager.instance.DisableCtrlTimeline();
 		StartCoroutine(DieTel());
 		
 
@@ -191,7 +191,7 @@ public class PlayerLife : LifeModule
 		}
 		yy.black.ResetCompletely();
 		yy.white.ResetCompletely();
-		GameManager.instance.EnableCtrl();
+		GameManager.instance.EnableCtrlTimeline();
 	}
 
 	IEnumerator FadeInOutRoutine()
