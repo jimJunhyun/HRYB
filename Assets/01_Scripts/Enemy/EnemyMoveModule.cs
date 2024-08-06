@@ -76,24 +76,36 @@ public class EnemyMoveModule : MoveModule
 	{
 		_isMove = true;
 
+
+
+		if (Agent.remainingDistance > 0)
+			self.anim.SetMoveState(true);
+		
+
 		if (_isMove == true && _target != null && agent.enabled == true)
 		{
 
-			self.anim.SetMoveState(true);
 			UnityEngine.AI.NavMesh.SamplePosition(_target.transform.position, out UnityEngine.AI.NavMeshHit hit, 1f, UnityEngine.AI.NavMesh.AllAreas);
 			agent.SetDestination(hit.position);
 		}
 		else
 		{
-			self.anim.SetMoveState(false);
 			StopMove();
+			
+			self.anim.SetMoveState(false);
 		}
 	}
 
 	public override void FixedUpdate()
 	{
+		if (Agent.enabled == true && Agent.remainingDistance < 0)
+		{
+			self.anim.SetMoveState(false);
+			StopMove();
+		}
 
-		if(GetActor().life.isDead == false)
+
+		if (GetActor().life.isDead == false)
 		{
 			ForceCalc();
 			GravityCalc();

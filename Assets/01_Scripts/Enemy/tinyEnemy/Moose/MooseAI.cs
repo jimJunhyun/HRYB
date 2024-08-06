@@ -7,9 +7,6 @@ public class MooseAI : BasicAI
 	
 	[Header("공격 시작 범위")] [SerializeField] public float _attackRange = 4f;
 
-
-
-	bool _isFind = false;
 	public override void DieEvent(float delay = 0, float time = 3)
 	{
 		//self.anim.ResetStatus();
@@ -30,7 +27,7 @@ public class MooseAI : BasicAI
 	    
 	    if (_isWake)
 	    {
-			IsNotStarted = true;
+
 			self.anim.SetIdleState(true);
 			self.life._hitEvent += _moveModule.StopMove;
 			self.life._dieEvent += () => { DieEvent(); };
@@ -75,7 +72,7 @@ public class MooseAI : BasicAI
 			head.connecteds.Add(stunSeq);
 			head.connecteds.Add(normalATK);
 
-			base.StartInvoke();
+			STSetting();
 
 
 		    //_moveModule.StopMove();
@@ -86,5 +83,4 @@ public class MooseAI : BasicAI
 	    }
 	    
     }
-
 }

@@ -36,7 +36,6 @@ public class WolfAI : BasicAI
 
 	    if (_isWake)
 	    {
-			IsNotStarted = true;
 			self.anim.SetIdleState(true);
 			self.life._dieEvent += () => { DieEvent(); };
 
@@ -83,7 +82,7 @@ public class WolfAI : BasicAI
 			head.connecteds.Add(stunSeq);
 		    head.connecteds.Add(normalATK);
 
-			base.StartInvoke();
+			STSetting();
 			//_moveModule.StopMove();
 		}
 	    else
@@ -94,7 +93,7 @@ public class WolfAI : BasicAI
 
 
     }
-    
 
-    
+
+
 }
