@@ -40,7 +40,7 @@ public class ChangGwiAI : BasicAI
 		ChangGwiMoveModule _moveModule = self.move as ChangGwiMoveModule;
 
 
-		IsNotStarted = true;
+
 		self.anim.SetIdleState(true);
 		self.life._dieEvent += () => { DieEvent(); };
 		self.life._hitEvent += _moveModule.StopMove;
@@ -110,7 +110,7 @@ public class ChangGwiAI : BasicAI
 		head.connecteds.Add(stunSeq);
 		//head.connecteds.Add(dashSeq);
 		head.connecteds.Add(normalATK);
-		base.StartInvoke();
+		STSetting();
 	}
 
 	protected override void UpdateInvoke()
@@ -137,16 +137,5 @@ public class ChangGwiAI : BasicAI
 	{
 		return _dashAttackRange;
 	}
-
-	public float SectionRanged()
-	{
-		return _sectionRange;
-	}
-
-	public float OutSectionRanged()
-	{
-		return _section2Range;
-	}
-
 
 }

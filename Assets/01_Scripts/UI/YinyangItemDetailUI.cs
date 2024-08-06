@@ -27,6 +27,8 @@ public class YinyangItemDetailUI : MonoBehaviour
 
 	Transform content;
 
+	TextMeshProUGUI abilityTxt;
+
 	public const string MAKABLEITEM = "GettableItem";
 	private void Awake()
 	{
@@ -77,6 +79,11 @@ public class YinyangItemDetailUI : MonoBehaviour
 		{
 			maskGroup = transform.Find("Right Section/Frame 1/StatBack/MaskGroup").gameObject;
 		}
+		if(abilityTxt == null)
+		{
+			abilityTxt = transform.Find("Right Section/Frame 3/ExpBack/Viewport/EffTxts").GetComponent<TextMeshProUGUI>();
+		}
+
 
 		if (item == null)
 		{
@@ -99,6 +106,14 @@ public class YinyangItemDetailUI : MonoBehaviour
 		statPolygon.SetVerticesDirty();
 		moistGauge.fillAmount = ((YinyangItem)item.myItem).detailParams[DetailParameter.Moist];
 		poisonGauge.fillAmount = ((YinyangItem)item.myItem).detailParams[DetailParameter.Poison];
+		if(item.myItem is Medicines m && m.onUse != null)
+		{
+			abilityTxt.text = m.onUse.ToString();
+		}
+		else
+		{
+			abilityTxt.text = "없음";
+		}
 
 		foreach (Item i in item.ResultItems)
 		{

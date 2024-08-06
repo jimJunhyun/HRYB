@@ -36,7 +36,6 @@ public class BearAI : BasicAI
 			self.life._dieEvent += () => { DieEvent(); };
 			self.life._hitEvent += _moveModule.StopMove;
 
-			IsNotStarted = true;
 			self.anim.SetIdleState(true);
 
 			GrogeNode _isGroge = new GrogeNode(self);
@@ -147,7 +146,7 @@ public class BearAI : BasicAI
 			head.connecteds.Add(exAtk);
 			head.connecteds.Add(normalATK);
 
-			base.StartInvoke();
+			STSetting();
 
 
 
@@ -159,5 +158,4 @@ public class BearAI : BasicAI
 
 
 	}
-
 }
