@@ -11,7 +11,8 @@ public class GetItemBack : MonoBehaviour
 
 	public Item item;
 	public int count;
-
+	public bool isNew = true;
+	public GameObject newTag;
 	Image img;
 	TextMeshProUGUI text;
 	TextMeshProUGUI cntText;
@@ -41,6 +42,14 @@ public class GetItemBack : MonoBehaviour
 		if (cntText == null)
 		{
 			cntText = transform.Find("Count").GetComponent<TextMeshProUGUI>();
+		}
+		if ((item is YinyangItem yy && GameManager.instance.saver.pedia.materialCollections[yy].discoverCount <= 0) || (item is Medicines m && GameManager.instance.saver.pedia.medicineCollections[m].discoverCount <= 0))
+		{
+			newTag.SetActive(true);
+		}
+		else
+		{
+			newTag.SetActive(false);
 		}
 
 		img.sprite = i.icon;
