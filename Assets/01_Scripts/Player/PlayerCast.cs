@@ -126,12 +126,12 @@ public class WXSkillSlots
 
 	SkillSlots[] slots = new SkillSlots[(int)SkillSlotInfo.Max];
 
-	public void Update()
+	public void Update(float cdrSpd)
 	{
 		for (int i = 0; i < ((int)SkillSlotInfo.Max); i++)
 		{
 			if(!slots[i].IsEmpty && slots[i].skInfo.useType != SkillUseType.Passive && !slots[i].IsUsable)
-				slots[i].CurCooledTime += Time.deltaTime;
+				slots[i].CurCooledTime += Time.deltaTime * (1 / cdrSpd);
 			slots[i].skInfo?.UpdateStatus();
 		}
 	}
@@ -176,6 +176,7 @@ public class PlayerCast : CastModule
 	private SkillRoot _nowSkillUse= null;
 	public SkillRoot NowSkillUse => _nowSkillUse;
 
+	public ModuleController cooldownModuleStat = new ModuleController(false);
 
 	private void Awake()
 	{
@@ -190,18 +191,8 @@ public class PlayerCast : CastModule
 		//Q, E, 1(R) 을 사용할것이다...........
 
 		ConnectSkillDataTo(GameManager.instance.saver.skillLoader.GetHumanSkill("HumanNormal"), SkillSlotInfo.LClick, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.instance.saver.skillLoader.GetHumanSkill("ChargeBowAttack"), SkillSlotInfo.RClick, PlayerForm.Magic);
-
-		ConnectSkillDataTo(GameManager.instance.saver.skillLoader.GetHumanSkill("MasterSpark"), SkillSlotInfo.One, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.instance.saver.skillLoader.GetHumanSkill("LightingDown"), SkillSlotInfo.Q, PlayerForm.Magic);
-		ConnectSkillDataTo(GameManager.instance.saver.skillLoader.GetHumanSkill("StarDust"), SkillSlotInfo.E, PlayerForm.Magic);
 		
 		ConnectSkillDataTo(GameManager.instance.saver.skillLoader.GetYohoSkill("YohoNormalAttack"), SkillSlotInfo.LClick, PlayerForm.Yoho);
-		ConnectSkillDataTo(GameManager.instance.saver.skillLoader.GetYohoSkill("YohoGrab"), SkillSlotInfo.RClick, PlayerForm.Yoho);
-
-		ConnectSkillDataTo(GameManager.instance.saver.skillLoader.GetYohoSkill("SkyBritgh"), SkillSlotInfo.Q, PlayerForm.Yoho);
-		ConnectSkillDataTo(GameManager.instance.saver.skillLoader.GetYohoSkill("YohoSharpnessAtt"), SkillSlotInfo.E, PlayerForm.Yoho);
-		ConnectSkillDataTo(GameManager.instance.saver.skillLoader.GetYohoSkill("YusungSmith"), SkillSlotInfo.One, PlayerForm.Yoho);
 		
 
 		// YohoNormalAttack
@@ -521,7 +512,7 @@ public class PlayerCast : CastModule
 
 	private void Update()
 	{
-		nowSkillSlot.Update();
+		nowSkillSlot.Update(cooldownModuleStat.Speed);
 	}
 
 	void UpdateClickSlots()

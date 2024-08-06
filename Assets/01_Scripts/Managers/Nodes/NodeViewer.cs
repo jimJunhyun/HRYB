@@ -10,7 +10,8 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 
 	public float circleRadiusScaler;
 
-	List<List<PlayerNode>> allNodes;
+	List<NodeUI> allNodeUIs = new List<NodeUI>();
+	List<NodeLineUI> allNodeLines = new List<NodeLineUI>();
 
 	GameObject nodeSelection;
 	List<GameObject> partedNode;
@@ -56,9 +57,13 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 		nodeLearner = transform.Find("NodeLearnWindow").GetComponent<NodeLearnUI>();
 		viewport = transform.Find("NodeBgnd/Viewport");
 		exp = transform.Find("EXPText").GetComponent<ExpTextUI>();
+		stt = transform.Find("StatText").GetComponent<StatTxtUI>();
 
 		offPos = viewport.position;
 		onPos = offPos + Vector3.left * VIEWPORTOFFSET;
+
+		GetComponentsInChildren<NodeLineUI>(allNodeLines);
+		GetComponentsInChildren<NodeUI>(allNodeUIs);
 	}
 
 	private void Start()
@@ -169,7 +174,7 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 			if (curSelected != null)
 			{
 				curSelected.BrushStroke();
-				Debug.Log(node.name + " 선택됨!!!!!!!11");
+				//Debug.Log(node.name + " 선택됨!!!!!!!11");
 			}
 		}
 	}
@@ -216,5 +221,15 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 	{
 		exp.DoRefresh();
 		stt.DoRefresh();
+
+		for (int i = 0; i < allNodeUIs.Count; i++)
+		{
+			allNodeUIs[i].Refresh();
+		}
+		for (int i = 0; i < allNodeLines.Count; i++)
+		{
+
+			allNodeLines[i].Refresh();
+		}
 	}
 }
