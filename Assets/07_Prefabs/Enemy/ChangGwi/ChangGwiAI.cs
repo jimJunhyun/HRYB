@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChangGwiAI : AISetter
+public class ChangGwiAI : BasicAI
 {
 
 	[Header("공격 시작 범위")]
@@ -108,53 +108,12 @@ public class ChangGwiAI : AISetter
 		#endregion
 
 
-		#region Noramled
-		IsInRange DetectedRange = new IsInRange(self, player.transform, this.OutSectionRanged, null, () =>
-		{
-			Vector3 dir = (self.transform.position - player.transform.position);
-			if (SectionRanged() * SectionRanged() < dir.sqrMagnitude)
-				_isFind = true;
 
-			if(_isFind)
-				_moveModule.SetTarget(player.transform);
-		});
-		Mover move = new Mover(self);
-
-		Sequencer Moved = new Sequencer();
-		Moved.connecteds.Add(DetectedRange);
-		Moved.connecteds.Add(move);
-
-		IsOutRange LongaRange = new IsOutRange(self, player.transform, OutSectionRanged, null, () =>
-		{
-			_moveModule.StopMove();
-			_isFind = false;
-
-		});
-		IsInRange Idler = new IsInRange(self, player.transform, Attackrange, null, () =>
-		{
-			_moveModule.StopMove();
-		});
-
-		Idler idles = new Idler(self);
-
-		Sequencer Faridler = new Sequencer();
-		Faridler.connecteds.Add(LongaRange);
-		Faridler.connecteds.Add(idles);
-
-		Sequencer ShowIdler = new Sequencer();
-
-		ShowIdler.connecteds.Add(Idler);
-		ShowIdler.connecteds.Add(idles);
-		#endregion
 
 		head.connecteds.Add(stunSeq);
 		//head.connecteds.Add(dashSeq);
 		head.connecteds.Add(normalATK);
-		head.connecteds.Add(ShowIdler);
-		head.connecteds.Add(Moved);
-		head.connecteds.Add(Faridler);
-
-		StartExamine();
+		base.StartInvoke();
 	}
 
 	protected override void UpdateInvoke()

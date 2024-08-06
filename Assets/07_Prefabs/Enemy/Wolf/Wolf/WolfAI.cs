@@ -4,32 +4,10 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class WolfAI : AISetter
+public class WolfAI : BasicAI
 {
 	[Header("IsWake")] [SerializeField] private bool _isWake;
-	bool _isFind = false;
-	
-	
-	[Header("공격 시작 범위")]
-	[SerializeField] public float _attackRange = 2f;
 
-	[Header("탐색 범위")] [SerializeField] public float _sectionRange = 10f;
-	[Header("초기화 범위")] [SerializeField] public float _section2Range = 15f;
-	public float Attackrange()
-	{
-		return _attackRange;
-	}
-
-	public float SectionRanged()
-	{
-		return _sectionRange;
-	}
-	
-	public float OutSectionRanged()
-   	{
-   		return _section2Range;
-   	}
-	
 	private const string NormalAttack = "normallAtt";
 	
 
@@ -56,14 +34,13 @@ public class WolfAI : AISetter
 	    head.connecteds.Clear();
 
 	    Wolf_normalAttackModule _atkModule = self.atk as Wolf_normalAttackModule;
-	    WolfMoveModule _moveModule = self.move as WolfMoveModule;
 
 	    if (_isWake)
 	    {
 			IsNotStarted = true;
 			self.anim.SetIdleState(true);
 			self.life._dieEvent += () => { DieEvent(); };
-			self.life._hitEvent += _moveModule.StopMove;
+
 
 			StunNode _ishaveStun = new StunNode(self, () =>
 		    {
@@ -78,14 +55,12 @@ public class WolfAI : AISetter
 
 		    Waiter _normalAtt = new Waiter(1.5f);
 		    
-		    IsInRange noramlRange = new IsInRange(self, player.transform, Attackrange, null, () =>
+		    IsInRange noramlRange = new IsInRange(self, player.transform, MoveRange, null, () =>
 		    {
 
 				_normalAtt.StartReady();
 				_atkModule.SetAttackType(NormalAttack);
 				_moveModule.StopMove();
-			    
-
 		    });
 		    
 		    Attacker normalAttack = new Attacker(self, () =>
@@ -103,58 +78,22 @@ public class WolfAI : AISetter
 
 			#endregion
 
-			#region Noramled
-			IsInRange DetectedRange = new IsInRange(self, player.transform, this.OutSectionRanged, null, () =>
-			{
-				Vector3 dir = (self.transform.position - player.transform.position);
-				if (SectionRanged() * SectionRanged() < dir.sqrMagnitude)
-					_isFind = true;
-				if(_isFind)
-					_moveModule.SetTarget(player.transform);
-			});
-			Mover move = new Mover(self);
-
-			Sequencer Moved = new Sequencer();
-			Moved.connecteds.Add(DetectedRange);
-			Moved.connecteds.Add(move);
-
-		    IsOutRange LongaRange = new IsOutRange(self, player.transform, OutSectionRanged, null, () =>
-			{
-				_moveModule.StopMove();
-				_isFind = false;
-
-			});
-		    IsInRange Idler = new IsInRange(self, player.transform, Attackrange, null, () =>
-		    {
-			    _moveModule.StopMove();
-		    });
-
-		    Idler idles = new Idler(self);
-
-		    Sequencer Faridler = new Sequencer();
-		    Faridler.connecteds.Add(LongaRange);
-		    Faridler.connecteds.Add(idles);
-
-		    Sequencer ShowIdler = new Sequencer();
-
-		    ShowIdler.connecteds.Add(Idler);
-		    ShowIdler.connecteds.Add(idles);
-			#endregion
+			
 
 
 			head.connecteds.Add(stunSeq);
 		    head.connecteds.Add(normalATK);
-		    head.connecteds.Add(ShowIdler);
-		    head.connecteds.Add(Moved);
-		    head.connecteds.Add(Faridler);
 
-
-		    //_moveModule.StopMove();
-	    }
+			base.StartInvoke();
+			//_moveModule.StopMove();
+		}
 	    else
 	    {
 		    self.anim.SetBoolModify("Sleep", true);
 	    }
+
+
+
     }
     
 

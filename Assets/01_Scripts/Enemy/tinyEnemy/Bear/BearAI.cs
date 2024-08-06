@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BearAI : AISetter
+public class BearAI : BasicAI
 {
 	[Header("IsWake")][SerializeField] private bool _isWake;
 
@@ -10,36 +10,15 @@ public class BearAI : AISetter
 	[Header("공격 시작 범위")][SerializeField] public float _attackRange = 4f;
 	[Header("특수 공격1 시작 범위")][SerializeField] public float _exAttackRange = 12f;
 
-	
-	
-	[Header("탐색 범위")][SerializeField] public float _sectionRange = 10f;
-	[Header("초기화 범위")][SerializeField] public float _section2Range = 15f;
-
 	const string NormalAttack = "Normal";
 	const string EXAttack = "EX";
 	const string EX2Attack = "EX2";
 
-	bool _isFind = false;
-	public float Attackrange()
-	{
-		return _attackRange;
-	}
 	
 	public float EX1Attackrange()
 	{
 		return _exAttackRange;
 	}
-
-	public float SectionRanged()
-	{
-		return _sectionRange;
-	}
-
-	public float OutSectionRanged()
-	{
-		return _section2Range;
-	}
-
 	public override void DieEvent(float delay = 0, float time = 3)
 	{
 		//self.anim.ResetStatus();
@@ -82,7 +61,7 @@ public class BearAI : AISetter
 			#region 기본공격
 
 			Waiter _normalAtt = new Waiter(5f);
-			IsInRange noramlRange = new IsInRange(self, player.transform, Attackrange, null, () =>
+			IsInRange noramlRange = new IsInRange(self, player.transform, MoveRange, null, () =>
 			{
 
 				_normalAtt.StartReady();
@@ -110,7 +89,7 @@ public class BearAI : AISetter
 
 			#region 특수2 공격
 			Waiter _ex2Wait = new Waiter(7f);
-			IsInRange ex2Range = new IsInRange(self, player.transform, Attackrange, null, () =>
+			IsInRange ex2Range = new IsInRange(self, player.transform, MoveRange, null, () =>
 			{
 
 				_ex2Wait.StartReady();
@@ -164,53 +143,15 @@ public class BearAI : AISetter
 
 
 
-			#region Noramled
-			IsInRange DetectedRange = new IsInRange(self, player.transform, this.OutSectionRanged, null, () =>
-			{
-				Vector3 dir = (self.transform.position - player.transform.position);
-				if (SectionRanged() * SectionRanged() < dir.sqrMagnitude)
-					_isFind = true;
-
-				if(_isFind)
-					_moveModule.SetTarget(player.transform);
-			});
-			Mover move = new Mover(self);
-
-			Sequencer Moved = new Sequencer();
-			Moved.connecteds.Add(DetectedRange);
-			Moved.connecteds.Add(move);
-
-			IsOutRange LongaRange = new IsOutRange(self, player.transform, OutSectionRanged, null, () =>
-			{
-				_moveModule.StopMove();
-				_isFind = false;
-
-			});
-			IsInRange Idler = new IsInRange(self, player.transform, Attackrange, null, () =>
-			{
-				_moveModule.StopMove();
-			});
-
-			Idler idles = new Idler(self);
-
-			Sequencer Faridler = new Sequencer();
-			Faridler.connecteds.Add(LongaRange);
-			Faridler.connecteds.Add(idles);
-
-			Sequencer ShowIdler = new Sequencer();
-
-			ShowIdler.connecteds.Add(Idler);
-			ShowIdler.connecteds.Add(idles);
-			#endregion
+			
 
 			head.connecteds.Add(grogeSeq);
 			head.connecteds.Add(stunSeq);
 			head.connecteds.Add(ex2Atk);
 			head.connecteds.Add(exAtk);
 			head.connecteds.Add(normalATK);
-			head.connecteds.Add(ShowIdler);
-			head.connecteds.Add(Moved);
-			head.connecteds.Add(Faridler);
+
+			base.StartInvoke();
 
 
 
