@@ -632,8 +632,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveDir: {x: 0, y: 0, z: 0}
-  initRunSpeed: 2.7
-  initWalkSpeed: 2.7
+  initRunSpeed: 2.2
+  initWalkSpeed: 2.2
   initCrouchSpeed: 0
   gravity: 1
   groundThreshold: 0.5
@@ -653,10 +653,12 @@ MonoBehaviour:
   _player: {fileID: 0}
   _skinned: {fileID: 7465122171287720004}
   IsNotStarted: 0
-  _attackRange: 2
-  _dashAttackRange: 8
+  _isWake: 0
+  _moveRange: 2
   _sectionRange: 10
   _section2Range: 11
+  _attackRange: 2
+  _dashAttackRange: 8
 --- !u!114 &-4404633669057544629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -748,8 +750,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isImmune: 0
-  initBlack: 1000
-  initWhite: 1000
+  initBlack: 750
+  initWhite: 750
   initAdeBlack: 1.5
   initAdeWhite: 0.8
   regenThreshold: 10
