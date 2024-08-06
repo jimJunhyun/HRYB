@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2859374014158044347}
-  - component: {fileID: 8974769756453175852}
+  - component: {fileID: 2752415183260991101}
+  - component: {fileID: 6014668630536893827}
   m_Layer: 0
   m_Name: House_With_Wooden_Floored_Room_03
   m_TagString: Untagged
@@ -58,8 +59,8 @@ Transform:
   - {fileID: 2724727478544201741}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &8974769756453175852
-MeshCollider:
+--- !u!65 &2752415183260991101
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -76,10 +77,30 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 3
+  m_Size: {x: 2.6018863, y: 2.8898315, z: 5.3089943}
+  m_Center: {x: -0.000000025885843, y: 1.4449158, z: 0.105138876}
+--- !u!65 &6014668630536893827
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230784734462923547}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.709751, y: 2.65773, z: 6.2059445}
+  m_Center: {x: 0, y: 3.1011353, z: 0}
 --- !u!1 &877869624079583675
 GameObject:
   m_ObjectHideFlags: 0
