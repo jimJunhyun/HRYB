@@ -20,7 +20,7 @@ public abstract class BasicAI : AISetter
 
 	private void Awake()
 	{
-		_moveModule = self.move as EnemyMoveModule;
+		_moveModule = GetComponent<EnemyMoveModule>();
 	}
 
 
