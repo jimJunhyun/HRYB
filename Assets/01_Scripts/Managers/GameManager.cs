@@ -375,13 +375,13 @@ public class GameManager : MonoBehaviour
 		
 		minimap = GameObject.Find("MinimapManager").GetComponent<MinimapManager>();
 
-#if UNITY_EDITOR
-		saver = GameObject.Find("PreservedDataManager_EDITOR").GetComponent<PreservedDataManager>();
-		saver.imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
-		saver.pManager = GameObject.Find("PrefabManager").GetComponent<PrefabManager>();
-#else
+//#if UNITY_EDITOR
+//		saver = GameObject.Find("PreservedDataManager_EDITOR").GetComponent<PreservedDataManager>();
+//		saver.imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
+//		saver.pManager = GameObject.Find("PrefabManager").GetComponent<PrefabManager>();
+//#else
 		saver = GameObject.Find("PreservedDataManager").GetComponent<PreservedDataManager>();
-#endif
+//#endif
 
 		saver.lastSave = -1;
 		loader = GameObject.Find("TitleLoad").GetComponent<TitleLoader>();
@@ -393,16 +393,16 @@ public class GameManager : MonoBehaviour
 			timelines.Add(p[i].name, p[i]);
 		}
 
-#if UNITY_EDITOR
-		StartCoroutine(InitializeAll());
-#endif
+//#if UNITY_EDITOR
+//		StartCoroutine(InitializeAll());
+//#endif
 	}
 
 	private void Start()
 	{
-#if !UNITY_EDITOR
+//#if !UNITY_EDITOR
 		(pActor.cast as PlayerCast).DoInitialize();
-#endif
+//#endif
 		audioPlayer.PlayBgm(NORMALBGM);
 
 		

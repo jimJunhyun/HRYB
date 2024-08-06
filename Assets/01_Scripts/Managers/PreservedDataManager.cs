@@ -16,15 +16,22 @@ public class PreservedDataManager : MonoBehaviour
 	public ItemPedia pedia;
 	public SkillLoader skillLoader;
 
+	public bool isEditor = false;
+
 	public static PreservedDataManager instance;
 
 	bool loadEnd = false;
 	float loadAmount;
 	Slider loadBar;
 
-#if !UNITY_EDITOR
+//#if !UNITY_EDITOR
 	private void Awake()
 	{
+//#if !UNITY_EDITOR
+		if(isEditor)
+			return;
+//#endif
+
 		if(PreservedDataManager.instance == null)
 		{
 			instance = this;
@@ -33,7 +40,10 @@ public class PreservedDataManager : MonoBehaviour
 		imageManager = GameObject.Find("ImageManager").GetComponent<ImageManager>();
 		pManager = GameObject.Find("PrefabManager").GetComponent<PrefabManager>();
 
-		loadBar = GameObject.Find("LoadingBar").GetComponent<Slider>();
+		if(loadBar == null)
+		{
+			loadBar = GameObject.Find("LoadingBar").GetComponent<Slider>();
+		}
 
 		DontDestroyOnLoad(gameObject);
 
@@ -42,6 +52,10 @@ public class PreservedDataManager : MonoBehaviour
 
 	private void OnEnable()
 	{
+//#if !UNITY_EDITOR
+		if(isEditor)
+			return;
+//#endif
 		loadEnd = false;
 		loadAmount = 0;
 		RefreshLoadBar();
@@ -122,5 +136,5 @@ public class PreservedDataManager : MonoBehaviour
 		op.allowSceneActivation = true;
 		Debug.Log("로드 다했다...!");
 	}
-#endif
+//#endif
 }
