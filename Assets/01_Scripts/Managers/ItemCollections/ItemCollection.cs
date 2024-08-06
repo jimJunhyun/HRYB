@@ -41,6 +41,10 @@ public class ItemCollection
 	public void Discover()
 	{
 		discoverCount += 1;
+		if(discoverCount == 1)
+		{
+			GameManager.instance.pinven.AddExp(1000);
+		}
 	}
 
 	public void UsedWithData(HashSet<ProcessType> data)
