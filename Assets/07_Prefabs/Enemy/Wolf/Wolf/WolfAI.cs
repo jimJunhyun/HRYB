@@ -106,6 +106,9 @@ public class WolfAI : AISetter
 			#region Noramled
 			IsInRange DetectedRange = new IsInRange(self, player.transform, this.OutSectionRanged, null, () =>
 			{
+				Vector3 dir = (self.transform.position - player.transform.position);
+				if (SectionRanged() * SectionRanged() < dir.sqrMagnitude)
+					_isFind = true;
 				if(_isFind)
 					_moveModule.SetTarget(player.transform);
 			});
@@ -114,17 +117,6 @@ public class WolfAI : AISetter
 			Sequencer Moved = new Sequencer();
 			Moved.connecteds.Add(DetectedRange);
 			Moved.connecteds.Add(move);
-
-
-			IsInRange SectionRange = new IsInRange(self, player.transform, this.SectionRanged, null, () =>
-		    {
-				_isFind = true;
-
-		    });
-			Sequencer Detected = new Sequencer();
-			Detected.connecteds.Add(SectionRange);
-
-
 
 		    IsOutRange LongaRange = new IsOutRange(self, player.transform, OutSectionRanged, null, () =>
 			{
@@ -148,8 +140,9 @@ public class WolfAI : AISetter
 		    ShowIdler.connecteds.Add(Idler);
 		    ShowIdler.connecteds.Add(idles);
 			#endregion
+
+
 			head.connecteds.Add(stunSeq);
-			head.connecteds.Add(SectionRange);
 		    head.connecteds.Add(normalATK);
 		    head.connecteds.Add(ShowIdler);
 		    head.connecteds.Add(Moved);
