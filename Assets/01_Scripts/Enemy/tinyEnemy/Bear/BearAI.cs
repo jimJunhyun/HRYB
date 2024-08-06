@@ -34,7 +34,6 @@ public class BearAI : BasicAI
 	{
 		head.connecteds.Clear();
 		Bear_AttackModule _atkModule = self.atk as Bear_AttackModule;
-		BearMoveModule _moveModule = self.move as BearMoveModule;
 		if (_isWake)
 		{
 			self.life._dieEvent += () => { DieEvent(); };

@@ -9,25 +9,9 @@ public class MooseAI : BasicAI
 	
 	[Header("공격 시작 범위")] [SerializeField] public float _attackRange = 4f;
 
-	[Header("탐색 범위")] [SerializeField] public float _sectionRange = 10f;
-	[Header("초기화 범위")] [SerializeField] public float _section2Range = 15f;
+
 
 	bool _isFind = false;
-	public float Attackrange()
-	{
-		return _attackRange;
-	}
-     	
-	public float SectionRanged()
-	{
-		return _sectionRange;
-	}
-  	
-	public float OutSectionRanged()
-	{
-		return _section2Range;
-	}
-
 	public override void DieEvent(float delay = 0, float time = 3)
 	{
 		//self.anim.ResetStatus();

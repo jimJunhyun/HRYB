@@ -9,9 +9,6 @@ public class ChangGwiAI : BasicAI
 	[SerializeField] public float _attackRange = 2f;
 	[SerializeField] public float _dashAttackRange = 8f;
 
-	[Header("탐색 범위")][SerializeField] public float _sectionRange = 10f;
-	[Header("초기화 범위")][SerializeField] public float _section2Range = 15f;
-
 	bool _isFind = false;
 
 	private const string NormalAttack = "NormallAtt";
