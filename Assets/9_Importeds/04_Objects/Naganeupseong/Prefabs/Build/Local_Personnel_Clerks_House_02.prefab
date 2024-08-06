@@ -2256,6 +2256,59 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4289622655259845231}
   m_Mesh: {fileID: 4300000, guid: abc00000000000480949772734279364, type: 3}
+--- !u!1 &4521188234897661339
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8028318230984874938}
+  - component: {fileID: 6968063942204615796}
+  m_Layer: 11
+  m_Name: FloorCol
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8028318230984874938
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4521188234897661339}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3422674333922893489}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6968063942204615796
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4521188234897661339}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.1160264, y: 0.55874616, z: 9.11419}
+  m_Center: {x: -0.39169526, y: -0.22062622, z: -0.22771503}
 --- !u!1 &4939828191935855507
 GameObject:
   m_ObjectHideFlags: 0
@@ -4435,8 +4488,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3422674333922893489}
-  - component: {fileID: 7832118662446012506}
   - component: {fileID: 8431198756562884875}
+  - component: {fileID: 2948222140465587127}
   m_Layer: 0
   m_Name: Local_Personnel_Clerks_House_02
   m_TagString: Untagged
@@ -4523,29 +4576,9 @@ Transform:
   - {fileID: 8816364125949345164}
   - {fileID: 6708443492787849690}
   - {fileID: 9016711254103408114}
+  - {fileID: 8028318230984874938}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &7832118662446012506
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7663007286538408798}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 6.1160264, y: 0.55874616, z: 9.11419}
-  m_Center: {x: -0.39169526, y: -0.22062622, z: -0.22771503}
 --- !u!65 &8431198756562884875
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4567,6 +4600,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.899193, y: 5.088808, z: 8.877853}
   m_Center: {x: 0.28667998, y: 2.635212, z: -0.11506271}
+--- !u!65 &2948222140465587127
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7663007286538408798}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7.402894, y: 4.261835, z: 11.341421}
+  m_Center: {x: 0, y: 4.524497, z: 0}
 --- !u!1 &7743522931736853155
 GameObject:
   m_ObjectHideFlags: 0
