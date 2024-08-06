@@ -57,12 +57,20 @@ public class SkillLoader
 
 	public SkillRoot GetHumanSkill(string name)
 	{
-		return HumanSkillDb.info[name];
+		if (HumanSkillDb.info.ContainsKey(name))
+		{
+			return HumanSkillDb.info[name];
+		}
+		return null;
 	}
 
 	public SkillRoot GetYohoSkill(String name)
 	{
-		return YohoSkillDb.info[name];
+		if (YohoSkillDb.info.ContainsKey(name))
+		{
+			return YohoSkillDb.info[name];
+		}
+		return null;
 	}
 
 	public SkillRoot GetSkill(string name)

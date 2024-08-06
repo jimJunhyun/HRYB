@@ -8,6 +8,9 @@ public class NodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 {
 	public PlayerNode indicating;
 
+	public Color learned;
+	public Color notLearned;
+
 	Button button;
 	Image nodeIcon;
 	Image circleIndicator;
@@ -32,10 +35,19 @@ public class NodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 			nodeIcon.enabled = true;
 			nodeIcon.sprite = (GameManager.instance.uiManager.toolbarUIShower.openables[ToolState.Node] as NodeViewer).nodeSprites[((int)indicating.nodeType)];
 		}
+
 		circleIndicator.fillAmount = 0;
 		button.onClick.AddListener(() => { (GameManager.instance.uiManager.toolbarUIShower.openables[ToolState.Node] as NodeViewer)?.SetSelected(this); });
 		button.onClick.AddListener(() => { (GameManager.instance.uiManager.toolbarUIShower.openables[ToolState.Node] as NodeViewer)?.nodeLearner.OnOff(indicating);});
+		
+		if(indicating.requirements.Count == 0)
+		{
+			indicating.ImmediateLearn();
+		}
+
+		Refresh();
 	}
+
 
 	public void BrushStroke()
 	{
@@ -50,6 +62,19 @@ public class NodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 	public void OffBrush()
 	{
 		circleIndicator.enabled = false;
+	}
+
+	public void Refresh()
+	{
+		if (indicating.completed)
+		{
+			button.image.color = learned;
+		}
+		else
+		{
+			button.image.color = notLearned;
+		}
+		
 	}
 
 	IEnumerator DelStroke()

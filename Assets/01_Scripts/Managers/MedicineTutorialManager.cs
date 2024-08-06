@@ -146,7 +146,7 @@ public class MedicineTutorialManager : MonoBehaviour
 						Rect rtFoc = trmFoc.rect;
 						rtFoc.position = trmFoc.position;
 						
-						GameManager.instance.uiManager.focus.FocusAt(rtFoc, rtFoc.position, false, AdditionalEffectFocusing.Border | AdditionalEffectFocusing.Arrow | AdditionalEffectFocusing.Bounce);
+						GameManager.instance.uiManager.focus.FocusAt(rtFoc, rtFoc.position, false, AdditionalEffectFocusing.Border | AdditionalEffectFocusing.Arrow);
 						//GameObject l = new GameObject("Lft4");
 						//l.transform.position = new Vector3(rt.xMin, rt.y);
 						//GameObject r = new GameObject("Rht4");

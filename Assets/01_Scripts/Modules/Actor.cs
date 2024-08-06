@@ -152,7 +152,7 @@ public class Actor : MonoBehaviour
 				move.RefreshSpeed();
 				break;
 			case StatUpgradeType.CooldownRdc:
-				cast.cooldownModuleStat.HandleSpeed(-amt, ModuleController.SpeedMode.Slow);
+				(cast as PlayerCast).cooldownModuleStat.HandleSpeed(-amt, ModuleController.SpeedMode.Slow);
 				break;
 			case StatUpgradeType.Callback:
 				break;
@@ -244,15 +244,26 @@ public class UpgradableStatus
 
 	public void AddMod(float amt)
 	{
+		float prevVal = MaxValue;
 		modValueAdd += amt;
 
+
+		if(MaxValue - prevVal > 0)
+		{
+			value += MaxValue - prevVal;
+		}
 		value = Mathf.Clamp(value, 0, MaxValue);
 	}
 
 	public void MultMod(float amt)
 	{
+		float prevVal = MaxValue;
 		modValueMult += amt;
 
+		if (MaxValue - prevVal > 0)
+		{
+			value += MaxValue - prevVal;
+		}
 		value = Mathf.Clamp(value, 0, MaxValue);
 	}
 
