@@ -55,6 +55,7 @@ public abstract class AISetter : MonoBehaviour
 			_skinned.materials[i].SetFloat("_DissolveHeight", 5);
 			StartCoroutine(DissolveMat(_skinned.materials[i], delay, time));
 		}
+		Debug.LogError("Dieing");
 
 	}
 

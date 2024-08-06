@@ -5,11 +5,13 @@ using UnityEngine.Assertions.Must;
 
 public abstract class BasicAI : AISetter
 {
+	[Header("IsWake")][SerializeField] protected bool _isWake;
 
 	[Header("기본 이동 범위")]
 	[SerializeField] public float _moveRange = 2f;
 
 	Transform _pos;
+	Transform _target;
 
 	public float MoveRange()
 	{
@@ -42,6 +44,7 @@ public abstract class BasicAI : AISetter
 	public override void StartInvoke()
 	{
 		_pos = new GameObject($"{gameObject.name} originPos").transform;
+		_pos.transform.position = transform.position;
 
 
 		#region Noramled
@@ -53,7 +56,10 @@ public abstract class BasicAI : AISetter
 		{
 			Vector3 dir = (self.transform.position - player.transform.position);
 			if (SectionRanged() * SectionRanged() < dir.sqrMagnitude)
+			{
 				_isFind = true;
+				_target = player.transform;
+			}
 			if (_isFind)
 				_moveModule.SetTarget(player.transform);
 		});
@@ -66,9 +72,12 @@ public abstract class BasicAI : AISetter
 		IsOutRange LongaRange = new IsOutRange(self, player.transform, OutSectionRanged, null, () =>
 		{
 			_moveModule.SetTarget(_pos);
+			_target = _pos;
 			_isFind = false;
 
 		});
+		Mover originreturn = new Mover(self);
+
 		IsInRange Idler = new IsInRange(self, player.transform, MoveRange, null, () =>
 		{
 			_moveModule.StopMove();
@@ -78,7 +87,7 @@ public abstract class BasicAI : AISetter
 
 		Sequencer Faridler = new Sequencer();
 		Faridler.connecteds.Add(LongaRange);
-		Faridler.connecteds.Add(idles);
+		Faridler.connecteds.Add(originreturn);
 
 		Sequencer ShowIdler = new Sequencer();
 
@@ -92,6 +101,28 @@ public abstract class BasicAI : AISetter
 
 
 		StartExamine();
+
+	}
+
+	protected override void UpdateInvoke()
+	{
+		if ((self.life.IsFirstHit == true || Vector3.Distance(_target.transform.position, transform.position) < 7) && _isWake == false)
+		{
+			_isWake = true;
+			self.anim.SetBoolModify("Sleep", false);
+			StartInvoke();
+		}
+
+		if (self.AI.StopState)
+			return;
+
+		if (self.life.isDead == false && _isWake && self.life.isDead == false && self.anim.Animators.GetBool("Stun") == false)
+		{
+			LookAt(player.transform);
+
+		}
+
+		transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
 
 	}
 
