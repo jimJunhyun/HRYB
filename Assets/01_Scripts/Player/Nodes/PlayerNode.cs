@@ -64,6 +64,91 @@ public class PlayerNode : ScriptableObject
 		return !completed && learnable && res && GameManager.instance.pinven.currentExp >= needPoint;
 	}
 
+	public void ImmediateLearn()
+	{
+		switch (nodeType)
+		{
+			case StatUpgradeType.Callback:
+				onLearn?.Invoke();
+				break;
+			case StatUpgradeType.LearnSkill:
+				//$로구분하자.
+				string[] skills = amt.Split('$');
+
+				bool foxSkill = false;
+				SkillRoot sk = GameManager.instance.saver.skillLoader.GetHumanSkill(skills[2]);
+				if (sk == null)
+				{
+					sk = GameManager.instance.saver.skillLoader.GetYohoSkill(skills[2]);
+					foxSkill = true;
+				}
+
+				if (sk == null)
+					break;
+				//스킬을 꽂는다.
+				switch (skills[1])
+				{
+					case "Q":
+						if (foxSkill)
+						{
+							(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(sk, SkillSlotInfo.Q, PlayerForm.Yoho);
+						}
+						else
+						{
+							(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(sk, SkillSlotInfo.Q, PlayerForm.Magic);
+						}
+						break;
+					case "E":
+						if (foxSkill)
+						{
+							(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(sk, SkillSlotInfo.E, PlayerForm.Yoho);
+						}
+						else
+						{
+							(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(sk, SkillSlotInfo.E, PlayerForm.Magic);
+						}
+						break;
+					case "R":
+						if (foxSkill)
+						{
+							(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(sk, SkillSlotInfo.One, PlayerForm.Yoho);
+						}
+						else
+						{
+							(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(sk, SkillSlotInfo.One, PlayerForm.Magic);
+						}
+						break;
+					case "RMB":
+						if (foxSkill)
+						{
+							(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(sk, SkillSlotInfo.RClick, PlayerForm.Yoho);
+						}
+						else
+						{
+							(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(sk, SkillSlotInfo.RClick, PlayerForm.Magic);
+						}
+						break;
+
+					default:
+						break;
+				}
+				break;
+			default:
+				if (percentage)
+				{
+					GameManager.instance.pActor.MultStat(float.Parse(amt) / 100f, nodeType);
+					Debug.Log("스탯 : " + nodeType + " * " + float.Parse(amt) + " % ");
+				}
+				else
+				{
+					GameManager.instance.pActor.AddStat(float.Parse(amt), nodeType);
+					Debug.Log("스탯 : " + nodeType + " + " + float.Parse(amt));
+				}
+				break;
+		}
+		completed = true;
+	}
+
 	public bool LearnNode()
 	{
 		if(!learnable)
@@ -89,25 +174,59 @@ public class PlayerNode : ScriptableObject
 				case StatUpgradeType.LearnSkill:
 					//$로구분하자.
 					string[] skills = amt.Split('$');
-					amt = skills[1];
-					SkillRoot sk = GameManager.instance.saver.skillLoader.GetHumanSkill(amt);
+
+					bool foxSkill = false;
+					SkillRoot sk = GameManager.instance.saver.skillLoader.GetHumanSkill(skills[2]);
 					if(sk == null)
 					{
-						sk = GameManager.instance.saver.skillLoader.GetYohoSkill(amt);
+						sk = GameManager.instance.saver.skillLoader.GetYohoSkill(skills[2]);
+						foxSkill = true;
 					}
+
 					if(sk == null)
 						break;
 					//스킬을 꽂는다.
-					switch (skills[0])
+					switch (skills[1])
 					{
 						case "Q":
-							//#######################
+							if(foxSkill)
+							{
+								(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(sk, SkillSlotInfo.Q, PlayerForm.Yoho);
+							}
+							else
+							{
+								(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(sk, SkillSlotInfo.Q, PlayerForm.Magic);
+							}
 							break;
 						case "E":
+							if (foxSkill)
+							{
+								(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(sk, SkillSlotInfo.E, PlayerForm.Yoho);
+							}
+							else
+							{
+								(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(sk, SkillSlotInfo.E, PlayerForm.Magic);
+							}
 							break;
 						case "R":
+							if (foxSkill)
+							{
+								(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(sk, SkillSlotInfo.One, PlayerForm.Yoho);
+							}
+							else
+							{
+								(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(sk, SkillSlotInfo.One, PlayerForm.Magic);
+							}
 							break;
 						case "RMB":
+							if (foxSkill)
+							{
+								(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(sk, SkillSlotInfo.RClick, PlayerForm.Yoho);
+							}
+							else
+							{
+								(GameManager.instance.pActor.cast as PlayerCast).ConnectSkillDataTo(sk, SkillSlotInfo.RClick, PlayerForm.Magic);
+							}
 							break;
 
 						default:
@@ -117,7 +236,7 @@ public class PlayerNode : ScriptableObject
 			 	default:
 					if (percentage)
 					{
-			 			GameManager.instance.pActor.MultStat(float.Parse(amt), nodeType);
+			 			GameManager.instance.pActor.MultStat(float.Parse(amt) / 100f, nodeType);
 						Debug.Log("스탯 : " + nodeType + " * " + float.Parse(amt) + " % ");
 					}
 					else
