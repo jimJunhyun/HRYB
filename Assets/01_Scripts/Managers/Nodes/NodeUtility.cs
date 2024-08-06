@@ -142,9 +142,9 @@ public class NodeUtility
 		switch (act)
 		{
 			case StatUpgradeType.White:
-				return "양(하얀거)";
+				return "최대 체력";
 			case StatUpgradeType.Black:
-				return "음(검은거)";
+				return "최대 요력";
 			 case StatUpgradeType.WhiteAtk:
 				 return "양 공격력";
 			 case StatUpgradeType.BlackAtk:

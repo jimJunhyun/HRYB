@@ -68,6 +68,42 @@ public class Specials
 			user.HandleStatus((StatUpgradeType)i, modAdd[i], modMult[i], effTime);
 		}
 	}
+
+	public override string ToString()
+	{
+		System.Text.StringBuilder sb;
+		bool b = GameManager.GetGlobalSB(out sb);
+
+		sb.Append("<#00dd00>");
+		sb.Append(effTime);
+		sb.Append("</color>");
+		sb.Append("초간, ");
+
+		for (int i = 0; i < MODCOUNT; i++)
+		{
+			if(modAdd[i] != 0)
+			{
+				sb.Append(NodeUtility.ToStringKorean((StatUpgradeType)i));
+				sb.Append("<#00dd00>");
+				sb.Append('+');
+				sb.Append(modAdd[i]);
+				sb.Append("</color>");
+				sb.Append(' ');
+			}
+			if(modMult[i] != 0)
+			{
+				sb.Append(NodeUtility.ToStringKorean((StatUpgradeType)i));
+				sb.Append("<#00dd00>");
+				sb.Append('+');
+				sb.Append(modMult[i]);
+				sb.Append("% ");
+				sb.Append("</color>");
+			}
+		}
+		string res = sb.ToString();
+		GameManager.ReturnGlobalSB(b);
+		return res;
+	}
 }
 
 [System.Serializable]
