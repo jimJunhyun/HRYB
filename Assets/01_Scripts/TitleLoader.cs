@@ -25,8 +25,8 @@ public class TitleLoader : MonoBehaviour
 
 	public void FadeStop()
 	{
-		StopAllCoroutines();
 		isFade = false;
+		StopAllCoroutines();
 		titleText.text = "";
 	}
 
