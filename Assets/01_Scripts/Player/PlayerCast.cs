@@ -592,6 +592,8 @@ public class PlayerCast : CastModule
 
 	internal void ResetSkillUse(SkillSlotInfo at)
 	{
+		if (nowSkillSlot[((int)at)] == null || nowSkillSlot[((int)at)].skInfo == null)
+			return;
 		DisoperateAt(at);
 	}
 
@@ -668,12 +670,15 @@ public class PlayerCast : CastModule
 
 	internal void SetSkillUse(SkillSlotInfo at)
 	{
+		if (nowSkillSlot[((int)at)] == null || nowSkillSlot[((int)at)].skInfo == null)
+			return;
 		nowSkillSlot[((int)at)]?.skInfo.SetAnimations(GetActor(), at);
 		UseSkillAt(at);
 	}
 
 	void UseSkillAt(SkillSlotInfo at)
 	{
+		
 		if (nowSkillSlot[((int)at)].IsUsable && nowSkillSlot[((int)at)].GetMP() < self.life.yy.black.Value)
 		{
 			self.life.yy.black.Value -= nowSkillSlot[((int)at)].GetMP();
@@ -706,6 +711,7 @@ public class PlayerCast : CastModule
 
 	public void DisoperateAt(SkillSlotInfo at)
 	{
+		
 		switch (at)
 		{
 			case SkillSlotInfo.One:
