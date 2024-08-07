@@ -93,7 +93,8 @@ public class EnemyMoveModule : MoveModule
 
 	public override void FixedUpdate()
 	{
-
+		if (GetActor() == null)
+			return;
 
 		if (Agent.enabled == true && Agent.remainingDistance > 0)
 			self.anim.SetMoveState(true);

@@ -53,7 +53,8 @@ public class JangsungLifeModule : LifeModule
 	{
 		if(_isBarrier==true)
 		{
-
+			GameManager.instance.loader.FadeStop();
+			GameManager.instance.loader.FadeInOut("보호막이 파괴되었습니다.", 0.8f, 0.8f, 0.4f);
 			_isBarrier = false;
 		}
 
