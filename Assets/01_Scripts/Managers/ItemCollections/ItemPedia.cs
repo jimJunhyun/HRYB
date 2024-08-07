@@ -41,12 +41,16 @@ public class ItemPedia
 		{
 			materialCollections[data].Discover();
 		}
-		if(data is Medicines m)
+		else if(data is Medicines m)
 		{
 			if (medicineCollections.ContainsKey(m))
 			{
 				medicineCollections[m].Discover();
 			}
+		}
+		else
+		{
+			materialCollections.Add(data, new ItemCollection(data, false));
 		}
 	}
 
@@ -56,7 +60,7 @@ public class ItemPedia
 		{
 			materialCollections[data].UsedWithData(data.processes);
 		}
-		if (data is Medicines m)
+		else if (data is Medicines m)
 		{
 			if (medicineCollections.ContainsKey(m))
 			{

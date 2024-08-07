@@ -259,9 +259,8 @@ public class GameManager : MonoBehaviour
 	public UIManager uiManager;
 	public QuestManager qManager;
 	public SectionManager sManager;
-	
-	
-	
+
+
 
 	public BossHPManager bHPManager;
 
@@ -308,6 +307,8 @@ public class GameManager : MonoBehaviour
 
 	public MinimapManager minimap;
 	public TitleLoader loader;
+
+	public TMP tester;
 
 	public Dictionary<string, TimelinePlayer> timelines;
 

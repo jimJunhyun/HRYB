@@ -22,6 +22,8 @@ public class PlayerAttack : AttackModule
 
 	public Coroutine _grabCO;
 	public int BleedValue = 0;
+
+	
 	 
 	public float SecPerCharge { get => secPerCharge; }
 
@@ -139,7 +141,9 @@ public class PlayerAttack : AttackModule
 		else if (!clickR)
 		{
 			if ((NoClick.Paused || attackModuleStat.Paused) && !clickL)
+			{
 				return;
+			}
 			if (context.started && !clickL)
 			{
 				clickL = true;

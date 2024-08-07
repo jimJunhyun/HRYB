@@ -43,7 +43,7 @@ public class GetItemBack : MonoBehaviour
 		{
 			cntText = transform.Find("Count").GetComponent<TextMeshProUGUI>();
 		}
-		if ((item is YinyangItem yy && GameManager.instance.saver.pedia.materialCollections[yy].discoverCount <= 0) || (item is Medicines m && GameManager.instance.saver.pedia.medicineCollections[m].discoverCount <= 0))
+		if ((item is YinyangItem yy && GameManager.instance.saver.pedia.materialCollections.ContainsKey(yy) && GameManager.instance.saver.pedia.materialCollections[yy].discoverCount <= 1) || (item is Medicines m && GameManager.instance.saver.pedia.medicineCollections[m].discoverCount <= 1))
 		{
 			newTag.SetActive(true);
 		}
@@ -54,7 +54,7 @@ public class GetItemBack : MonoBehaviour
 
 		img.sprite = i.icon;
 		text.text = $"{i.MyName}";
-		cntText.text = $"x{ cnt}";
+		cntText.text = $"x{count}";
 
 		GameManager.instance.uiManager.RefreshGetItemQ(this);
 	}

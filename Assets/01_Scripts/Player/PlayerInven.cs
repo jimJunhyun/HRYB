@@ -368,11 +368,7 @@ public class PlayerInven : MonoBehaviour
 		GameManager.instance.qManager.InvokeOnChanged(CompletionAct.HaveItem, data.MyName, num);
 		GetItemBack btn = PoolManager.GetObject("GetItemBack", GameManager.instance.uiManager.GetitemUITransform).GetComponent<GetItemBack>();
 		btn.transform.localPosition = GameManager.instance.uiManager.getItemUiSlot[0].localPosition;
-		btn.SetInfo(data, num);
-		if (data is YinyangItem yy)
-		{
-			GameManager.instance.saver.pedia.GotItem(yy);
-		}
+		
 		if ((idxes = inven.Contains(data)).Count > 0)
 		{
 			for (int i = 0; i < idxes.Count; i++)
@@ -435,7 +431,13 @@ public class PlayerInven : MonoBehaviour
 				}
 			}
 		}
-		
+
+		if (data is YinyangItem yy)
+		{
+			GameManager.instance.saver.pedia.GotItem(yy);
+		}
+		btn.SetInfo(data, num);
+
 		GameManager.instance.uiManager.UpdateInvenUI();
 		Debug.Log($"{data.MyName}, {num} 만큼은 더이상 추가할 수 없음.");
 		return num;
