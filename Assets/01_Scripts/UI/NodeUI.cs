@@ -66,15 +66,22 @@ public class NodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
 	public void Refresh()
 	{
-		if (indicating.completed)
+		if(indicating == null)
 		{
-			button.image.color = learned;
+			button.image.color = notLearned;
+			Debug.LogError($"{transform.parent} 에 1개 이상의 노드 정보 없음.");
 		}
 		else
 		{
-			button.image.color = notLearned;
+			if (indicating.completed)
+			{
+				button.image.color = learned;
+			}
+			else
+			{
+				button.image.color = notLearned;
+			}
 		}
-		
 	}
 
 	IEnumerator DelStroke()
