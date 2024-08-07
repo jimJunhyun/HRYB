@@ -16,7 +16,7 @@ public class PreservedDataManager : MonoBehaviour
 	public ItemPedia pedia;
 	public SkillLoader skillLoader;
 
-	public bool isEditor = false;
+	public bool isUsedInOnlyEditor = false;
 
 	public static PreservedDataManager instance;
 
@@ -28,7 +28,7 @@ public class PreservedDataManager : MonoBehaviour
 	private void Awake()
 	{
 //#if !UNITY_EDITOR
-		if(isEditor)
+		if(isUsedInOnlyEditor)
 			return;
 //#endif
 
@@ -53,7 +53,7 @@ public class PreservedDataManager : MonoBehaviour
 	private void OnEnable()
 	{
 //#if !UNITY_EDITOR
-		if(isEditor)
+		if(isUsedInOnlyEditor)
 			return;
 //#endif
 		loadEnd = false;
