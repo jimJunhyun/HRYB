@@ -66,10 +66,12 @@ public class NodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
 	public void Refresh()
 	{
+		if(button == null)
+			return;
 		if(indicating == null)
 		{
 			button.image.color = notLearned;
-			Debug.LogError($"{transform.parent} 에 1개 이상의 노드 정보 없음.");
+			//Debug.LogError($"{transform.parent} 에 1개 이상의 노드 정보 없음.");
 		}
 		else
 		{
