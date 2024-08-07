@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerInter : SightModule
 {
+
+	public float interRange = 10;
 	const float ALTINTERTIME = 0.5f;
 
 	public List<IInterable> checkeds = null;
@@ -55,7 +57,7 @@ public class PlayerInter : SightModule
 				checkeds[i].GlowOff();
 			}
 		}
-		if ((hits = Physics.SphereCastAll(r, 1.0f, sightRange.MaxValue, (1 << GameManager.INTERABLELAYER), QueryTriggerInteraction.Collide)).Length > 0)
+		if ((hits = Physics.SphereCastAll(r, 1.0f, interRange, (1 << GameManager.INTERABLELAYER), QueryTriggerInteraction.Collide)).Length > 0)
 		{
 			checkeds = hits.OrderByDescending(item => (transform.position - item.point).sqrMagnitude).Select(item => item.collider.GetComponent<IInterable>()).ToList();
 			curSel %= checkeds.Count;

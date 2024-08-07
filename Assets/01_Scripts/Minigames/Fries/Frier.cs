@@ -79,7 +79,7 @@ public class Frier : MinigameBase
 			}
 			else
 			{
-				accT += Time.fixedUnscaledDeltaTime;
+				accT += Time.unscaledDeltaTime;
 			}
 
 			if (accT >= timeLimit)

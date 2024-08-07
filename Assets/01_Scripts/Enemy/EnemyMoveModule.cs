@@ -69,6 +69,8 @@ public class EnemyMoveModule : MoveModule
 			agent.isStopped = false;
 			agent.updatePosition = true;
 			agent.updateRotation = false;
+
+			
 		}
 	}
 
@@ -76,11 +78,6 @@ public class EnemyMoveModule : MoveModule
 	{
 		_isMove = true;
 
-
-
-		if (Agent.remainingDistance > 0)
-			self.anim.SetMoveState(true);
-		
 
 		if (_isMove == true && _target != null && agent.enabled == true)
 		{
@@ -91,13 +88,18 @@ public class EnemyMoveModule : MoveModule
 		else
 		{
 			StopMove();
-			
-			self.anim.SetMoveState(false);
 		}
 	}
 
 	public override void FixedUpdate()
 	{
+
+
+		if (Agent.enabled == true && Agent.remainingDistance > 0)
+			self.anim.SetMoveState(true);
+		else
+			self.anim.SetMoveState(false);
+
 		if (Agent.enabled == true && Agent.remainingDistance < 0)
 		{
 			self.anim.SetMoveState(false);
