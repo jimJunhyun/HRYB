@@ -77,27 +77,34 @@ public class Specials
 		sb.Append("<#00dd00>");
 		sb.Append(effTime);
 		sb.Append("</color>");
-		sb.Append("초간, ");
-
+		sb.Append("초간, \n");
+		bool app = false;
 		for (int i = 0; i < MODCOUNT; i++)
 		{
 			if(modAdd[i] != 0)
 			{
 				sb.Append(NodeUtility.ToStringKorean((StatUpgradeType)i));
-				sb.Append("<#00dd00>");
+				sb.Append("<#00ff33>");
 				sb.Append('+');
 				sb.Append(modAdd[i]);
 				sb.Append("</color>");
 				sb.Append(' ');
+				app = true;
 			}
 			if(modMult[i] != 0)
 			{
 				sb.Append(NodeUtility.ToStringKorean((StatUpgradeType)i));
-				sb.Append("<#00dd00>");
+				sb.Append("<#00ff33>");
 				sb.Append('+');
 				sb.Append(modMult[i]);
 				sb.Append("% ");
 				sb.Append("</color>");
+				app = true;
+			}
+			if (app)
+			{
+				sb.Append('\n');
+				app = false;
 			}
 		}
 		string res = sb.ToString();
