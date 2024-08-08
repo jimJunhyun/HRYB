@@ -223,6 +223,7 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 	public void OnClose()
 	{
 		//ClearView();
+		GameManager.instance.uiManager.detailer.OffDetail();
 	}
 
 	public void Refresh()
