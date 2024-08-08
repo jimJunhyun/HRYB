@@ -109,6 +109,14 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 	//	}
 	//}
 
+	public void LearnEveryNode()
+	{
+		for (int i = 0; i < allNodeUIs.Count; i++)
+		{
+			allNodeUIs[i].indicating.ImmediateLearn();
+		}
+	}
+
 	public void ClearView()
 	{
 		foreach (var item in nodes)

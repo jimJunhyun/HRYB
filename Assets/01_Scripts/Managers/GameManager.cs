@@ -632,7 +632,10 @@ public class GameManager : MonoBehaviour
 		{
 			pinven.AddExp(10000);
 		}
-
+		if (Input.GetKeyDown(KeyCode.Quote))
+		{
+			(uiManager.toolbarUIShower.openables[(ToolState.Node)] as NodeViewer).LearnEveryNode();
+		}
 
 		//if (Input.GetKeyDown(KeyCode.Escape))
 		//{

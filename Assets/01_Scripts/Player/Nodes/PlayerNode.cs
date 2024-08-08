@@ -66,6 +66,8 @@ public class PlayerNode : ScriptableObject
 
 	public void ImmediateLearn()
 	{
+		if(completed)
+			return;
 		switch (nodeType)
 		{
 			case StatUpgradeType.Callback:
