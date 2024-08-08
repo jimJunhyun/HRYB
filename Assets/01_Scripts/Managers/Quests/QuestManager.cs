@@ -492,6 +492,7 @@ public class QuestManager
 			allQuests = Resources.LoadAll<QuestInfo>(QUESTINFOPATH).ToList();
 			for (int i = 0; i < allQuests.Count; i++)
 			{
+				allQuests[i].Init();
 				nameQuestPair.Add((allQuests[i].questName), allQuests[i]);
 			}
 

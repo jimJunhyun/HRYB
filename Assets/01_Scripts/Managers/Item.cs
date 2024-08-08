@@ -74,7 +74,7 @@ public class Specials
 		System.Text.StringBuilder sb;
 		bool b = GameManager.GetGlobalSB(out sb);
 
-		sb.Append("<#00dd00>");
+		sb.Append("<#006400>");
 		sb.Append(effTime);
 		sb.Append("</color>");
 		sb.Append("초간, \n");
@@ -84,7 +84,7 @@ public class Specials
 			if(modAdd[i] != 0)
 			{
 				sb.Append(NodeUtility.ToStringKorean((StatUpgradeType)i));
-				sb.Append("<#00ff33>");
+				sb.Append("<#006400>");
 				sb.Append('+');
 				sb.Append(modAdd[i]);
 				sb.Append("</color>");
@@ -94,7 +94,7 @@ public class Specials
 			if(modMult[i] != 0)
 			{
 				sb.Append(NodeUtility.ToStringKorean((StatUpgradeType)i));
-				sb.Append("<#00ff33>");
+				sb.Append("<#006400>");
 				sb.Append('+');
 				sb.Append(modMult[i]);
 				sb.Append("% ");
