@@ -27,6 +27,8 @@ public class SkillSlotUI : MonoBehaviour
 	private void Start()
 	{
 		pCast = GameManager.instance.pActor.cast as PlayerCast;
+
+		noStamina.enabled = false;
 	}
 
 
@@ -44,7 +46,7 @@ public class SkillSlotUI : MonoBehaviour
 		if (pCast.nowSkillSlot[(int)slot].skInfo != null)
 		{
 			curCool = 1 - pCast.nowSkillSlot[(int)slot].CurCooledTime / pCast.nowSkillSlot[(int)slot].skInfo.cooldown;
-			if(pCast.nowSkillSlot[(int)slot].skInfo._useMana < GameManager.instance.pActor.life.yy.black.Value)
+			if(pCast.nowSkillSlot[(int)slot].skInfo._useMana > GameManager.instance.pActor.life.yy.black.Value)
 			{
 				noStamina.enabled = true;
 			}
