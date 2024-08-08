@@ -56,14 +56,14 @@ public class JangsungGirlAttack : EnemyAttackModule
 					GetActor().anim.Animators.SetBool(AttackStd, false);
 
 					GetComponent<JangsungGirlAI>()._friend.GetComponent<JangsungLifeModule>().BarrierOff();
-					StartCoroutine(WaeUpCo(6f));
+					StartCoroutine(WaeUpCo(35f));
 				}
 				break;
 			case "Barrier":
 				{
 					GetActor().anim.Animators.SetBool(AttackStd, false);
 					GetComponent<JangsungGirlAI>()._friend.GetComponent<JangsungLifeModule>().BarrierOff();
-					StartCoroutine(WaeUpCo(4f));
+					StartCoroutine(WaeUpCo(1f));
 				}
 				break;
 		}
@@ -151,7 +151,7 @@ public class JangsungGirlAttack : EnemyAttackModule
 
 		for (int i = 0; i < 50; i++)
 		{
-			yield return new WaitForSeconds(0.5f - 0.01f * i);
+			yield return new WaitForSeconds((0.5f - 0.01f * i) *2);
 
 			if (i < 25)
 			{

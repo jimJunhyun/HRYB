@@ -34,7 +34,7 @@ public class JangsungGirlAI : AISetter
 
 			#region 보호막
 
-			Waiter waitBarrier = new Waiter(0.5f, true);
+			Waiter waitBarrier = new Waiter(100, true);
 		    IsOutRange isBarrier = new IsOutRange(self, _friend.transform, BarrierRange, null, () =>
 		    {
 			    // Barrier 에니메이션 실행

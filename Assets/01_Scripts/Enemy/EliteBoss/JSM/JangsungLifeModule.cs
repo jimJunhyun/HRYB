@@ -13,6 +13,14 @@ public class JangsungLifeModule : LifeModule
 	GameObject _objs;
 	
 	Transform middle;
+
+	[Header("JunGI")]
+	[SerializeField] bool _66PercentBlack = false;
+	[SerializeField] bool _66PercentWhite = false;
+	[SerializeField] bool _33PercentBlack = false;
+	[SerializeField] bool _33PercentWhite = false;
+	[SerializeField] bool _isDie = false;
+
 	public override void Awake()
 	{
 		base.Awake();
@@ -67,7 +75,8 @@ public class JangsungLifeModule : LifeModule
 	{
 		if (_isBarrier == false)
 		{
-			base.DamageYY(data, type, dur, tick, attacker, channel);
+			OutJeungGi();
+			base.DamageYY(data,type,dur,tick,attacker,channel);
 		}
 	}
 
@@ -75,8 +84,62 @@ public class JangsungLifeModule : LifeModule
 	{
 		if (_isBarrier == false)
 		{
-			base.DamageYY(black, white, type, dur, tick, attacker, channel);
+			DamageYY(new YinYang(black, white), type, dur, tick, attacker, channel);
 		}
+	}
+
+	public void OutJeungGi()
+	{
+		GameManager.instance.pActor.life.yy.black.Value += 4f;
+		if (yy.white.MaxValue * 0.66f > yy.white.Value && _66PercentWhite == false)
+		{
+			_66PercentWhite = true;
+			OutValue(yy.white.MaxValue * 0.004f);
+		}
+		if (yy.white.MaxValue * 0.33f > yy.white.Value && _33PercentWhite == false)
+		{
+			_33PercentWhite = true;
+			OutValue(yy.white.MaxValue * 0.004f);
+		}
+		if (yy.white.Value <= 0 && _isDie == false)
+		{
+			_isDie = true;
+			OutValue(yy.white.MaxValue * 0.004f);
+		}
+
+		if (yy.black.MaxValue * 0.66f > yy.black.Value && _66PercentBlack == false)
+		{
+			_66PercentBlack = true;
+			OutValue(yy.black.MaxValue * 0.004f);
+		}
+		if (yy.black.MaxValue * 0.33f > yy.black.Value && _33PercentBlack == false)
+		{
+			_33PercentBlack = true;
+			OutValue(yy.black.MaxValue * 0.004f);
+		}
+
+		if (yy.black.Value <= 0 && _isDie == false)
+		{
+			_isDie = true;
+			OutValue(yy.black.MaxValue * 0.004f);
+		}
+	}
+
+	void OutValue(float t)
+	{
+
+		GameObject obj = PoolManager.GetObject("JunGI", transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+		obj.transform.parent = null;
+
+		if (t < 0)
+		{
+			t *= -1;
+		}
+
+		obj.GetComponent<JungGI>().Init(transform.position, t);
+
+
+
 	}
 }
 
