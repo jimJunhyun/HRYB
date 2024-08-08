@@ -636,6 +636,10 @@ public class GameManager : MonoBehaviour
 		{
 			(uiManager.toolbarUIShower.openables[(ToolState.Node)] as NodeViewer).LearnEveryNode();
 		}
+		if (Input.GetKeyDown(KeyCode.Alpha0))
+		{
+			EnableCtrl();
+		}
 
 		//if (Input.GetKeyDown(KeyCode.Escape))
 		//{
