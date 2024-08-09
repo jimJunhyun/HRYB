@@ -18,6 +18,11 @@ public class PreservedDataManager : MonoBehaviour
 
 	public bool isUsedInOnlyEditor = false;
 
+	public TextAsset items; //B3:R
+	public TextAsset trims; //B3:P
+	public TextAsset recipes; //B3:R
+	public TextAsset useDatas; //B3:M
+
 	public static PreservedDataManager instance;
 
 	bool loadEnd = false;

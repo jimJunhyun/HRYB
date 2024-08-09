@@ -264,17 +264,27 @@ public class Item : IComparable // #################
 	public static IEnumerator InitializeItem()
 	{
 		nameDataHashT.Clear();
+		SheetParser data;
+		SheetParser useData;
 		if (GameManager.instance)
 		{
 			GameManager.instance.saver.imageManager.dictionary.Dict.Clear();
+			data = new SheetParser(GameManager.instance.saver.items, "B", "R"); //B3:R
+			useData = new SheetParser(GameManager.instance.saver.useDatas, "B", "M"); //B3:M
 		}
 		else if (PreservedDataManager.instance)
 		{
 			PreservedDataManager.instance.imageManager.dictionary.Dict.Clear();
-
+			data = new SheetParser(PreservedDataManager.instance.items, "B", "R"); //B3:R
+			useData = new SheetParser(PreservedDataManager.instance.useDatas, "B", "M"); //B3:M
 		}
-		SheetParser data = new SheetParser("https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/export?format=tsv&gid=607348165&range=B3:R", "B", "R");
-		SheetParser useData = new SheetParser("https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/export?format=tsv&gid=36776999&range=B3:M", "B", "M");
+		else 
+		{
+			PreservedDataManager.instance.imageManager.dictionary.Dict.Clear();
+			data = new SheetParser("https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/export?format=tsv&gid=607348165&range=B3:R", "B", "R", true); //B3:R
+			useData = new SheetParser("https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/export?format=tsv&gid=36776999&range=B3:M", "B", "M"); //B3:M
+		}
+		
 		yield return new WaitUntil(() => data.inited && useData.inited);
 		
 		for (int i = 0; i < data.cardinality; i++)
