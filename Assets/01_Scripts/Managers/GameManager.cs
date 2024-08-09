@@ -325,6 +325,8 @@ public class GameManager : MonoBehaviour
 	internal DamageType recentDamageType = DamageType.DirectHit;
 	internal Actor recentEnemy = null;
 
+	bool cheating =  false;
+
 	private void Awake()
 	{
 		instance = this;
@@ -610,29 +612,44 @@ public class GameManager : MonoBehaviour
 
 	private void Update()
 	{
-		if(Input.GetKeyDown(KeyCode.B))
+		if (Input.GetKeyDown(KeyCode.Insert))
 		{
-			GameObject objs = GameObject.Find("JSPosition");
-			FindObjectOfType<JSInitBattle>(true).gameObject.SetActive(true);
-			player.GetComponent<PlayerMove>().PlayerTeleport(objs.transform.position);
+			cheating = true;
 		}
-		if(Input.GetKeyDown(KeyCode.N))
+		if (cheating)
 		{
-			player.GetComponent<PlayerLife>().SetAdequity(0);
+			if (Input.GetKeyDown(KeyCode.B))
+			{
+				GameObject objs = GameObject.Find("JSPosition");
+				FindObjectOfType<JSInitBattle>(true).gameObject.SetActive(true);
+				player.GetComponent<PlayerMove>().PlayerTeleport(objs.transform.position);
+			}
+			if (Input.GetKeyDown(KeyCode.N))
+			{
+				player.GetComponent<PlayerLife>().SetAdequity(0);
+			}
+			if (Input.GetKeyDown(KeyCode.M))
+			{
+				player.GetComponent<PlayerAttack>().SetDamage(3);
+			}
+			if (Input.GetKeyDown(KeyCode.P))
+			{
+				pActor.life.DamageYY(0, 99999999, DamageType.NoHit);
+			}
+			if (Input.GetKeyDown(KeyCode.Semicolon))
+			{
+				pinven.AddExp(10000);
+			}
+			if (Input.GetKeyDown(KeyCode.Quote))
+			{
+				(uiManager.toolbarUIShower.openables[(ToolState.Node)] as NodeViewer).LearnEveryNode();
+			}
+			if (Input.GetKeyDown(KeyCode.Alpha0))
+			{
+				EnableCtrl();
+			}
 		}
-		if (Input.GetKeyDown(KeyCode.M))
-		{
-			player.GetComponent<PlayerAttack>().SetDamage(3);
-		}
-		if (Input.GetKeyDown(KeyCode.P))
-		{
-			pActor.life.DamageYY(0, 99999999, DamageType.NoHit);
-		}
-		if (Input.GetKeyDown(KeyCode.Semicolon))
-		{
-			pinven.AddExp(10000);
-		}
-
+		
 
 		//if (Input.GetKeyDown(KeyCode.Escape))
 		//{

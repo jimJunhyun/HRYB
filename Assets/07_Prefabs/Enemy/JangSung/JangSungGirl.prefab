@@ -409,6 +409,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
   _skinned: {fileID: 0}
+  IsNotStarted: 0
   _friend: {fileID: 0}
   _isStart: 0
 --- !u!95 &2717952637745010415
@@ -445,8 +446,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isImmune: 0
-  initBlack: 0
-  initWhite: 10000
+  initBlack: 5000
+  initWhite: 5000
   initAdeBlack: 1.2
   initAdeWhite: 1.2
   regenThreshold: 10
@@ -455,6 +456,11 @@ MonoBehaviour:
   powerExp: 0
   superArmor: 0
   _barrierEffect: {fileID: 6036363885242095341, guid: 761ce3f370c6bdd4491bb2246cf28e18, type: 3}
+  _66PercentBlack: 0
+  _66PercentWhite: 0
+  _33PercentBlack: 0
+  _33PercentWhite: 0
+  _isDie: 0
 --- !u!114 &9190380120647970038
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,6 +13,7 @@ public class SkillSlotUI : MonoBehaviour
 
 	Image coolDown;
 	Image skillIcon;
+	Image noStamina;
 
 	public Sprite lockImg;
 
@@ -20,11 +21,14 @@ public class SkillSlotUI : MonoBehaviour
 	{
 		skillIcon = transform.GetChild(0).GetComponent<Image>();
 		coolDown = transform.GetChild(1).GetComponent<Image>();
+		noStamina = transform.GetChild(2).GetComponent<Image>();
 	}
 
 	private void Start()
 	{
 		pCast = GameManager.instance.pActor.cast as PlayerCast;
+
+		noStamina.enabled = false;
 	}
 
 
@@ -42,6 +46,18 @@ public class SkillSlotUI : MonoBehaviour
 		if (pCast.nowSkillSlot[(int)slot].skInfo != null)
 		{
 			curCool = 1 - pCast.nowSkillSlot[(int)slot].CurCooledTime / pCast.nowSkillSlot[(int)slot].skInfo.cooldown;
+			if(pCast.nowSkillSlot[(int)slot].skInfo._useMana > GameManager.instance.pActor.life.yy.black.Value)
+			{
+				noStamina.enabled = true;
+			}
+			else
+			{
+				noStamina.enabled = false;
+			}
+		}
+		else
+		{
+			noStamina.enabled = false;
 		}
 	}
 

@@ -88,7 +88,7 @@ public class JangSungMoveModule : MoveModule
 			if (obj.TryGetComponent<DecalBase>(out DecalBase box))
 			{
 				box.SetUpDecal(transform, new Vector3(0, 0, 0), new Vector3(8.5f, 1, 8.5f));
-				box.StartDecal(2f);
+				box.StartDecal(1.8f);
 			}
 		}
 

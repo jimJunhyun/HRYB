@@ -72,12 +72,17 @@ public class QuestInfo : ScriptableObject, System.IComparable
 		ResetQuestStartTime();
 		curCompletedAmount = 0;
 		assigned = false;
+		rewarding = false;
+		Init();
+	}
 
+	public void Init()
+	{
 		relatedObjects = new Dictionary<string, GameObject>();
 
 		for (int i = 0; i < rewardInfo.Count; i++)
 		{
-			if(rewardInfo[i].rewardType == RewardType.EnableObject || rewardInfo[i].rewardType == RewardType.DisableObject)
+			if (rewardInfo[i].rewardType == RewardType.EnableObject || rewardInfo[i].rewardType == RewardType.DisableObject)
 			{
 				relatedObjects.Add(rewardInfo[i].parameter, GameObject.Find(rewardInfo[i].parameter));
 			}
@@ -317,12 +322,30 @@ public class QuestInfo : ScriptableObject, System.IComparable
 					break;
 				case RewardType.EnableObject:
 					{
-						relatedObjects[rewardInfo[i].parameter].SetActive(true);
+						GameObject obj;
+						if (!relatedObjects.ContainsKey(rewardInfo[i].parameter) || relatedObjects[rewardInfo[i].parameter] == null)
+						{
+							obj = GameObject.Find(rewardInfo[i].parameter);
+						}
+						else
+						{
+							obj = relatedObjects[rewardInfo[i].parameter];
+						}
+						obj.SetActive(true);
 					}
 					break;
 				case RewardType.DisableObject:
 					{
-						relatedObjects[rewardInfo[i].parameter].SetActive(false);
+						GameObject obj;
+						if (!relatedObjects.ContainsKey(rewardInfo[i].parameter) || relatedObjects[rewardInfo[i].parameter] == null)
+						{
+							obj = GameObject.Find(rewardInfo[i].parameter);
+						}
+						else
+						{
+							obj = relatedObjects[rewardInfo[i].parameter];
+						}
+						obj.SetActive(false);
 					}
 					break;
 				case RewardType.PlayTimeline:

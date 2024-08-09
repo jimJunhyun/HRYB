@@ -94,10 +94,9 @@ public class JangsungGirlLifeModule : LifeModule
 	
 	public override void DamageYY(float black, float white, DamageType type, float dur = 0, float tick = 0, Actor attacker = null, DamageChannel channel= DamageChannel.None)
 	{
-		OutJeungGi();
 		if(_isBarrier == false)
 		{
-			base.DamageYY(black, white, type,dur,tick,attacker,channel);
+			DamageYY(new YinYang(black, white), type, dur, tick, attacker, channel);
 		}
 		else
 		{
@@ -130,7 +129,7 @@ public class JangsungGirlLifeModule : LifeModule
 
 	public void OutJeungGi()
 	{
-		GameManager.instance.pActor.life.yy.black.Value += 0.1f;
+		GameManager.instance.pActor.life.yy.black.Value += 4f;
 		if (yy.white.MaxValue * 0.66f > yy.white.Value && _66PercentWhite == false)
 		{
 			_66PercentWhite = true;
