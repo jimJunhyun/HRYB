@@ -59,6 +59,7 @@ public class HumanNormalAttack : AttackBase
 						},
 						(_life) =>
 						{
+							Debug.LogError($"{_life.name} 맞음");
 							DoDamage(_life.GetActor(), self, _dmgs[0], obj.transform.position);
 						},
 						(_trm, _life) =>
@@ -105,6 +106,7 @@ public class HumanNormalAttack : AttackBase
 								// null
 							});
 							_yg.transform.parent = null;
+
 							posValue2++;
 							_arrow.Add(_yg);
 						}
