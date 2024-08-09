@@ -119,6 +119,7 @@ public class FarmingPoint : MonoBehaviour, IInterable
 		Debug.Log(transform.name);
 		if(regenable && isDestroyed)
 		{
+			Debug.Log("재생대기중");
 			c.enabled = false;
 			foreach (var item in r)
 			{
@@ -131,6 +132,7 @@ public class FarmingPoint : MonoBehaviour, IInterable
 		}
 		else if (isDestroyed)
 		{
+			Debug.Log("제거");
 			//Destroy(gameObject);
 			PoolManager.ReturnObject(gameObject);
 		}
@@ -139,6 +141,7 @@ public class FarmingPoint : MonoBehaviour, IInterable
 	public IEnumerator DelRegen()
 	{
 		yield return sec;
+		Debug.Log($"재생함{transform.name}");
 		foreach (var item in r)
 		{
 			item.enabled = true;
