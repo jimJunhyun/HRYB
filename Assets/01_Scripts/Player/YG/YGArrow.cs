@@ -41,6 +41,8 @@ public class YGArrow : MonoBehaviour
 		_isFollow = isFollow;
 		_owner = owner;
 
+		_cols.Now(transform, _Act, _Act2);
+
 		//if(owner.atk.target == null)
 		{
 			StartCoroutine(DieIn());
@@ -49,7 +51,7 @@ public class YGArrow : MonoBehaviour
 
 	public void Fire()
 	{
-		_cols.Now(transform, _Act, _Act2);
+
 		_pos = transform.position;
 		transform.parent = null;
 		_isFire = true;
