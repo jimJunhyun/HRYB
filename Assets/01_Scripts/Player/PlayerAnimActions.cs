@@ -75,8 +75,8 @@ public class PlayerAnimActions : MonoBehaviour
 
 	private void Update()
 	{
-		//transform.localPosition = new Vector3(0, 0, 0);
-		//transform.localRotation = UnityEngine.Quaternion.identity;
+		transform.localPosition = new Vector3(0, 0, 0);
+		transform.localRotation = UnityEngine.Quaternion.identity;
 	}
 
 	private void OnAnimatorIK(int layerIndex)
