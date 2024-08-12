@@ -29,7 +29,7 @@ public class PreservedDataManager : MonoBehaviour
 	float loadAmount;
 	Slider loadBar;
 
-//#if !UNITY_EDITOR
+#if !UNITY_EDITOR
 	private void Awake()
 	{
 //#if !UNITY_EDITOR
@@ -141,5 +141,5 @@ public class PreservedDataManager : MonoBehaviour
 		op.allowSceneActivation = true;
 		Debug.Log("로드 다했다...!");
 	}
-//#endif
+#endif
 }
