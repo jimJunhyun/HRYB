@@ -15,6 +15,7 @@ public class YinyangItemDetailUI : MonoBehaviour
 	
 	TextMeshProUGUI itemName;
 	TextMeshProUGUI itemDesc;
+	TextMeshProUGUI qMark;
 	
 	UIPolygon statPolygon;
 	
@@ -75,6 +76,10 @@ public class YinyangItemDetailUI : MonoBehaviour
 		{
 			maskItem = transform.Find("Center Section/Frame 2/ItemImg/ItemMask").gameObject;
 		}
+		if (qMark == null)
+		{
+			qMark = transform.Find("Center Section/Frame 2/ItemFrame/QuestionMask").GetComponent<TextMeshProUGUI>();
+		}
 		if (maskGroup == null)
 		{
 			maskGroup = transform.Find("Right Section/Frame 1/StatBack/MaskGroup").gameObject;
@@ -132,11 +137,13 @@ public class YinyangItemDetailUI : MonoBehaviour
 		{
 			maskItem.SetActive(false);
 			maskGroup.SetActive(false);
+			qMark.enabled = false;
 		}
 		else
 		{
 			maskItem.SetActive(true);
 			maskGroup.SetActive(true);
+			qMark.enabled = true;
 		}
 
 		cur = item;
