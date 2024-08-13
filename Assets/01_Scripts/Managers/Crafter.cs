@@ -220,7 +220,19 @@ public class Crafter
 
 	public static IEnumerator InitializeRecipe() //아이템이 이미 완전하다는 가정하에 ㅈ진행할거임.
 	{
-		SheetParser data = new SheetParser(PreservedDataManager.instance.recipes, "B", "R"); //B3:R
+		SheetParser data;
+		if (PreservedDataManager.instance)
+		{
+			data = new SheetParser(PreservedDataManager.instance.recipes, "B", "R"); //B3:R
+		}
+		else if (GameManager.instance)
+		{
+			data = new SheetParser(GameManager.instance.saver.recipes, "B", "R"); //B3:R
+		}
+		else
+		{
+			data = new SheetParser("https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/export?format=tsv&gid=1875583106&range=B3:R", "B", "R"); //B3:R
+		}
 		yield return new WaitUntil(() => data.inited);
 		string originalName;
 		string afterName;
@@ -248,7 +260,19 @@ public class Crafter
 
 	public static IEnumerator InitializeTrim() //일단됨.
 	{
-		SheetParser data = new SheetParser(PreservedDataManager.instance.trims, "B", "P"); //B3:P
+		SheetParser data;
+		if (PreservedDataManager.instance)
+		{
+			data =  new SheetParser(PreservedDataManager.instance.trims, "B", "P"); //B3:P
+		}
+		else if (GameManager.instance)
+		{
+			data = new SheetParser(GameManager.instance.saver.trims, "B", "P"); //B3:P
+		}
+		else
+		{
+			data = new SheetParser("https://docs.google.com/spreadsheets/d/1U_d85oU7k3LJym1HeIO90zeiGZhk2D-k8w3PR9CgzaQ/export?format=tsv&gid=1525999156&range=B3:P", "B", "P"); //B3:P
+		}
 		yield return new WaitUntil(()=>data.inited);
 		for (int i = 0; i < data.cardinality; i++)
 		{
