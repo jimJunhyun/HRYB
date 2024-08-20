@@ -22,6 +22,11 @@ public struct InventoryItem
 		number = num;
 	}
 
+	public static InventoryItem Empty
+	{
+		get => new InventoryItem(null, 0);
+	}
+
 	public bool isFull()
 	{
 		return number >= info.maxStack;
@@ -65,6 +70,15 @@ public struct InventoryItem
 	public ItemAmountPair ToPair()
 	{
 		return new ItemAmountPair(info, number);
+	}
+
+	public override string ToString()
+	{
+		if (isEmpty())
+		{
+			return "빈칸";
+		}
+		return $"{info} x {number}";
 	}
 }
 
@@ -122,36 +136,89 @@ public struct InvenSkill
 
 public class Inventory
 {
-	public Inventory(int cap)
+	public Inventory(int cap, int quickSize)
 	{
-		data = new List<InventoryItem>(cap);
-		for (int i = 0; i < cap; i++)
+		data = new List<InventoryItem>(cap - quickSize);
+		for (int i = 0; i < cap - quickSize; i++)
 		{
-			data.Add(new InventoryItem(null, 0));
+			data.Add(InventoryItem.Empty);
 		}
+		this.quickSize = quickSize;
+		quick = new QuickInven(quickSize);
 	}
 
 	List<InventoryItem> data;
-	int quickSize = 5;
+	QuickInven quick;
+	int quickSize;
 
 	public InventoryItem this[int idx]
 	{ 
 		get 
-		{ 
-			return data[idx];
-		} 
+		{
+			//switch (type)
+			//{
+			//	case InvenType.Normal:
+
+			if(idx < quickSize)
+			{
+				Debug.Log(idx + "번째 퀵슬롯을 찾음.");
+				return quick[idx];
+			}
+			else
+			{
+				if (data.Count <= idx - quickSize)
+				{
+					//Debug.Log("없");
+					return InventoryItem.Empty;
+				}
+				//Debug.Log("있, " + (idx - quickSize));
+				return data[idx - quickSize];
+			}
+			//	case InvenType.Quick:
+			//		return quick[idx];
+			//	default:
+			//		Debug.LogError($"{type} 인벤토리에 접근 불가능");
+			//		break;
+			//}
+			//return InventoryItem.Empty;
+
+		}
 		set	
 		{
-			data[idx] = value; 
+			//switch (type)
+			//{
+			//	case InvenType.Normal:
+			if(idx < quickSize)
+			{
+				quick[idx] = value;
+			}
+			else
+			{
+				if (data.Count > idx - quickSize)
+				{
+					data[idx - quickSize] = value;
+				}
+			}
+			//break;
+			//	case InvenType.Quick:
+			//		quick[idx] = value;
+			//		break;
+			//	default:
+			//		Debug.LogError($"{type} 인벤토리에 접근 불가능");
+			//		break;
+			//}
+
 		}
 	}
 
-	public int Count { get; private set;}
+	public int Count { get; private set;} //퀵슬롯 포함, 차있는 수
+	public int Capacity { get => data.Count + quickSize;} //퀵슬롯 포함, 총량
+	/// <returns></returns>
 
 	public List<int> Contains(Item info)
 	{
 		List<int> res = new List<int>();
-		for (int i = 0; i < data.Count; i++)
+		for (int i = 0; i < Capacity; i++)
 		{
 			if(!this[i].isEmpty() && this[i].info == info)
 			{
@@ -164,7 +231,7 @@ public class Inventory
 	public int SumContains(Item info)
 	{
 		int sum = 0;
-		for (int i = 0; i < data.Count; i++)
+		for (int i = 0; i < Capacity; i++)
 		{
 			if (!this[i].isEmpty() && this[i].info == info)
 			{
@@ -180,17 +247,22 @@ public class Inventory
 		data.Capacity += amt;
 		for (int i = 0; i < amt; i++)
 		{
-			data.Add(new InventoryItem(null, 0));
+			data.Add(InventoryItem.Empty);
 		}
 	}
 
 	public int Add(InventoryItem item)
 	{
-		for (int i = 0; i < data.Count; i++)
+		int from = 0;
+		if(!(item.info is Medicines))
+			from = quickSize;
+		
+
+		for (int i = from; i < Capacity; i++)
 		{
-			if (data[i].isEmpty())
+			if (this[i].isEmpty())
 			{
-				data[i] = item;
+				this[i] = item;
 				++Count;
 				return i;
 			}
@@ -200,9 +272,12 @@ public class Inventory
 
 	public bool Add(InventoryItem item, int to)
 	{
-		if (data[to].isEmpty())
+		if(!(item.info is Medicines) && to < quickSize)
+			return false;
+
+		if (this[to].isEmpty())
 		{
-			data[to] = item;
+			this[to] = item;
 			++Count;
 			return true;
 		}
@@ -211,7 +286,7 @@ public class Inventory
 
 	public void Remove(int idx)
 	{
-		data[idx] = new InventoryItem(null, 0);
+		this[idx] = InventoryItem.Empty;
 		--Count;
 	}
 
@@ -220,9 +295,15 @@ public class Inventory
 		int ret = 0;
 		while(true)
 		{
-			if(!data[ret].isEmpty())
+			if (!this[ret].isEmpty())
+			{
+				if(ret >= quickSize)
+				{
+					ret -= quickSize;
+				}
 				return ret;
-			if(ret >= data.Count)
+			}
+			if(ret >= Capacity)
 				return -1;
 
 			ret += 1;
@@ -231,15 +312,50 @@ public class Inventory
 
 	public int FindLastFilledSquare()
 	{
-		int ret = data.Count - 1;
+		int ret = Capacity - 1;
 		while (true)
 		{
-			if (!data[ret].isEmpty())
+			if (!this[ret].isEmpty())
+			{
+				if (ret >= quickSize)
+				{
+					ret -= quickSize;
+				}
 				return ret;
+			}
 			if (ret < 0)
 				return -1;
 
 			ret -= 1;
+		}
+	}
+}
+
+public class QuickInven
+{
+	internal List<InventoryItem> data;
+
+	public QuickInven(int cap)
+	{
+		data = new List<InventoryItem>(cap);
+		for (int i = 0; i < cap; i++)
+		{
+			data.Add(InventoryItem.Empty);
+		}
+	}
+
+	public InventoryItem this[int idx]
+	{
+		get
+		{
+			if (data.Count <= idx)
+				return InventoryItem.Empty;
+			return data[idx];
+		}
+		set
+		{
+			if (data.Count <= idx)
+				data[idx] = value;
 		}
 	}
 }
@@ -338,7 +454,7 @@ public class PlayerInven : MonoBehaviour
 
 	private void Awake()
 	{
-		inven = new Inventory(cap);
+		inven = new Inventory(cap,3);
 		animActions = GetComponentInChildren<PlayerAnimActions>();
 		prevChange = -changeCool;
 	}
@@ -421,7 +537,8 @@ public class PlayerInven : MonoBehaviour
 				{
 					InventoryItem item = new InventoryItem(data, cnt);
 					int idx = inven.Add(item);
-					
+					//Debug.Log(inven[idx]);
+
 					Debug.Log($"{inven[idx].info.MyName}, {inven[idx].number}개, 새로 추가됨, 위치 : {idx}");
 				}
 				else
@@ -649,11 +766,11 @@ public class PlayerInven : MonoBehaviour
 		}
 	}
 
-	public void UseHolding()
+	public void UseQuick(int slotIdx)
 	{
-		if (!inven[curHolding].isEmpty())
+		if(inven[slotIdx].info is Medicines m)
 		{
-			inven[curHolding].info.Use();
+			m.Use();
 		}
 		GameManager.instance.uiManager.UpdateInvenUI();
 	}
