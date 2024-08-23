@@ -24,6 +24,8 @@ public class CollectionUI : MonoBehaviour, IOpenableWindowUI
 
 	CollectionMode mode;
 
+	public bool isOverlay { get; set; } = false;
+
 	private void Awake()
 	{
 		content = transform.Find("Left Section/ItemView/Viewport/Content");

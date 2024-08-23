@@ -15,6 +15,8 @@ public class NodeLearnUI : MonoBehaviour
 	TextMeshProUGUI title;
 	NeededResource req;
 
+	RectTransform nodeParent;
+
 	Vector3 offPos;
 	Vector3 onPos;
 
@@ -24,9 +26,10 @@ public class NodeLearnUI : MonoBehaviour
 		title = scroller.Find("Names/NodeName").GetComponent<TextMeshProUGUI>();
 		req = scroller.Find("Requires/NeededResource").GetComponent<NeededResource>();
 		learnBtn = scroller.Find("LearnButton").GetComponent<Button>();
+		nodeParent = transform.parent.GetComponent<RectTransform>();
 
 		offPos = scroller.position;
-		onPos = offPos + Vector3.down * Screen.height;
+		onPos = offPos + Vector3.down * nodeParent.sizeDelta.y;
 
 		isOn = false;
 	}

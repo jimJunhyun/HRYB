@@ -7,9 +7,9 @@ public class TutCanvOff : MonoBehaviour
     public void OffWind(bool esc)
 	{
 		gameObject.SetActive(false);
-		GameManager.instance.TimeFreezeSet(1);
 		if (!esc)
 		{
+			GameManager.instance.TimeFreezeSet(1);
 			GameManager.instance.LockCursor();
 		}
 	}
@@ -19,7 +19,6 @@ public class TutCanvOff : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			OffWind(true);
-			GameManager.instance.TimeFreezeSet(0);
 		}
 	}
 }

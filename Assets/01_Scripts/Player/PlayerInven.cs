@@ -161,7 +161,7 @@ public class Inventory
 
 			if(idx < quickSize)
 			{
-				Debug.Log(idx + "번째 퀵슬롯을 찾음.");
+				//Debug.Log(idx + "번째 퀵슬롯을 찾음.");
 				return quick[idx];
 			}
 			else
@@ -212,6 +212,7 @@ public class Inventory
 	}
 
 	public int Count { get; private set;} //퀵슬롯 포함, 차있는 수
+	public int InvenCount { get; private set;} //퀵슬롯 미포함, 차있는 수
 	public int Capacity { get => data.Count + quickSize;} //퀵슬롯 포함, 총량
 	/// <returns></returns>
 
@@ -264,6 +265,10 @@ public class Inventory
 			{
 				this[i] = item;
 				++Count;
+				if(i >= quickSize)
+				{
+					++InvenCount;
+				}
 				return i;
 			}
 		}
@@ -279,6 +284,10 @@ public class Inventory
 		{
 			this[to] = item;
 			++Count;
+			if (to >= quickSize)
+			{
+				++InvenCount;
+			}
 			return true;
 		}
 		return false;
@@ -288,6 +297,10 @@ public class Inventory
 	{
 		this[idx] = InventoryItem.Empty;
 		--Count;
+		if (idx >= quickSize)
+		{
+			--InvenCount;
+		}
 	}
 
 	public int FindFirstFilledSquare()
@@ -407,7 +420,7 @@ public class PlayerInven : MonoBehaviour
 {
     public Inventory inven;
 	public SkillInventory skInven = new SkillInventory();
-    public int cap = 30;
+    public int cap = 33;
 
 	public string swapEffectName;
 	public Vector3 swapEffectRot;
@@ -429,6 +442,8 @@ public class PlayerInven : MonoBehaviour
 	float prevChange;
 
 	public int currentExp = 0;
+
+	public const int QUICKSIZE = 3;
 	
 	public ItemAmountPair CurHoldingItem 
 	{ 
@@ -450,11 +465,11 @@ public class PlayerInven : MonoBehaviour
 	{
 		get => CurHoldingItem != ItemAmountPair.Empty && CurHoldingItem.info is YinyangItem;
 	}
-	public bool isFull { get => inven.Count >= cap;}
+	public bool isFull { get => inven.InvenCount >= cap - QUICKSIZE;}
 
 	private void Awake()
 	{
-		inven = new Inventory(cap,3);
+		inven = new Inventory(cap,QUICKSIZE);
 		animActions = GetComponentInChildren<PlayerAnimActions>();
 		prevChange = -changeCool;
 	}
@@ -637,8 +652,8 @@ public class PlayerInven : MonoBehaviour
 		InventoryItem slotItem = inven[from];
 		if (slotItem.number - num >= 0)
 		{
-			GameManager.instance.qManager.InvokeOnChanged(CompletionAct.LoseItem, slotItem.info.MyName, -num);
-			GameManager.instance.qManager.InvokeOnChanged(CompletionAct.HaveItem, slotItem.info.MyName, -num);
+			//GameManager.instance.qManager.InvokeOnChanged(CompletionAct.LoseItem, slotItem.info.MyName, -num);
+			//GameManager.instance.qManager.InvokeOnChanged(CompletionAct.HaveItem, slotItem.info.MyName, -num);
 			slotItem.number -= num;
 
 			if(slotItem.number == 0)
@@ -668,7 +683,7 @@ public class PlayerInven : MonoBehaviour
 		}
 		else
 		{
-			if ((!inven[from].isEmpty() && inven[to].isEmpty()) || (inven[from].info == inven[to].info))
+			if ((!inven[from].isEmpty() && inven[to].isEmpty()) || (!inven[from].isEmpty() && !inven[to].isEmpty() && inven[from].info == inven[to].info))
 			{
 				Debug.Log($"{(inven[from].isEmpty() ? 0 : inven[from].info.MyName)}, {inven[from].number}개, {(inven[to].isEmpty() ? 0 : inven[to].info.MyName)}, {(inven[to].isEmpty() ? 0 : inven[to].number)}개에서, ");
 				int leftover;
@@ -681,7 +696,7 @@ public class PlayerInven : MonoBehaviour
 				}
 				Debug.Log("목적지 꽉 참.");
 			}
-			Debug.Log($"목적지 주인 있음. {inven[to].info.MyName}");
+			Debug.Log($"목적지 주인 있음. 또는 둘의 정보가 다름. 또는 둘 모두 빈 칸임.");
 			return false;
 		}
 	}

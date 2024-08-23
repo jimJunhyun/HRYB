@@ -83,6 +83,9 @@ public class Specials
 		{
 			if(modAdd[i] != 0)
 			{
+				sb.Append("<sprite=");
+				sb.Append(i);
+				sb.Append(">");
 				sb.Append(NodeUtility.ToStringKorean((StatUpgradeType)i));
 				sb.Append("<#006400>");
 				sb.Append('+');
@@ -93,6 +96,9 @@ public class Specials
 			}
 			if(modMult[i] != 0)
 			{
+				sb.Append("<sprite=");
+				sb.Append(i);
+				sb.Append(">");
 				sb.Append(NodeUtility.ToStringKorean((StatUpgradeType)i));
 				sb.Append("<#006400>");
 				sb.Append('+');

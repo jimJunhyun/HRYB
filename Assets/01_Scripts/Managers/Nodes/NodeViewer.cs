@@ -18,7 +18,6 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 
 	public NodeLearnUI nodeLearner;
 	public ExpTextUI exp;
-	public StatTxtUI stt;
 	
 	public List<Sprite> nodeSprites;
 
@@ -41,6 +40,8 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 
 	Coroutine ongoing;
 
+	public bool isOverlay { get; set; } = true;
+
 	private void Awake()
 	{
 		//allNodes = NodeUtility.LoadNodeData();
@@ -57,7 +58,6 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 		nodeLearner = transform.Find("NodeLearnWindow").GetComponent<NodeLearnUI>();
 		viewport = transform.Find("NodeBgnd/Viewport");
 		exp = transform.Find("EXPText").GetComponent<ExpTextUI>();
-		stt = transform.Find("StatText").GetComponent<StatTxtUI>();
 
 		offPos = viewport.position;
 		onPos = offPos + Vector3.left * VIEWPORTOFFSET;
@@ -229,7 +229,6 @@ public class NodeViewer : MonoBehaviour, IOpenableWindowUI
 	public void Refresh()
 	{
 		exp.DoRefresh();
-		stt.DoRefresh();
 
 		for (int i = 0; i < allNodeUIs.Count; i++)
 		{

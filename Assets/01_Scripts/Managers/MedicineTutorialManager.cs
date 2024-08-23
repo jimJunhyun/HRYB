@@ -99,22 +99,22 @@ public class MedicineTutorialManager : MonoBehaviour
 					break;
 				case 3:
 					{
-						RectTransform trm = (GameManager.instance.uiManager.toolbarUIShower.parents[MEDICINEPARENTBUTTONINDEX].transform as RectTransform);
-						Rect rt = trm.rect;
-						rt.position = trm.position;
-
-						
-
-						if (!foc)
-						{
-							GameManager.instance.uiManager.focus.FocusAt(rt, rt.position, true, AdditionalEffectFocusing.Border | AdditionalEffectFocusing.Arrow | AdditionalEffectFocusing.Bounce);
-							foc = true;
-							
-						}
-						rt.x -= rt.width * 0.5f;
-						rt.y -= rt.height * 0.5f;
-						if (rt.Contains(Input.mousePosition))
-						{
+						//RectTransform trm = (GameManager.instance.uiManager.toolbarUIShower.parents[MEDICINEPARENTBUTTONINDEX].transform as RectTransform);
+						//Rect rt = trm.rect;
+						//rt.position = trm.position;
+						//
+						//
+						//
+						//if (!foc)
+						//{
+						//	GameManager.instance.uiManager.focus.FocusAt(rt, rt.position, true, AdditionalEffectFocusing.Border | AdditionalEffectFocusing.Arrow | AdditionalEffectFocusing.Bounce);
+						//	foc = true;
+						//	
+						//}
+						//rt.x -= rt.width * 0.5f;
+						//rt.y -= rt.height * 0.5f;
+						//if (rt.Contains(Input.mousePosition))
+						//{
 							
 
 							//GameObject l = new GameObject("Lft3");
@@ -129,39 +129,39 @@ public class MedicineTutorialManager : MonoBehaviour
 							//Debug.Log("마우스호버링한듯?????");
 							foc = false;
 							step += 1;
-						}
+						//}
 					}
 					break;
 				case 4:
 					{
-						RectTransform trm = (GameManager.instance.uiManager.toolbarUIShower.parents[MEDICINEPARENTBUTTONINDEX].transform as RectTransform);
-						Rect rt = trm.rect;
-						rt.position = trm.position;
-						rt.position -= Vector2.up * rt.height;
-						rt.height *= 3;
-						rt.x -= rt.width * 0.5f;
-						rt.y -= rt.height * 0.5f;
+						//RectTransform trm = (GameManager.instance.uiManager.toolbarUIShower.parents[MEDICINEPARENTBUTTONINDEX].transform as RectTransform);
+						//Rect rt = trm.rect;
+						//rt.position = trm.position;
+						//rt.position -= Vector2.up * rt.height;
+						//rt.height *= 3;
+						//rt.x -= rt.width * 0.5f;
+						//rt.y -= rt.height * 0.5f;
 
-						RectTransform trmFoc = (GameManager.instance.uiManager.toolbarUIShower.toolStateButtonPair[ToolState.Fusion].transform as RectTransform);
-						Rect rtFoc = trmFoc.rect;
-						rtFoc.position = trmFoc.position;
+						//RectTransform trmFoc = (GameManager.instance.uiManager.toolbarUIShower.toolStateButtonPair[ToolState.Fusion].transform as RectTransform);
+						//Rect rtFoc = trmFoc.rect;
+						//rtFoc.position = trmFoc.position;
 						
-						GameManager.instance.uiManager.focus.FocusAt(rtFoc, rtFoc.position, false, AdditionalEffectFocusing.Border | AdditionalEffectFocusing.Arrow);
-						//GameObject l = new GameObject("Lft4");
-						//l.transform.position = new Vector3(rt.xMin, rt.y);
-						//GameObject r = new GameObject("Rht4");
-						//r.transform.position = new Vector3(rt.xMax, rt.y);
-						//GameObject u = new GameObject("Up4");
-						//u.transform.position = new Vector3(rt.x, rt.yMin);
-						//GameObject d = new GameObject("Down4");
-						//d.transform.position = new Vector3(rt.x, rt.yMax);
-						if (!rt.Contains(Input.mousePosition))
-						{
+						//GameManager.instance.uiManager.focus.FocusAt(rtFoc, rtFoc.position, false, AdditionalEffectFocusing.Border | AdditionalEffectFocusing.Arrow);
+						////GameObject l = new GameObject("Lft4");
+						////l.transform.position = new Vector3(rt.xMin, rt.y);
+						////GameObject r = new GameObject("Rht4");
+						////r.transform.position = new Vector3(rt.xMax, rt.y);
+						////GameObject u = new GameObject("Up4");
+						////u.transform.position = new Vector3(rt.x, rt.yMin);
+						////GameObject d = new GameObject("Down4");
+						////d.transform.position = new Vector3(rt.x, rt.yMax);
+						//if (!rt.Contains(Input.mousePosition))
+						//{
 
-							//Debug.Log("범위벗어난듯?????");
-							foc = false;
-							step -= 1;
-						}
+						//	//Debug.Log("범위벗어난듯?????");
+						//	foc = false;
+						//	step -= 1;
+						//}
 						if(GameManager.instance.uiManager.toolbarUIShower.state == ToolState.Fusion)
 						{
 							foc = false;
