@@ -14,6 +14,7 @@ public class MedicineUI : MonoBehaviour, IOpenableWindowUI
 	[SerializeField]
 	List<int> medicineValue;
 
+	public bool isOverlay { get; set; } = false;
 	private void Awake()
 	{
 		slotUI = GetComponentsInChildren<SlotUI>();

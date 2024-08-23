@@ -20,18 +20,40 @@ public class ItemDetailInfoShower : MonoBehaviour
 
 	public void SetInfo(HashSet<ProcessType> processes)
 	{
-		fry.enabled = processes.Contains(ProcessType.Fry);
-		stir.enabled = processes.Contains(ProcessType.Stir);
-		burn.enabled = processes.Contains(ProcessType.Burn);
-		mash.enabled = processes.Contains(ProcessType.Mash);
-		
+		Color c = fry.color;
+		c.a = processes.Contains(ProcessType.Fry) ? 1 : 0.5f;
+		fry.color = c;
+
+		c = stir.color;
+		c.a = processes.Contains(ProcessType.Stir) ? 1 : 0.5f;
+		stir.color = c;
+
+		c = burn.color;
+		c.a = processes.Contains(ProcessType.Burn) ? 1 : 0.5f;
+		burn.color = c;
+
+		c = mash.color;
+		c.a = processes.Contains(ProcessType.Mash) ? 1 : 0.5f;
+		mash.color = c;
+
 	}
 
 	public void ResetInfo()
 	{
-		fry.enabled = false;
-		stir.enabled = false;
-		burn.enabled = false;
-		mash.enabled = false;
+		Color c = fry.color;
+		c.a = 0.5f;
+		fry.color = c;
+
+		c = stir.color;
+		c.a = 0.5f;
+		stir.color = c;
+
+		c = burn.color;
+		c.a = 0.5f;
+		burn.color = c;
+
+		c = mash.color;
+		c.a = 0.5f;
+		mash.color = c;
 	}
 }

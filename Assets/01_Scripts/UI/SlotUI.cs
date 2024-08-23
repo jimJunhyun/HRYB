@@ -20,7 +20,7 @@ public class SlotUI : MonoBehaviour,IDropHandler, IPointerClickHandler
     private void Awake()
     {
         Iconimg = transform.GetComponentInChildren<Image>();
-        text = GetComponentInChildren<TMP_Text>();
+        text = transform.parent.GetComponentInChildren<TMP_Text>();
 		frame = transform.parent.Find("Frame").GetComponent<Image>();
 
 		btn = GetComponent<Button>();
@@ -44,8 +44,9 @@ public class SlotUI : MonoBehaviour,IDropHandler, IPointerClickHandler
 				{
 					btn.interactable = false;
 				}
+				return;
 			}
-
+			Debug.Log(value + "번째 슬롯 갱신");
 			items = GameManager.instance.pinven.inven[value];
 
 			if (items.isEmpty())
@@ -53,7 +54,7 @@ public class SlotUI : MonoBehaviour,IDropHandler, IPointerClickHandler
 				Iconimg.sprite = null;
 				Iconimg.color = Color.clear;
 				text.text = "";
-				frame.color = Color.white;
+				frame.color = Color.gray;
 				if (btn)
 				{
 					btn.interactable = false;
@@ -80,9 +81,9 @@ public class SlotUI : MonoBehaviour,IDropHandler, IPointerClickHandler
 				}
 			}
 		}
-		catch
+		catch (System.Exception e)
 		{
-			Debug.LogWarning($"{value} Is 없는 번호임");
+			Debug.LogWarning($"{e.Message} : {value} Is 없는 번호임");
 			Iconimg.sprite = null;
 			Iconimg.color = Color.clear;
 			if (btn)

@@ -5,7 +5,9 @@ using TMPro;
 
 public class StatTxtUI : MonoBehaviour
 {
-	TextMeshProUGUI txt;
+	public StatUpgradeType indicatingStat;
+	TextMeshProUGUI nameTxt;
+	TextMeshProUGUI amtTxt;
 
 	private void Start()
 	{
@@ -13,29 +15,44 @@ public class StatTxtUI : MonoBehaviour
 	}
 	public void DoRefresh()
 	{
-		if (txt == null)
+		if (nameTxt == null)
 		{
-			txt = GetComponent<TextMeshProUGUI>();
+			nameTxt = transform.Find("StatName").GetComponent<TextMeshProUGUI>();
+		}
+		if (amtTxt == null)
+		{
+			amtTxt = transform.Find("StatAmt").GetComponent<TextMeshProUGUI>();
 		}
 
-
 		bool b = GameManager.GetGlobalSB(out System.Text.StringBuilder sb);
-		sb.Append("<#ffffff>체력 : </color><#00dd00>");
-		sb.Append(GameManager.instance.pActor.life.yy.white.MaxValue);
-		sb.Append("</color>\n");
-		sb.Append("<#ffffff>기력 : </color><#00dd00>");
-		sb.Append(GameManager.instance.pActor.life.yy.black.MaxValue);
-		sb.Append("</color>\n");
-		sb.Append("<#ffffff>힘 : </color><#00dd00>");
-		sb.Append(GameManager.instance.pActor.atk.Damage.white.MaxValue);
-		sb.Append("</color>\n");
-		sb.Append("<#ffffff>정신 : </color><#00dd00>");
-		sb.Append(GameManager.instance.pActor.atk.Damage.black.MaxValue);
-		sb.Append("</color>\n");
-		sb.Append("<#ffffff>속도 : </color><#00dd00>");
-		sb.Append(GameManager.instance.pActor.move.Speed);
-		sb.Append("</color>\n");
-		txt.text = sb.ToString();
+		sb.Append("<sprite=");
+		sb.Append(((int)indicatingStat));
+		sb.Append(">");
+		sb.Append(NodeUtility.ToStringKorean(indicatingStat));
+		nameTxt.text = sb.ToString();
 		GameManager.ReturnGlobalSB(b);
+		switch (indicatingStat)
+		{
+			case StatUpgradeType.White:
+				amtTxt.text = GameManager.instance.pActor.life.yy.white.ToString();
+				break;
+			case StatUpgradeType.Black:
+				amtTxt.text = GameManager.instance.pActor.life.yy.black.ToString();
+				break;
+			case StatUpgradeType.WhiteAtk:
+				amtTxt.text = GameManager.instance.pActor.atk.Damage.white.MaxValue.ToString();
+				break;
+			case StatUpgradeType.BlackAtk:
+				amtTxt.text = GameManager.instance.pActor.atk.Damage.black.MaxValue.ToString();
+				break;
+			case StatUpgradeType.MoveSpeed:
+				amtTxt.text = GameManager.instance.pActor.move.Speed.ToString();
+				break;
+			case StatUpgradeType.CooldownRdc:
+				amtTxt.text = (1 - (GameManager.instance.pActor.cast as PlayerCast).cooldownModuleStat.Speed).ToString();
+				break;
+			default:
+				break;
+		}
 	}
 }

@@ -294,4 +294,9 @@ public class UpgradableStatus
 		roundThreshold = origin.roundThreshold;
 		maxValue = origin.maxValue;
 	}
+
+	public override string ToString()
+	{
+		return $"{Value}/{MaxValue}";
+	}
 }

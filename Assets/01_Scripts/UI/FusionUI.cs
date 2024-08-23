@@ -13,9 +13,9 @@ public class FusionUI : MonoBehaviour, IOpenableWindowUI
 	Transform content;
 
 	internal List<CraftButtonUI> buttons = new List<CraftButtonUI>();
+	public bool isOverlay { get; set; } = false;
 
 	const string CRAFTBUTTON = "CraftableMedicine";
-
 	private void Awake()
 	{
 		slotUI = GetComponentsInChildren<SlotUI>();

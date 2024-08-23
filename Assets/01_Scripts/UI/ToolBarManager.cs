@@ -22,10 +22,10 @@ public class ToolBarManager : MonoBehaviour
 	Dictionary<ToolState, GameObject> windows = new Dictionary<ToolState, GameObject>();
 	internal Dictionary<ToolState, IOpenableWindowUI> openables = new Dictionary<ToolState, IOpenableWindowUI>();
 
-	public List<ToolBtn> toolButtons;
-	internal List<ToolBtn> parents;
+	//public List<ToolBtn> toolButtons;
+	//internal List<ToolBtn> parents;
 
-	internal Dictionary<ToolState, ToolBtn> toolStateButtonPair = new Dictionary<ToolState, ToolBtn>();
+	//internal Dictionary<ToolState, ToolBtn> toolStateButtonPair = new Dictionary<ToolState, ToolBtn>();
 
 	IOpenableWindowUI curOpened;
 
@@ -46,23 +46,24 @@ public class ToolBarManager : MonoBehaviour
 			openables.Add(arr[i], c.GetComponent<IOpenableWindowUI>());
 		}
 
-		toolButtons = new List<ToolBtn>(GetComponentsInChildren<ToolBtn>());
-		parents = new List<ToolBtn>();
-		toolStateButtonPair = new Dictionary<ToolState, ToolBtn>();
-		for (int i = 0; i < toolButtons.Count; i++)
-		{
-			if(toolButtons[i].indicating == ToolState.None)
-				parents.Add(toolButtons[i]);
-			else if (!toolStateButtonPair.ContainsKey(toolButtons[i].indicating))
-			{
-				toolStateButtonPair.Add(toolButtons[i].indicating, toolButtons[i]);
-			}
-		}
+		//toolButtons = new List<ToolBtn>(GetComponentsInChildren<ToolBtn>());
+		//parents = new List<ToolBtn>();
+		//toolStateButtonPair = new Dictionary<ToolState, ToolBtn>();
+		//for (int i = 0; i < toolButtons.Count; i++)
+		//{
+		//	if(toolButtons[i].indicating == ToolState.None)
+		//		parents.Add(toolButtons[i]);
+		//	else if (!toolStateButtonPair.ContainsKey(toolButtons[i].indicating))
+		//	{
+		//		toolStateButtonPair.Add(toolButtons[i].indicating, toolButtons[i]);
+		//	}
+		//}
 		opened = false;
 	}
 
 	private void Start()
 	{
+		ToolOff();
 		ChangeStatus(ToolState.Inventory);
 	}
 
@@ -77,11 +78,16 @@ public class ToolBarManager : MonoBehaviour
 
 	public void ChangeStatus(ToolState windowStat)
 	{
-		ToolOff();
-		if (curOpened != null)
+		if (!openables[windowStat].isOverlay && curOpened != null)
 		{
-			curOpened.OnClose();
+			windows[state]?.SetActive(false);
 		}
+		//}
+		//else
+		//{
+		//	ToolOff();
+		//}
+
 		state = windowStat;
 		RefreshButtons();
 		if(state != ToolState.None)
@@ -98,6 +104,11 @@ public class ToolBarManager : MonoBehaviour
 			}
 			curOpened = null;
 		}
+	}
+
+	public void ChangeStatus(string name)
+	{
+		ChangeStatus((ToolState)System.Enum.Parse(typeof(ToolState), name));
 	}
 
 	public void CloseWindow()
@@ -121,19 +132,19 @@ public class ToolBarManager : MonoBehaviour
 	public void RefreshButtons()
 	{
 		
-		for (int i = 0; i < toolButtons.Count; i++)
-		{
-			toolButtons[i].ResetButton();
-			
-			if (state != ToolState.None && toolButtons[i].indicating == state)
-			{
-				toolButtons[i].Focus();
-			}
-		}
-		for (int i = 0; i < parents.Count; i++)
-		{
-			parents[i].ParentButtonRefresh();
-		}
+		//for (int i = 0; i < toolButtons.Count; i++)
+		//{
+		//	toolButtons[i].ResetButton();
+		//	
+		//	if (state != ToolState.None && toolButtons[i].indicating == state)
+		//	{
+		//		toolButtons[i].Focus();
+		//	}
+		//}
+		//for (int i = 0; i < parents.Count; i++)
+		//{
+		//	parents[i].ParentButtonRefresh();
+		//}
 		
 	}
 

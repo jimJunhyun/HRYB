@@ -7,6 +7,8 @@ public class QuestUI : MonoBehaviour, IOpenableWindowUI
 	QuestDetailUI questInfo;
 	QuestListUI questList;
 
+	public bool isOverlay { get; set; } = false;
+
 	public const string CONDUINAME = "CompletionAtomBgnd";
 	public const string REWUINAME = "RewAtomBgnd";
 	public const string SEPARATORNAME = "QuestSeparator";
