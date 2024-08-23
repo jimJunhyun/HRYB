@@ -117,8 +117,9 @@ public class FarmingPoint : MonoBehaviour, IInterable
 			Debug.Log("아이템 떨구겠다.");
 		}
 		Debug.Log(transform.name);
-		if(regenable && isDestroyed)
+		if (isDestroyed)
 		{
+			Debug.Log("재생대기중");
 			c.enabled = false;
 			foreach (var item in r)
 			{
@@ -126,19 +127,19 @@ public class FarmingPoint : MonoBehaviour, IInterable
 			}
 			canv.SetActive(false);
 			IsInterable = false;
-			StartCoroutine(DelRegen());
+			
 			getable = false;
 		}
-		else if (isDestroyed)
+		if(regenable)
 		{
-			//Destroy(gameObject);
-			PoolManager.ReturnObject(gameObject);
+			StartCoroutine(DelRegen());
 		}
 	}
 
 	public IEnumerator DelRegen()
 	{
 		yield return sec;
+		Debug.Log($"재생함{transform.name}");
 		foreach (var item in r)
 		{
 			item.enabled = true;
