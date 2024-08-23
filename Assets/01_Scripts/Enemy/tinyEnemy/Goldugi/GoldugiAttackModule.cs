@@ -23,6 +23,11 @@ public class GoldugiAttackModule : EnemyAttackModule
 		//eff.Begin();
 	}
 
+	public override void OnAnimationEnd(AnimationEvent evt)
+	{
+		self.AI.StartExamine();
+	}
+
 	public override void Attack()
 	{
 		GetActor().anim.Animators.SetTrigger(Animator.StringToHash($"{AttackStd}"));

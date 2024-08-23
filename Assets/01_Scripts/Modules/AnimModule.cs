@@ -44,14 +44,15 @@ public class AnimModule : Module
 
 	public virtual void Awake()
 	{
-		try
+		if(GetComponent<Animator>())
 		{
 			anim = GetComponent<Animator>();
 		}
-		catch
+		else
 		{
 			anim = GetComponentInChildren<Animator>();
 		}
+
 
 		if (anim.runtimeAnimatorController != null)
 		{

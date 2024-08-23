@@ -33,14 +33,16 @@ public class GoldugiAI : BasicAI
 		self.anim.SetIdleState(true);
 		self.life._dieEvent += () => { DieEvent(); };
 		self.life._hitEvent += _moveModule.StopMove;
+		GoldugiAttackModule _atkModule = GetComponent<GoldugiAttackModule>();
+
 
 		Waiter _normalWait = new Waiter(2f);
 
 		IsInRange noramlRange = new IsInRange(self, player.transform, Attackrange, null, () =>
 		{
 			_normalWait.StartReady();
-			//_atkModule.SetAttackType(NormalAttack);
-			//_moveModule.StopMove();
+			_atkModule.SetAttackType(NormalAttack);
+			_moveModule.StopMove();
 		});
 
 		Attacker normalAttack = new Attacker(self, () =>
@@ -54,6 +56,9 @@ public class GoldugiAI : BasicAI
 		normalATK.connecteds.Add(noramlRange);
 		normalATK.connecteds.Add(_normalWait);
 		normalATK.connecteds.Add(normalAttack);
+
+		head.connecteds.Add(normalATK);
+		STSetting();
 	}
 
 
@@ -62,7 +67,7 @@ public class GoldugiAI : BasicAI
 		if (self.AI.StopState)
 			return;
 
-		if (self.life.isDead == false && self.anim.Animators.GetBool("Stun") == false)
+		if (self.life.isDead == false)
 		{
 			LookAt(player.transform);
 

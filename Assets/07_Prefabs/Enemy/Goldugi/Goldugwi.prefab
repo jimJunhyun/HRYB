@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5802868057204284274}
-  - component: {fileID: 5978707007464432166}
   - component: {fileID: 2278678522857201804}
   - component: {fileID: 3263697150307908319}
   - component: {fileID: 6234659342934052031}
@@ -20,6 +19,9 @@ GameObject:
   - component: {fileID: 974136772799165454}
   - component: {fileID: 7573438256587104238}
   - component: {fileID: 2296373455934034421}
+  - component: {fileID: 2644478924306028477}
+  - component: {fileID: 7544887940053354496}
+  - component: {fileID: 8101052995214933343}
   m_Layer: 0
   m_Name: Goldugwi
   m_TagString: Untagged
@@ -44,23 +46,6 @@ Transform:
   - {fileID: 3405684259944746478}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5978707007464432166
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1330536533172442112}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 977304e6e1ea6cc4b86d5987ac28bf2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initAtkDist: 0
-  initAtkGap: 0
-  blackDamage: 0
-  whiteDamage: 0
-  target: {fileID: 0}
 --- !u!114 &2278678522857201804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,8 +137,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isImmune: 0
-  initBlack: 0
-  initWhite: 0
+  initBlack: 1
+  initWhite: 1
   initAdeBlack: 0
   initAdeWhite: 0
   regenThreshold: 10
@@ -184,9 +169,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveDir: {x: 0, y: 0, z: 0}
-  initRunSpeed: 0
-  initWalkSpeed: 0
-  initCrouchSpeed: 0
+  initRunSpeed: 2
+  initWalkSpeed: 2
+  initCrouchSpeed: 2
   gravity: 0
   groundThreshold: 0.5
   _isCanMove: 0
@@ -227,7 +212,7 @@ MonoBehaviour:
   _player: {fileID: 0}
   _skinned: {fileID: 0}
   IsNotStarted: 0
-  _isWake: 0
+  _isWake: 1
   _moveRange: 2
   _sectionRange: 10
   _section2Range: 15
@@ -253,6 +238,71 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!143 &2644478924306028477
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330536533172442112}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7544887940053354496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330536533172442112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3d8a9c550558a045996c2e704a001e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initAtkDist: 0
+  initAtkGap: 0
+  blackDamage: 0
+  whiteDamage: 0
+  target: {fileID: 0}
+  _normalATKValue: 2
+--- !u!95 &8101052995214933343
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330536533172442112}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 4ba425608ff1f3b48b97c5847ed9671e, type: 3}
+  m_Controller: {fileID: 9100000, guid: dacb8065e3c114c429f935ee4fa420fd, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5254489658193715302
 GameObject:
   m_ObjectHideFlags: 0
@@ -681,7 +731,8 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: dacb8065e3c114c429f935ee4fa420fd, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9500000, guid: 4ba425608ff1f3b48b97c5847ed9671e, type: 3}
     m_RemovedGameObjects:
     - {fileID: 100052, guid: 4ba425608ff1f3b48b97c5847ed9671e, type: 3}
     - {fileID: 100000, guid: 4ba425608ff1f3b48b97c5847ed9671e, type: 3}
