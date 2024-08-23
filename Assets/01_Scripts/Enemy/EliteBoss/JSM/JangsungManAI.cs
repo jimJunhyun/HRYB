@@ -107,7 +107,7 @@ public class JangsungManAI : AISetter
 
 			#region 이동 공격
 
-			Waiter waitMove = new Waiter(0.5f);
+			Waiter waitMove = new Waiter(3.4f);
 
 			IsInRange isMoveAttack = new IsInRange(self, player.transform, _jsAttckModule.MoveAttack, null, () =>
 			{
@@ -144,7 +144,7 @@ public class JangsungManAI : AISetter
 
 			#region WaitDown
 
-			Waiter DownWait = new Waiter(9f);
+			Waiter DownWait = new Waiter(14f);
 			IsInRange isRangeDown = new IsInRange(self, player.transform, _jsAttckModule.DownAttack, null, () =>
 			{
 				_jsAttckModule.SetTarget(player);

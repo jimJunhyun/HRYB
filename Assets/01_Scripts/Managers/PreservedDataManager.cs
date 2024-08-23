@@ -18,13 +18,18 @@ public class PreservedDataManager : MonoBehaviour
 
 	public bool isUsedInOnlyEditor = false;
 
+	public TextAsset items; //B3:R
+	public TextAsset trims; //B3:P
+	public TextAsset recipes; //B3:R
+	public TextAsset useDatas; //B3:M
+
 	public static PreservedDataManager instance;
 
 	bool loadEnd = false;
 	float loadAmount;
 	Slider loadBar;
 
-//#if !UNITY_EDITOR
+#if !UNITY_EDITOR
 	private void Awake()
 	{
 //#if !UNITY_EDITOR
@@ -136,5 +141,5 @@ public class PreservedDataManager : MonoBehaviour
 		op.allowSceneActivation = true;
 		Debug.Log("로드 다했다...!");
 	}
-//#endif
+#endif
 }

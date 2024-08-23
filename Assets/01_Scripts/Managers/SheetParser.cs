@@ -153,6 +153,40 @@ public class SheetParser
 
 	}
 
+	public SheetParser(TextAsset sheetTSV, string from, string to, bool hasIndex = true)
+	{
+		heads = new List<string>();
+		headValuesPair = new Dictionary<string, List<string>>();
+		tupleDatas = new List<List<string>>();
+
+		indexed = hasIndex;
+		if (indexed)
+		{
+			indexAttributePairs = new Dictionary<string, List<string>>();
+		}
+
+		inited = false;
+
+		int f = 0;
+		int t = 0;
+
+		int dig = 1;
+		for (int i = from.Length - 1; i >= 0; --i)
+		{
+			f += (from[i] - 'A' + 1) * dig;
+			dig *= 26;
+		}
+		dig = 1;
+		for (int i = from.Length - 1; i >= 0; --i)
+		{
+			t += (to[i] - 'A' + 1) * dig;
+			dig *= 26;
+		}
+		attributeCount = t - f + 1;
+
+		Load(sheetTSV.text);
+	}
+
 	public void OnLoadCompleted(AsyncOperation oper, UnityWebRequest req)
 	{
 		if (oper.isDone)
@@ -204,7 +238,46 @@ public class SheetParser
 		
 	}
 
-	
+	public void Load(string compData)
+	{
+		tsvFormatText = compData;
+
+		string[] rows = tsvFormatText.Split('\n');
+
+		cardinality = rows.Length - 1;
+
+		string[] cols;
+		for (int i = 0; i < rows.Length; i++)
+		{
+			cols = rows[i].Split('\t');
+			List<string> colsSplit = new List<string>();
+			for (int j = 0; j < cols.Length; j++)
+			{
+				if (i == 0)
+				{
+					heads.Add(cols[j].Trim());
+					headValuesPair.Add(cols[j].Trim(), new List<string>());
+				}
+				else
+				{
+					headValuesPair[heads[j]].Add(cols[j].Trim());
+					colsSplit.Add(cols[j].Trim());
+				}
+			}
+			if (i != 0)
+			{
+				tupleDatas.Add(colsSplit);
+			}
+
+			if (indexed && i != 0)
+			{
+				indexAttributePairs.Add(colsSplit[0], colsSplit);
+			}
+		}
+
+		inited = true;
+		onCompleted?.Invoke(this);
+	}
 
 	public IEnumerator Load()
 	{

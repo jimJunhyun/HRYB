@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class BossHPManager : MonoBehaviour
@@ -19,15 +20,20 @@ public class BossHPManager : MonoBehaviour
 			{
 				obj = Instantiate(GameManager.instance.saver.pManager.jangsungHP, transform);
 				jangsungHP = true;
-				GameObject.Find("Boy").GetComponentInChildren<BossHPBar>().lf = GameObject.Find("JangSungMen").GetComponent<LifeModule>();
-				GameObject.Find("Girl").GetComponentInChildren<BossHPBar>().lf = GameObject.Find("JangSungGirl").GetComponent<LifeModule>();
+
+				GetComponentInChildren<BossHPBar>().boyLf = GameObject.Find("JangSungMen").GetComponent<LifeModule>();
+				GetComponentInChildren<BossHPBar>().girlLf = GameObject.Find("JangSungGirl").GetComponent<LifeModule>();
+				GetComponentInChildren<BossHPBar>().boyHp = GameObject.Find("Boyhp").GetComponent<Image>();
+				GetComponentInChildren<BossHPBar>().girlHp = GameObject.Find("Girlhp").GetComponent<Image>();
+				GetComponentInChildren<BossHPBar>().boyWhiteAdequity = GameObject.Find("BoyWhiteBack").GetComponent<Image>();
+				GetComponentInChildren<BossHPBar>().girlWhiteAdequity = GameObject.Find("GirlWhiteBack").GetComponent<Image>();
 
 			}
 		}
 		else
 		{
 			obj = Instantiate(GameManager.instance.saver.pManager.bossHPBar, transform);
-			obj.GetComponentInChildren<BossHPBar>().lf = lf;
+			//obj.GetComponentInChildren<BossHPBar>().lf = lf;
 			obj.GetComponentInChildren<TMP_Text>().text = name;
 		}
 
