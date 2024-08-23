@@ -61,7 +61,11 @@ public abstract class EnemyAttackModule : AttackModule, IAnimationEventActorEv
 	}
 	public virtual void OnAnimationEnd(AnimationEvent evt)
 	{
-
+		if (_nowCols != null)
+		{
+			_nowCols.End();
+			_nowCols = null;
+		}
 	}
 
 	public virtual void OnAnimationHit(AnimationEvent evt)

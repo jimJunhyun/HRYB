@@ -44,7 +44,15 @@ public class AnimModule : Module
 
 	public virtual void Awake()
 	{
-		anim = GetComponent<Animator>();
+		try
+		{
+			anim = GetComponent<Animator>();
+		}
+		catch
+		{
+			anim = GetComponentInChildren<Animator>();
+		}
+
 		if (anim.runtimeAnimatorController != null)
 		{
 			animatorOverrideController = new AnimatorOverrideController(anim.runtimeAnimatorController);
