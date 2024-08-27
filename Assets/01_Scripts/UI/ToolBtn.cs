@@ -238,7 +238,7 @@ public class ToolBtn : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 		Exit();
 		if (subButtons != null && subButtons.Count > 0)
 		{
-			if (!subButtonIndicators.Contains(GameManager.instance.uiManager.toolbarUIShower.state))
+			if (!subButtonIndicators.Contains(GameManager.instance.uiManager.toolbarUIShower.state.CurStat))
 			{
 				ResetButton();
 			}

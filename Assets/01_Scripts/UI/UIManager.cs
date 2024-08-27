@@ -76,10 +76,9 @@ using System.Linq;
 
 	public bool isWholeScreenUIOn
 	{
-		get=>isOn || isOptionOn;
+		get=>toolbarUIShower.opened || isOptionOn;
 	}
 
-    bool isOn = false;
     bool isOptionOn = false;
 
 	bool tutorialAppended = false;
@@ -145,28 +144,28 @@ using System.Linq;
 		
 	}
 
-	public void OnInventory(InputAction.CallbackContext context)
+	public void OnInventory(InputAction.CallbackContext context) // I(아이) 키
 	{
-		if (GameManager.instance.uiManager.dialogueUI.currentShown != null)
-		{
-			if (context.canceled)
-			{
-				GameManager.instance.uiManager.dialogueUI.currentShown.OnClick();
-			}
-		}
-		else
-		{
+		//if (GameManager.instance.uiManager.dialogueUI.currentShown != null)
+		//{
+		//	if (context.canceled)
+		//	{
+		//		GameManager.instance.uiManager.dialogueUI.currentShown.OnClick();
+		//	}
+		//}
+		//else
+		//{
 			if (GameManager.instance.pActor.move.moveModuleStat.TimelinePause)
 				return;
 			if (context.performed)
 			{
-				if (!isOn)
+				if (!toolbarUIShower.opened)
 				{
 					OnInven();
 					if (tutorialAppended && !tutorialCompleted)
 					{
 						mediTutorial.StartTutorial();
-						
+
 					}
 				}
 				else
@@ -179,9 +178,25 @@ using System.Linq;
 					OffInven();
 				}
 			}
+		//}
+		
+		
+	}
+
+	public void OnESC(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			CloseUppermost();
 		}
-		
-		
+	}
+
+	public void CloseUppermost()
+	{
+		if (toolbarUIShower.opened)
+		{
+			toolbarUIShower.CloseUppermost();
+		}
 	}
 
 	public void OnHelp(InputAction.CallbackContext context)
@@ -217,21 +232,12 @@ using System.Linq;
 
 	public void OnInven()
 	{
-		invenPanel.SetActive(true);
-		isOn = true;
-		GameManager.instance.UnLockCursor();
-		Time.timeScale = 0;
-		toolbarUIShower.opened = true;
+		toolbarUIShower.ChangeStatus(ToolState.Inventory);
 	}
 
 	public void OffInven()
 	{
-		invenPanel.SetActive(false);
-		toolbarUIShower.ChangeStatus(ToolState.Inventory);
-		toolbarUIShower.opened = false;
-		isOn = false;
-		GameManager.instance.LockCursor();
-		Time.timeScale = 1;
+		toolbarUIShower.ChangeStatus(ToolState.None);
 	}
 
 	public void OffOption()

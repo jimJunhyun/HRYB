@@ -5,12 +5,14 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class HoverExaggerate : MonoBehaviour
+public class HoverExaggerate : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
 	public float sizeModifier;
 	public Color colorModifier;
 
 	public UnityEvent onClick;
+
+	public bool polygonHoverCheck;
 
 
 	Color origin;
@@ -41,6 +43,8 @@ public class HoverExaggerate : MonoBehaviour
 
 	private void Update()
 	{
+		if(!polygonHoverCheck)
+			return;
 		outhit = Physics2D.OverlapCircle(Input.mousePosition, 1f);
 		if(outhit)
 		{
@@ -64,7 +68,7 @@ public class HoverExaggerate : MonoBehaviour
 				onClick.Invoke();
 			}
 		}
-}
+	}
 
 	public void Exag()
 	{
@@ -88,5 +92,17 @@ public class HoverExaggerate : MonoBehaviour
 
 		self.rectTransform.localScale /= sizeModifier;
 		self.color = origin;
+	}
+
+	public void OnPointerEnter(PointerEventData eventData)
+	{
+		if(!foc)
+			foc = true;
+	}
+
+	public void OnPointerExit(PointerEventData eventData)
+	{
+		if(foc)
+			foc = false;
 	}
 }

@@ -162,7 +162,7 @@ public class MedicineTutorialManager : MonoBehaviour
 						//	foc = false;
 						//	step -= 1;
 						//}
-						if(GameManager.instance.uiManager.toolbarUIShower.state == ToolState.Fusion)
+						if(GameManager.instance.uiManager.toolbarUIShower.state.CurStat == ToolState.Fusion)
 						{
 							foc = false;
 							step += 1;
@@ -171,7 +171,7 @@ public class MedicineTutorialManager : MonoBehaviour
 					break;
 				case 5:
 					{
-						if(GameManager.instance.uiManager.toolbarUIShower.state != ToolState.Fusion)
+						if(GameManager.instance.uiManager.toolbarUIShower.state.CurStat != ToolState.Fusion)
 						{
 							foc = false;
 							step -= 1;
