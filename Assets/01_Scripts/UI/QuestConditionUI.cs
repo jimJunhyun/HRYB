@@ -6,7 +6,7 @@ using TMPro;
 public class QuestConditionUI : MonoBehaviour
 {
     TextMeshProUGUI condText;
-	TextMeshProUGUI compCount;
+	//TextMeshProUGUI compCount;
 
 	CompleteAtom cur;
 
@@ -16,10 +16,10 @@ public class QuestConditionUI : MonoBehaviour
 		{
 			condText = transform.Find("CompletionAtomDesc").GetComponent<TextMeshProUGUI>();
 		}
-		if(compCount == null)
-		{
-			compCount = transform.Find("CompletionAtomCount").GetComponent<TextMeshProUGUI>();
-		}
+		//if(compCount == null)
+		//{
+		//	compCount = transform.Find("CompletionAtomCount").GetComponent<TextMeshProUGUI>();
+		//}
 
 		cur = comp;
 
@@ -124,48 +124,48 @@ public class QuestConditionUI : MonoBehaviour
 		condText.text = sb.ToString();
 		sb.Clear();
 
-		if (comp.isCompleted)
-		{
-			sb.Append("<#00dd00>");
-		}
-		else
-		{
-			sb.Append("<#dd0000>");
-		}
+		//if (comp.isCompleted)
+		//{
+		//	sb.Append("<#00dd00>");
+		//}
+		//else
+		//{
+		//	sb.Append("<#dd0000>");
+		//}
 
-		sb.Append(comp.curRepeatCount);
-		sb.Append("</color>");
-		sb.Append(" / ");
-		sb.Append(comp.repeatCount);
+		//sb.Append(comp.curRepeatCount);
+		//sb.Append("</color>");
+		//sb.Append(" / ");
+		//sb.Append(comp.repeatCount);
 
-		compCount.text = sb.ToString();
-		sb.Clear();
+		//compCount.text = sb.ToString();
+		//sb.Clear();
 
 		GameManager.ReturnGlobalSB(usingGlobal);
 	}
 
 	public void RefreshCount()
 	{
-		System.Text.StringBuilder sb;
-		bool usingGlobal = GameManager.GetGlobalSB(out sb);
+		//System.Text.StringBuilder sb;
+		//bool usingGlobal = GameManager.GetGlobalSB(out sb);
 
-		if (cur.isCompleted)
-		{
-			sb.Append("<#dd0000>");
-		}
-		else
-		{
-			sb.Append("<#00dd00>");
-		}
+		//if (cur.isCompleted)
+		//{
+		//	sb.Append("<#dd0000>");
+		//}
+		//else
+		//{
+		//	sb.Append("<#00dd00>");
+		//}
 
-		sb.Append(cur.curRepeatCount);
-		sb.Append("</color>");
-		sb.Append(" / ");
-		sb.Append(cur.repeatCount);
+		//sb.Append(cur.curRepeatCount);
+		//sb.Append("</color>");
+		//sb.Append(" / ");
+		//sb.Append(cur.repeatCount);
 
-		compCount.text = sb.ToString();
+		//compCount.text = sb.ToString();
 
 
-		GameManager.ReturnGlobalSB(usingGlobal);
+		//GameManager.ReturnGlobalSB(usingGlobal);
 	}
 }

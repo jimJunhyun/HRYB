@@ -12,7 +12,7 @@ public class QuestDetailUI : MonoBehaviour
 	QuestInfo curShown;
 
 	TextMeshProUGUI questName;
-	TextMeshProUGUI giver;
+	//TextMeshProUGUI giver;
 	TextMeshProUGUI description;
 
 	List<QuestConditionUI> conds= new List<QuestConditionUI>();
@@ -33,10 +33,10 @@ public class QuestDetailUI : MonoBehaviour
 		{
 			questName = transform.Find("QuestInfoScroll/Viewport/Content/QuestName").GetComponent<TextMeshProUGUI>();
 		}
-		if(giver == null)
-		{
-			giver = transform.Find("QuestInfoScroll/Viewport/Content/NameText").GetComponent<TextMeshProUGUI>();
-		}
+		//if(giver == null)
+		//{
+		//	giver = transform.Find("QuestInfoScroll/Viewport/Content/NameText").GetComponent<TextMeshProUGUI>();
+		//}
 		if(description == null)
 		{
 			description = transform.Find("QuestInfoScroll/Viewport/Content/DescText").GetComponent<TextMeshProUGUI>();
@@ -54,14 +54,14 @@ public class QuestDetailUI : MonoBehaviour
 		bool usingGlobal = GameManager.GetGlobalSB(out sb);
 
 		questName.text = inf.questName;
-		sb.Append("제공자 : <size=80%>");
-		sb.Append(inf.giver.subName);
-		sb.Append(" <size=100%>");
-		sb.Append(inf.giver.baseName);
-		giver.text = sb.ToString();
+		//sb.Append("제공자 : <size=80%>");
+		//sb.Append(inf.giver.subName);
+		//sb.Append(" <size=100%>");
+		//sb.Append(inf.giver.baseName);
+		//giver.text = sb.ToString();
 
 		sb.Clear();
-		sb.Append("내용 : <size=80%>");
+		sb.Append("<size=80%>");
 		sb.Append(inf.descriptions);
 		sb.Append("<size=100%>");
 		description.text = sb.ToString();
@@ -101,10 +101,10 @@ public class QuestDetailUI : MonoBehaviour
 
 	public void RefreshCompInfo()
 	{
-		for (int i = 0; i < conds.Count; i++)
-		{
-			conds[i].RefreshCount();
-		}
+		//for (int i = 0; i < conds.Count; i++)
+		//{
+		//	conds[i].RefreshCount();
+		//}
 	}
 
 	public void OffCompletely()

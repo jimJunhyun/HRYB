@@ -6,7 +6,7 @@ public class QuestListUI : MonoBehaviour
 {
 	Transform content;
 	List<QuestInfoUI> infos = new List<QuestInfoUI>();
-	List<QuestInfoSeparatorUI> seps = new List<QuestInfoSeparatorUI>();
+	//List<QuestInfoSeparatorUI> seps = new List<QuestInfoSeparatorUI>();
     public void RefreshAvailQuests()
 	{
 		if(content == null)
@@ -18,12 +18,12 @@ public class QuestListUI : MonoBehaviour
 		{
 			PoolManager.ReturnObject(infos[i].gameObject);
 		}
-		for (int i = 0; i < seps.Count; i++)
-		{
-			PoolManager.ReturnObject(seps[i].gameObject);
-		}
+		//for (int i = 0; i < seps.Count; i++)
+		//{
+		//	PoolManager.ReturnObject(seps[i].gameObject);
+		//}
 		infos.Clear();
-		seps.Clear();
+		//seps.Clear();
 
 		Dictionary<QuestType, SortedSet<QuestInfo>> typeQuestPair = new Dictionary<QuestType, SortedSet<QuestInfo>>();
 		for (int i = ((int)QuestType.Main); i <= ((int)QuestType.Sub); i++)
@@ -36,9 +36,9 @@ public class QuestListUI : MonoBehaviour
 		}
 		foreach (var item in typeQuestPair)
 		{
-			QuestInfoSeparatorUI sep = PoolManager.GetObject(QuestUI.SEPARATORNAME, content).GetComponent<QuestInfoSeparatorUI>();
-			sep.ShowInfo(item.Key);
-			seps.Add(sep);
+			//QuestInfoSeparatorUI sep = PoolManager.GetObject(QuestUI.SEPARATORNAME, content).GetComponent<QuestInfoSeparatorUI>();
+			//sep.ShowInfo(item.Key);
+			//seps.Add(sep);
 			foreach (var quest in item.Value)
 			{
 				QuestInfoUI inf = PoolManager.GetObject(QuestUI.INFOUINAME, content).GetComponent<QuestInfoUI>();

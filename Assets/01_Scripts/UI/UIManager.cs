@@ -162,18 +162,18 @@ using System.Linq;
 				if (!toolbarUIShower.opened)
 				{
 					OnInven();
-					if (tutorialAppended && !tutorialCompleted)
-					{
-						mediTutorial.StartTutorial();
+					//if (tutorialAppended && !tutorialCompleted)
+					//{
+					//	//mediTutorial.StartTutorial();
 
-					}
+					//}
 				}
 				else
 				{
-					if (!tutorialCompleted && tutorialAppended)
-					{
-						return;
-					}
+					//if (!tutorialCompleted && tutorialAppended)
+					//{
+					//	return;
+					//}
 
 					OffInven();
 				}
@@ -206,6 +206,30 @@ using System.Linq;
 			OnOffOption();
 		}
 
+	}
+
+	public void OnQuest(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			toolbarUIShower.ChangeStatus(ToolState.Quest);
+		}
+	}
+
+	public void OnMedicine(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			toolbarUIShower.ChangeStatus(ToolState.Medicine);
+		}
+	}
+
+	public void OnCollection(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			toolbarUIShower.ChangeStatus(ToolState.Collection);
+		}
 	}
 
 	public void UpdateInvenUI()

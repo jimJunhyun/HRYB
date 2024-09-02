@@ -7,7 +7,7 @@ using TMPro;
 public class QuestInfoUI : MonoBehaviour
 {
     TextMeshProUGUI questName;
-	TextMeshProUGUI accompCount;
+	//TextMeshProUGUI accompCount;
 
 	Button selfButton;
 
@@ -19,10 +19,10 @@ public class QuestInfoUI : MonoBehaviour
 		{
 			questName = transform.Find("QuestName").GetComponent<TextMeshProUGUI>();
 		}
-		if (accompCount == null)
-		{
-			accompCount = transform.Find("QuestCompletionCountText").GetComponent<TextMeshProUGUI>();
-		}
+		//if (accompCount == null)
+		//{
+		//	accompCount = transform.Find("QuestCompletionCountText").GetComponent<TextMeshProUGUI>();
+		//}
 		if (selfButton == null)
 		{
 			selfButton = GetComponent<Button>();
@@ -30,45 +30,45 @@ public class QuestInfoUI : MonoBehaviour
 		curShown = inf;
 
 		questName.text = inf.questName;
-		System.Text.StringBuilder sb;
-		bool usingGlobal = GameManager.GetGlobalSB(out sb);
-		if (inf.IsDeprived)
-		{
-			sb.Append("<#00dd00>");
-		}
-		else
-		{
-			sb.Append("<#dd0000>");
-		}
-		sb.Append(inf.curCompletedAmount);
-		sb.Append("</color> / ");
-		sb.Append(inf.completableCount);
+		//System.Text.StringBuilder sb;
+		//bool usingGlobal = GameManager.GetGlobalSB(out sb);
+		//if (inf.IsDeprived)
+		//{
+		//	sb.Append("<#00dd00>");
+		//}
+		//else
+		//{
+		//	sb.Append("<#dd0000>");
+		//}
+		//sb.Append(inf.curCompletedAmount);
+		//sb.Append("</color> / ");
+		//sb.Append(inf.completableCount);
 
-		accompCount.text = sb.ToString();
+		//accompCount.text = sb.ToString();
 
-		GameManager.ReturnGlobalSB(usingGlobal);
+		//GameManager.ReturnGlobalSB(usingGlobal);
 
 	}
 
 	public void RefreshNum()
 	{
-		System.Text.StringBuilder sb;
-		bool usingGlobal = GameManager.GetGlobalSB(out sb);
-		if (curShown.IsDeprived)
-		{
-			sb.Append("<#00dd00>");
-		}
-		else
-		{
-			sb.Append("<#dd0000>");
-		}
-		sb.Append(curShown.curCompletedAmount);
-		sb.Append("</color> / ");
-		sb.Append(curShown.completableCount);
+		//System.Text.StringBuilder sb;
+		//bool usingGlobal = GameManager.GetGlobalSB(out sb);
+		//if (curShown.IsDeprived)
+		//{
+		//	sb.Append("<#00dd00>");
+		//}
+		//else
+		//{
+		//	sb.Append("<#dd0000>");
+		//}
+		//sb.Append(curShown.curCompletedAmount);
+		//sb.Append("</color> / ");
+		//sb.Append(curShown.completableCount);
 
-		accompCount.text = sb.ToString();
+		//accompCount.text = sb.ToString();
 
-		GameManager.ReturnGlobalSB(usingGlobal);
+		//GameManager.ReturnGlobalSB(usingGlobal);
 	}
 
 	public void OnClick()
