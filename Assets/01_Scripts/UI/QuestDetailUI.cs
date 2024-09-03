@@ -20,35 +20,14 @@ public class QuestDetailUI : MonoBehaviour
 
 	public void ShowInfoOf(QuestInfo inf)
 	{
-		if(condContent == null)
-		{
-			condContent = transform.Find("QuestInfoScroll/Viewport/Content/QuestConditionList/Viewport/QuestConditionContent");
-		}
-		if(rewContent == null)
-		{
-			rewContent = transform.Find("QuestInfoScroll/Viewport/Content/QuestRewardList/Viewport/QuestRewardContent");
-		}
-
-		if(questName == null)
-		{
-			questName = transform.Find("QuestInfoScroll/Viewport/Content/QuestName").GetComponent<TextMeshProUGUI>();
-		}
-		//if(giver == null)
-		//{
-		//	giver = transform.Find("QuestInfoScroll/Viewport/Content/NameText").GetComponent<TextMeshProUGUI>();
-		//}
-		if(description == null)
-		{
-			description = transform.Find("QuestInfoScroll/Viewport/Content/DescText").GetComponent<TextMeshProUGUI>();
-		}
-
+		On();
 		if(inf == null)
 		{
-			OffCompletely();
+			//OffCompletely();
+			SetInfoEmpty();
 			return;
 		}
 		curShown = inf;
-		On();
 
 		System.Text.StringBuilder sb;
 		bool usingGlobal = GameManager.GetGlobalSB(out sb);
@@ -76,6 +55,8 @@ public class QuestDetailUI : MonoBehaviour
 		{
 			PoolManager.ReturnObject(rews[i].gameObject);
 		}
+		conds.Clear();
+		rews.Clear();
 
 		for (int i = 0; i < inf.myInfo.Count; i++)
 		{
@@ -97,6 +78,24 @@ public class QuestDetailUI : MonoBehaviour
 				rews.Add(rew);
 			}
 		}
+	}
+
+	public void SetInfoEmpty()
+	{
+		questName.text = "";
+		description.text = "선택한 퀘스트 정보를 표시합니다.";
+		for (int i = 0; i < conds.Count; i++)
+		{
+			PoolManager.ReturnObject(conds[i].gameObject);
+		}
+		for (int i = 0; i < rews.Count; i++)
+		{
+			PoolManager.ReturnObject(rews[i].gameObject);
+		}
+		conds.Clear();
+		rews.Clear();
+
+		curShown = null;
 	}
 
 	public void RefreshCompInfo()
@@ -125,6 +124,28 @@ public class QuestDetailUI : MonoBehaviour
 
 	public void On()
 	{
+		if (condContent == null)
+		{
+			condContent = transform.Find("QuestInfoScroll/Viewport/QuestConditionList/Viewport/QuestConditionContent");
+		}
+		if (rewContent == null)
+		{
+			rewContent = transform.Find("QuestInfoScroll/Viewport/QuestRewardList/Viewport/QuestRewardContent");
+		}
+
+		if (questName == null)
+		{
+			questName = transform.Find("QuestInfoScroll/Viewport/QuestName").GetComponent<TextMeshProUGUI>();
+		}
+		//if(giver == null)
+		//{
+		//	giver = transform.Find("QuestInfoScroll/Viewport/Content/NameText").GetComponent<TextMeshProUGUI>();
+		//}
+		if (description == null)
+		{
+			description = transform.Find("QuestInfoScroll/Viewport/DescText").GetComponent<TextMeshProUGUI>();
+		}
+
 		gameObject.SetActive(true);
 	}
 }

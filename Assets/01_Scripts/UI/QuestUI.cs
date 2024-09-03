@@ -16,7 +16,7 @@ public class QuestUI : MonoBehaviour, IOpenableWindowUI
 
 	public void OnClose()
 	{
-		questInfo.OffCompletely();
+		questInfo.SetInfoEmpty();
 
 	}
 
@@ -29,7 +29,7 @@ public class QuestUI : MonoBehaviour, IOpenableWindowUI
 		}
 		else
 		{
-			questInfo.OffCompletely();
+			questInfo.SetInfoEmpty();
 		}
 	}
 
